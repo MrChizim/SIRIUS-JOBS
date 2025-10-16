@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Sirius Jobs</title>
+    <meta name="description" content="Learn about Sirius Jobs, connecting verified Nigerian blue-collar workers with individuals and businesses since 2022.">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0056b3',
+                        secondary: '#808080',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .about-hero {
+            background: linear-gradient(rgba(0, 86, 179, 0.9), rgba(0, 86, 179, 0.9)), url('http://static.photos/office/1200x630/5');
+            background-size: cover;
+            background-position: center;
+        }
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+        .founder-img {
+            background-image: url('http://static.photos/people/400x400/20');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                    <i data-feather="star" class="text-white"></i>
+                </div>
+                <span class="text-xl font-bold text-primary">Sirius Jobs</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
+                <a href="about.html" class="text-primary font-medium">About Us</a>
+                <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
+                <a href="verify.html" class="text-gray-600 hover:text-primary transition-all">Verify Worker</a>
+                <a href="contact.html" class="text-gray-600 hover:text-primary transition-all">Contact</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-gray-600 focus:outline-none">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+            <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
+            <a href="about.html" class="block py-2 text-primary font-medium">About Us</a>
+            <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
+            <a href="verify.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Verify Worker</a>
+            <a href="contact.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="about-hero text-white py-20 md:py-32">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">About Sirius Jobs</h1>
+            <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto">Our mission to connect skilled workers with those who need them</p>
+        </div>
+    </section>
+
+    <!-- About Content Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Our Story</h2>
+                    <div class="prose text-gray-600">
+                        <p class="mb-4">Sirius Jobs is a registered Nigerian company established in 2022, dedicated to connecting verified blue-collar workers with individuals and businesses that need reliable services.</p>
+                        <p class="mb-4">We provide a trusted platform where skilled professionals such as electricians, plumbers, cleaners, and artisans can reach customers quickly and efficiently. Our mission is to simplify access to quality service while creating sustainable job opportunities across Nigeria.</p>
+                        <p class="mb-4">Our vision is clear: to become a nationwide network that empowers skilled workers, builds trust, and delivers excellent service experiences to every home and organization.</p>
+                        <p class="font-semibold text-gray-800">Reliable people. Trusted service. Proven results.</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Our Mission</h3>
+                        <p class="text-gray-600 mb-6">To bridge the gap between skilled blue-collar workers and potential clients through a trusted, efficient platform that ensures quality service delivery and employment opportunities.</p>
+                        
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Our Vision</h3>
+                        <p class="text-gray-600">To become Nigeria's most trusted service-matching platform, revolutionizing how skilled labor connects with demand nationwide.</p>
+                    </div>
+                    
+                    <div class="bg-gray-100 rounded-lg overflow-hidden">
+                        <div class="aspect-w-16 aspect-h-9">
+                            <img src="http://static.photos/construction/640x360/15" alt="Skilled workers team" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-primary bg-opacity-10 rounded-lg p-8 mb-12">
+                    <h3 class="text-2xl font-bold text-primary mb-6">Our Core Values</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                <i data-feather="shield" class="text-white w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Trust</h4>
+                                <p class="text-gray-600">We verify all workers to ensure reliability and quality service.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                <i data-feather="zap" class="text-white w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Efficiency</h4>
+                                <p class="text-gray-600">Fast connections between clients and skilled professionals.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                <i data-feather="users" class="text-white w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Empowerment</h4>
+                                <p class="text-gray-600">Creating sustainable employment opportunities across Nigeria.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                <i data-feather="star" class="text-white w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Excellence</h4>
+                                <p class="text-gray-600">Commitment to delivering the highest quality service experience.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-8">
+                    <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
+                        <div class="founder-img w-32 h-32 rounded-full flex-shrink-0 shadow-md"></div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">Chizim Felix</h3>
+                            <p class="text-primary font-medium mb-4">Founder & CEO</p>
+                            <p class="text-gray-600 mb-4">"Sirius Jobs was born from a vision to create a platform that empowers skilled workers while providing reliable services to homes and businesses across Nigeria. Registered with CAC in 2022, we're committed to building trust and excellence in every connection we facilitate."</p>
+                            <a href="contact.html" class="inline-block bg-primary text-white font-bold py-2 px-6 rounded hover:bg-opacity-90 transition-all">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                            <i data-feather="star" class="text-white w-4 h-4"></i>
+                        </div>
+                        <span class="text-lg font-bold">Sirius Jobs</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Connecting Talent With Trust across Nigeria since 2022.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-all">Home</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition-all">About Us</a></li>
+                        <li><a href="jobs.html" class="text-gray-400 hover:text-white transition-all">Jobs</a></li>
+                        <li><a href="verify.html" class="text-gray-400 hover:text-white transition-all">Verify Worker</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-all">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2">
+                        <li><span class="text-gray-400">Artisans</span></li>
+                        <li><span class="text-gray-400">Plumbers</span></li>
+                        <li><span class="text-gray-400">Electricians</span></li>
+                        <li><span class="text-gray-400">Cleaners</span></li>
+                        <li><span class="text-gray-400">More Services</span></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start space-x-2">
+                            <i data-feather="phone" class="text-gray-400 mt-1 w-4 h-4"></i>
+                            <span class="text-gray-400">07044470559</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-feather="mail" class="text-gray-400 mt-1 w-4 h-4"></i>
+                            <span class="text-gray-400">siriusoddjobs@gmail.com</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-feather="map-pin" class="text-gray-400 mt-1 w-4 h-4"></i>
+                            <span class="text-gray-400">Port Harcourt, Nigeria</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0">© 2023 Sirius Jobs. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Feather icons
+        feather.replace();
+    </script>
+</body>
+</html>
