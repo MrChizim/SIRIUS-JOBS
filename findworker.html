@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Find Artisans — Sirius Jobs</title>
+  <meta name="description" content="Find verified artisans by skill and location on Sirius Jobs." />
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0056b3',
+            secondary: '#808080',
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .hero-bg {
+      background: linear-gradient(rgba(0,86,179,0.85), rgba(0,86,179,0.85)), url('/images/hero.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800">
+
+  <!-- NAV -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <!-- Logo placeholder: replace /images/logo.png with your logo file -->
+        <!-- Replace this with your actual logo file (recommended size 80x80) -->
+        <img src="/images/logo.png" alt="Sirius Jobs Logo" class="w-10 h-10 object-cover rounded-full" onerror="this.src='https://via.placeholder.com/80x80?text=S'"/>
+        <span class="text-xl font-bold text-primary">Sirius Jobs</span>
+      </div>
+
+      <div class="hidden md:flex space-x-8 items-center">
+        <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
+        <a href="about.html" class="text-gray-600 hover:text-primary transition-all">About Us</a>
+        <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
+        <a href="find-artisans.html" class="text-gray-600 hover:text-primary transition-all font-semibold">Find Artisans</a>
+        <a href="privacypolicy.html" class="text-gray-600 hover:text-primary transition-all">Privacy</a>
+        <!-- Contact removed per request -->
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <!-- Login link opens a modal or goes to login page -->
+        <button id="login-btn" class="bg-primary text-white py-2 px-4 rounded-md font-medium hover:opacity-95">Login</button>
+
+        <div class="md:hidden">
+          <button id="menu-btn" class="text-gray-600 focus:outline-none">
+            <i data-feather="menu"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+      <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
+      <a href="about.html" class="block py-2 text-gray-600 hover:text-primary transition-all">About Us</a>
+      <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
+      <a href="find-artisans.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Artisans</a>
+      <a href="privacypolicy.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Privacy</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero-bg text-white py-20 md:py-28">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-3xl md:text-5xl font-bold mb-3">Find Trusted, Verified Artisans</h1>
+      <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">Browse top-rated plumbers, electricians, carpenters and more — filtered by skill and location. Only verified & subscribed artisans are shown.</p>
+      <div class="max-w-3xl mx-auto">
+        <div class="bg-white rounded-lg p-4 shadow-md flex flex-col md:flex-row gap-3">
+          <input id="searchInput" type="search" placeholder="Search artisan, skill or name" class="flex-1 border rounded-md py-2 px-3 focus:outline-none" />
+          <select id="skillFilter" class="border rounded-md py-2 px-3 w-full md:w-56">
+            <option value="">All Skills</option>
+          </select>
+          <select id="locationFilter" class="border rounded-md py-2 px-3 w-full md:w-48">
+            <option value="">All Locations</option>
+          </select>
+          <select id="sortBy" class="border rounded-md py-2 px-3 w-full md:w-44">
+            <option value="relevance">Sort</option>
+            <option value="rating_desc">Highest Rated</option>
+            <option value="reviews_desc">Most Reviews</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ARTISANS GRID -->
+  <main class="py-12">
+    <div class="container mx-auto px-4">
+      <div id="resultsInfo" class="text-sm text-gray-600 mb-4"></div>
+
+      <div id="artisanGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- JS will render artisan cards here -->
+      </div>
+
+      <!-- Pagination placeholder (if needed later) -->
+      <div id="pagination" class="mt-8 flex justify-center"></div>
+    </div>
+  </main>
+
+  <!-- ARTISAN MODAL -->
+  <div id="artisanModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg w-11/12 md:w-3/4 lg:w-1/2 p-6 relative">
+      <button id="modalClose" class="absolute right-4 top-4 text-gray-500 hover:text-gray-800">
+        <i data-feather="x"></i>
+      </button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+              <i data-feather="star" class="text-white w-4 h-4"></i>
+            </div>
+            <span class="text-lg font-bold">Sirius Jobs</span>
+          </div>
+          <p class="text-gray-400 mb-4">Bridging Talent and Opportunity with Trust</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="facebook"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-gray-400 hover:text-white transition-all">Home</a></li>
+            <li><a href="about.html" class="text-gray-400 hover:text-white transition-all">About Us</a></li>
+            <li><a href="services.html" class="text-gray-400 hover:text-white transition-all">Services</a></li>
+            <li><a href="find-artisans.html" class="text-gray-400 hover:text-white transition-all">Find Artisans</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Legal</h4>
+          <ul class="space-y-2">
+            <li><a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all">Privacy Policy</a></li>
+            <li><a href="terms.html" class="text-gray-400 hover:text-white transition-all">Terms of Service</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+          <ul class="space-y-2">
+            <li class="flex items-start space-x-2">
+              <i data-feather="phone" class="text-gray-400 mt-1 w-4 h-4"></i>
+              <span class="text-gray-400">07044470559</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <i data-feather="mail" class="text-gray-400 mt-1 w-4 h-4"></i>
+              <span class="text-gray-400">siriusoddjobs@gmail.com</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <i data-feather="map-pin" class="text-gray-400 mt-1 w-4 h-4"></i>
+              <span class="text-gray-400">Port Harcourt, Nigeria</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0">© 2022 Sirius Jobs. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Mobile menu toggle
+    document.getElementById('menu-btn').addEventListener('click', function() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+
+    // Feather icons
+    feather.replace();
+  </script>
+
+  <script>
+    // ======= SAMPLE DATA =======
+    // Replace artisan photos in /images/artisans/ with your real photos
+    // Example images included as placeholders
+    const artisans = [
+      { id:1, name:'Ifeanyi Okoro', skill:'Electrician', location:'Port Harcourt', rating:4.8, reviews:45, photo:'/images/artisans/elec1.jpg', verified:true, subscriptionActive:true, bio:'10 years experience in domestic and industrial electrical systems.' },
+      { id:2, name:'Ngozi Amadi', skill:'Plumber', location:'Port Harcourt', rating:4.6, reviews:28, photo:'/images/artisans/plumb1.jpg', verified:true, subscriptionActive:true, bio:'Specialist in piping, bathrooms and leak repairs.' },
+      { id:3, name:'Chinedu Eke', skill:'Carpenter', location:'Rivers', rating:4.4, reviews:16, photo:'/images/artisans/carp1.jpg', verified:false, subscriptionActive:true, bio:'Custom furniture and cabinetry.' },
+      { id:4, name:'Aisha Bello', skill:'Tiler', location:'Port Harcourt', rating:4.9, reviews:62, photo:'/images/artisans/tile1.jpg', verified:true, subscriptionActive:true, bio:'Perfect finishes for bathrooms and kitchens.' },
+      { id:5, name:'Emeka Uche', skill:'Painter', location:'Rivers', rating:4.3, reviews:9, photo:'/images/artisans/paint1.jpg', verified:true, subscriptionActive:false, bio:'Interior and exterior painting with lasting finishes.' },
+      // add more sample artisans as needed
+    ];
+
+    // Populate skill and location filters from data
+    const skills = Array.from(new Set(artisans.map(a => a.skill))).sort();
+    const locations = Array.from(new Set(artisans.map(a => a.location))).sort();
+
+    const skillSelect = document.getElementById('skillFilter');
+    const locSelect = document.getElementById('locationFilter');
+
+    skills.forEach(s => {
+      const opt = document.createElement('option'); opt.value = s; opt.textContent = s; skillSelect.appendChild(opt);
+    });
+    locations.forEach(l => {
+      const opt = document.createElement('option'); opt.value = l; opt.textContent = l; locSelect.appendChild(opt);
+    });
+
+    // Rendering logic: show only verified && subscriptionActive
+    function renderArtisans(filter = {}) {
+      const grid = document.getElementById('artisanGrid');
+      grid.innerHTML = '';
+      const search = (filter.search||'').toLowerCase();
+      const skill = filter.skill || '';
+      const location = filter.location || '';
+      const sort = filter.sort || 'relevance';
+
+      let list = artisans.filter(a => a.verified === true && a.subscriptionActive === true);
+
+      if (search) {
+        list = list.filter(a => (a.name + ' ' + a.skill).toLowerCase().includes(search));
+      }
+      if (skill) list = list.filter(a => a.skill === skill);
+      if (location) list = list.filter(a => a.location === location);
+
+      if (sort === 'rating_desc') list.sort((x,y)=> y.rating - x.rating);
+      if (sort === 'reviews_desc') list.sort((x,y)=> y.reviews - x.reviews);
+
+      document.getElementById('resultsInfo').textContent = `${list.length} artisan(s) found`;
+
+      if (list.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center text-gray-500 p-8">No verified artisans found for your filters.</div>`;
+        return;
+      }
+
+      list.forEach(a => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-lg shadow p-4 flex flex-col transition-transform hover:-translate-y-1';
+        card.innerHTML = `
+          <div class="flex items-center space-x-4">
+            <img src="${a.photo}" alt="${a.name}" class="w-20 h-20 rounded-lg object-cover" onerror="this.src='https://via.placeholder.com/140x140?text=Photo'"/>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="text-lg font-semibold">${a.name}</h3>
+                  <p class="text-sm text-gray-500">${a.skill} • ${a.location}</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                  ${a.verified ? '<span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Verified</span>' : ''}
+                </div>
+              </div>
+              <div class="mt-3 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <div class="flex items-center text-yellow-400">
+                    ${renderStars(a.rating)}
+                  </div>
+                  <span class="text-sm text-gray-500">(${a.reviews})</span>
+                </div>
+                <div>
+                  <button data-id="${a.id}" class="open-profile bg-primary text-white text-sm py-1 px-3 rounded">View</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // attach click listeners
+      document.querySelectorAll('.open-profile').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = Number(e.currentTarget.getAttribute('data-id'));
+          openProfileModal(id);
+        });
+      });
+    }
+
+    function renderStars(rating) {
+      const full = Math.floor(rating);
+      let html = '';
+      for (let i=0;i<5;i++){
+        if (i < full) html += '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.173c.969 0 1.371 1.24.588 1.81l-3.376 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118L10 15.347 6.409 18.75c-.785.57-1.84-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.415 9.093c-.783-.57-.38-1.81.588-1.81h4.173a1 1 0 00.95-.69L9.049 2.927z"/></svg>';
+        else html += '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-300" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.173c.969 0 1.371 1.24.588 1.81l-3.376 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118L10 15.347 6.409 18.75c-.785.57-1.84-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.415 9.093c-.783-.57-.38-1.81.588-1.81h4.173a1 1 0 00.95-.69L9.049 2.927z"/></svg>';
+      }
+      return html;
+    }
+
+    // Show profile modal
+    function openProfileModal(id) {
+      const artisan = artisans.find(a => a.id === id);
+      const modal = document.getElementById('artisanModal');
+      const content = document.getElementById('modalContent');
+      content.innerHTML = `
+        <div class="md:flex gap-6">
+          <div class="md:w-1/3 text-center">
+            <img src="${artisan.photo}" alt="${artisan.name}" class="w-40 h-40 rounded-lg object-cover mx-auto mb-4" onerror="this.src='https://via.placeholder.com/240x240?text=Photo'"/>
+            <div class="flex items-center justify-center space-x-2">
+              ${artisan.verified ? '<span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Verified</span>' : ''}
+            </div>
+          </div>
+          <div class="md:flex-1">
+            <h2 class="text-2xl font-semibold mb-1">${artisan.name}</h2>
+            <p class="text-sm text-gray-500 mb-3">${artisan.skill} • ${artisan.location}</p>
+            <div class="flex items-center space-x-3 mb-3">
+              <div class="flex items-center">${renderStars(artisan.rating)}</div>
+              <div class="text-sm text-gray-500">(${artisan.reviews} reviews)</div>
+            </div>
+            <p class="text-gray-700 mb-4">${artisan.bio}</p>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+              <!-- Hire Now opens WhatsApp chat -->
+              <a href="https://wa.me/2347012345678?text=Hi%20${encodeURIComponent(artisan.name)}%2C%20I%20want%20to%20hire%20you" target="_blank" class="w-full sm:w-auto bg-green-600 text-white py-2 px-4 rounded text-center">Hire on WhatsApp</a>
+
+              <!-- Pay / Contact reveal (example) -->
+              <button class="w-full sm:w-auto border border-primary text-primary py-2 px-4 rounded" onclick="startPayment(${artisan.id})">Pay & Get Contact</button>
+            </div>
+
+            <p class="mt-4 text-xs text-gray-500">Note: Only verified and subscribed artisans appear here. All payments are processed securely.</p>
+          </div>
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    // Close modal
+    document.getElementById('modalClose').addEventListener('click', () => {
+      document.getElementById('artisanModal').classList.add('hidden');
+      document.getElementById('artisanModal').classList.remove('flex');
+    });
+
+    // Payment starter (replace with actual Paystack/Flutterwave logic)
+    function startPayment(artisanId) {
+      // Example: open a checkout page or call backend to init payment.
+      // Replace this with your actual payment flow (Paystack/Flutterwave).
+      alert('Open payment flow for artisan ID: ' + artisanId + '\nReplace this function with Paystack/Flutterwave integration.');
+    }
+
+    // Filters
+    const searchInput = document.getElementById('searchInput');
+    const sortBy = document.getElementById('sortBy');
+
+    function applyFilters() {
+      renderArtisans({
+        search: searchInput.value,
+        skill: skillSelect.value,
+        location: locSelect.value,
+        sort: sortBy.value
+      });
+    }
+
+    searchInput.addEventListener('input', () => applyFilters());
+    skillSelect.addEventListener('change', () => applyFilters());
+    locSelect.addEventListener('change', () => applyFilters());
+    sortBy.addEventListener('change', () => applyFilters());
+
+    // Initial render
+    renderArtisans();
+
+    // Login button example (open login page or modal)
+    document.getElementById('login-btn').addEventListener('click', () => {
+      window.location.href = '/login.html'; // or open a login modal
+    });
+  </script>
+</body>
+</html>
+
