@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Edit Profile – Worker</title>
+  <meta name="description" content="Update your worker profile on Sirius Jobs." />
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{primary:'#0056b3'}}}}</script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');body{font-family:'Inter',sans-serif}</style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- NAV -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center"><i data-feather="star" class="text-white"></i></div>
+        <span class="text-xl font-bold text-primary">Sirius Jobs</span>
+      </div>
+      <a href="worker-dashboard.html" class="text-sm text-primary hover:underline">← Back to Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="bg-primary text-white py-10 text-center">
+    <h1 class="text-3xl font-bold">Edit Your Profile</h1>
+    <p class="text-gray-100 mt-1">Update details to improve your visibility</p>
+  </header>
+
+  <main class="container mx-auto px-4 py-10">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
+      <form id="profileForm" class="space-y-5">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+          <input type="text" class="w-full border rounded-md py-2 px-3 focus:border-primary focus:ring-primary" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Skill / Profession</label>
+          <input type="text" class="w-full border rounded-md py-2 px-3 focus:border-primary focus:ring-primary" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Location (State)</label>
+          <select class="w-full border rounded-md py-2 px-3 focus:border-primary focus:ring-primary" required>
+            <option value="">Select State</option>
+            <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option><option>Anambra</option>
+            <option>Bauchi</option><option>Bayelsa</option><option>Benue</option><option>Borno</option>
+            <option>Cross River</option><option>Delta</option><option>Ebonyi</option><option>Edo</option>
+            <option>Ekiti</option><option>Enugu</option><option>Gombe</option><option>Imo</option>
+            <option>Jigawa</option><option>Kaduna</option><option>Kano</option><option>Katsina</option>
+            <option>Kebbi</option><option>Kogi</option><option>Kwara</option><option>Lagos</option>
+            <option>Nasarawa</option><option>Niger</option><option>Ogun</option><option>Ondo</option>
+            <option>Osun</option><option>Oyo</option><option>Plateau</option><option>Rivers</option>
+            <option>Sokoto</option><option>Taraba</option><option>Yobe</option><option>Zamfara</option>
+            <option>FCT – Abuja</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Bio / Description</label>
+          <textarea rows="4" class="w-full border rounded-md py-2 px-3 focus:border-primary focus:ring-primary"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Profile Photo</label>
+          <input type="file" class="block w-full text-sm text-gray-600 border border-gray-300 rounded-md p-2">
+        </div>
+        <button type="submit" class="w-full bg-primary text-white py-2 rounded hover:bg-primary/90">Save Changes</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- FOOTER identical -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-4"><div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center"><i data-feather="star" class="text-white w-4 h-4"></i></div><span class="text-lg font-bold">Sirius Jobs</span></div>
+          <p class="text-gray-400 mb-4">Connecting Talent With Trust across Nigeria since 2022.</p>
+        </div>
+        <div><h4 class="text-lg font-semibold mb-4">Quick Links</h4><ul class="space-y-2 text-gray-400">
+          <li><a href="index.html" class="hover:text-white">Home</a></li>
+          <li><a href="about.html" class="hover:text-white">About Us</a></li>
+          <li><a href="jobs.html" class="hover:text-white">Jobs</a></li>
+          <li><a href="verify.html" class="hover:text-white">Verify Worker</a></li>
+          <li><a href="contact.html" class="hover:text-white">Contact</a></li></ul></div>
+        <div><h4 class="text-lg font-semibold mb-4">Services</h4><ul class="space-y-2 text-gray-400"><li>Artisans</li><li>Plumbers</li><li>Electricians</li><li>Cleaners</li><li>More Services</li></ul></div>
+        <div><h4 class="text-lg font-semibold mb-4">Contact Us</h4><ul class="space-y-2 text-gray-400"><li class="flex items-center space-x-2"><i data-feather="phone" class="w-4 h-4"></i><span>07044470559</span></li><li class="flex items-center space-x-2"><i data-feather="mail" class="w-4 h-4"></i><span>siriusoddjobs@gmail.com</span></li><li class="flex items-center space-x-2"><i data-feather="map-pin" class="w-4 h-4"></i><span>Port Harcourt, Nigeria</span></li></ul></div>
+      </div>
+      <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0">© 2025 Sirius Jobs. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="privacypolicy.html" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
+          <a href="terms.html" class="text-gray-400 hover:text-white text-sm">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    feather.replace();
+    document.getElementById('profileForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      alert('✅ Profile saved successfully!');
+      window.location.href='worker-dashboard.html';
+    });
+  </script>
+</body>
+</html>
