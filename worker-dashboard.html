@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Worker Dashboard — Sirius Jobs</title>
+  <meta name="description" content="Worker dashboard — track applications, jobs got, earnings and profile." />
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { primary: '#0056b3', secondary: '#808080' } } } }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- NAV -->
+  <nav class="bg-white shadow sticky top-0 z-40">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="/images/logo.png" alt="Sirius Jobs Logo" class="w-10 h-10 rounded-full object-cover" onerror="this.src='https://via.placeholder.com/80x80?text=S'"/>
+        <span class="text-xl font-bold text-primary">Sirius Jobs</span>
+      </div>
+
+      <div class="hidden md:flex items-center gap-6">
+        <a href="index.html" class="text-gray-600 hover:text-primary">Home</a>
+        <a href="jobs.html" class="text-gray-600 hover:text-primary">Jobs</a>
+        <a href="login.html" class="bg-primary text-white py-2 px-3 rounded">Login</a>
+      </div>
+
+      <div class="md:hidden">
+        <button id="menu-btn-w" class="text-gray-600"><i data-feather="menu"></i></button>
+      </div>
+    </div>
+    <div id="mobile-menu-w" class="hidden md:hidden px-4 pb-4">
+      <a href="index.html" class="block py-2">Home</a>
+      <a href="jobs.html" class="block py-2">Jobs</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="bg-white border-b">
+    <div class="container mx-auto px-4 py-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Worker Dashboard</h1>
+        <p class="text-sm text-gray-600">Track your applications, earnings, upcoming jobs and profile completion.</p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="text-right">
+          <p class="text-xs text-gray-500">Rating</p>
+          <p class="text-sm font-medium">4.7 ★</p>
+        </div>
+
+        <button class="bg-primary text-white py-2 px-4 rounded">Edit Profile</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="container mx-auto px-4 py-6">
+    <!-- top stat cards -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div class="bg-white rounded-lg shadow p-4">
+        <p class="text-sm text-gray-500">Jobs Applied</p>
+        <h3 class="text-2xl font-bold">56</h3>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-4">
+        <p class="text-sm text-gray-500">Jobs Won</p>
+        <h3 class="text-2xl font-bold">14</h3>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-4">
+        <p class="text-sm text-gray-500">Earnings (NGN)</p>
+        <h3 class="text-2xl font-bold">₦192,000</h3>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-4">
+        <p class="text-sm text-gray-500">Profile Completion</p>
+        <div class="mt-2">
+          <div class="w-full bg-gray-200 h-3 rounded overflow-hidden"><div id="profileBar" class="h-3 bg-primary" style="width:78%"></div></div>
+          <p class="text-xs text-gray-500 mt-1">78% complete</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- center: upcoming gigs & history -->
+      <div class="lg:col-span-2 space-y-4">
+        <div class="bg-white rounded-lg shadow p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-lg font-semibold">Upcoming Gigs</h2>
+            <a href="#" class="text-sm text-primary">View all</a>
+          </div>
+          <ul id="gigsList" class="space-y-3">
+            <!-- JS populated -->
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-lg font-semibold">Application History</h2>
+            <div class="text-sm text-gray-600">Recent activity</div>
+          </div>
+          <ul id="appliedList" class="space-y-2"></ul>
+        </div>
+      </div>
+
+      <!-- right: quick profile & settings -->
+      <aside class="space-y-4">
+        <div class="bg-white rounded-lg shadow p-4 text-center">
+          <img src="/images/users/sample_worker.jpg" class="w-24 h-24 rounded-full mx-auto object-cover" onerror="this.src='https://via.placeholder.com/120x120?text=You'"/>
+          <h3 class="mt-3 font-semibold">Samuel Ade</h3>
+          <p class="text-sm text-gray-500">Mechanic • Abeokuta</p>
+          <div class="mt-3 space-y-2">
+            <button class="w-full bg-primary text-white py-2 rounded">Make Profile Public</button>
+            <button class="w-full border py-2 rounded">View Earnings</button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-4">
+          <h3 class="font-semibold mb-2">Verification</h3>
+          <p class="text-sm text-gray-600">Status: <span class="font-medium text-green-600">Verified</span></p>
+          <p class="text-xs text-gray-400 mt-2">Verified accounts get more visibility and higher trust.</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-4">
+          <h3 class="font-semibold mb-2">Suggested Jobs Nearby</h3>
+          <ul class="text-sm text-gray-700 space-y-1">
+            <li>AC Repair — Kano</li>
+            <li>Electrical Fix — Lagos</li>
+            <li>Plumbing — Port Harcourt</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="bg-gray-900 text-white py-8">
+    <div class="container mx-auto px-4 text-center text-sm">© 2022 Sirius Jobs. All rights reserved.</div>
+  </footer>
+
+  <script>
+    feather.replace();
+    document.getElementById('menu-btn-w').addEventListener('click', ()=> document.getElementById('mobile-menu-w').classList.toggle('hidden'));
+
+    // sample upcoming gigs & applied history
+    const gigs = [
+      { id:1, title:'Truck engine tune-up', date:'2025-11-02', location:'Abeokuta', pay:'₦12,000' },
+      { id:2, title:'AC servicing (3 units)', date:'2025-11-05', location:'Kano', pay:'₦8,500' }
+    ];
+
+    const applied = [
+      { id:1, job:'Residential Electrician', company:'Sirius Homes', status:'Pending', date:'2025-10-22' },
+      { id:2, job:'Office Generator Repair', company:'ACME Ltd', status:'Hired', date:'2025-10-12' }
+    ];
+
+    function renderGigs(){
+      const el = document.getElementById('gigsList'); el.innerHTML='';
+      gigs.forEach(g=>{
+        const li = document.createElement('li'); li.className='border rounded p-3 flex items-center justify-between';
+        li.innerHTML = `<div><div class="font-medium">${g.title}</div><div class="text-xs text-gray-500">${g.location} • ${g.date}</div></div><div class="text-sm font-semibold">${g.pay}</div>`;
+        el.appendChild(li);
+      });
+    }
+    function renderApplied(){
+      const el = document.getElementById('appliedList'); el.innerHTML='';
+      applied.forEach(a=>{
+        const li = document.createElement('li'); li.className='flex items-center justify-between text-sm text-gray-700';
+        li.innerHTML = `<div><div>${a.job}</div><div class="text-xs text-gray-500">${a.company} • ${a.date}</div></div><div class="${a.status==='Hired'?'text-green-600':'text-yellow-600'} font-semibold">${a.status}</div>`;
+        el.appendChild(li);
+      });
+    }
+
+    renderGigs(); renderApplied();
+  </script>
+</body>
+</html>
