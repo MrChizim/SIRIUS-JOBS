@@ -77,22 +77,38 @@
   <header class="hero-bg text-white py-20 md:py-28">
     <div class="container mx-auto px-4 text-center">
       <h1 class="text-3xl md:text-5xl font-bold mb-3">Find Trusted, Verified Artisans</h1>
-      <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">Browse top-rated plumbers, electricians, carpenters and more — filtered by skill and location. Only verified & subscribed artisans are shown.</p>
+      <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">Browse top-rated plumbers, electricians, carpenters and more — filtered by skill and location. Only verified artisans are shown.</p>
       <div class="max-w-3xl mx-auto">
-        <div class="bg-white rounded-lg p-4 shadow-md flex flex-col md:flex-row gap-3">
-          <input id="searchInput" type="search" placeholder="Search artisan, skill or name" class="flex-1 border rounded-md py-2 px-3 focus:outline-none" />
-          <select id="skillFilter" class="border rounded-md py-2 px-3 w-full md:w-56">
-            <option value="">All Skills</option>
-          </select>
-          <select id="locationFilter" class="border rounded-md py-2 px-3 w-full md:w-48">
-            <option value="">All Locations</option>
-          </select>
-          <select id="sortBy" class="border rounded-md py-2 px-3 w-full md:w-44">
-            <option value="relevance">Sort</option>
-            <option value="rating_desc">Highest Rated</option>
-            <option value="reviews_desc">Most Reviews</option>
-          </select>
-        </div>
+        <div class="bg-white rounded-lg p-4 shadow-md flex flex-col md:flex-row gap-3 justify-center items-center">
+  <!-- Search -->
+  <input id="searchInput" 
+         type="search" 
+         placeholder="Search artisan" 
+         class="border rounded-md py-2 px-3 w-full md:w-48 focus:outline-none" />
+
+  <!-- Category -->
+  <select id="categoryFilter" class="border rounded-md py-2 px-3 w-full md:w-44">
+    <option value="">All Categories</option>
+  </select>
+
+  <!-- Services -->
+  <select id="skillFilter" class="border rounded-md py-2 px-3 w-full md:w-44">
+    <option value="">All Services</option>
+  </select>
+
+  <!-- Location -->
+  <select id="locationFilter" class="border rounded-md py-2 px-3 w-full md:w-44">
+    <option value="">All Locations</option>
+  </select>
+
+  <!-- Sort -->
+  <select id="sortBy" class="border rounded-md py-2 px-3 w-full md:w-32">
+    <option value="relevance">Sort</option>
+    <option value="rating_desc">Highest Rated</option>
+    <option value="reviews_desc">Most Reviews</option>
+  </select>
+</div>
+
       </div>
     </div>
   </header>
@@ -136,7 +152,7 @@
           <div class="flex space-x-4">
             <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="facebook"></i></a>
             <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="twitter"></i></a>
-            <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
+            <a href="https://www.instagram.com/siriusjobss?igsh=MXQwcXNzZGVrdHM5MQ%3D%3D&utm_source=qr" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
             <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="linkedin"></i></a>
           </div>
         </div>
@@ -152,11 +168,14 @@
         </div>
 
         <div>
-          <h4 class="text-lg font-semibold mb-4">Legal</h4>
+          <h4 class="text-lg font-semibold mb-4">Services </h4>
           <ul class="space-y-2">
-            <li><a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all">Privacy Policy</a></li>
-            <li><a href="terms.html" class="text-gray-400 hover:text-white transition-all">Terms of Service</a></li>
-          </ul>
+                        <li><span class="text-gray-400">Artisans</span></li>
+                        <li><span class="text-gray-400">Plumbers</span></li>
+                        <li><span class="text-gray-400">Electricians</span></li>
+                        <li><span class="text-gray-400">Cleaners</span></li>
+                        <li><span class="text-gray-400">More Services</span></li>
+                    </ul>
         </div>
 
         <div>
@@ -213,18 +232,66 @@
     ];
 
     // Populate skill and location filters from data
-    const skills = Array.from(new Set(artisans.map(a => a.skill))).sort();
-    const locations = Array.from(new Set(artisans.map(a => a.location))).sort();
+const skills = Array.from(new Set(artisans.map(a => a.skill))).sort();
 
-    const skillSelect = document.getElementById('skillFilter');
-    const locSelect = document.getElementById('locationFilter');
+// List of all Nigerian states and their capitals
+const locations = [
+  "Abia – Umuahia",
+  "Adamawa – Yola",
+  "Akwa Ibom – Uyo",
+  "Anambra – Awka",
+  "Bauchi – Bauchi",
+  "Bayelsa – Yenagoa",
+  "Benue – Makurdi",
+  "Borno – Maiduguri",
+  "Cross River – Calabar",
+  "Delta – Asaba",
+  "Ebonyi – Abakaliki",
+  "Edo – Benin City",
+  "Ekiti – Ado-Ekiti",
+  "Enugu – Enugu",
+  "Gombe – Gombe",
+  "Imo – Owerri",
+  "Jigawa – Dutse",
+  "Kaduna – Kaduna",
+  "Kano – Kano",
+  "Katsina – Katsina",
+  "Kebbi – Birnin Kebbi",
+  "Kogi – Lokoja",
+  "Kwara – Ilorin",
+  "Lagos – Ikeja",
+  "Nasarawa – Lafia",
+  "Niger – Minna",
+  "Ogun – Abeokuta",
+  "Ondo – Akure",
+  "Osun – Osogbo",
+  "Oyo – Ibadan",
+  "Plateau – Jos",
+  "Rivers – Port Harcourt",
+  "Sokoto – Sokoto",
+  "Taraba – Jalingo",
+  "Yobe – Damaturu",
+  "Zamfara – Gusau",
+  "Federal Capital Territory – Abuja"
+];
 
-    skills.forEach(s => {
-      const opt = document.createElement('option'); opt.value = s; opt.textContent = s; skillSelect.appendChild(opt);
-    });
-    locations.forEach(l => {
-      const opt = document.createElement('option'); opt.value = l; opt.textContent = l; locSelect.appendChild(opt);
-    });
+const skillSelect = document.getElementById('skillFilter');
+const locSelect = document.getElementById('locationFilter');
+
+skills.forEach(s => {
+  const opt = document.createElement('option');
+  opt.value = s;
+  opt.textContent = s;
+  skillSelect.appendChild(opt);
+});
+
+locations.forEach(l => {
+  const opt = document.createElement('option');
+  opt.value = l;
+  opt.textContent = l;
+  locSelect.appendChild(opt);
+});
+
 
     // Rendering logic: show only verified && subscriptionActive
     function renderArtisans(filter = {}) {
