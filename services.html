@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Services – Sirius Jobs</title>
+  <meta name="description" content="Explore verified services available through Sirius Jobs — artisans, repairs, tech, cleaning, events, legal, and more.">
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0056b3',
+            secondary: '#808080',
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .service-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+    .transition-all { transition: all 0.3s ease; }
+    .sirius-login {
+      background-color: #0056b3;
+      color: #fff !important;
+      padding: 0.35rem 1rem;
+      border-radius: 0.375rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    .sirius-login:hover { background-color: #004a99; }
+  </style>
+</head>
+<body class="bg-white text-gray-800">
+
+  <!-- ====================== HEADER ====================== -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <!-- ==== COMPANY LOGO IN HEADER ==== -->
+        <!-- Place your logo file (e.g. logo.png) in same folder and link below -->
+        <img src="logo.png" alt="Sirius Jobs Logo" class="w-10 h-10 rounded-full object-cover">
+        <span class="text-xl font-bold text-primary">Sirius Jobs</span>
+      </div>
+
+      <div class="hidden md:flex space-x-8">
+        <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
+        <a href="services.html" class="text-primary font-medium">Services</a>
+        <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
+        <a href="login.html" class="sirius-login">Login</a>
+      </div>
+
+      <div class="md:hidden">
+        <button id="menu-btn" class="text-gray-600 focus:outline-none">
+          <i data-feather="menu"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+      <a href="index.html" class="block py-2 text-gray-600 hover:text-primary">Home</a>
+      <a href="services.html" class="block py-2 text-primary font-medium">Services</a>
+      <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary">Jobs</a>
+      <a href="login.html" class="block sirius-login mt-2 text-center">Login</a>
+    </div>
+  </nav>
+
+  <!-- ====================== HERO ====================== -->
+  <section class="hero-bg text-white py-20 text-center" 
+    style="background:linear-gradient(rgba(0,86,179,0.9),rgba(0,86,179,0.9)),url('https://images.unsplash.com/photo-1600181953446-c77e3c5b6c2b?auto=format&fit=crop&w=1950&q=80');background-size:cover;background-position:center;">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">Our Services</h1>
+    <p class="text-lg md:text-xl max-w-2xl mx-auto">Verified professionals for every job — from home repairs to legal, health, and business services.</p>
+  </section>
+
+  <!-- ====================== SERVICES ====================== -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4 space-y-12">
+
+      <!-- CATEGORY 1: Home & Property Repairs -->
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Home & Property Repairs</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="droplet" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Plumbers</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="zap" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Electricians</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="tool" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Carpenters</h3></div>
+          <!-- custom welder mask icon -->
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 3h12a2 2 0 012 2v9a6 6 0 11-12 0V5a2 2 0 012-2z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 9h8M9 13h6" />
+            </svg>
+            <h3>Welders</h3>
+          </div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="home" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Masons / Bricklayers</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="grid" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Tilers</h3></div>
+          <!-- Painters with palette icon -->
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a10 10 0 00-9.995 9.777A7 7 0 1012 22a10 10 0 000-20z" />
+            </svg>
+            <h3>Paint&nbsp;and&nbsp;Decoration</h3>
+          </div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="layers" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>POP & Ceiling Installers</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="square" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Aluminum Window/Door Installers</h3></div>
+        </div>
+      </div>
+
+      <!-- CATEGORY 2: Appliances & Tech -->
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Appliances & Tech</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="wind" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>AC/Fridge Technicians</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="cpu" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Generator Repair</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="sun" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Solar/Inverter Technicians</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="smartphone" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Phone & Laptop Repair</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="tv" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Satellite/DSTV Installers</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="video" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>CCTV & Security Camera Installers</h3></div>
+        </div>
+      </div>
+
+      <!-- CATEGORY 3: Auto & Transport -->
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Auto & Transport</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="truck" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Mechanics</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="cpu" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Auto Electricians</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="package" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Panel Beaters / Spray Painters</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="truck" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Truck/Van Drivers</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="navigation" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Bike Dispatch Riders</h3></div>
+        </div>
+      </div>
+
+      <!-- CATEGORY 4: Cleaning & Domestic -->
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Cleaning & Domestic Services</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="home" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>House Cleaners</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="briefcase" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Office Cleaners</h3></div>
+          <!-- Laundry icon -->
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4zM8 4v2m8-2v2M9 14a3 3 0 106 0 3 3 0 00-6 0z" />
+            </svg>
+            <h3>Laundry / Ironing Services</h3>
+          </div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="trash-2" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Waste Disposal / Truck Pushers</h3></div>
+        
+      </div>
+
+      <!-- CATEGORY 5: Event & Lifestyle -->
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Event & Lifestyle</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="coffee" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Caterers</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="gift" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Event Decorators</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="camera" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Photographers / Videographers</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="music" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>DJs</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="smile" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Makeup Artists</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="users" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Event Ushers</h3></div>
+        </div>
+      </div>
+
+      <!-- CATEGORY 6: Construction & Heavy Duty -->
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Construction & Heavy Duty</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="archive" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Bricklayers</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="triangle" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Roofers</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="grid" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Scaffolding Workers</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="truck" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Heavy Equipment Operators</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="truck" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Truck Drivers</h3></div>
+        </div>
+      </div>
+
+      <!-- CATEGORY 7: Personal & Miscellaneous -->
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Personal & Miscellaneous</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="scissors" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Barbers</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="tag" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Tailors</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="shopping-bag" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Shoe Repair (Cobblers)</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="shield" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Security Guards</h3></div>
+        </div>
+      </div>
+
+      <!-- CATEGORY 8: Legal & Medical -->
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Legal & Medical Services</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="file-text" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Business & Company Registration</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="user-check" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Legal Consultation</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="hash" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Tax Identification (TIN)</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="heart" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Adoption / Family Law</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="activity" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Medical Consultation</h3></div>
+          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="smile" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Dental Consultation</h3></div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="text-center pt-10">
+        <p class="text-gray-600">Didn’t find your service? <a href="contact.html" class="text-primary font-semibold hover:underline">Contact us</a> — we’ll help you get it done.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====================== FOOTER ====================== -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <img src="logo.png" alt="Sirius Jobs Logo" class="w-8 h-8 rounded-full object-cover">
+            <span class="text-lg font-bold">Sirius Jobs</span>
+          </div>
+          <p class="text-gray-400 mb-4">Connecting Talent With Trust across Nigeria since 2022.</p>
+          <div class="flex space-x-4">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="text-gray-400 hover:text-white"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" class="text-gray-400 hover:text-white"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" class="text-gray-400 hover:text-white"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" class="text-gray-400 hover:text-white"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-gray-400 hover:text-white">Home</a></li>
+            <li><a href="about.html" class="text-gray-400 hover:text-white">About Us</a></li>
+            <li><a href="jobs.html" class="text-gray-400 hover:text-white">Jobs</a></li>
+            <li><a href="verify.html" class="text-gray-400 hover:text-white">Verify Worker</a></li>
+            <li><a href="contact.html" class="text-gray-400 hover:text-white">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Services</h4>
+          <ul class="space-y-2">
+            <li><span class="text-gray-400">Artisans</span></li>
+            <li><span class="text-gray-400">Plumbers</span></li>
+            <li><span class="text-gray-400">Electricians</span></li>
+            <li><span class="text-gray-400">Cleaners</span></li>
+            <li><span class="text-gray-400">More Services</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+          <ul class="space-y-2">
+            <li class="flex items-start space-x-2"><i data-feather="phone" class="text-gray-400 mt-1 w-4 h-4"></i><span class="text-gray-400">07044470559</span></li>
+            <li class="flex items-start space-x-2"><i data-feather="mail" class="text-gray-400 mt-1 w-4 h-4"></i><span class="text-gray-400">siriusoddjobs@gmail.com</span></li>
+            <li class="flex items-start space-x-2"><i data-feather="map-pin" class="text-gray-400 mt-1 w-4 h-4"></i><span class="text-gray-400">Port Harcourt, Nigeria</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0">© 2022 Sirius Jobs. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="privacypolicy.html" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
+          <a href="terms.html" class="text-gray-400 hover:text-white text-sm">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+    feather.replace();
+  </script>
+
+</body>
+</html>
