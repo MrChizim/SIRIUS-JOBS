@@ -78,45 +78,150 @@
     <div class="container mx-auto px-4 text-center">
       <h1 class="text-3xl md:text-5xl font-bold mb-3">Find Trusted, Verified Artisans</h1>
       <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">Browse top-rated plumbers, electricians, carpenters and more — filtered by skill and location. Only verified artisans are shown.</p>
-      <div class="max-w-3xl mx-auto">
-        <div class="bg-white rounded-lg p-4 shadow-md flex flex-col md:flex-row gap-3 justify-center items-center">
-  <!-- Search -->
-  <input id="searchInput" 
-         type="search" 
-         placeholder="Search artisan" 
-         class="border rounded-md py-2 px-3 w-full md:w-48 focus:outline-none" />
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white/95 text-gray-700 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-2xl">
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <!-- Search -->
+            <input id="searchInput" 
+                   type="search" 
+                   placeholder="Search artisan" 
+                   class="w-full rounded-2xl bg-gray-50/80 border border-transparent py-3 px-4 text-gray-700 placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/30 transition" />
 
-  <!-- Category -->
-  <select id="categoryFilter" class="border rounded-md py-2 px-3 w-full md:w-44">
-    <option value="">All Categories</option>
-  </select>
+            <!-- Category -->
+            <select id="categoryFilter" class="w-full rounded-2xl bg-gray-50/80 border border-transparent py-3 px-4 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+              <option value="">All Categories</option>
+            </select>
 
-  <!-- Services -->
-  <select id="skillFilter" class="border rounded-md py-2 px-3 w-full md:w-44">
-    <option value="">All Services</option>
-  </select>
+            <!-- Services -->
+            <select id="skillFilter" class="w-full rounded-2xl bg-gray-50/80 border border-transparent py-3 px-4 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+              <option value="">All Services</option>
+            </select>
 
-  <!-- Location -->
-  <select id="locationFilter" class="border rounded-md py-2 px-3 w-full md:w-44">
-    <option value="">All Locations</option>
-  </select>
+            <!-- Location -->
+            <select id="locationFilter" class="w-full rounded-2xl bg-gray-50/80 border border-transparent py-3 px-4 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+              <option value="">All Locations</option>
+            </select>
 
-  <!-- Sort -->
-  <select id="sortBy" class="border rounded-md py-2 px-3 w-full md:w-32">
-    <option value="relevance">Sort</option>
-    <option value="rating_desc">Highest Rated</option>
-    <option value="reviews_desc">Most Reviews</option>
-  </select>
-</div>
+            <!-- Sort -->
+            <select id="sortBy" class="w-full rounded-2xl bg-gray-50/80 border border-transparent py-3 px-4 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+              <option value="relevance">Sort</option>
+              <option value="rating_desc">Highest Rated</option>
+              <option value="reviews_desc">Most Reviews</option>
+            </select>
+          </div>
+        </div>
 
+        <p class="mt-4 text-sm text-gray-200">Can’t find the specialist you need? <a href="contact.html" class="text-white underline hover:text-primary/90">Contact us</a> and we’ll match you manually.</p>
       </div>
     </div>
   </header>
 
+  <!-- PA Application Modal -->
+  <div id="paApplicationModal" class="fixed inset-0 hidden items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-6 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl relative overflow-hidden">
+      <button id="closePaModal" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow text-gray-600 hover:text-gray-900 transition">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+      <div class="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+        <div class="p-6 md:p-8">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">Request a day PA</h3>
+          <p class="text-sm text-gray-600 mb-4">Tell us what you need and we’ll match you within hours.</p>
+          <form id="paRequestForm" class="space-y-4">
+            <div>
+              <label for="paRequestName" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Full Name</label>
+              <input id="paRequestName" type="text" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+            </div>
+            <div>
+              <label for="paRequestPhone" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Phone / WhatsApp</label>
+              <input id="paRequestPhone" type="tel" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+            </div>
+            <div>
+              <label for="paRequestLocation" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Location</label>
+              <input id="paRequestLocation" type="text" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+            </div>
+            <div>
+              <label for="paRequestDate" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Date Needed</label>
+              <input id="paRequestDate" type="date" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+            </div>
+            <div>
+              <label for="paRequestTasks" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Key Tasks</label>
+              <textarea id="paRequestTasks" rows="3" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition" placeholder="Errands, schedule coordination, event support..."></textarea>
+            </div>
+            <button type="submit" class="w-full bg-primary text-white font-medium py-2.5 rounded-lg hover:bg-primary/90 transition">Submit Request</button>
+          </form>
+        </div>
+        <div class="p-6 md:p-8">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">Apply to be a day PA</h3>
+          <p class="text-sm text-gray-600 mb-4">Share your details and availability to join our PA roster.</p>
+          <form id="paApplyForm" class="space-y-4">
+            <div>
+              <label for="paApplyName" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Full Name</label>
+              <input id="paApplyName" type="text" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+            </div>
+            <div>
+              <label for="paApplyPhone" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Phone / WhatsApp</label>
+              <input id="paApplyPhone" type="tel" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+            </div>
+            <div>
+              <label for="paApplyLocation" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">City / State</label>
+              <input id="paApplyLocation" type="text" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+            </div>
+            <div>
+              <label for="paApplyExperience" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Experience Summary</label>
+              <textarea id="paApplyExperience" rows="3" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition" placeholder="Tell us about previous PA or admin roles..."></textarea>
+            </div>
+            <div>
+              <label for="paApplyAvailability" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Availability</label>
+              <select id="paApplyAvailability" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+                <option value="">Select an option</option>
+                <option value="Weekdays">Weekdays</option>
+                <option value="Weekends">Weekends</option>
+                <option value="Flexible">Flexible / on call</option>
+              </select>
+            </div>
+            <button type="submit" class="w-full bg-primary text-white font-medium py-2.5 rounded-lg hover:bg-primary/90 transition">Send Application</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ARTISANS GRID -->
   <main class="py-12">
     <div class="container mx-auto px-4">
-      <div id="resultsInfo" class="text-sm text-gray-600 mb-4"></div>
+      <div id="resultsInfo" class="text-sm text-gray-600 mb-4 flex items-center justify-between flex-wrap gap-3">
+        <span id="resultsCountText">&nbsp;</span>
+        <span class="text-xs text-gray-500">👩‍⚕️ Want your medical or legal practice listed? <a href="consultations.html#join" class="text-primary hover:underline">Apply via our partner program</a>.</span>
+      </div>
+      <div class="bg-primary/5 border border-primary/10 rounded-2xl p-6 md:p-8 mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Need Something Extra Fast?</h2>
+        <div class="grid gap-4 md:grid-cols-3">
+          <div class="bg-white border border-gray-100 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800 mb-2">Hire a Personal Assistant for a Day</h3>
+              <p class="text-sm text-gray-600">Get a dependable PA to handle errands, scheduling and event support for just the hours you need.</p>
+            </div>
+            <div class="mt-4 flex flex-col items-center gap-2">
+              <button id="paModalTrigger" type="button" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-white py-2.5 px-4 text-sm font-medium hover:bg-primary/90 transition">Request or Apply</button>
+              <p class="text-xs text-gray-500 text-center">Prefer to work as a day PA? Apply inside the form.</p>
+            </div>
+          </div>
+          <div class="bg-white border border-gray-100 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800 mb-2">Consult a Doctor (Affordable)</h3>
+              <p class="text-sm text-gray-600">Speak with licensed doctors for budget-friendly telehealth or clinic visits tailored to your schedule.</p>
+            </div>
+            <a href="consultations.html#doctors" class="mt-4 inline-flex items-center justify-center gap-2 rounded-lg border border-primary text-primary py-2.5 text-sm font-medium hover:bg-primary hover:text-white transition">Meet Doctors</a>
+          </div>
+          <div class="bg-white border border-gray-100 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800 mb-2">Consult a Lawyer (Affordable)</h3>
+              <p class="text-sm text-gray-600">Trusted legal guidance for contracts, property, employment issues and more without breaking the bank.</p>
+            </div>
+            <a href="consultations.html#lawyers" class="mt-4 inline-flex items-center justify-center gap-2 rounded-lg border border-primary text-primary py-2.5 text-sm font-medium hover:bg-primary hover:text-white transition">Meet Lawyers</a>
+          </div>
+        </div>
+      </div>
 
       <div id="artisanGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- JS will render artisan cards here -->
@@ -223,16 +328,33 @@
     // Replace artisan photos in /images/artisans/ with your real photos
     // Example images included as placeholders
     const artisans = [
-      { id:1, name:'Ifeanyi Okoro', skill:'Electrician', location:'Port Harcourt', rating:4.8, reviews:45, photo:'/images/artisans/elec1.jpg', verified:true, subscriptionActive:true, bio:'10 years experience in domestic and industrial electrical systems.' },
-      { id:2, name:'Ngozi Amadi', skill:'Plumber', location:'Port Harcourt', rating:4.6, reviews:28, photo:'/images/artisans/plumb1.jpg', verified:true, subscriptionActive:true, bio:'Specialist in piping, bathrooms and leak repairs.' },
-      { id:3, name:'Chinedu Eke', skill:'Carpenter', location:'Rivers', rating:4.4, reviews:16, photo:'/images/artisans/carp1.jpg', verified:false, subscriptionActive:true, bio:'Custom furniture and cabinetry.' },
-      { id:4, name:'Aisha Bello', skill:'Tiler', location:'Port Harcourt', rating:4.9, reviews:62, photo:'/images/artisans/tile1.jpg', verified:true, subscriptionActive:true, bio:'Perfect finishes for bathrooms and kitchens.' },
-      { id:5, name:'Emeka Uche', skill:'Painter', location:'Rivers', rating:4.3, reviews:9, photo:'/images/artisans/paint1.jpg', verified:true, subscriptionActive:false, bio:'Interior and exterior painting with lasting finishes.' },
+      { id:101, name:'Samuel Ade', skill:'Mechanic', category:'Skilled Trades', location:'Abeokuta, Ogun', rating:4.7, reviews:38, photo:'/images/users/sample_worker.jpg', verified:true, subscriptionActive:true, bio:'Diagnostic and engine specialist focused on reliable maintenance for fleets and personal vehicles.' },
+      { id:1, name:'Ifeanyi Okoro', skill:'Electrician', category:'Skilled Trades', location:'Port Harcourt', rating:4.8, reviews:45, photo:'/images/artisans/elec1.jpg', verified:true, subscriptionActive:true, bio:'10 years experience in domestic and industrial electrical systems.' },
+      { id:2, name:'Ngozi Amadi', skill:'Plumber', category:'Skilled Trades', location:'Port Harcourt', rating:4.6, reviews:28, photo:'/images/artisans/plumb1.jpg', verified:true, subscriptionActive:true, bio:'Specialist in piping, bathrooms and leak repairs.' },
+      { id:3, name:'Chinedu Eke', skill:'Carpenter', category:'Skilled Trades', location:'Rivers', rating:4.4, reviews:16, photo:'/images/artisans/carp1.jpg', verified:false, subscriptionActive:true, bio:'Custom furniture and cabinetry.' },
+      { id:4, name:'Aisha Bello', skill:'Tiler', category:'Skilled Trades', location:'Port Harcourt', rating:4.9, reviews:62, photo:'/images/artisans/tile1.jpg', verified:true, subscriptionActive:true, bio:'Perfect finishes for bathrooms and kitchens.' },
+      { id:5, name:'Emeka Uche', skill:'Painter', category:'Home Services', location:'Rivers', rating:4.3, reviews:9, photo:'/images/artisans/paint1.jpg', verified:true, subscriptionActive:false, bio:'Interior and exterior painting with lasting finishes.' },
+      { id:102, name:'Ireti Ola', skill:'Personal Assistant (Day Hire)', category:'Support Staff', location:'Lagos – Ikeja', rating:4.9, reviews:52, photo:'https://via.placeholder.com/320x320?text=PA', verified:true, subscriptionActive:true, bio:'Concierge-style personal assistant available for on-site errands, event coordination and day-of support.' },
+      { id:103, name:'Saidu Gana', skill:'Solar Panel Technician', category:'Professional Services', location:'Kano – Kano', rating:4.5, reviews:22, photo:'https://via.placeholder.com/320x320?text=Solar', verified:true, subscriptionActive:true, bio:'Certified technician for solar installation, maintenance and energy audits for homes and SMEs.' },
+      { id:201, name:'Dr. Chukwuemeka Obi', skill:'Doctor Consultation (Affordable)', category:'Healthcare', location:'Anambra – Awka', rating:4.8, reviews:64, photo:'https://via.placeholder.com/320x320?text=Doctor', verified:true, subscriptionActive:true, bio:'Family physician providing affordable telehealth and in-clinic reviews for individuals and families.' },
+      { id:202, name:'Dr. Zainab Musa', skill:'Doctor Consultation (Affordable)', category:'Healthcare', location:'Kaduna – Kaduna', rating:4.7, reviews:51, photo:'https://via.placeholder.com/320x320?text=Doctor', verified:true, subscriptionActive:true, bio:'General practitioner with focus on preventive care, maternal health and quick diagnostics.' },
+      { id:301, name:'Barr. Halima Yusuf', skill:'Lawyer Consultation (Affordable)', category:'Legal', location:'Federal Capital Territory – Abuja', rating:4.7, reviews:41, photo:'https://via.placeholder.com/320x320?text=Lawyer', verified:true, subscriptionActive:true, bio:'Legal practitioner offering affordable sessions on property, contracts and employment matters.' },
+      { id:302, name:'Barr. Emeka Nwaneri', skill:'Lawyer Consultation (Affordable)', category:'Legal', location:'Lagos – Ikeja', rating:4.6, reviews:33, photo:'https://via.placeholder.com/320x320?text=Lawyer', verified:true, subscriptionActive:true, bio:'Commercial lawyer helping SMEs with agreements, compliance and dispute resolution.' },
+      { id:401, name:'Chika Eze', skill:'Event Planner', category:'Events & Lifestyle', location:'Enugu – Enugu', rating:4.8, reviews:27, photo:'https://via.placeholder.com/320x320?text=Events', verified:true, subscriptionActive:true, bio:'Creative event planner managing intimate ceremonies, corporate functions and brand activations nationwide.' }
       // add more sample artisans as needed
     ];
 
     // Populate skill and location filters from data
-const skills = Array.from(new Set(artisans.map(a => a.skill))).sort();
+const extraSkills = [
+  'Home Cleaning Specialist',
+  'Interior Designer',
+  'IT Support Specialist',
+  'Home Tutor',
+  'Personal Assistant (Day Hire)',
+  'Doctor Consultation (Affordable)',
+  'Lawyer Consultation (Affordable)'
+];
+const skills = Array.from(new Set([...artisans.map(a => a.skill), ...extraSkills])).sort();
 
 // List of all Nigerian states and their capitals
 const locations = [
@@ -275,8 +397,23 @@ const locations = [
   "Federal Capital Territory – Abuja"
 ];
 
+const categorySelect = document.getElementById('categoryFilter');
 const skillSelect = document.getElementById('skillFilter');
 const locSelect = document.getElementById('locationFilter');
+const paModal = document.getElementById('paApplicationModal');
+const openPaModalBtn = document.getElementById('paModalTrigger');
+const closePaModalBtn = document.getElementById('closePaModal');
+const paRequestForm = document.getElementById('paRequestForm');
+const paApplyForm = document.getElementById('paApplyForm');
+
+const categories = Array.from(new Set(artisans.map(a => a.category))).filter(Boolean).sort();
+
+categories.forEach(c => {
+  const opt = document.createElement('option');
+  opt.value = c;
+  opt.textContent = c;
+  categorySelect.appendChild(opt);
+});
 
 skills.forEach(s => {
   const opt = document.createElement('option');
@@ -292,12 +429,56 @@ locations.forEach(l => {
   locSelect.appendChild(opt);
 });
 
+function openPaModal(){
+  paModal.classList.remove('hidden');
+  paModal.classList.add('flex');
+  document.body.classList.add('overflow-hidden');
+}
+
+function closePaModal(){
+  paModal.classList.remove('flex');
+  paModal.classList.add('hidden');
+  document.body.classList.remove('overflow-hidden');
+}
+
+if(openPaModalBtn){
+  openPaModalBtn.addEventListener('click', openPaModal);
+}
+if(closePaModalBtn){
+  closePaModalBtn.addEventListener('click', closePaModal);
+}
+if(paModal){
+  paModal.addEventListener('click', (event) => {
+    if(event.target === paModal){
+      closePaModal();
+    }
+  });
+}
+
+if(paRequestForm){
+  paRequestForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    paRequestForm.reset();
+    closePaModal();
+    alert('✅ Thank you! Our concierge team will reach out shortly with a day PA match.');
+  });
+}
+if(paApplyForm){
+  paApplyForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    paApplyForm.reset();
+    closePaModal();
+    alert('🎉 Application received! We will review and contact you for upcoming PA assignments.');
+  });
+}
+
 
     // Rendering logic: show only verified && subscriptionActive
     function renderArtisans(filter = {}) {
       const grid = document.getElementById('artisanGrid');
       grid.innerHTML = '';
       const search = (filter.search||'').toLowerCase();
+      const category = filter.category || '';
       const skill = filter.skill || '';
       const location = filter.location || '';
       const sort = filter.sort || 'relevance';
@@ -307,13 +488,14 @@ locations.forEach(l => {
       if (search) {
         list = list.filter(a => (a.name + ' ' + a.skill).toLowerCase().includes(search));
       }
+      if (category) list = list.filter(a => a.category === category);
       if (skill) list = list.filter(a => a.skill === skill);
       if (location) list = list.filter(a => a.location === location);
 
       if (sort === 'rating_desc') list.sort((x,y)=> y.rating - x.rating);
       if (sort === 'reviews_desc') list.sort((x,y)=> y.reviews - x.reviews);
 
-      document.getElementById('resultsInfo').textContent = `${list.length} artisan(s) found`;
+      document.getElementById('resultsCountText').textContent = `${list.length} artisan(s) found`;
 
       if (list.length === 0) {
         grid.innerHTML = `<div class="col-span-full text-center text-gray-500 p-8">No verified artisans found for your filters.</div>`;
@@ -321,6 +503,12 @@ locations.forEach(l => {
       }
 
       list.forEach(a => {
+        const consultationTag = (a.category === 'Healthcare' || a.category === 'Legal')
+          ? '<span class="text-xs font-medium text-primary/80">Consultation from ₦3,000</span>'
+          : '';
+        const partnershipTag = (a.category === 'Healthcare' || a.category === 'Legal')
+          ? '<span class="text-[11px] text-gray-400">Partner: ₦3,000/month listing</span>'
+          : '';
         const card = document.createElement('div');
         card.className = 'bg-white rounded-lg shadow p-4 flex flex-col transition-transform hover:-translate-y-1';
         card.innerHTML = `
@@ -343,10 +531,12 @@ locations.forEach(l => {
                   </div>
                   <span class="text-sm text-gray-500">(${a.reviews})</span>
                 </div>
-                <div>
+                <div class="flex flex-col items-end gap-1">
+                  ${consultationTag}
                   <button data-id="${a.id}" class="open-profile bg-primary text-white text-sm py-1 px-3 rounded">View</button>
                 </div>
               </div>
+              ${partnershipTag}
             </div>
           </div>
         `;
@@ -431,6 +621,7 @@ locations.forEach(l => {
     function applyFilters() {
       renderArtisans({
         search: searchInput.value,
+        category: categorySelect.value,
         skill: skillSelect.value,
         location: locSelect.value,
         sort: sortBy.value
@@ -438,9 +629,15 @@ locations.forEach(l => {
     }
 
     searchInput.addEventListener('input', () => applyFilters());
+    categorySelect.addEventListener('change', () => applyFilters());
     skillSelect.addEventListener('change', () => applyFilters());
     locSelect.addEventListener('change', () => applyFilters());
     sortBy.addEventListener('change', () => applyFilters());
+    document.addEventListener('keydown', (event) => {
+      if(event.key === 'Escape' && paModal && paModal.classList.contains('flex')){
+        closePaModal();
+      }
+    });
 
     // Initial render
     renderArtisans();
@@ -452,4 +649,3 @@ locations.forEach(l => {
   </script>
 </body>
 </html>
-

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Affordable Consultations - Sirius Jobs</title>
+  <meta name="description" content="Book affordable consultations with trusted doctors and lawyers across Nigeria." />
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { primary:'#0056b3', secondary:'#808080' } } } }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- NAV -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+          <i data-feather="star" class="text-white"></i>
+        </div>
+        <span class="text-xl font-bold text-primary">Sirius Jobs</span>
+      </div>
+      <div class="hidden md:flex space-x-8 items-center">
+        <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
+        <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
+        <a href="consultations.html" class="text-primary font-semibold">Consultations</a>
+        <a href="contact.html" class="text-gray-600 hover:text-primary transition-all">Contact</a>
+      </div>
+      <div class="md:hidden">
+        <button id="menu-btn" class="text-gray-600 focus:outline-none">
+          <i data-feather="menu"></i>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+      <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
+      <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
+      <a href="consultations.html" class="block py-2 text-primary font-medium">Consultations</a>
+      <a href="contact.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="bg-primary text-white py-16 md:py-20">
+    <div class="container mx-auto px-4 text-center md:text-left md:flex md:items-center md:justify-between">
+      <div class="max-w-2xl">
+        <h1 class="text-3xl md:text-4xl font-semibold mb-4">Affordable Consultations With Trusted Professionals</h1>
+        <p class="text-base md:text-lg text-primary/10 md:text-white/90">Book quick sessions with licensed doctors and experienced lawyers across Nigeria. Pay only for the time you use, with transparent rates starting from ₦3,500.</p>
+        <div class="flex flex-col sm:flex-row gap-3 mt-6">
+          <a href="#doctors" class="inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-5 py-3 rounded-lg hover:bg-primary/10 transition">
+            <i data-feather="heart"></i>
+            Consult Doctors
+          </a>
+          <a href="#lawyers" class="inline-flex items-center justify-center gap-2 border border-white text-white font-semibold px-5 py-3 rounded-lg hover:bg-white hover:text-primary transition">
+            <i data-feather="briefcase"></i>
+            Consult Lawyers
+          </a>
+        </div>
+      </div>
+    
+    </div>
+  </header>
+
+  <main class="py-16">
+    <div class="container mx-auto px-4 space-y-16">
+      <!-- DOCTORS -->
+      <section id="doctors">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-900">Doctors Available Today</h2>
+            <p class="text-gray-600 mt-1">General practice, telehealth and specialist referrals with flexible schedules.</p>
+          </div>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <article class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+            <div class="flex items-center gap-4">
+              <img src="https://via.placeholder.com/96x96?text=Dr" alt="Dr. Adaobi Nwankwo" class="w-20 h-20 rounded-xl object-cover">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900">Dr. Adaobi Nwankwo</h3>
+                <p class="text-sm text-gray-500">Family Medicine • Lagos – Ikeja</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 mt-4">15 years experience. Offers home visits, telehealth and chronic illness management plans.</p>
+            <ul class="mt-4 space-y-2 text-sm text-gray-600">
+              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Hypertension &amp; diabetes reviews</li>
+              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Women’s health &amp; pediatrics</li>
+            </ul>
+            <div class="mt-5 flex items-center justify-between">
+              <a href="tel:+2348032104455" class="inline-flex items-center gap-2 text-primary font-medium hover:text-primary/80 transition">
+                <i data-feather="phone" class="w-4 h-4"></i>
+                0803 210 4455
+              </a>
+              <span class="text-sm text-gray-500">From ₦3,000 / session</span>
+            </div>
+          </article>
+          <article class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+            <div class="flex items-center gap-4">
+              <img src="https://via.placeholder.com/96x96?text=Dr" alt="Dr. Ibrahim Sani" class="w-20 h-20 rounded-xl object-cover">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900">Dr. Ibrahim Sani</h3>
+                <p class="text-sm text-gray-500">General Practitioner • Kano – Kano</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 mt-4">Telehealth-first doctor specialized in quick checkups, lab reviews and remote monitoring for families.</p>
+            <ul class="mt-4 space-y-2 text-sm text-gray-600">
+              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Telemedicine follow-ups</li>
+              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Prescription renewals</li>
+            </ul>
+            <div class="mt-5 flex items-center justify-between">
+              <a href="tel:+2347089987766" class="inline-flex items-center gap-2 text-primary font-medium hover:text-primary/80 transition">
+                <i data-feather="phone" class="w-4 h-4"></i>
+                0708 998 7766
+              </a>
+              <span class="text-sm text-gray-500">From ₦3,000 / session</span>
+            </div>
+          </article>
+          <article class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+            <div class="flex items-center gap-4">
+              <img src="https://via.placeholder.com/96x96?text=Dr" alt="Dr. Kemi Ajayi" class="w-20 h-20 rounded-xl object-cover">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900">Dr. Kemi Ajayi</h3>
+                <p class="text-sm text-gray-500">Telehealth • Oyo – Ibadan</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 mt-4">Tech-enabled doctor offering same-day video consultations and lab interpretation for students and remote workers.</p>
+            <ul class="mt-4 space-y-2 text-sm text-gray-600">
+              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Affordable second opinions</li>
+              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Nutrition &amp; wellness plans</li>
+            </ul>
+            <div class="mt-5 flex items-center justify-between">
+              <a href="tel:+2349025556677" class="inline-flex items-center gap-2 text-primary font-medium hover:text-primary/80 transition">
+                <i data-feather="phone" class="w-4 h-4"></i>
+                0902 555 6677
+              </a>
+              <span class="text-sm text-gray-500">From ₦3,000 / session</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- LAWYERS -->
+      <section id="lawyers">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-900">Lawyers Ready to Advise</h2>
+            <p class="text-gray-600 mt-1">Affordable legal counsel for business, property, employment and family matters.</p>
+          </div>
+    
+        </div>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <article class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+            <div class="flex items-center gap-4">
+              <img src="https://via.placeholder.com/96x96?text=Law" alt="Barr. Ifeoma Nwachukwu" class="w-20 h-20 rounded-xl object-cover">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900">Barr. Ifeoma Nwachukwu</h3>
+                <p class="text-sm text-gray-500">Corporate &amp; Commercial • Lagos – Ikeja</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 mt-4">Helps SMEs with contracts, IP registration and debt recovery. Provides clear roadmaps and affordable retainers.</p>
+            <ul class="mt-4 space-y-2 text-sm text-gray-600">
+              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>SME contract reviews</li>
+              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Company compliance packs</li>
+            </ul>
+            <div class="mt-5 flex items-center justify-between">
+              <a href="tel:+2348038899112" class="inline-flex items-center gap-2 text-primary font-medium hover:text-primary/80 transition">
+                <i data-feather="phone" class="w-4 h-4"></i>
+                0803 889 9112
+              </a>
+              <span class="text-sm text-gray-500">From ₦3,000 / session</span>
+            </div>
+          </article>
+          <article class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+            <div class="flex items-center gap-4">
+              <img src="https://via.placeholder.com/96x96?text=Law" alt="Barr. Farouk Adamu" class="w-20 h-20 rounded-xl object-cover">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900">Barr. Farouk Adamu</h3>
+                <p class="text-sm text-gray-500">Property &amp; Tenancy • Kano – Kano</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 mt-4">Specialist in property transactions, tenancy disputes and land documentation across northern Nigeria.</p>
+            <ul class="mt-4 space-y-2 text-sm text-gray-600">
+              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Property verification &amp; searches</li>
+              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Tenancy agreement drafting</li>
+            </ul>
+            <div class="mt-5 flex items-center justify-between">
+              <a href="tel:+2347065543210" class="inline-flex items-center gap-2 text-primary font-medium hover:text-primary/80 transition">
+                <i data-feather="phone" class="w-4 h-4"></i>
+                0706 554 3210
+              </a>
+              <span class="text-sm text-gray-500">From ₦3,000 / session</span>
+            </div>
+          </article>
+          <article class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+            <div class="flex items-center gap-4">
+              <img src="https://via.placeholder.com/96x96?text=Law" alt="Barr. Lydia Etuk" class="w-20 h-20 rounded-xl object-cover">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900">Barr. Lydia Etuk</h3>
+                <p class="text-sm text-gray-500">Employment &amp; Family • Akwa Ibom – Uyo</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 mt-4">Offers calm guidance on workplace disputes, severance packages and family agreements with focus on mediation.</p>
+            <ul class="mt-4 space-y-2 text-sm text-gray-600">
+              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Employment contract audits</li>
+              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Family settlement agreements</li>
+            </ul>
+            <div class="mt-5 flex items-center justify-between">
+              <a href="tel:+2348112200345" class="inline-flex items-center gap-2 text-primary font-medium hover:text-primary/80 transition">
+                <i data-feather="phone" class="w-4 h-4"></i>
+                0811 220 0345
+              </a>
+              <span class="text-sm text-gray-500">From ₦3,000 / session</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section class="bg-white border border-gray-100 rounded-2xl p-6 md:p-8 shadow-sm">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">How It Works</h2>
+        <div class="grid gap-6 md:grid-cols-3">
+          <div>
+            <h3 class="font-semibold text-primary mb-2">1. Choose a Professional</h3>
+            <p class="text-sm text-gray-600">Browse the lists above or send us a quick WhatsApp message with your request.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-primary mb-2">2. Confirm a Cheap Session</h3>
+            <p class="text-sm text-gray-600">We share transparent pricing upfront so you only pay for what you need.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-primary mb-2">3. Get Support</h3>
+            <p class="text-sm text-gray-600">Meet virtually or in-person and receive follow-up summaries after every consultation.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- JOIN NETWORK -->
+      <section id="join" class="bg-primary/5 border border-primary/10 rounded-2xl p-6 md:p-8">
+        <div class="md:flex md:items-center md:justify-between gap-6">
+          <div class="md:w-2/3">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-2">Are you a doctor or lawyer?</h2>
+            <p class="text-sm text-gray-600">Apply to join our affordable consultation network. We verify every professional and charge a flat ₦3,000 monthly partnership fee that unlocks featured visibility and inbound leads.</p>
+          </div>
+          <div class="md:w-1/3 mt-4 md:mt-0 space-y-3">
+            <a href="https://forms.gle/example-doctor" target="_blank" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white px-4 py-2.5 rounded-lg hover:bg-primary/90 transition text-sm font-medium">Apply as Doctor</a>
+            <a href="https://forms.gle/example-lawyer" target="_blank" class="w-full inline-flex items-center justify-center gap-2 border border-primary text-primary px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition text-sm font-medium">Apply as Lawyer</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+              <i data-feather="star" class="text-white w-4 h-4"></i>
+            </div>
+            <span class="text-lg font-bold">Sirius Jobs</span>
+          </div>
+          <p class="text-gray-400 mb-4">Connecting talent, trusted professionals and fast support across Nigeria.</p>
+          <div class="flex space-x-4">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="text-gray-400 hover:text-white transition-all"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" class="text-gray-400 hover:text-white transition-all"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" class="text-gray-400 hover:text-white transition-all"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="index.html" class="hover:text-white transition-all">Home</a></li>
+            <li><a href="jobs.html" class="hover:text-white transition-all">Jobs</a></li>
+            <li><a href="findworker.html" class="hover:text-white transition-all">Find Workers</a></li>
+            <li><a href="consultations.html" class="hover:text-white transition-all">Consultations</a></li>
+            <li><a href="contact.html" class="hover:text-white transition-all">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Support</h4>
+          <ul class="space-y-2 text-gray-400">
+            <li><span>Email: hello@siriusjobsng.com</span></li>
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Hours: 8am – 8pm (Mon-Sat)</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Head Office</h4>
+          <ul class="space-y-2 text-gray-400">
+            <li><span>Port Harcourt, Rivers State</span></li>
+            <li><span>Nigeria</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0">© 2025 Sirius Jobs. All rights reserved.</p>
+        <div class="flex space-x-6 text-gray-400">
+          <a href="privacypolicy.html" class="hover:text-white transition-all text-sm">Privacy Policy</a>
+          <a href="terms.html" class="hover:text-white transition-all text-sm">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    feather.replace();
+    document.getElementById('menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+  </script>
+</body>
+</html>

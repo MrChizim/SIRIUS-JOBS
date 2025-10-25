@@ -54,6 +54,23 @@
 
   <!-- MAIN -->
   <main class="container mx-auto px-4 py-10">
+    <!-- PROFILE COMPLETION -->
+    <section class="bg-white rounded-lg shadow p-6 mb-10">
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+        <div class="flex-1">
+          <h2 class="text-lg font-semibold mb-3">Company Profile Completion</h2>
+          <div class="w-full bg-gray-200 h-3 rounded overflow-hidden">
+            <div id="employerProfileBar" class="h-3 bg-primary" style="width:0%"></div>
+          </div>
+          <p id="employerProfilePct" class="text-xs text-gray-600 mt-2">0% complete</p>
+        </div>
+        <div class="md:w-1/2 w-full">
+          <h3 class="font-medium mb-2">Next Steps</h3>
+          <ul id="employerChecklist" class="text-sm text-gray-700 space-y-1"></ul>
+        </div>
+      </div>
+    </section>
+
     <!-- STATS -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
       <div class="bg-white rounded-lg shadow p-6 text-center"><p class="text-sm text-gray-500">Jobs Posted</p><h3 class="text-2xl font-bold text-primary" id="jobsPosted">0</h3></div>
@@ -82,22 +99,72 @@
       <!-- RIGHT -->
       <aside class="space-y-6">
         <div class="bg-white rounded-lg shadow p-6 text-center">
-          <img src="/images/logo.png" onerror="this.src='https://via.placeholder.com/100x100?text=Logo'" class="w-16 h-16 rounded-full mx-auto mb-3">
-          <h3 class="font-semibold text-lg">Your Company</h3>
-          <p class="text-sm text-gray-500 mb-3">Port Harcourt, Nigeria</p>
+          <img id="employerAvatar" src="/images/logo.png" alt="Employer logo" onerror="this.src='https://via.placeholder.com/120x120?text=Logo'" class="w-20 h-20 rounded-full mx-auto mb-3 object-cover border border-primary/20">
+          <h3 id="employerName" class="font-semibold text-lg">Your Company</h3>
+          <p id="employerLocation" class="text-sm text-gray-500 mb-3">Port Harcourt, Nigeria</p>
+          <p id="employerVerifyStatus" class="text-xs font-medium text-amber-600 mb-3">ID verification pending</p>
+          <button id="verifyEmployerBtn" class="w-full border border-primary text-primary py-2 rounded hover:bg-primary hover:text-white transition-all mb-3">Complete Company ID Verification</button>
           <a href="edit-company.html" class="block w-full border border-primary text-primary py-2 rounded hover:bg-primary hover:text-white transition-all">Edit Profile</a>
         </div>
 
         <!-- PLAN & LIMITS -->
         <div class="bg-white rounded-lg shadow p-6">
           <h3 class="font-semibold mb-2">Subscription & Limits</h3>
-          <p class="text-sm text-gray-600">Free job posts remaining: <span id="freeLeft" class="font-bold text-primary">5</span></p>
-          <p class="text-xs text-gray-500 mt-1">After free limit: ₦1,000/month to continue posting/hiring</p>
+          <p class="text-sm text-gray-600">Free job posting left: <span id="freePostsLeft" class="font-bold text-primary">1</span></p>
+          <p class="text-sm text-gray-600 mt-1">Free hire left: <span id="freeHiresLeft" class="font-bold text-primary">1</span></p>
+          <p id="planStatus" class="text-xs text-gray-500 mt-2">Monthly plan inactive — unlock unlimited posts and hires for ₦1,000/month.</p>
           <button id="upgradeBtn" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mt-3">Upgrade Plan</button>
         </div>
       </aside>
     </div>
   </main>
+
+  <!-- Employer Subscription Modal -->
+  <div id="employerSubscriptionModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full relative overflow-hidden max-h-[90vh] overflow-y-auto">
+      <button id="closeEmployerModalBtn" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-lg text-gray-600 hover:text-gray-900 hover:bg-white transition">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+      <div class="grid md:grid-cols-2">
+        <div class="bg-primary/10 p-8 flex flex-col justify-center">
+          <h2 class="text-2xl font-semibold text-primary mb-2">Keep hiring after your free 1</h2>
+          <p class="text-sm text-gray-600 mb-6">Unlock continued access to skilled workers or let our team find the perfect match for your request.</p>
+          <div class="flex items-center space-x-3 text-sm text-gray-500 bg-white/70 border border-primary/10 rounded-lg px-4 py-3">
+            <i data-feather="briefcase" class="text-primary w-4 h-4"></i>
+            <span>Flexible add-ons billed securely via Paystack (coming soon)</span>
+          </div>
+        </div>
+        <div class="p-8 space-y-6">
+          <div class="border border-primary/30 rounded-xl p-6 hover:border-primary transition-colors">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-lg font-semibold text-primary">Monthly Unlimited</h3>
+              <span class="text-xs uppercase tracking-wide text-primary/70 bg-primary/10 px-2 py-1 rounded-full">After free limit</span>
+            </div>
+            <p class="text-3xl font-bold text-gray-900">₦1,000<span class="text-base font-medium text-gray-500"> / month</span></p>
+            <ul class="mt-4 space-y-2 text-sm text-gray-600">
+              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Unlimited job postings for 30 days</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Unlimited hires with contract tracking</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Priority placement in worker search results</span></li>
+            </ul>
+            <button data-plan="continue-hiring" class="employerSubscribeBtn mt-6 w-full bg-primary text-white py-2.5 rounded-lg hover:bg-primary/90 transition-colors">Get Monthly Access</button>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-6 hover:border-primary transition-colors">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-lg font-semibold text-gray-900">Concierge Recommendation</h3>
+              <span class="text-xs uppercase tracking-wide text-primary bg-primary/10 px-2 py-1 rounded-full flex items-center gap-1"><i data-feather="award" class="w-3.5 h-3.5"></i>Recommended</span>
+            </div>
+            <p class="text-3xl font-bold text-gray-900">₦3,000<span class="text-base font-medium text-gray-500"> / request</span></p>
+            <ul class="mt-4 space-y-2 text-sm text-gray-600">
+              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>We personally vet and recommend the best fit for your role</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Priority visibility for your openings in worker searches</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Concierge follow-up until hire is confirmed</span></li>
+            </ul>
+            <button data-plan="concierge" class="employerSubscribeBtn mt-6 w-full border border-primary text-primary py-2.5 rounded-lg hover:bg-primary hover:text-white transition-colors">Request Concierge Match</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- FOOTER (identical) -->
   <footer class="bg-gray-900 text-white py-12">
@@ -173,7 +240,28 @@
     });
 
     // sample data
-    let freePostsLeft = 5;
+    const employerProfile = {
+      name: 'Sirius Construction',
+      location: 'Port Harcourt, Nigeria',
+      logoUrl: '/images/logo.png',
+      verified: false
+    };
+
+    const employerWeights = { name:25, location:25, logo:20, verified:30 };
+    function computeEmployerCompletion(profile){
+      let score = 0;
+      const missing = [];
+      if(profile.name) score += employerWeights.name; else missing.push('Add company name (+25%)');
+      if(profile.location) score += employerWeights.location; else missing.push('Add company location (+25%)');
+      if(profile.logoUrl) score += employerWeights.logo; else missing.push('Upload company logo (+20%)');
+      if(profile.verified) score += employerWeights.verified; else missing.push('Complete company ID verification (+30%)');
+      return { score, missing };
+    }
+
+    let freePostsLeft = 1;
+    let freeHiresLeft = 1;
+    let monthlyPlanActive = false;
+    let totalHires = 124;
 
     const jobs = [
       { title:'Residential Electrician Needed', city:'Lagos', status:'Open', applicants:34, posted:'3 days ago' },
@@ -186,12 +274,63 @@
       { name:'Aisha Bello', skill:'Tiler', location:'Abuja', applied:'1 week ago' }
     ];
 
+    function renderEmployerProfile(){
+      const avatar = document.getElementById('employerAvatar');
+      avatar.src = employerProfile.logoUrl || 'https://via.placeholder.com/120x120?text=Logo';
+      avatar.alt = `${employerProfile.name} logo`;
+      document.getElementById('employerName').textContent = employerProfile.name;
+      document.getElementById('employerLocation').textContent = employerProfile.location;
+      const { score, missing } = computeEmployerCompletion(employerProfile);
+      document.getElementById('employerProfileBar').style.width = `${score}%`;
+      document.getElementById('employerProfilePct').textContent = `${score}% complete`;
+      const checklist = document.getElementById('employerChecklist'); checklist.innerHTML = '';
+      if(missing.length === 0){
+        const li = document.createElement('li'); li.className='text-green-600'; li.textContent='All set! Your company profile is complete.';
+        checklist.appendChild(li);
+      } else {
+        missing.forEach(item => {
+          const li = document.createElement('li'); li.textContent = '• ' + item;
+          checklist.appendChild(li);
+        });
+      }
+      const statusEl = document.getElementById('employerVerifyStatus');
+      if(statusEl){
+        if(employerProfile.verified){
+          statusEl.textContent = 'ID verification complete';
+          statusEl.classList.remove('text-amber-600');
+          statusEl.classList.add('text-green-600');
+        } else {
+          statusEl.textContent = 'ID verification pending';
+          statusEl.classList.remove('text-green-600');
+          statusEl.classList.add('text-amber-600');
+        }
+      }
+      const verifyBtn = document.getElementById('verifyEmployerBtn');
+      if(verifyBtn){
+        if(employerProfile.verified){
+          verifyBtn.textContent = 'Company ID Verified';
+          verifyBtn.disabled = true;
+          verifyBtn.classList.add('bg-green-600','text-white','border-transparent','opacity-80','cursor-not-allowed');
+          verifyBtn.classList.remove('text-primary','hover:bg-primary','hover:text-white','border-primary');
+        } else {
+          verifyBtn.textContent = 'Complete Company ID Verification';
+          verifyBtn.disabled = false;
+          verifyBtn.classList.remove('bg-green-600','text-white','border-transparent','opacity-80','cursor-not-allowed');
+          verifyBtn.classList.add('text-primary','hover:bg-primary','hover:text-white','border-primary');
+        }
+      }
+    }
+
     function renderMetrics(){
       document.getElementById('jobsPosted').textContent = jobs.length;
       document.getElementById('appsTotal').textContent = applicants.length;
-      document.getElementById('hiresTotal').textContent = 124;
+      document.getElementById('hiresTotal').textContent = totalHires;
       document.getElementById('activeListings').textContent = jobs.filter(j=>j.status==='Open').length;
-      document.getElementById('freeLeft').textContent = freePostsLeft;
+      document.getElementById('freePostsLeft').textContent = monthlyPlanActive ? 'Unlimited' : freePostsLeft;
+      document.getElementById('freeHiresLeft').textContent = monthlyPlanActive ? 'Unlimited' : freeHiresLeft;
+      document.getElementById('planStatus').textContent = monthlyPlanActive
+        ? 'Monthly plan active — unlimited posts and hires for the next 30 days.'
+        : 'Monthly plan inactive — unlock unlimited posts and hires for ₦1,000/month.';
     }
     function renderJobs(){
       const list = document.getElementById('jobList'); list.innerHTML = '';
@@ -209,28 +348,138 @@
     }
     function renderApplicants(){
       const list = document.getElementById('applicantsList'); list.innerHTML='';
-      applicants.forEach(a=>{
+      applicants.forEach((a, idx)=>{
         const li=document.createElement('li');
-        li.className='flex justify-between border rounded p-2 text-sm';
-        li.innerHTML = `<div><div class="font-medium">${a.name}</div><div class="text-xs text-gray-500">${a.skill} • ${a.location}</div></div><div class="text-xs text-gray-400">${a.applied}</div>`;
+        li.className='flex justify-between border rounded p-3 text-sm items-center gap-3';
+        li.innerHTML = `<div>
+            <div class="font-medium">${a.name}</div>
+            <div class="text-xs text-gray-500">${a.skill} • ${a.location}</div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-gray-400">${a.applied}</span>
+            <button class="hireBtn bg-green-600 hover:bg-green-700 text-white text-xs font-medium px-3 py-1 rounded" data-index="${idx}">Mark Hired</button>
+          </div>`;
         list.appendChild(li);
+      });
+      list.querySelectorAll('.hireBtn').forEach(btn => {
+        btn.addEventListener('click', (event) => {
+          const applicantIndex = Number(event.currentTarget.dataset.index);
+          handleHire(applicants[applicantIndex], event.currentTarget);
+        });
       });
     }
 
-    document.getElementById('postBtn').addEventListener('click', ()=>{
-      if(freePostsLeft > 0){
-        freePostsLeft -= 1;
-        alert(`✅ Job posted! Free posts remaining: ${freePostsLeft}`);
+    const verifyEmployerBtn = document.getElementById('verifyEmployerBtn');
+    verifyEmployerBtn.addEventListener('click', () => {
+      if(employerProfile.verified) return;
+      employerProfile.verified = true;
+      renderEmployerProfile();
+      alert('✅ Company ID verification complete! Your company profile is now fully verified.');
+    });
+
+    const employerModal = document.getElementById('employerSubscriptionModal');
+    const closeEmployerModalBtn = document.getElementById('closeEmployerModalBtn');
+    const employerSubscribeBtns = document.querySelectorAll('.employerSubscribeBtn');
+    const employerPlanLabels = {
+      'continue-hiring': 'Monthly Unlimited (₦1,000/month)',
+      'concierge': 'Concierge Recommendation (₦3,000)'
+    };
+
+    function openEmployerModal(){
+      employerModal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeEmployerModal(){
+      employerModal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    closeEmployerModalBtn.addEventListener('click', closeEmployerModal);
+    employerModal.addEventListener('click', (event) => {
+      if(event.target === employerModal){
+        closeEmployerModal();
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if(event.key === 'Escape' && !employerModal.classList.contains('hidden')){
+        closeEmployerModal();
+      }
+    });
+    employerSubscribeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const plan = btn.dataset.plan;
+        if(plan === 'continue-hiring'){
+          monthlyPlanActive = true;
+          freePostsLeft = 0;
+          freeHiresLeft = 0;
+          alert('🎉 Monthly plan activated! Enjoy unlimited posts and hires this month.');
+          closeEmployerModal();
+          renderMetrics();
+        } else if(plan === 'concierge'){
+          alert('🤝 Concierge request received! Our team will reach out shortly.');
+          closeEmployerModal();
+        } else {
+          alert(`🎉 ${employerPlanLabels[plan]} checkout is coming soon.`);
+          closeEmployerModal();
+        }
+      });
+    });
+
+    function handleHire(applicant, triggerButton){
+      if(monthlyPlanActive){
+        totalHires += 1;
+        triggerButton.textContent = 'Hired';
+        triggerButton.disabled = true;
+        triggerButton.classList.add('opacity-60', 'cursor-not-allowed');
+        alert(`🎉 ${applicant.name} hired under your unlimited plan!`);
+        renderMetrics();
+        return;
+      }
+      if(freeHiresLeft > 0){
+        freeHiresLeft -= 1;
+        totalHires += 1;
+        triggerButton.textContent = 'Hired';
+        triggerButton.disabled = true;
+        triggerButton.classList.add('opacity-60', 'cursor-not-allowed');
+        alert(`✅ ${applicant.name} hired! Free hires remaining: ${freeHiresLeft}`);
         renderMetrics();
       } else {
-        alert('🚧 Free posts exhausted. Subscribe for ₦1,000/month to continue posting and hiring. (Integrate Paystack here later.)');
+        alert('🚧 Free hires exhausted. Activate the monthly plan for unlimited hires.');
+        openEmployerModal();
+      }
+    }
+
+    document.getElementById('postBtn').addEventListener('click', ()=>{
+      const newJob = {
+        title:`New Role ${jobs.length + 1}`,
+        city: employerProfile.location.split(',')[0] || employerProfile.location,
+        status:'Open',
+        applicants:0,
+        posted:'Just now'
+      };
+      if(monthlyPlanActive){
+        jobs.unshift(newJob);
+        alert('✅ Job posted under your unlimited plan!');
+        renderJobs();
+        renderMetrics();
+        return;
+      }
+      if(freePostsLeft > 0){
+        freePostsLeft -= 1;
+        jobs.unshift(newJob);
+        alert(`✅ Job posted! Free postings remaining: ${freePostsLeft}`);
+        renderJobs();
+        renderMetrics();
+      } else {
+        alert('🚧 Free postings exhausted. Activate the monthly plan for unlimited posts.');
+        openEmployerModal();
       }
     });
 
-    document.getElementById('upgradeBtn').addEventListener('click', ()=>{
-      alert('🧾 Upgrade: ₦1,000/month — unlock posting & hiring after free limit. (Integrate Paystack later.)');
-    });
+    document.getElementById('upgradeBtn').addEventListener('click', openEmployerModal);
 
+    renderEmployerProfile();
     renderMetrics(); renderJobs(); renderApplicants();
   </script>
 </body>
