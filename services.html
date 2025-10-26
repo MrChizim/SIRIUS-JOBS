@@ -267,12 +267,280 @@
     </div>
   </footer>
 
+  <!-- Provider modal -->
+  <div id="provider-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center px-4 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[80vh] overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b">
+        <div>
+          <h3 id="provider-modal-title" class="text-xl font-semibold text-gray-800">Service Providers</h3>
+          <p class="text-sm text-gray-500">Showing verified artisans currently subscribed.</p>
+        </div>
+        <button id="provider-modal-close" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <div id="provider-modal-content" class="p-6 overflow-y-auto space-y-4">
+        <div class="flex items-center justify-center py-12 text-gray-400">
+          <i data-feather="loader" class="animate-spin mr-2"></i>
+          Loading providers...
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    document.getElementById('menu-btn').addEventListener('click', () => {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
+    const fallbackCategories = [
+      {
+        id: 'fallback-plumbers',
+        label: 'Plumbers',
+        providers: [
+          {
+            userId: 'artisan-plumb-1',
+            firstName: 'Ngozi',
+            lastName: 'Amadi',
+            bio: 'Emergency response specialist for residential and commercial plumbing fixes across Port Harcourt.',
+            yearsExperience: 6,
+            hireCount: 92,
+            averageRating: 4.8,
+            verifiedBadge: true,
+          },
+          {
+            userId: 'artisan-plumb-2',
+            firstName: 'Ibrahim',
+            lastName: 'Shittu',
+            bio: 'Lagos-based plumber focused on hotel maintenance pipelines and smart water systems.',
+            yearsExperience: 8,
+            hireCount: 76,
+            averageRating: 4.7,
+            verifiedBadge: true,
+          },
+        ],
+      },
+      {
+        id: 'fallback-electricians',
+        label: 'Electricians',
+        providers: [
+          {
+            userId: 'artisan-elec-1',
+            firstName: 'Ifeanyi',
+            lastName: 'Okoro',
+            bio: 'Handles complete rewiring, inverter setup, and safety audits for homes and SMEs.',
+            yearsExperience: 10,
+            hireCount: 120,
+            averageRating: 4.9,
+            verifiedBadge: true,
+          },
+          {
+            userId: 'artisan-elec-2',
+            firstName: 'Esther',
+            lastName: 'Babalola',
+            bio: 'On-call electrician specialising in facility power backup systems around Abuja.',
+            yearsExperience: 7,
+            hireCount: 64,
+            averageRating: 4.6,
+            verifiedBadge: true,
+          },
+        ],
+      },
+      {
+        id: 'fallback-cleaners',
+        label: 'Cleaning Services',
+        providers: [
+          {
+            userId: 'artisan-clean-1',
+            firstName: 'Aisha',
+            lastName: 'Bello',
+            bio: 'Premium residential deep cleaning with eco-friendly supplies and post-construction tidy-ups.',
+            yearsExperience: 5,
+            hireCount: 88,
+            averageRating: 4.9,
+            verifiedBadge: true,
+          },
+          {
+            userId: 'artisan-clean-2',
+            firstName: 'Grace',
+            lastName: 'Okeke',
+            bio: 'Commercial and office cleaning manager servicing Lekki and Victoria Island.',
+            yearsExperience: 9,
+            hireCount: 142,
+            averageRating: 4.8,
+            verifiedBadge: true,
+          },
+        ],
+      },
+      {
+        id: 'fallback-doctors',
+        label: 'Medical Consultation',
+        providers: [
+          {
+            userId: 'pro-doc-1',
+            firstName: 'Dr. Chukwuemeka',
+            lastName: 'Obi',
+            bio: 'Family physician delivering affordable telemedicine and in-person clinic reviews.',
+            yearsExperience: 11,
+            hireCount: 210,
+            averageRating: 4.8,
+            verifiedBadge: true,
+          },
+          {
+            userId: 'pro-doc-2',
+            firstName: 'Dr. Zainab',
+            lastName: 'Musa',
+            bio: 'General practitioner focused on preventive care and maternal health support.',
+            yearsExperience: 9,
+            hireCount: 164,
+            averageRating: 4.7,
+            verifiedBadge: true,
+          },
+        ],
+      },
+    ];
+
+    const fallbackCategoryLookup = new Map(
+      fallbackCategories.map(category => [category.label.toLowerCase(), category]),
+    );
+    let serviceCategoryLookup = new Map();
+
+    const mobileMenuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const providerModal = document.getElementById('provider-modal');
+    const providerModalTitle = document.getElementById('provider-modal-title');
+    const providerModalContent = document.getElementById('provider-modal-content');
+    const providerModalClose = document.getElementById('provider-modal-close');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
     });
+
+    providerModalClose.addEventListener('click', () => {
+      providerModal.classList.add('hidden');
+    });
+
+    providerModal.addEventListener('click', (event) => {
+      if (event.target === providerModal) {
+        providerModal.classList.add('hidden');
+      }
+    });
+
+    async function bootstrapServices() {
+      let categories = [];
+      try {
+        const response = await fetch('/api/services/categories');
+        if (!response.ok) throw new Error('Unable to load service categories');
+        categories = await response.json();
+      } catch (error) {
+        console.warn('Using fallback service categories', error);
+      }
+
+      if (!Array.isArray(categories) || !categories.length) {
+        categories = fallbackCategories.map(category => ({
+          id: category.id,
+          label: category.label,
+        }));
+      }
+
+      serviceCategoryLookup = new Map(
+        categories.map(category => [category.label.trim().toLowerCase(), category]),
+      );
+
+      document.querySelectorAll('.service-card').forEach(card => {
+        const label = card.querySelector('h3')?.textContent?.trim().toLowerCase();
+        if (!label) return;
+        const categoryFromApi = serviceCategoryLookup.get(label);
+        const categoryId = categoryFromApi?.id ?? fallbackCategoryLookup.get(label)?.id;
+        if (!categoryId) return;
+
+        card.classList.add('cursor-pointer');
+        card.addEventListener('click', () =>
+          showProviders(categoryId, card.querySelector('h3').textContent.trim()),
+        );
+      });
+    }
+
+    async function showProviders(categoryId, label) {
+      providerModal.classList.remove('hidden');
+      providerModalContent.innerHTML = `
+        <div class="flex items-center justify-center py-12 text-gray-400">
+          <svg class="animate-spin h-5 w-5 mr-2 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
+          Fetching ${label} near you...
+        </div>
+      `;
+      providerModalTitle.textContent = `${label} – Available Providers`;
+
+      let providers = [];
+      try {
+        const response = await fetch(`/api/services/providers?categoryId=${categoryId}`);
+        if (!response.ok) throw new Error('Unable to load providers');
+        providers = await response.json();
+      } catch (error) {
+        console.warn('Loading sample providers for', label, error);
+      }
+
+      if (!Array.isArray(providers) || !providers.length) {
+        const fallbackCategory = fallbackCategoryLookup.get(label.toLowerCase());
+        providers = fallbackCategory?.providers ?? [];
+      }
+
+      if (!providers.length) {
+        providerModalContent.innerHTML = `
+          <div class="text-center py-12">
+            <i data-feather="search" class="mx-auto mb-3 text-primary"></i>
+            <p class="text-gray-500">No verified providers available right now. Encourage artisans to subscribe.</p>
+          </div>
+        `;
+        feather.replace();
+        return;
+      }
+
+      providerModalContent.innerHTML = providers
+        .map(
+          provider => `
+            <article class="border border-gray-100 rounded-xl p-4 hover:border-primary/40 transition">
+              <div class="flex justify-between items-center">
+                <div>
+                  <h4 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                    ${(provider.user?.firstName ?? provider.firstName) ?? 'Experienced'}
+                    ${(provider.user?.lastName ?? provider.lastName) ?? 'Provider'}
+                    ${provider.verifiedBadge ? '<span class="inline-flex items-center text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">Verified</span>' : ''}
+                  </h4>
+                  <p class="text-sm text-gray-500">${provider.bio ?? 'No description provided yet.'}</p>
+                  <div class="mt-3 flex flex-wrap gap-3 text-sm text-gray-500">
+                    <span class="inline-flex items-center gap-1"><i data-feather="award" class="w-4 h-4"></i> ${provider.yearsExperience ?? 0} yrs experience</span>
+                    <span class="inline-flex items-center gap-1"><i data-feather="users" class="w-4 h-4"></i> ${provider.hireCount ?? 0} hires</span>
+                    <span class="inline-flex items-center gap-1"><i data-feather="star" class="w-4 h-4"></i> ${provider.averageRating ? Number(provider.averageRating).toFixed(1) : 'N/A'} rating</span>
+                  </div>
+                </div>
+                <button class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition" data-hire="${provider.userId ?? provider.user?.id ?? ''}">
+                  <i data-feather="handshake"></i>
+                  Hire
+                </button>
+              </div>
+            </article>
+          `,
+        )
+        .join('');
+
+      providerModalContent.querySelectorAll('[data-hire]').forEach(button => {
+        button.addEventListener('click', () => {
+          const target = button.getAttribute('data-hire');
+          if (!target) {
+            alert('Sign in as an employer to request a hire.');
+            return;
+          }
+          window.location.href = `employer-dashboard.html?hire=${target}`;
+        });
+      });
+
+      feather.replace();
+    }
+
+    bootstrapServices();
     feather.replace();
   </script>
 
+  <script src="assistant.js"></script>
 </body>
 </html>

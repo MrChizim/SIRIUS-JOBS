@@ -103,7 +103,7 @@
           <h3 id="employerName" class="font-semibold text-lg">Your Company</h3>
           <p id="employerLocation" class="text-sm text-gray-500 mb-3">Port Harcourt, Nigeria</p>
           <p id="employerVerifyStatus" class="text-xs font-medium text-amber-600 mb-3">ID verification pending</p>
-          <button id="verifyEmployerBtn" class="w-full border border-primary text-primary py-2 rounded hover:bg-primary hover:text-white transition-all mb-3">Complete Company ID Verification</button>
+          <button id="verifyEmployerBtn" class="w-full border border-primary text-primary py-2 rounded hover:bg-primary hover:text-white transition-all mb-3">Complete ID Verification</button>
           <a href="edit-company.html" class="block w-full border border-primary text-primary py-2 rounded hover:bg-primary hover:text-white transition-all">Edit Profile</a>
         </div>
 
@@ -233,6 +233,50 @@
     </div>
   </footer>
 
+  <!-- Applicant profile modal -->
+  <div id="profileModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center px-4 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b">
+        <div>
+          <h3 id="profileModalName" class="text-xl font-semibold text-gray-800">Applicant Profile</h3>
+          <p class="text-sm text-gray-500">Verify the artisan’s background before deciding.</p>
+        </div>
+        <button id="closeProfileModal" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <div id="profileModalBody" class="p-6 space-y-4">
+        <div class="flex items-center justify-center py-12 text-gray-400">
+          <i data-feather="loader" class="animate-spin mr-2"></i>
+          Loading profile...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decision confirmation modal -->
+  <div id="decisionModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center px-4 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+      <div class="px-6 py-5 border-b">
+        <h3 id="decisionModalTitle" class="text-xl font-semibold text-gray-800">Confirm decision</h3>
+        <p class="text-sm text-gray-500">This will notify the worker and update the hire tracker.</p>
+      </div>
+      <form id="decisionForm" class="p-6 space-y-4">
+        <input type="hidden" id="decisionApplicationId">
+        <input type="hidden" id="decisionType">
+        <p id="decisionModalMessage" class="text-sm text-gray-700"></p>
+        <div class="space-y-2" id="decisionReasonBlock">
+          <label for="decisionReason" class="text-xs font-medium text-gray-600 uppercase tracking-wide">Reason (optional)</label>
+          <textarea id="decisionReason" rows="3" class="w-full rounded-lg border border-gray-200 focus:border-primary focus:ring-primary text-sm p-2.5" placeholder="Leave a note for the worker (visible to them)"></textarea>
+        </div>
+        <div class="flex items-center justify-end gap-3 pt-2">
+          <button type="button" id="decisionCancel" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700">Cancel</button>
+          <button type="submit" class="px-4 py-2 text-sm font-medium text-white rounded-lg" id="decisionSubmitBtn">Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     feather.replace();
     document.getElementById('menu-btn').addEventListener('click', ()=> {
@@ -269,10 +313,25 @@
       { title:'Plumber (Emergency)', city:'Port Harcourt', status:'Closed', applicants:25, posted:'3 weeks ago' }
     ];
     const applicants = [
-      { name:'Ifeanyi Okoro', skill:'Electrician', location:'Lagos', applied:'2 days ago' },
-      { name:'Ngozi Amadi', skill:'Plumber', location:'Port Harcourt', applied:'4 days ago' },
-      { name:'Aisha Bello', skill:'Tiler', location:'Abuja', applied:'1 week ago' }
+      { id:'app-1', userId:'user-electrician-1', name:'Ifeanyi Okoro', skill:'Electrician', location:'Lagos', applied:'2 days ago' },
+      { id:'app-2', userId:'user-plumber-2', name:'Ngozi Amadi', skill:'Plumber', location:'Port Harcourt', applied:'4 days ago' },
+      { id:'app-3', userId:'user-tiler-3', name:'Aisha Bello', skill:'Tiler', location:'Abuja', applied:'1 week ago' }
     ];
+
+    const profileModalEl = document.getElementById('profileModal');
+    const profileModalName = document.getElementById('profileModalName');
+    const profileModalBody = document.getElementById('profileModalBody');
+    const closeProfileModalBtn = document.getElementById('closeProfileModal');
+    const decisionModalEl = document.getElementById('decisionModal');
+    const decisionModalTitle = document.getElementById('decisionModalTitle');
+    const decisionModalMessage = document.getElementById('decisionModalMessage');
+    const decisionApplicationId = document.getElementById('decisionApplicationId');
+    const decisionType = document.getElementById('decisionType');
+    const decisionReason = document.getElementById('decisionReason');
+    const decisionReasonBlock = document.getElementById('decisionReasonBlock');
+    const decisionSubmitBtn = document.getElementById('decisionSubmitBtn');
+    const decisionCancelBtn = document.getElementById('decisionCancel');
+    const decisionForm = document.getElementById('decisionForm');
 
     function renderEmployerProfile(){
       const avatar = document.getElementById('employerAvatar');
@@ -348,26 +407,172 @@
     }
     function renderApplicants(){
       const list = document.getElementById('applicantsList'); list.innerHTML='';
-      applicants.forEach((a, idx)=>{
+      applicants.forEach((a)=>{
         const li=document.createElement('li');
-        li.className='flex justify-between border rounded p-3 text-sm items-center gap-3';
-        li.innerHTML = `<div>
-            <div class="font-medium">${a.name}</div>
-            <div class="text-xs text-gray-500">${a.skill} • ${a.location}</div>
+        li.className='border rounded-lg p-4 text-sm space-y-3 shadow-sm';
+        li.innerHTML = `<div class="flex justify-between items-start gap-3">
+            <div>
+              <div class="font-medium text-gray-900">${a.name}</div>
+              <div class="text-xs text-gray-500">${a.skill} • ${a.location}</div>
+            </div>
+            <span class="text-xs text-gray-400 whitespace-nowrap">${a.applied}</span>
           </div>
-          <div class="flex items-center gap-3">
-            <span class="text-xs text-gray-400">${a.applied}</span>
-            <button class="hireBtn bg-green-600 hover:bg-green-700 text-white text-xs font-medium px-3 py-1 rounded" data-index="${idx}">Mark Hired</button>
+          <div class="flex flex-wrap items-center gap-2">
+            <button class="viewProfileBtn inline-flex items-center gap-1 border border-primary text-primary px-3 py-1.5 rounded hover:bg-primary hover:text-white transition text-xs font-medium" data-user="${a.userId}">
+              <i data-feather="user"></i> View profile
+            </button>
+            <button class="acceptBtn inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded text-xs font-medium" data-application="${a.id}">
+              <i data-feather="check"></i> Accept
+            </button>
+            <button class="rejectBtn inline-flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded text-xs font-medium" data-application="${a.id}">
+              <i data-feather="x-circle"></i> Reject
+            </button>
           </div>`;
         list.appendChild(li);
       });
-      list.querySelectorAll('.hireBtn').forEach(btn => {
+
+      list.querySelectorAll('.viewProfileBtn').forEach(btn => {
         btn.addEventListener('click', (event) => {
-          const applicantIndex = Number(event.currentTarget.dataset.index);
-          handleHire(applicants[applicantIndex], event.currentTarget);
+          const userId = event.currentTarget.getAttribute('data-user');
+          openProfileModal(userId);
         });
       });
+      list.querySelectorAll('.acceptBtn').forEach(btn => {
+        btn.addEventListener('click', (event) => {
+          const applicationId = event.currentTarget.getAttribute('data-application');
+          openDecisionModal({ applicationId, decision: 'ACCEPT' });
+        });
+      });
+      list.querySelectorAll('.rejectBtn').forEach(btn => {
+        btn.addEventListener('click', (event) => {
+          const applicationId = event.currentTarget.getAttribute('data-application');
+          openDecisionModal({ applicationId, decision: 'REJECT' });
+        });
+      });
+      feather.replace();
     }
+
+    async function openProfileModal(userId){
+      profileModalEl.classList.remove('hidden');
+      profileModalBody.innerHTML = `
+        <div class="flex items-center justify-center py-12 text-gray-400">
+          <i data-feather="loader" class="animate-spin mr-2"></i>
+          Loading profile...
+        </div>
+      `;
+      try{
+        const res = await fetch(`/api/profiles/${userId}`);
+        if(!res.ok) throw new Error('Profile not found');
+        const profile = await res.json();
+        profileModalName.textContent = `${profile.firstName} ${profile.lastName}`;
+        profileModalBody.innerHTML = `
+          <section class="space-y-4">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex items-center gap-1 text-xs ${profile.verificationStatus === 'VERIFIED' ? 'text-green-600 bg-green-100' : 'text-amber-600 bg-amber-100'} px-2 py-1 rounded-full uppercase tracking-wide font-semibold">
+                <i data-feather="${profile.verificationStatus === 'VERIFIED' ? 'shield' : 'alert-triangle'}" class="w-3.5 h-3.5"></i>
+                ${profile.verificationStatus === 'VERIFIED' ? 'Verified' : 'Verification Pending'}
+              </span>
+              <span class="text-xs text-gray-400">Profile completion: ${profile.profileCompletion}%</span>
+            </div>
+            ${
+              profile.artisanProfile
+                ? `<div class="border rounded-lg p-4 bg-gray-50">
+                    <p class="text-sm text-gray-600 mb-2">${profile.artisanProfile.bio ?? 'No bio provided yet.'}</p>
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-gray-500">
+                      <li class="flex items-center gap-1"><i data-feather="briefcase" class="w-4 h-4"></i> ${profile.artisanProfile.serviceCategory.label}</li>
+                      <li class="flex items-center gap-1"><i data-feather="clock" class="w-4 h-4"></i> ${profile.artisanProfile.yearsExperience ?? 0} yrs experience</li>
+                      <li class="flex items-center gap-1"><i data-feather="award" class="w-4 h-4"></i> ${profile.artisanProfile.hireCount} hires</li>
+                      <li class="flex items-center gap-1"><i data-feather="star" class="w-4 h-4"></i> ${profile.artisanProfile.averageRating?.toFixed(1) ?? 'N/A'} rating</li>
+                    </ul>
+                  </div>`
+                : ''
+            }
+            ${
+              profile.professionalProfile
+                ? `<div class="border rounded-lg p-4">
+                    <p class="text-sm font-medium text-primary mb-1">${profile.professionalProfile.profession}</p>
+                    <ul class="grid grid-cols-2 gap-3 text-xs text-gray-500">
+                      <li>Total clients: ${profile.professionalProfile.totalClientsServed}</li>
+                      <li>Pending earnings: ₦${(profile.professionalProfile.pendingEarnings/100).toLocaleString()}</li>
+                      <li>Net earnings: ₦${(profile.professionalProfile.netEarnings/100).toLocaleString()}</li>
+                    </ul>
+                  </div>`
+                : ''
+            }
+          </section>
+        `;
+        feather.replace();
+      } catch(error){
+        console.error(error);
+        profileModalBody.innerHTML = `
+          <div class="text-center py-12">
+            <i data-feather="alert-circle" class="mx-auto mb-3 text-red-500"></i>
+            <p class="text-sm text-gray-600">We could not load this profile. Please try again later.</p>
+          </div>
+        `;
+        feather.replace();
+      }
+    }
+
+    function closeProfileModal(){
+      profileModalEl.classList.add('hidden');
+    }
+
+    closeProfileModalBtn.addEventListener('click', closeProfileModal);
+    profileModalEl.addEventListener('click', (event)=>{
+      if(event.target === profileModalEl){
+        closeProfileModal();
+      }
+    });
+
+    function openDecisionModal({ applicationId, decision }){
+      decisionApplicationId.value = applicationId;
+      decisionType.value = decision;
+      const isAccept = decision === 'ACCEPT';
+      decisionModalTitle.textContent = isAccept ? 'Accept applicant' : 'Reject applicant';
+      decisionModalMessage.textContent = isAccept
+        ? 'Are you sure you want to accept this applicant? This will create a hire record and notify them immediately.'
+        : 'Are you sure you want to reject this applicant? They will receive a notification with your reason.';
+      decisionReasonBlock.classList.toggle('hidden', isAccept);
+      decisionSubmitBtn.textContent = isAccept ? 'Yes, accept' : 'Yes, reject';
+      decisionSubmitBtn.className = `px-4 py-2 text-sm font-medium text-white rounded-lg ${isAccept ? 'bg-green-600 hover:bg-green-700' : 'bg-red-500 hover:bg-red-600'}`;
+      decisionModalEl.classList.remove('hidden');
+    }
+
+    function closeDecisionModal(){
+      decisionModalEl.classList.add('hidden');
+      decisionReason.value = '';
+    }
+
+    decisionCancelBtn.addEventListener('click', closeDecisionModal);
+    decisionModalEl.addEventListener('click', (event)=>{
+      if(event.target === decisionModalEl){
+        closeDecisionModal();
+      }
+    });
+
+    decisionForm.addEventListener('submit', async (event)=>{
+      event.preventDefault();
+      const payload = {
+        decision: decisionType.value,
+        reason: decisionReason.value.trim() || undefined
+      };
+      try{
+        const res = await fetch(`/api/applications/${decisionApplicationId.value}/decision`, {
+          method: 'POST',
+          headers: { 'Content-Type':'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if(!res.ok){
+          const errorBody = await res.json().catch(()=>({ message:'Unknown error' }));
+          throw new Error(errorBody.message || 'Unable to record decision');
+        }
+        alert(payload.decision === 'ACCEPT' ? '✅ Applicant accepted. Hire recorded.' : 'Applicant rejected.');
+        closeDecisionModal();
+      } catch(error){
+        alert(error.message);
+      }
+    });
 
     const verifyEmployerBtn = document.getElementById('verifyEmployerBtn');
     verifyEmployerBtn.addEventListener('click', () => {
@@ -402,8 +607,10 @@
       }
     });
     document.addEventListener('keydown', (event) => {
-      if(event.key === 'Escape' && !employerModal.classList.contains('hidden')){
-        closeEmployerModal();
+      if(event.key === 'Escape'){
+        if(!employerModal.classList.contains('hidden')) closeEmployerModal();
+        if(!profileModalEl.classList.contains('hidden')) closeProfileModal();
+        if(!decisionModalEl.classList.contains('hidden')) closeDecisionModal();
       }
     });
     employerSubscribeBtns.forEach(btn => {
@@ -482,5 +689,6 @@
     renderEmployerProfile();
     renderMetrics(); renderJobs(); renderApplicants();
   </script>
+  <script src="assistant.js"></script>
 </body>
 </html>

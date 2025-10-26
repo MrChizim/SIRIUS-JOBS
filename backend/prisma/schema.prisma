@@ -1,0 +1,282 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  EMPLOYER
+  ARTISAN
+  DOCTOR
+  LAWYER
+  ADMIN
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum VerificationType {
+  NIN
+  DRIVERS_LICENSE
+  INTERNATIONAL_PASSPORT
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+enum SubscriptionStatus {
+  NONE
+  TRIAL
+  ACTIVE
+  LAPSED
+}
+
+enum PayoutStatus {
+  REQUESTED
+  PROCESSING
+  PAID
+  REJECTED
+}
+
+model User {
+  id                      String                    @id @default(cuid())
+  email                   String                    @unique
+  passwordHash            String
+  phone                   String?                   @unique
+  firstName               String
+  lastName                String
+  role                    UserRole
+  isVerified              Boolean                   @default(false)
+  verificationStatus      VerificationStatus        @default(PENDING)
+  profileCompletion       Int                       @default(0)
+  lastProfileAudit        DateTime?                 @map("last_profile_audit")
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+
+  artisanProfile          ArtisanProfile?
+  employerProfile         EmployerProfile?
+  professionalProfile     ProfessionalProfile?
+  jobPosts                Job[]                     @relation("JobPoster")
+  jobApplications         JobApplication[]          @relation("Applicant")
+  hireActions             HireAction[]              @relation("HireEmployer")
+  artisanHires            HireAction[]              @relation("HireArtisan")
+  verificationSubmissions VerificationSubmission[]
+  notifications           Notification[]
+  alertSubscriptions      AlertSubscription[]
+  wallet                  Wallet?
+  payoutRequests          PayoutRequest[]
+}
+
+model ArtisanProfile {
+  id                 String              @id @default(cuid())
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String              @unique
+  serviceCategoryId  String
+  serviceCategory    ServiceCategory     @relation(fields: [serviceCategoryId], references: [id])
+  bio                String?
+  yearsExperience    Int?                @default(0)
+  subscriptionStatus SubscriptionStatus  @default(NONE)
+  subscriptionEndsAt DateTime?
+  averageRating      Float               @default(0)
+  hireCount          Int                 @default(0)
+  showcaseMediaUrl   String?
+  verifiedBadge      Boolean             @default(false)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  directHires        HireAction[]        @relation("HireArtisan")
+}
+
+model EmployerProfile {
+  id            String   @id @default(cuid())
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String   @unique
+  companyName   String?
+  industry      String?
+  verifiedBadge Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  hires         HireAction[] @relation("HireEmployer")
+}
+
+model ProfessionalProfile {
+  id                    String           @id @default(cuid())
+  user                  User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                String           @unique
+  profession            String           // Doctor or Lawyer
+  licenseNumber         String?
+  regulatoryBody        String?
+  consultationFee       Int              @default(3000)
+  netEarnings           Int              @default(0)
+  pendingEarnings       Int              @default(0)
+  totalClientsServed    Int              @default(0)
+  verifiedBadge         Boolean          @default(false)
+  subscriptionStatus    SubscriptionStatus @default(NONE)
+  subscriptionEndsAt    DateTime?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+
+  consultations         Consultation[]
+}
+
+model ServiceCategory {
+  id          String             @id @default(cuid())
+  label       String             @unique
+  description String?
+  icon        String?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  artisans    ArtisanProfile[]
+  jobs        Job[]
+}
+
+model Job {
+  id                String            @id @default(cuid())
+  title             String
+  description       String
+  budget            Int?
+  location          String
+  city              String?
+  state             String?
+  remoteFriendly    Boolean           @default(false)
+  status            String            @default("OPEN")
+  postedById        String
+  serviceCategoryId String
+  postedBy          User              @relation("JobPoster", fields: [postedById], references: [id])
+  serviceCategory   ServiceCategory   @relation(fields: [serviceCategoryId], references: [id])
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  applications      JobApplication[]
+  hires             HireAction[]
+}
+
+model JobApplication {
+  id             String            @id @default(cuid())
+  jobId          String
+  applicantId    String
+  coverLetter    String?
+  expectedPay    Int?
+  status         ApplicationStatus @default(PENDING)
+  reviewedAt     DateTime?
+  reviewedById   String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  job            Job               @relation(fields: [jobId], references: [id])
+  applicant      User              @relation("Applicant", fields: [applicantId], references: [id])
+}
+
+model HireAction {
+  id           String   @id @default(cuid())
+  employerId   String
+  artisanId    String
+  jobId        String?
+  decision     String   // ACCEPTED, REJECTED
+  reason       String?
+  confirmedAt  DateTime @default(now())
+  createdAt    DateTime @default(now())
+
+  employer     User     @relation("HireEmployer", fields: [employerId], references: [id])
+  artisan      User     @relation("HireArtisan", fields: [artisanId], references: [id])
+  job          Job?     @relation(fields: [jobId], references: [id])
+}
+
+model VerificationSubmission {
+  id             String             @id @default(cuid())
+  userId         String
+  type           VerificationType
+  status         VerificationStatus @default(PENDING)
+  externalRef    String?
+  submittedAt    DateTime           @default(now())
+  reviewedAt     DateTime?
+  reviewerNote   String?
+  payload        Json?
+
+  user           User               @relation(fields: [userId], references: [id])
+}
+
+model AlertSubscription {
+  id                String    @id @default(cuid())
+  userId            String
+  serviceCategoryId String
+  alertType         String    @default("JOB_MATCH")
+  active            Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+
+  user              User      @relation(fields: [userId], references: [id])
+  serviceCategory   ServiceCategory @relation(fields: [serviceCategoryId], references: [id])
+}
+
+model Notification {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  message     String
+  metadata    Json?
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Consultation {
+  id                  String               @id @default(cuid())
+  professionalId      String
+  clientId            String
+  scheduledFor        DateTime
+  status              String               @default("PENDING")
+  fee                 Int                  @default(3000)
+  payoutStatus        PayoutStatus         @default(REQUESTED)
+  payoutRequestedAt   DateTime?
+  payoutProcessedAt   DateTime?
+  createdAt           DateTime             @default(now())
+
+  professional        ProfessionalProfile  @relation(fields: [professionalId], references: [id])
+  client              User                 @relation(fields: [clientId], references: [id])
+}
+
+model Wallet {
+  id            String         @id @default(cuid())
+  userId        String         @unique
+  available     Int            @default(0)
+  pending       Int            @default(0)
+  lastSyncedAt  DateTime? 
+
+  user          User           @relation(fields: [userId], references: [id])
+  history       WalletEvent[]
+}
+
+model WalletEvent {
+  id           String   @id @default(cuid())
+  walletId     String
+  type         String
+  amount       Int
+  reference    String?
+  createdAt    DateTime @default(now())
+
+  wallet       Wallet   @relation(fields: [walletId], references: [id])
+}
+
+model PayoutRequest {
+  id             String      @id @default(cuid())
+  userId         String
+  amount         Int
+  status         PayoutStatus @default(REQUESTED)
+  requestedAt    DateTime     @default(now())
+  processedAt    DateTime?
+  externalRef    String?
+
+  user           User        @relation(fields: [userId], references: [id])
+}

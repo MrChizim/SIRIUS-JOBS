@@ -248,8 +248,12 @@
             <p class="text-sm text-gray-600">Apply to join our affordable consultation network. We verify every professional and charge a flat ₦3,000 monthly partnership fee that unlocks featured visibility and inbound leads.</p>
           </div>
           <div class="md:w-1/3 mt-4 md:mt-0 space-y-3">
-            <a href="mailto:partners@siriusjobs.ng?subject=Doctor%20Consultation%20Partner%20Application" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white px-4 py-2.5 rounded-lg hover:bg-primary/90 transition text-sm font-medium">Apply as Doctor</a>
-            <a href="mailto:partners@siriusjobs.ng?subject=Lawyer%20Consultation%20Partner%20Application" class="w-full inline-flex items-center justify-center gap-2 border border-primary text-primary px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition text-sm font-medium">Apply as Lawyer</a>
+            <button type="button" class="applyProBtn w-full inline-flex items-center justify-center gap-2 border border-primary text-primary px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition text-sm font-medium" data-profession="DOCTOR">
+              Apply as Doctor
+            </button>
+            <button type="button" class="applyProBtn w-full inline-flex items-center justify-center gap-2 border border-primary text-primary px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition text-sm font-medium" data-profession="LAWYER">
+              Apply as Lawyer
+            </button>
           </div>
         </div>
       </section>
@@ -257,6 +261,58 @@
   </main>
 
   <!-- PAYMENT MODAL -->
+  <div id="proApplyModal" class="fixed inset-0 hidden items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-6 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl relative overflow-hidden">
+      <button id="closeProApplyModal" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow text-gray-500 hover:text-gray-900 transition">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+      <div class="p-6 md:p-8 space-y-5">
+        <header class="space-y-2">
+          <p class="text-sm uppercase tracking-wide text-primary font-semibold" id="proApplyBadge">Professional Listing</p>
+          <h3 id="proApplyHeading" class="text-2xl font-semibold text-gray-900">Join as a Professional</h3>
+          <p class="text-sm text-gray-600">Pay a one-time onboarding fee of ₦1,000 to be listed. For every consultation, Sirius Jobs retains ₦500, and you take home ₦2,500. Consultation fees are capped at ₦3,000 to stay affordable.</p>
+        </header>
+        <section class="grid gap-5 md:grid-cols-2">
+          <div class="bg-primary/5 border border-primary/10 rounded-xl p-4 space-y-2">
+            <h4 class="text-sm font-semibold text-primary uppercase tracking-wide">What you get</h4>
+            <ul class="text-sm text-gray-600 space-y-1.5">
+              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-primary mt-0.5"></i>Priority listing on consultation search</li>
+              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-primary mt-0.5"></i>Alerts when matched clients request your service</li>
+              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-primary mt-0.5"></i>Wallet tracking for payouts anytime</li>
+            </ul>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-4 space-y-2">
+            <h4 class="text-sm font-semibold text-gray-800 uppercase tracking-wide">Payout model</h4>
+            <ul class="text-sm text-gray-600 space-y-1.5">
+              <li>Consultation fee: ₦3,000 flat per session</li>
+              <li>You receive ₦2,500 per confirmed session</li>
+              <li>Sirius Jobs retains ₦500 to fund support &amp; background checks</li>
+            </ul>
+          </div>
+        </section>
+        <form id="proApplyForm" class="space-y-4">
+          <input type="hidden" id="proApplyProfession">
+          <div class="space-y-2">
+            <label for="proApplyEmail" class="text-sm font-medium text-gray-700">Email for Paystack receipt</label>
+            <input type="email" id="proApplyEmail" class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary" placeholder="you@example.com" required>
+          </div>
+          <div class="flex items-center justify-between text-sm text-gray-600 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
+            <span>One-time onboarding fee</span>
+            <strong class="text-gray-900">₦1,000</strong>
+          </div>
+          <div class="flex items-center gap-3">
+            <button type="submit" class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-lg hover:bg-primary/90 transition">
+              <i data-feather="credit-card" class="w-4 h-4"></i>
+              Pay with Paystack
+            </button>
+            <button type="button" id="proApplyLater" class="text-sm text-gray-500 hover:text-gray-700">I’ll pay later</button>
+          </div>
+          <p class="text-xs text-gray-500">After payment, you’ll be redirected to complete ID verification. Professionals only appear publicly after verification succeeds.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <div id="consultPaymentModal" class="fixed inset-0 hidden items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6 z-50">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl relative overflow-hidden">
       <button id="closeConsultPaymentModal" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow text-gray-500 hover:text-gray-900 transition">
@@ -357,6 +413,92 @@
       });
     }
 
+    const proApplyModal = document.getElementById('proApplyModal');
+    const closeProApplyModalBtn = document.getElementById('closeProApplyModal');
+    const proApplyForm = document.getElementById('proApplyForm');
+    const proApplyProfessionInput = document.getElementById('proApplyProfession');
+    const proApplyHeading = document.getElementById('proApplyHeading');
+    const proApplyBadge = document.getElementById('proApplyBadge');
+    const proApplyEmail = document.getElementById('proApplyEmail');
+    const proApplyLaterBtn = document.getElementById('proApplyLater');
+    const applyButtons = document.querySelectorAll('.applyProBtn');
+
+    function openProApplyModal(profession){
+      proApplyProfessionInput.value = profession;
+      if(profession === 'DOCTOR'){
+        proApplyHeading.textContent = 'Join as a Doctor';
+        proApplyBadge.textContent = 'Doctor Listing';
+      } else {
+        proApplyHeading.textContent = 'Join as a Lawyer';
+        proApplyBadge.textContent = 'Lawyer Listing';
+      }
+      proApplyModal.classList.remove('hidden');
+      proApplyModal.classList.add('flex');
+      document.body.classList.add('overflow-hidden');
+      proApplyEmail.focus();
+    }
+
+    function closeProApplyModal(){
+      proApplyModal.classList.add('hidden');
+      proApplyModal.classList.remove('flex');
+      document.body.classList.remove('overflow-hidden');
+      proApplyForm.reset();
+    }
+
+    applyButtons.forEach(btn => {
+      btn.addEventListener('click', (event)=>{
+        const profession = event.currentTarget.getAttribute('data-profession');
+        openProApplyModal(profession);
+      });
+    });
+
+    if(closeProApplyModalBtn){
+      closeProApplyModalBtn.addEventListener('click', closeProApplyModal);
+    }
+    if(proApplyLaterBtn){
+      proApplyLaterBtn.addEventListener('click', closeProApplyModal);
+    }
+    if(proApplyModal){
+      proApplyModal.addEventListener('click', (event)=>{
+        if(event.target === proApplyModal){
+          closeProApplyModal();
+        }
+      });
+    }
+
+    if(proApplyForm){
+      proApplyForm.addEventListener('submit', async (event)=>{
+        event.preventDefault();
+        const payload = {
+          profession: proApplyProfessionInput.value,
+          email: proApplyEmail.value.trim()
+        };
+        if(!payload.email){
+          alert('Please provide an email for the Paystack receipt.');
+          return;
+        }
+        try{
+          const response = await fetch('/api/payments/professional/apply', {
+            method:'POST',
+            headers:{ 'Content-Type':'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if(!response.ok){
+            const body = await response.json().catch(()=>({ message:'Unable to initialize payment' }));
+            throw new Error(body.message || 'Unable to initialize payment');
+          }
+          const data = await response.json();
+          alert('Redirecting you to Paystack. Complete the payment to finish onboarding.');
+          closeProApplyModal();
+          if(data?.data?.authorization_url){
+            window.location.href = data.data.authorization_url;
+          }
+        } catch(error){
+          alert(error.message || 'Something went wrong, please try again.');
+        }
+      });
+    }
+
     const paymentModal = document.getElementById('consultPaymentModal');
     const closePaymentModalBtn = document.getElementById('closeConsultPaymentModal');
     const selectedProNameEl = document.getElementById('selectedProName');
@@ -401,10 +543,16 @@
     }
 
     document.addEventListener('keydown', (event) => {
-      if(event.key === 'Escape' && paymentModal && paymentModal.classList.contains('flex')){
-        closePaymentModal();
+      if(event.key === 'Escape'){
+        if(paymentModal && paymentModal.classList.contains('flex')){
+          closePaymentModal();
+        }
+        if(proApplyModal && proApplyModal.classList.contains('flex')){
+          closeProApplyModal();
+        }
       }
     });
   </script>
+  <script src="assistant.js"></script>
 </body>
 </html>

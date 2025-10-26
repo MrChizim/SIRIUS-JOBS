@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Professional Dashboard – Sirius Jobs</title>
+  <meta name="description" content="Track consultations, earnings, and payouts as a Sirius Jobs doctor or lawyer." />
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0056b3',
+            secondary: '#0f172a'
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .glass-panel {
+      background: rgba(255,255,255,0.86);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- NAV -->
+  <nav class="bg-white shadow-md sticky top-0 z-40">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary font-semibold">SJ</div>
+        <div>
+          <p class="text-sm text-gray-500 uppercase tracking-wide">Sirius Jobs</p>
+          <h1 class="text-lg font-semibold text-primary">Professional Console</h1>
+        </div>
+      </div>
+      <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+        <a href="index.html" class="text-gray-500 hover:text-primary transition">Home</a>
+        <a href="consultations.html" class="text-gray-500 hover:text-primary transition">Consultations</a>
+        <a href="jobs.html" class="text-gray-500 hover:text-primary transition">Jobs</a>
+        <a href="verify.html" class="text-gray-500 hover:text-primary transition">Verify</a>
+        <a href="employer-dashboard.html" class="text-gray-500 hover:text-primary transition">Employer</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="text-sm font-medium text-primary border border-primary/60 rounded-lg px-4 py-2 hover:bg-primary hover:text-white transition">Switch account</button>
+        <button id="menu-btn" class="md:hidden text-gray-600 focus:outline-none">
+          <i data-feather="menu"></i>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+      <a href="index.html" class="block py-2 text-gray-600 hover:text-primary">Home</a>
+      <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary">Consultations</a>
+      <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary">Jobs</a>
+      <a href="verify.html" class="block py-2 text-gray-600 hover:text-primary">Verify</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="bg-gradient-to-r from-primary to-blue-700 text-white py-16">
+    <div class="container mx-auto px-4 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+      <div>
+        <p class="text-sm uppercase tracking-[0.4em] text-white/60 mb-3">Welcome back, Dr. Obi</p>
+        <h2 class="text-3xl md:text-4xl font-bold leading-snug">Monitor your consultations, earnings, and payouts in one place.</h2>
+        <p class="mt-4 max-w-2xl text-white/80">Your affordable sessions help more families get care. Stay on top of appointments, pending reviews, and wallet balances right here.</p>
+      </div>
+      <div class="glass-panel rounded-2xl p-6 max-w-sm shadow-xl text-gray-900">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-sm font-medium text-gray-600 uppercase tracking-wide">Balance Overview</span>
+          <div class="bg-primary/10 text-primary rounded-full px-3 py-1 text-xs font-semibold">Updated 3 mins ago</div>
+        </div>
+        <p class="text-sm text-gray-500">Available to withdraw</p>
+        <p class="text-3xl font-semibold text-primary mb-3">₦185,500</p>
+        <div class="flex items-center justify-between text-sm text-gray-600">
+          <span>Pending after consultations</span>
+          <span class="font-medium text-gray-900">₦37,500</span>
+        </div>
+        <div class="mt-5 flex gap-3">
+          <button class="flex-1 bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition" id="requestPayoutBtn">Request payout</button>
+          <button class="flex-1 border border-primary/30 text-primary font-medium py-2.5 rounded-lg hover:bg-primary hover:text-white transition" id="viewWalletBtn">Wallet history</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- DASHBOARD CONTENT -->
+  <main class="container mx-auto px-4 py-12 space-y-12">
+    <!-- STAT CARDS -->
+    <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+      <article class="glass-panel rounded-2xl p-6 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-sm font-medium text-gray-500">Clients served</span>
+          <span class="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full font-semibold">+6 this week</span>
+        </div>
+        <p class="text-3xl font-semibold text-primary mb-1" id="statClients">142</p>
+        <p class="text-xs text-gray-500">Across online and in-person consultations.</p>
+      </article>
+      <article class="glass-panel rounded-2xl p-6 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-sm font-medium text-gray-500">Upcoming sessions</span>
+          <span class="text-xs text-primary bg-primary/10 px-2 py-1 rounded-full font-semibold">3 today</span>
+        </div>
+        <p class="text-3xl font-semibold text-primary mb-1" id="statUpcoming">9</p>
+        <p class="text-xs text-gray-500">Confirm attendance to release payouts faster.</p>
+      </article>
+      <article class="glass-panel rounded-2xl p-6 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-sm font-medium text-gray-500">Net earnings (month)</span>
+          <span class="text-xs text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full font-semibold">▲ 18%</span>
+        </div>
+        <p class="text-3xl font-semibold text-primary mb-1" id="statNetEarnings">₦372,500</p>
+        <p class="text-xs text-gray-500">After Sirius fees and outstanding payouts.</p>
+      </article>
+      <article class="glass-panel rounded-2xl p-6 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-sm font-medium text-gray-500">Average rating</span>
+          <span class="text-xs text-amber-600 bg-amber-100 px-2 py-1 rounded-full font-semibold flex items-center gap-1"><i data-feather="star" class="w-3.5 h-3.5"></i>4.8</span>
+        </div>
+        <p class="text-3xl font-semibold text-primary mb-1" id="statRating">4.8</p>
+        <p class="text-xs text-gray-500">From 210 verified client reviews.</p>
+      </article>
+    </section>
+
+    <!-- SCHEDULE + WALLET -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 glass-panel rounded-2xl shadow-sm overflow-hidden">
+        <header class="flex items-center justify-between px-6 py-4 border-b border-gray-200/60">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-800">Today’s consultations</h3>
+            <p class="text-sm text-gray-500">Confirm sessions or mark them as complete to release payouts.</p>
+          </div>
+          <button class="text-sm text-primary font-medium hover:underline" id="syncCalendarBtn">Sync calendar</button>
+        </header>
+        <div class="divide-y divide-gray-200/70" id="consultationList"></div>
+      </div>
+      <aside class="glass-panel rounded-2xl shadow-sm p-6 space-y-6">
+        <header>
+          <h3 class="text-lg font-semibold text-gray-800">Wallet snapshot</h3>
+          <p class="text-sm text-gray-500">Track every credit, debit, and payout request.</p>
+        </header>
+        <div class="space-y-4" id="walletHistory"></div>
+        <button class="w-full bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition" id="exportWalletBtn">
+          <i data-feather="download-cloud" class="inline-block w-4 h-4 mr-2"></i>Export wallet history
+        </button>
+      </aside>
+    </section>
+
+    <!-- PERFORMANCE -->
+    <section class="glass-panel rounded-2xl shadow-sm p-6">
+      <header class="flex items-center justify-between mb-6">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-800">Performance insights</h3>
+          <p class="text-sm text-gray-500">Understand how your consultations convert into income.</p>
+        </div>
+        <select id="insightRange" class="text-sm border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20">
+          <option value="30">Last 30 days</option>
+          <option value="60">Last 60 days</option>
+          <option value="90">Last 90 days</option>
+        </select>
+      </header>
+      <div class="grid gap-6 md:grid-cols-3">
+        <article class="bg-white rounded-xl border border-gray-200/60 p-4">
+          <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Consultation fulfilment</p>
+          <p class="text-2xl font-semibold text-primary" id="metricFulfilment">96%</p>
+          <p class="text-xs text-gray-500 mt-2">Clients who completed and confirmed their sessions.</p>
+        </article>
+        <article class="bg-white rounded-xl border border-gray-200/60 p-4">
+          <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Repeat clients</p>
+          <p class="text-2xl font-semibold text-primary" id="metricRepeats">48%</p>
+          <p class="text-xs text-gray-500 mt-2">One in two clients booked more than once in the selected window.</p>
+        </article>
+        <article class="bg-white rounded-xl border border-gray-200/60 p-4">
+          <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Average payout time</p>
+          <p class="text-2xl font-semibold text-primary" id="metricPayoutTime">21 hrs</p>
+          <p class="text-xs text-gray-500 mt-2">From session confirmation to wallet credit.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-white py-12 mt-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+              <i data-feather="star" class="w-4 h-4 text-white"></i>
+            </div>
+            <span class="text-lg font-semibold">Sirius Jobs</span>
+          </div>
+          <p class="text-sm text-gray-400">Affordable consultations, trusted artisans, and employer tools that make hiring safer.</p>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold uppercase tracking-wide mb-3">Quick links</h4>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li><a href="consultations.html" class="hover:text-white transition">Book a consultation</a></li>
+            <li><a href="jobs.html" class="hover:text-white transition">Browse jobs</a></li>
+            <li><a href="findworker.html" class="hover:text-white transition">Find artisans</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold uppercase tracking-wide mb-3">Support</h4>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li>Email: support@siriusjobsng.com</li>
+            <li>WhatsApp: 0704 447 0559</li>
+            <li>Hours: 8am – 8pm (Mon-Sat)</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold uppercase tracking-wide mb-3">Lagos office</h4>
+          <p class="text-sm text-gray-400">14 Admiralty Way,<br> Lekki Phase 1, Lagos.</p>
+        </div>
+      </div>
+      <div class="border-t border-white/10 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
+        <span>© 2025 Sirius Jobs. All rights reserved.</span>
+        <div class="flex gap-6">
+          <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+          <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    feather.replace();
+    document.getElementById('menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+
+    const consultations = [
+      { id: 'CNS-2412', client: 'Amaka U.', type: 'Telemedicine', schedule: '09:30', status: 'Awaiting payment confirmation', amount: 3000 },
+      { id: 'CNS-2413', client: 'Kelechi D.', type: 'In-person', schedule: '12:00', status: 'Confirmed', amount: 3000 },
+      { id: 'CNS-2414', client: 'Omolara B.', type: 'Telemedicine', schedule: '16:30', status: 'Pending notes', amount: 3000 },
+    ];
+
+    const walletHistory = [
+      { type: 'credit', label: 'Consultation payout – Kelechi D.', amount: 2500, time: '1 hour ago' },
+      { type: 'credit', label: 'Consultation payout – Emeka A.', amount: 2500, time: 'Yesterday' },
+      { type: 'debit', label: 'Payout to GTBank • 1234', amount: -15000, time: '2 days ago' },
+      { type: 'credit', label: 'Consultation payout – Amaka U.', amount: 2500, time: '3 days ago' },
+    ];
+
+    function renderConsultations() {
+      const container = document.getElementById('consultationList');
+      container.innerHTML = consultations.map(session => `
+        <article class="px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold text-gray-900">#${session.id} • ${session.client}</p>
+            <p class="text-xs text-gray-500">${session.type} • Today ${session.schedule}</p>
+          </div>
+          <div class="flex items-center gap-3 text-sm">
+            <span class="inline-flex items-center gap-1 text-primary font-medium"><i data-feather="clock" class="w-4 h-4"></i>${session.schedule}</span>
+            <span class="text-gray-500">${session.status}</span>
+            <span class="font-semibold text-gray-900">₦${session.amount.toLocaleString()}</span>
+            <button class="border border-primary text-primary rounded-lg px-3 py-1.5 text-xs font-medium hover:bg-primary hover:text-white transition">Open notes</button>
+          </div>
+        </article>
+      `).join('');
+      feather.replace();
+    }
+
+    function renderWallet() {
+      const container = document.getElementById('walletHistory');
+      container.innerHTML = walletHistory.map(entry => `
+        <div class="bg-white rounded-xl border border-gray-200/60 px-4 py-3 flex items-center justify-between text-sm">
+          <div>
+            <p class="font-medium text-gray-800">${entry.label}</p>
+            <p class="text-xs text-gray-500">${entry.time}</p>
+          </div>
+          <span class="${entry.amount >= 0 ? 'text-emerald-600' : 'text-red-500'} font-semibold">₦${Math.abs(entry.amount).toLocaleString()}</span>
+        </div>
+      `).join('');
+    }
+
+    renderConsultations();
+    renderWallet();
+
+    document.getElementById('requestPayoutBtn').addEventListener('click', () => {
+      alert('Payout request submitted. You will see the status under Wallet history.');
+    });
+    document.getElementById('viewWalletBtn').addEventListener('click', () => {
+      window.location.hash = '#wallet';
+    });
+    document.getElementById('exportWalletBtn').addEventListener('click', () => {
+      alert('Export will download a CSV of your wallet history in the live app.');
+    });
+    document.getElementById('syncCalendarBtn').addEventListener('click', () => {
+      alert('Calendar sync will connect Google Calendar or Outlook in the production build.');
+    });
+  </script>
+  <script src="assistant.js"></script>
+</body>
+</html>
