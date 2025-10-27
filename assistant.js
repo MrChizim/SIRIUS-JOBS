@@ -376,7 +376,15 @@
     };
   }
 
+  const faqEligiblePages = new Set(['faq.html']);
+
   function injectFAQSection() {
+    const pathname = window.location.pathname.split('/').pop() ?? '';
+    const normalized = pathname === '' ? 'index.html' : pathname;
+    if (!faqEligiblePages.has(normalized)) {
+      return;
+    }
+
     if (document.getElementById('sirius-faq-section')) {
       return;
     }

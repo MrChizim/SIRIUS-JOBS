@@ -68,4 +68,30 @@ router.get('/status', requireAuth(), async (req: AuthenticatedRequest, res) => {
   res.json(submissions);
 });
 
+const licenseSchema = z.object({
+  licenseNumber: z.string().min(4),
+  regulatoryBody: z.string().min(2),
+  licenseDocument: z.string().min(10),
+});
+
+router.post('/license', requireAuth(['DOCTOR', 'LAWYER']), async (req: AuthenticatedRequest, res) => {
+  const payload = licenseSchema.safeParse(req.body);
+  if (!payload.success) {
+    return res.status(400).json({ errors: payload.error.flatten() });
+  }
+
+  await prisma.professionalProfile.updateMany({
+    where: { userId: req.user!.id },
+    data: {
+      licenseNumber: payload.data.licenseNumber,
+      regulatoryBody: payload.data.regulatoryBody,
+      licenseDocumentUrl: payload.data.licenseDocument,
+      licenseVerified: false,
+      licenseSubmittedAt: new Date(),
+    },
+  });
+
+  res.json({ message: 'License documents submitted for review.' });
+});
+
 export default router;

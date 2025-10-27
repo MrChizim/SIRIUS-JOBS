@@ -42,13 +42,13 @@
         <span class="text-xl font-bold text-primary">Sirius Jobs</span>
       </div>
 
-      <div class="hidden md:flex space-x-8 items-center">
+      <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
         <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
-        <a href="about.html" class="text-gray-600 hover:text-primary transition-all">About Us</a>
         <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
-        <a href="find-artisans.html" class="text-gray-600 hover:text-primary transition-all font-semibold">Find Artisans</a>
-        <a href="privacypolicy.html" class="text-gray-600 hover:text-primary transition-all">Privacy</a>
-        <!-- Contact removed per request -->
+        <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
+        <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
+        <a href="findworker.html" class="text-primary font-semibold">Find Workers</a>
+        <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
       </div>
 
       <div class="flex items-center space-x-3">
@@ -64,12 +64,13 @@
     </div>
 
     <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
       <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
-      <a href="about.html" class="block py-2 text-gray-600 hover:text-primary transition-all">About Us</a>
       <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
-      <a href="find-artisans.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Artisans</a>
-      <a href="privacypolicy.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Privacy</a>
+      <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
+      <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
+      <a href="findworker.html" class="block py-2 text-primary font-medium transition-all">Find Workers</a>
+      <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
     </div>
   </nav>
 
@@ -567,14 +568,7 @@ if(paApplyForm){
       const artisan = artisans.find(a => a.id === id);
       const modal = document.getElementById('artisanModal');
       const content = document.getElementById('modalContent');
-      const hireButton = `
-        <button class="w-full sm:w-auto bg-primary text-white py-2 px-4 rounded text-center request-hire" data-worker="${artisan.id}">
-          Request Hire
-        </button>
-      `;
-      const contactOption = artisan.subscriptionActive
-        ? '<p class="text-xs text-gray-500 text-center sm:text-left">This artisan is on an active Sirius subscription. You can access their contact details directly from your employer dashboard without extra payment.</p>'
-        : `<button class="w-full sm:w-auto border border-primary text-primary py-2 px-4 rounded" data-pay="${artisan.id}">Pay &amp; Get Contact</button>`;
+      const contactButton = `<button class="w-full sm:w-auto border border-primary text-primary py-2 px-4 rounded" data-pay="${artisan.id}">Unlock Contact</button>`;
 
       content.innerHTML = `
         <div class="md:flex gap-6">
@@ -594,11 +588,10 @@ if(paApplyForm){
             <p class="text-gray-700 mb-4">${artisan.bio}</p>
 
             <div class="flex flex-col sm:flex-row gap-3">
-              ${hireButton}
-              ${contactOption}
+              ${contactButton}
             </div>
 
-            <p class="mt-4 text-xs text-gray-500">Note: Only verified and subscribed artisans appear here. All payments are processed securely.</p>
+            <p class="mt-4 text-xs text-gray-500">Contact details unlock after a secure payment. We’ll introduce you to the artisan immediately.</p>
           </div>
         </div>
       `;
@@ -606,12 +599,6 @@ if(paApplyForm){
       modal.classList.remove('hidden');
       modal.classList.add('flex');
 
-      const requestHireBtn = content.querySelector('.request-hire');
-      if (requestHireBtn) {
-        requestHireBtn.addEventListener('click', () => {
-          window.location.href = `employer-dashboard.html?hire=${requestHireBtn.getAttribute('data-worker')}`;
-        });
-      }
       const payBtn = content.querySelector('[data-pay]');
       if (payBtn) {
         payBtn.addEventListener('click', () => startPayment(payBtn.getAttribute('data-pay')));

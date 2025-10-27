@@ -70,6 +70,8 @@
                 <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
                 <a href="jobs.html" class="text-primary font-medium">Jobs</a>
                 <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
+                <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
+                <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
                 <a href="login.html" class="sirius-login">Login</a>
 
             </div>
@@ -85,6 +87,8 @@
             
             <a href="jobs.html" class="block py-2 text-primary font-medium">Jobs</a>
             <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
+            <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
+            <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
             <a href="login.html" class="block sirius-login mt-2 text-center">Login</a>
 
          
@@ -628,21 +632,33 @@
                 return;
             }
             const expectedPayValue = Number(document.getElementById('expectedPay').value);
-            const formData = new FormData();
-            formData.append('jobId', applyJobId.value);
-            formData.append('coverLetter', coverLetter);
-            if (!Number.isNaN(expectedPayValue) && expectedPayValue > 0) {
-                formData.append('expectedPay', expectedPayValue.toString());
-            }
+            const payload = {
+                jobId: applyJobId.value,
+                coverLetter,
+                expectedPay: !Number.isNaN(expectedPayValue) && expectedPayValue > 0 ? expectedPayValue : undefined,
+                supportingDocuments: [],
+            };
             if (supportingDocs && supportingDocs.files.length) {
-                Array.from(supportingDocs.files).forEach(file => {
-                    formData.append('supportingDocuments', file, file.name);
-                });
+                const encoded = await Promise.all(
+                    Array.from(supportingDocs.files).map(file => new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve({
+                            name: file.name,
+                            type: file.type,
+                            size: file.size,
+                            data: reader.result,
+                        });
+                        reader.onerror = () => reject(new Error('Could not read file.'));
+                        reader.readAsDataURL(file);
+                    }))
+                );
+                payload.supportingDocuments = encoded;
             }
             try {
                 const response = await fetch('/api/applications', {
                     method: 'POST',
-                    body: formData
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
                 if (!response.ok) {
                     const body = await response.json().catch(() => ({ message: 'Unable to submit application' }));

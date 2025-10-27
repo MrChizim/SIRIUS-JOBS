@@ -13,6 +13,8 @@ import verificationRouter from './routes/verification.js';
 import paymentsRouter from './routes/payments.js';
 import dashboardRouter from './routes/dashboard.js';
 import alertsRouter from './routes/alerts.js';
+import consultationsRouter from './routes/consultations.js';
+import authRouter from './routes/auth.js';
 
 const app = express();
 
@@ -39,6 +41,8 @@ app.use('/api/verification', verificationRouter);
 app.use('/api/payments', paymentsRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/alerts', alertsRouter);
+app.use('/api/consultations', consultationsRouter);
+app.use('/api/auth', authRouter);
 
 app.use((_req, res) => {
   res.status(404).json({ message: 'Route not found' });

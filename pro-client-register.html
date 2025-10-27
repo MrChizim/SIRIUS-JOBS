@@ -1,0 +1,571 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Sirius Jobs</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+<meta name="description" content="Create a new account on Sirius Jobs to access job opportunities or hire talent.">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0056b3',
+                        secondary: '#808080',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .register-hero {
+            background: linear-gradient(rgba(0, 86, 179, 0.9), rgba(0, 86, 179, 0.9)), url('http://static.photos/office/1200x630/8');
+            background-size: cover;
+            background-position: center;
+        }
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                    <i data-feather="star" class="text-white"></i>
+                </div>
+                <span class="text-xl font-bold text-primary">Sirius Jobs</span>
+
+</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
+                <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
+                <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
+                <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
+                <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
+                <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
+</div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-gray-600 focus:outline-none">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2">
+            <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
+            <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
+            <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
+            <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
+            <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
+            <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
+
+</div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="register-hero text-white py-20 md:py-32">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Join Sirius Jobs</h1>
+            <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto">Create your free account to start your journey</p>
+        </div>
+    </section>
+
+    <!-- Registration Form -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8 space-y-8">
+                <h2 class="text-2xl font-bold text-gray-800">Create Your Account</h2>
+                <p class="text-sm text-gray-500">Choose the account type that matches what you want to do on Sirius Jobs.</p>
+
+                <div class="flex flex-wrap gap-3" id="accountTypeSwitcher">
+                    <button data-account="client" class="accountTypeBtn bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition" type="button">Client (Consultations)</button>
+                    <button data-account="professional" class="accountTypeBtn bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:border-primary hover:text-primary transition" type="button">Professional (Doctor/Lawyer)</button>
+                </div>
+
+                <div id="clientRegisterSection" class="space-y-6">
+                    <h3 class="text-xl font-semibold text-gray-800">Sign up as a client</h3>
+                    <p id="clientRegisterMessage" class="text-xs text-gray-500 hidden"></p>
+                    <form id="clientRegisterForm" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="registerClientFirst" class="block text-sm font-medium text-gray-700">First name</label>
+                                <input id="registerClientFirst" type="text" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Ada">
+                            </div>
+                            <div>
+                                <label for="registerClientLast" class="block text-sm font-medium text-gray-700">Last name</label>
+                                <input id="registerClientLast" type="text" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Grace">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="registerClientEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                            <input id="registerClientEmail" type="email" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="you@example.com">
+                        </div>
+                            <div class="relative">
+                                <label for="registerClientPassword" class="block text-sm font-medium text-gray-700">Password</label>
+                                <input id="registerClientPassword" type="password" required class="mt-1 w-full border border-gray-200 rounded-lg pl-3 pr-16 py-2 focus:border-primary focus:ring-primary/20" placeholder="Minimum 8 characters">
+                                <button type="button" class="absolute inset-y-0 right-0 grid place-items-center px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="registerClientPassword">Show</button>
+                            </div>
+                            <div class="relative">
+                                <label for="registerClientConfirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                                <input id="registerClientConfirmPassword" type="password" required class="mt-1 w-full border border-gray-200 rounded-lg pl-3 pr-16 py-2 focus:border-primary focus:ring-primary/20" placeholder="Repeat password">
+                                <button type="button" class="absolute inset-y-0 right-0 grid place-items-center px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="registerClientConfirmPassword">Show</button>
+                            </div>
+                        <button type="submit" class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-primary/90 transition">Create client account</button>
+                    </form>
+                </div>
+
+                <div id="professionalRegisterSection" class="space-y-6 hidden">
+                    <h3 class="text-xl font-semibold text-gray-800">Sign up as a professional</h3>
+                    <p class="text-xs text-gray-500">Provide licence information so we can verify you. You’ll receive a verification link via email before appearing in searches.</p>
+                    <p id="professionalRegisterMessage" class="text-xs text-gray-500 hidden"></p>
+                    <form id="professionalRegisterForm" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="registerProFirst" class="block text-sm font-medium text-gray-700">First name</label>
+                                <input id="registerProFirst" type="text" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Chukwuemeka">
+                            </div>
+                            <div>
+                                <label for="registerProLast" class="block text-sm font-medium text-gray-700">Last name</label>
+                                <input id="registerProLast" type="text" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Obi">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="registerProEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                                <input id="registerProEmail" type="email" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="doctor@example.com">
+                            </div>
+                            <div class="relative">
+                                <label for="registerProPassword" class="block text-sm font-medium text-gray-700">Password</label>
+                                <input id="registerProPassword" type="password" required class="mt-1 w-full border border-gray-200 rounded-lg pl-3 pr-16 py-2 focus:border-primary focus:ring-primary/20" placeholder="Minimum 8 characters">
+                                <button type="button" class="absolute inset-y-0 right-0 grid place-items-center px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="registerProPassword">Show</button>
+                            </div>
+                            <div class="relative">
+                                <label for="registerProConfirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                                <input id="registerProConfirmPassword" type="password" required class="mt-1 w-full border border-gray-200 rounded-lg pl-3 pr-16 py-2 focus:border-primary focus:ring-primary/20" placeholder="Repeat password">
+                                <button type="button" class="absolute inset-y-0 right-0 grid place-items-center px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="registerProConfirmPassword">Show</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="registerProProfession" class="block text-sm font-medium text-gray-700">Profession</label>
+                                <select id="registerProProfession" class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" required>
+                                    <option value="">Select option</option>
+                                    <option value="DOCTOR">Doctor</option>
+                                    <option value="LAWYER">Lawyer</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="registerProLicense" class="block text-sm font-medium text-gray-700">Licence number</label>
+                                <input id="registerProLicense" type="text" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="e.g. MDCN-12345 or NBA/SCN number">
+                            </div>
+                            <div>
+                                <label for="registerProRegBody" class="block text-sm font-medium text-gray-700">Regulatory body</label>
+                                <input id="registerProRegBody" type="text" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="e.g. MDCN or NBA">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="registerProDocument" class="block text-sm font-medium text-gray-700">Licence document (URL or base64)</label>
+                            <textarea id="registerProDocument" rows="3" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Paste a secure link or base64 copy of your licence / call to bar certificate"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-primary/90 transition">Submit professional application</button>
+                    </form>
+                </div>
+
+                <div class="text-center space-y-3">
+                    <p class="text-sm text-gray-600">Already have an account?</p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-2">
+                        <a href="login.html?account=client" class="inline-flex items-center justify-center gap-2 text-sm font-medium text-primary border border-primary/40 rounded-lg px-4 py-2 hover:bg-primary hover:text-white transition">
+                            <i data-feather="lock" class="w-4 h-4"></i>
+                            Client Login
+                        </a>
+                        <a href="login.html?account=professional" class="inline-flex items-center justify-center gap-2 text-sm font-medium text-white bg-primary rounded-lg px-4 py-2 hover:bg-primary/90 transition">
+                            <i data-feather="user-check" class="w-4 h-4"></i>
+                            Professional Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                            <i data-feather="star" class="text-white w-4 h-4"></i>
+                        </div>
+                        <span class="text-lg font-bold">Sirius Jobs</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Bridging Talent and Opportunity with Trust</p>
+                    <div class="flex space-x-4">
+                        <a href="https://web.facebook.com/profile.php?id=61582342397507" class="text-gray-400 hover:text-white transition-all"><i data-feather="facebook"></i></a>
+                        <a href="https://twitter.com/SiriusOddJobs" class="text-gray-400 hover:text-white transition-all"><i data-feather="twitter"></i></a>
+                        <a href="https://www.instagram.com/siriusjobss" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
+                        <a href="https://www.linkedin.com/company/siriusjobsng/" class="text-gray-400 hover:text-white transition-all"><i data-feather="linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-all">Home</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition-all">About Us</a></li>
+                        <li><a href="jobs.html" class="text-gray-400 hover:text-white transition-all">Jobs</a></li>
+                        <li><a href="verify.html" class="text-gray-400 hover:text-white transition-all">Verify</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-all">Contact</a></li>
+                    </ul>
+                </div>
+                
+               <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2">
+                        <li><span class="text-gray-400">Artisans</span></li>
+                        <li><span class="text-gray-400">Plumbers</span></li>
+                        <li><span class="text-gray-400">Electricians</span></li>
+                        <li><span class="text-gray-400">Cleaners</span></li>
+                        <li><a href="services.html" class="text-gray-400">More Services</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start space-x-2">
+                            <i data-feather="phone" class="text-gray-400 mt-1 w-4 h-4"></i>
+                            <span class="text-gray-400">07044470559</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-feather="mail" class="text-gray-400 mt-1 w-4 h-4"></i>
+                            <span class="text-gray-400">siriusoddjobs@gmail.com</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i data-feather="map-pin" class="text-gray-400 mt-1 w-4 h-4"></i>
+                            <span class="text-gray-400">Port Harcourt, Nigeria</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0">© 2022 Sirius Jobs. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
+                    <a href="terms.html" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const mobileMenuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const accountTypeBtns = document.querySelectorAll('.accountTypeBtn');
+        const clientSection = document.getElementById('clientRegisterSection');
+        const professionalSection = document.getElementById('professionalRegisterSection');
+        const clientRegisterForm = document.getElementById('clientRegisterForm');
+        const professionalRegisterForm = document.getElementById('professionalRegisterForm');
+        const clientMessage = document.getElementById('clientRegisterMessage');
+        const professionalMessage = document.getElementById('professionalRegisterMessage');
+        const PRO_PAYMENT_STORAGE_KEY = 'siriusProPaymentState';
+
+        if (mobileMenuBtn) {
+          mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        }
+
+        const toggleButtons = Array.from(document.querySelectorAll('[data-password-toggle]'));
+        toggleButtons.forEach(btn => {
+          const target = document.getElementById(btn.dataset.target ?? '');
+          if (!target) return;
+          btn.addEventListener('click', () => {
+            const isHidden = target.type === 'password';
+            target.type = isHidden ? 'text' : 'password';
+            btn.textContent = isHidden ? 'Hide' : 'Show';
+            btn.setAttribute('aria-pressed', String(isHidden));
+          });
+        });
+        feather.replace();
+
+        function setAccountType(type) {
+          accountTypeBtns.forEach(btn => {
+            const active = btn.dataset.account === type;
+            btn.classList.toggle('bg-primary', active);
+            btn.classList.toggle('text-white', active);
+            btn.classList.toggle('bg-white', !active);
+            btn.classList.toggle('text-gray-700', !active);
+            btn.classList.toggle('border', !active);
+            btn.classList.toggle('border-gray-300', !active);
+          });
+          if (type === 'client') {
+            clientSection.classList.remove('hidden');
+            professionalSection.classList.add('hidden');
+          } else {
+            professionalSection.classList.remove('hidden');
+            clientSection.classList.add('hidden');
+          }
+        }
+
+        function parseParams() {
+          const params = new URLSearchParams(window.location.search);
+          const initialAccount = params.get('account') === 'professional' ? 'professional' : 'client';
+          setAccountType(initialAccount);
+          if (initialAccount === 'professional') {
+            const professionParam = params.get('profession');
+            if (professionParam) {
+              document.getElementById('registerProProfession').value = professionParam.toUpperCase();
+            }
+          }
+          return params;
+        }
+
+        function storeProPaymentState(state) {
+          sessionStorage.setItem(PRO_PAYMENT_STORAGE_KEY, JSON.stringify(state));
+        }
+
+        function getProPaymentState() {
+          try {
+            return JSON.parse(sessionStorage.getItem(PRO_PAYMENT_STORAGE_KEY) ?? 'null');
+          } catch (error) {
+            return null;
+          }
+        }
+
+        function clearProPaymentState() {
+          sessionStorage.removeItem(PRO_PAYMENT_STORAGE_KEY);
+        }
+
+        function showProfessionalMessage(message, tone = 'info') {
+          professionalMessage.classList.remove('hidden', 'text-red-600', 'text-green-600');
+          if (tone === 'error') {
+            professionalMessage.classList.add('text-red-600');
+          } else if (tone === 'success') {
+            professionalMessage.classList.add('text-green-600');
+          }
+          professionalMessage.textContent = message;
+        }
+
+        async function initiateProfessionalPayment(email, profession) {
+          const callbackUrl = `${window.location.origin}${window.location.pathname}?account=professional&profession=${profession}`;
+          const response = await fetch('/api/payments/professional/initiate-public', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, profession, callbackUrl }),
+          });
+          if (!response.ok) {
+            const body = await response.json().catch(() => ({ message: 'Unable to initialize payment.' }));
+            throw new Error(body.message || 'Unable to initialize payment.');
+          }
+          return response.json();
+        }
+
+        async function verifyProfessionalPayment(reference, email) {
+          const response = await fetch('/api/payments/professional/verify-public', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reference, email }),
+          });
+          if (!response.ok) {
+            const body = await response.json().catch(() => ({ message: 'Unable to verify payment yet.' }));
+            throw new Error(body.message || 'Unable to verify payment yet.');
+          }
+          return response.json();
+        }
+
+        async function handlePaystackReturn(params) {
+          const reference = params.get('reference') ?? params.get('trxref');
+          if (!reference) {
+            return;
+          }
+          const stored = getProPaymentState();
+          if (!stored?.email) {
+            showProfessionalMessage('We received a Paystack callback but could not match it to your application. Contact support with your receipt.', 'error');
+            return;
+          }
+
+          showProfessionalMessage('Confirming your payment...', 'info');
+          try {
+            await verifyProfessionalPayment(reference, stored.email);
+            showProfessionalMessage('Payment confirmed! Redirecting you to your dashboard...', 'success');
+            clearProPaymentState();
+            try {
+              const session = JSON.parse(sessionStorage.getItem('siriusProAuth') ?? 'null');
+              if (session) {
+                session.verified = true;
+                session.onboardingPaid = true;
+                sessionStorage.setItem('siriusProAuth', JSON.stringify(session));
+              }
+            } catch (error) {
+              console.warn('Unable to update professional session state', error);
+            }
+            professionalRegisterForm.reset();
+            document.getElementById('registerProProfession').value = stored.profession ?? '';
+            setTimeout(() => {
+              window.location.href = 'professional-dashboard.html';
+            }, 1600);
+          } catch (error) {
+            showProfessionalMessage(error.message || 'Could not confirm payment yet. Please refresh in a few minutes.', 'error');
+            return;
+          } finally {
+            const cleanUrl = new URL(window.location.href);
+            cleanUrl.searchParams.delete('reference');
+            cleanUrl.searchParams.delete('trxref');
+            window.history.replaceState({}, document.title, cleanUrl.toString());
+          }
+        }
+
+        accountTypeBtns.forEach(btn => btn.addEventListener('click', () => setAccountType(btn.dataset.account)));
+        const urlParams = parseParams();
+        handlePaystackReturn(urlParams);
+
+        clientRegisterForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          clientMessage.classList.remove('hidden', 'text-red-600', 'text-green-600');
+          clientMessage.textContent = 'Creating account...';
+          const payload = {
+            firstName: document.getElementById('registerClientFirst').value.trim(),
+            lastName: document.getElementById('registerClientLast').value.trim(),
+            email: document.getElementById('registerClientEmail').value.trim(),
+            password: document.getElementById('registerClientPassword').value,
+          };
+          const confirmedPassword = document.getElementById('registerClientConfirmPassword').value;
+          if (payload.password !== confirmedPassword) {
+            clientMessage.textContent = 'Passwords do not match. Please re-enter them.';
+            clientMessage.classList.add('text-red-600');
+            return;
+          }
+          try {
+            const res = await fetch('/api/auth/register-client', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+            });
+            if (!res.ok) {
+              const body = await res.json().catch(()=>({ message: 'Unable to register client account' }));
+              throw new Error(body.message || 'Unable to register client account');
+            }
+            const data = await res.json();
+            try {
+              await fetch('/api/auth/verify-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: data.verificationToken }),
+              });
+            } catch (verifyError) {
+              console.warn('Unable to auto-verify client email', verifyError);
+            }
+            const clientSession = {
+              email: payload.email,
+              firstName: payload.firstName,
+              lastName: payload.lastName,
+              verified: true,
+              token: data.verificationToken,
+              createdAt: new Date().toISOString()
+            };
+            sessionStorage.setItem('siriusClientAuth', JSON.stringify(clientSession));
+            clientMessage.textContent = `Success! ${payload.email} is verified and ready. Temporary code (for testing): ${data.verificationToken}. Redirecting you to pick a professional...`;
+            clientMessage.classList.add('text-green-600');
+            clientRegisterForm.reset();
+            setTimeout(() => {
+              window.location.href = 'consultations.html';
+            }, 1800);
+          } catch (error) {
+            clientMessage.textContent = error.message || 'Could not create account. Please try again.';
+            clientMessage.classList.add('text-red-600');
+          }
+        });
+
+        professionalRegisterForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          professionalMessage.classList.remove('hidden', 'text-red-600', 'text-green-600');
+          professionalMessage.textContent = 'Submitting your professional application...';
+          const payload = {
+            firstName: document.getElementById('registerProFirst').value.trim(),
+            lastName: document.getElementById('registerProLast').value.trim(),
+            email: document.getElementById('registerProEmail').value.trim(),
+            password: document.getElementById('registerProPassword').value,
+            profession: document.getElementById('registerProProfession').value,
+            licenseNumber: document.getElementById('registerProLicense').value.trim(),
+            regulatoryBody: document.getElementById('registerProRegBody').value.trim(),
+            licenseDocument: document.getElementById('registerProDocument').value.trim(),
+          };
+          if (!payload.profession) {
+            showProfessionalMessage('Select your profession before submitting.', 'error');
+            return;
+          }
+          const confirmedPassword = document.getElementById('registerProConfirmPassword').value;
+          if (payload.password !== confirmedPassword) {
+            showProfessionalMessage('Passwords do not match. Please re-enter them.', 'error');
+            return;
+          }
+          try {
+            const res = await fetch('/api/auth/register-professional', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+            });
+            if (!res.ok) {
+              const body = await res.json().catch(()=>({ message: 'Unable to register professional account' }));
+              throw new Error(body.message || 'Unable to register professional account');
+            }
+            const data = await res.json();
+            try {
+              await fetch('/api/auth/verify-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: data.verificationToken }),
+              });
+            } catch (verifyError) {
+              console.warn('Unable to auto-verify professional email', verifyError);
+            }
+            const professionalSession = {
+              email: payload.email,
+              firstName: payload.firstName,
+              lastName: payload.lastName,
+              profession: payload.profession,
+              verified: true,
+              userId: data.userId,
+              token: data.verificationToken,
+              createdAt: new Date().toISOString()
+            };
+            sessionStorage.setItem('siriusProAuth', JSON.stringify(professionalSession));
+            showProfessionalMessage(`Application received! ${payload.email} is verified and we are redirecting you to Paystack to settle the ₦1,000 onboarding fee...`, 'success');
+            try {
+              const payment = await initiateProfessionalPayment(payload.email, payload.profession);
+              const authorizationUrl = payment?.data?.authorization_url;
+              const reference = payment?.data?.reference;
+              if (!authorizationUrl || !reference) {
+                throw new Error('Paystack did not return a payment link.');
+              }
+              storeProPaymentState({ email: payload.email, profession: payload.profession, reference });
+              window.location.href = authorizationUrl;
+            } catch (paymentError) {
+              showProfessionalMessage(paymentError.message || 'We created your account but could not start Paystack. Please try again in a moment.', 'error');
+            }
+          } catch (error) {
+            showProfessionalMessage(error.message || 'Could not submit application. Please check your details and try again.', 'error');
+          }
+        });
+    </script>
+  <script src="assistant.js"></script>
+</body>
+</html>

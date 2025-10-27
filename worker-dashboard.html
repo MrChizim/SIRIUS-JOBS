@@ -31,6 +31,7 @@
         <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
         <a href="verify.html" class="text-gray-600 hover:text-primary transition-all">Verify</a>
         <a href="contact.html" class="text-gray-600 hover:text-primary transition-all">Contact Us</a>
+        <button id="workerLogout" class="text-gray-600 hover:text-primary transition-all">Logout</button>
 
       </div>
       <div class="md:hidden">
@@ -42,7 +43,7 @@
       <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
       <a href="verify.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Verify</a>
       <a href="contact.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Contact Us</a>
-      
+      <button id="workerLogoutMobile" class="block w-full text-left py-2 text-gray-600 hover:text-primary transition-all">Logout</button>
     </div>
   </nav>
 
@@ -96,14 +97,6 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- MAIN LISTS -->
       <div class="lg:col-span-2 space-y-8">
-        <div class="bg-white rounded-lg shadow p-6">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-semibold">Upcoming Gigs</h2>
-            <a href="#" class="text-sm text-primary hover:underline">View all</a>
-          </div>
-          <ul id="gigsList" class="space-y-3"></ul>
-        </div>
-
         <div class="bg-white rounded-lg shadow p-6">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-lg font-semibold">Application History</h2>
@@ -327,38 +320,123 @@
     }
 
     // lists
-    const gigs = [
-      { title:'Truck engine tune-up', date:'2025-11-02', location:'Abeokuta', pay:'₦12,000' },
-      { title:'AC servicing (3 units)', date:'2025-11-05', location:'Kano', pay:'₦8,500' }
-    ];
     const applied = [
-      { job:'Residential Electrician', company:'Sirius Homes', status:'Pending', date:'2025-10-22' },
-      { job:'Office Generator Repair', company:'ACME Ltd', status:'Hired', date:'2025-10-12' }
+      {
+        id:'app-101',
+        job:'Residential Electrician',
+        company:'Sirius Homes',
+        status:'Pending',
+        date:'Applied 22 Oct 2025',
+        location:'Port Harcourt • On-site',
+        rate:'₦25,000 / day',
+        nextStep:'Employer reviewing your profile'
+      },
+      {
+        id:'app-102',
+        job:'Office Generator Repair',
+        company:'ACME Ltd',
+        status:'Hired',
+        date:'Hired 12 Oct 2025',
+        location:'Lagos • 2 day project',
+        rate:'₦60,000 total',
+        nextStep:'Remember to update job notes after completion'
+      },
+      {
+        id:'app-103',
+        job:'Luxury Apartment Cleaning Team Lead',
+        company:'BrightSpark Facilities',
+        status:'Withdrawn',
+        date:'Withdrawn 05 Oct 2025',
+        location:'Abuja • Contract',
+        rate:'₦18,000 / shift',
+        nextStep:'You withdrew this application'
+      }
     ];
-    function renderGigs(){
-      const el = document.getElementById('gigsList'); el.innerHTML='';
-      gigs.forEach(g=>{
-        const li = document.createElement('li'); li.className='border rounded p-3 flex items-center justify-between';
-        li.innerHTML = `<div><div class="font-medium">${g.title}</div><div class="text-xs text-gray-500">${g.location} • ${g.date}</div></div><div class="text-sm font-semibold">${g.pay}</div>`;
-        el.appendChild(li);
-      });
-    }
     function renderApplied(){
-      const el = document.getElementById('appliedList'); el.innerHTML='';
-      applied.forEach(a=>{
-        const li = document.createElement('li'); li.className='flex items-center justify-between text-sm text-gray-700';
-        li.innerHTML = `<div><div>${a.job}</div><div class="text-xs text-gray-500">${a.company} • ${a.date}</div></div><div class="${a.status==='Hired'?'text-green-600':'text-yellow-600'} font-semibold">${a.status}</div>`;
+      const statusStyles = {
+        Pending: {
+          chip: 'bg-amber-50 border border-amber-200 text-amber-700',
+          label: 'Awaiting review'
+        },
+        Hired: {
+          chip: 'bg-green-50 border border-green-200 text-green-700',
+          label: 'Hired'
+        },
+        Withdrawn: {
+          chip: 'bg-gray-100 border border-gray-200 text-gray-600',
+          label: 'Withdrawn'
+        },
+        Rejected: {
+          chip: 'bg-red-50 border border-red-200 text-red-600',
+          label: 'Not selected'
+        }
+      };
+
+      const el = document.getElementById('appliedList');
+      el.innerHTML='';
+
+      applied.forEach(application => {
+        const statusStyle = statusStyles[application.status] ?? statusStyles.Pending;
+        const li = document.createElement('li');
+        li.className = 'bg-white border border-gray-200 rounded-xl p-4 shadow-sm space-y-3';
+        const withdrawButton = application.status === 'Pending'
+          ? `<button class="withdrawBtn inline-flex items-center gap-1 text-xs text-red-600 hover:underline font-medium" data-application="${application.id}"><i data-feather="slash" class="w-3.5 h-3.5"></i>Withdraw</button>`
+          : '';
+
+        li.innerHTML = `
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h4 class="text-sm font-semibold text-gray-900">${application.job}</h4>
+              <p class="text-xs text-gray-500">${application.company}</p>
+              <p class="text-xs text-gray-400 mt-1">${application.location ?? ''}</p>
+            </div>
+            <span class="text-xs font-semibold px-3 py-1 rounded-full ${statusStyle.chip}">${statusStyle.label}</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-gray-600">
+            <div class="flex items-center gap-2"><i data-feather="calendar" class="w-3.5 h-3.5 text-gray-400"></i><span>${application.date}</span></div>
+            <div class="flex items-center gap-2"><i data-feather="dollar-sign" class="w-3.5 h-3.5 text-gray-400"></i><span>${application.rate ?? '—'}</span></div>
+            <div class="flex items-center gap-2"><i data-feather="info" class="w-3.5 h-3.5 text-gray-400"></i><span>${application.nextStep ?? ''}</span></div>
+          </div>
+          <div class="flex items-center justify-between pt-2 border-t border-gray-100 text-xs">
+            <a href="jobs.html" class="inline-flex items-center gap-1 text-primary hover:underline"><i data-feather="external-link" class="w-3.5 h-3.5"></i>View job</a>
+            ${withdrawButton}
+          </div>`;
+
         el.appendChild(li);
       });
+
+      el.querySelectorAll('.withdrawBtn').forEach(btn => {
+        btn.addEventListener('click', async (event) => {
+          const applicationId = event.currentTarget.getAttribute('data-application');
+          if(!confirm('Withdraw this application?')) return;
+          try{
+            const res = await fetch(`/api/applications/${applicationId}/withdraw`, { method:'POST' });
+            if(!res.ok){
+              const body = await res.json().catch(()=>({ message:'Unable to withdraw' }));
+              throw new Error(body.message || 'Unable to withdraw');
+            }
+            const record = applied.find(item => item.id === applicationId);
+            if(record){
+              record.status = 'Withdrawn';
+              record.nextStep = 'You withdrew this application';
+              record.date = `Withdrawn ${new Date().toLocaleDateString()}`;
+            }
+            renderApplied();
+            alert('Application withdrawn.');
+          } catch(error){
+            alert(error.message);
+          }
+        });
+      });
+
+      feather.replace();
     }
 
     // interactions
     const verifyWorkerBtn = document.getElementById('verifyWorkerBtn');
     verifyWorkerBtn.addEventListener('click', () => {
       if(worker.verified) return;
-      worker.verified = true;
-      renderProfile();
-      alert('✅ ID verification complete! Your profile is now 100% verified.');
+      window.location.href = 'verify.html?returnTo=worker-dashboard';
     });
 
     const modal = document.getElementById('subscriptionModal');
@@ -400,7 +478,15 @@
     });
 
     // init
-    renderProfile(); renderGigs(); renderApplied();
+    function handleLogout(){
+      sessionStorage.clear();
+      alert('You have been logged out.');
+      window.location.href = 'login.html';
+    }
+    document.getElementById('workerLogout').addEventListener('click', handleLogout);
+    document.getElementById('workerLogoutMobile').addEventListener('click', handleLogout);
+
+    renderProfile(); renderApplied();
   </script>
   <script src="assistant.js"></script>
 </body>

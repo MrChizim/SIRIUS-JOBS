@@ -31,6 +31,7 @@
         <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
         <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
         <a href="verify.html" class="text-gray-600 hover:text-primary transition-all">Verify</a>
+        <button id="employerLogout" class="text-gray-600 hover:text-primary transition-all">Logout</button>
       </div>
       <div class="md:hidden">
         <button id="menu-btn" class="text-gray-600 focus:outline-none"><i data-feather="menu"></i></button>
@@ -40,7 +41,7 @@
       <a href="index.html" class="block py-2 text-gray-600 hover:text-primary">Home</a>
       <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary">Jobs</a>
       <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary">Find Workers</a>
-    
+      <button id="employerLogoutMobile" class="block w-full text-left py-2 text-gray-600 hover:text-primary">Logout</button>
     </div>
   </nav>
 
@@ -576,10 +577,8 @@
 
     const verifyEmployerBtn = document.getElementById('verifyEmployerBtn');
     verifyEmployerBtn.addEventListener('click', () => {
-      if(employerProfile.verified) return;
-      employerProfile.verified = true;
-      renderEmployerProfile();
-      alert('✅ Company ID verification complete! Your company profile is now fully verified.');
+      if (employerProfile.verified) return;
+      window.location.href = 'verify.html?returnTo=employer-dashboard';
     });
 
     const employerModal = document.getElementById('employerSubscriptionModal');
@@ -685,6 +684,14 @@
     });
 
     document.getElementById('upgradeBtn').addEventListener('click', openEmployerModal);
+
+    function handleLogout(){
+      sessionStorage.clear();
+      alert('You have been logged out of Sirius Jobs.');
+      window.location.href = 'login.html';
+    }
+    document.getElementById('employerLogout').addEventListener('click', handleLogout);
+    document.getElementById('employerLogoutMobile').addEventListener('click', handleLogout);
 
     renderEmployerProfile();
     renderMetrics(); renderJobs(); renderApplicants();

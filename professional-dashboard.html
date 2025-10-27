@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Professional Dashboard – Sirius Jobs</title>
-  <meta name="description" content="Track consultations, earnings, and payouts as a Sirius Jobs doctor or lawyer." />
+  <meta name="description" content="Monitor consultations, ratings, payouts and earnings as a Sirius Jobs professional." />
   <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -23,207 +23,228 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     body { font-family: 'Inter', sans-serif; }
-    .glass-panel {
-      background: rgba(255,255,255,0.86);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(148, 163, 184, 0.18);
-    }
+    .glass-card { background: rgba(255,255,255,0.9); backdrop-filter: blur(16px); border: 1px solid rgba(148,163,184,0.18); }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
   <!-- NAV -->
-  <nav class="bg-white shadow-md sticky top-0 z-40">
+  <nav class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary font-semibold">SJ</div>
-        <div>
-          <p class="text-sm text-gray-500 uppercase tracking-wide">Sirius Jobs</p>
-          <h1 class="text-lg font-semibold text-primary">Professional Console</h1>
-        </div>
+      <div class="flex items-center space-x-2">
+        <img src="logo.png" alt="Sirius Jobs Logo" class="w-10 h-10 rounded-full object-cover" onerror="this.src='https://via.placeholder.com/80x80?text=SJ'" />
+        <span class="text-xl font-bold text-primary">Sirius Jobs</span>
       </div>
-      <div class="hidden md:flex items-center gap-6 text-sm font-medium">
-        <a href="index.html" class="text-gray-500 hover:text-primary transition">Home</a>
-        <a href="consultations.html" class="text-gray-500 hover:text-primary transition">Consultations</a>
-        <a href="jobs.html" class="text-gray-500 hover:text-primary transition">Jobs</a>
-        <a href="verify.html" class="text-gray-500 hover:text-primary transition">Verify</a>
-        <a href="employer-dashboard.html" class="text-gray-500 hover:text-primary transition">Employer</a>
+      <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
+        <a href="index.html" class="text-gray-600 hover:text-primary transition">Home</a>
+        <a href="consultations.html" class="text-gray-600 hover:text-primary transition">Consultations</a>
+        <a href="jobs.html" class="text-gray-600 hover:text-primary transition">Jobs</a>
+        <a href="services.html" class="text-gray-600 hover:text-primary transition">Services</a>
+        <a href="verify.html" class="text-gray-600 hover:text-primary transition">Verify</a>
+        <button id="professionalLogout" class="text-gray-600 hover:text-primary transition">Logout</button>
       </div>
-      <div class="flex items-center gap-3">
-        <button class="text-sm font-medium text-primary border border-primary/60 rounded-lg px-4 py-2 hover:bg-primary hover:text-white transition">Switch account</button>
-        <button id="menu-btn" class="md:hidden text-gray-600 focus:outline-none">
-          <i data-feather="menu"></i>
-        </button>
+      <div class="md:hidden">
+        <button id="menu-btn" class="text-gray-600 focus:outline-none"><i data-feather="menu"></i></button>
       </div>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
       <a href="index.html" class="block py-2 text-gray-600 hover:text-primary">Home</a>
       <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary">Consultations</a>
       <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary">Jobs</a>
+      <a href="services.html" class="block py-2 text-gray-600 hover:text-primary">Services</a>
       <a href="verify.html" class="block py-2 text-gray-600 hover:text-primary">Verify</a>
+      <button id="professionalLogoutMobile" class="w-full text-left py-2 text-gray-600 hover:text-primary">Logout</button>
     </div>
   </nav>
 
   <!-- HERO -->
-  <header class="bg-gradient-to-r from-primary to-blue-700 text-white py-16">
-    <div class="container mx-auto px-4 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-      <div>
-        <p class="text-sm uppercase tracking-[0.4em] text-white/60 mb-3">Welcome back, Dr. Obi</p>
-        <h2 class="text-3xl md:text-4xl font-bold leading-snug">Monitor your consultations, earnings, and payouts in one place.</h2>
-        <p class="mt-4 max-w-2xl text-white/80">Your affordable sessions help more families get care. Stay on top of appointments, pending reviews, and wallet balances right here.</p>
+  <header class="text-white py-16 relative overflow-hidden" style="background-color:#0056b3;">
+    <span class="absolute inset-y-0 right-0 w-1/3 bg-white/5 pointer-events-none"></span>
+    <div class="container mx-auto px-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+      <div class="max-w-2xl">
+        <p class="text-xs uppercase tracking-[0.4em] text-white/70 mb-4">Professional Dashboard</p>
+        <h1 class="text-3xl md:text-4xl font-bold leading-tight">Deliver outstanding care and track every naira you earn.</h1>
+        <p class="mt-4 text-white/80">View scheduled sessions, manage payouts, and monitor your ratings the moment clients leave a review.</p>
       </div>
-      <div class="glass-panel rounded-2xl p-6 max-w-sm shadow-xl text-gray-900">
-        <div class="flex items-center justify-between mb-4">
-          <span class="text-sm font-medium text-gray-600 uppercase tracking-wide">Balance Overview</span>
-          <div class="bg-primary/10 text-primary rounded-full px-3 py-1 text-xs font-semibold">Updated 3 mins ago</div>
-        </div>
+      <div class="glass-card rounded-2xl shadow-xl p-6 text-gray-900 w-full max-w-sm">
         <p class="text-sm text-gray-500">Available to withdraw</p>
-        <p class="text-3xl font-semibold text-primary mb-3">₦185,500</p>
+        <p id="walletAvailable" class="text-3xl font-semibold text-primary mb-2">₦0</p>
         <div class="flex items-center justify-between text-sm text-gray-600">
-          <span>Pending after consultations</span>
-          <span class="font-medium text-gray-900">₦37,500</span>
+          <span>Pending earnings</span>
+          <span id="walletPending" class="font-medium text-gray-900">₦0</span>
         </div>
-        <div class="mt-5 flex gap-3">
-          <button class="flex-1 bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition" id="requestPayoutBtn">Request payout</button>
-          <button class="flex-1 border border-primary/30 text-primary font-medium py-2.5 rounded-lg hover:bg-primary hover:text-white transition" id="viewWalletBtn">Wallet history</button>
+        <div class="flex items-center justify-between text-sm text-gray-600 mt-1">
+          <span>Total consultations</span>
+          <span id="statConsultations" class="font-medium text-gray-900">0</span>
+        </div>
+        <div class="mt-6 flex gap-3">
+          <button id="requestPayoutBtn" class="flex-1 bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition">Request payout</button>
+          <button id="viewWalletBtn" class="flex-1 border border-primary/40 text-primary font-medium py-2.5 rounded-lg hover:bg-primary hover:text-white transition">Wallet history</button>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- DASHBOARD CONTENT -->
   <main class="container mx-auto px-4 py-12 space-y-12">
-    <!-- STAT CARDS -->
-    <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-      <article class="glass-panel rounded-2xl p-6 shadow-sm">
-        <div class="flex items-center justify-between mb-3">
-          <span class="text-sm font-medium text-gray-500">Clients served</span>
-          <span class="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full font-semibold">+6 this week</span>
+    <!-- PROFILE SUMMARY -->
+    <section class="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6 md:p-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div class="flex items-start gap-5">
+          <div class="relative">
+            <img id="proAvatar" src="https://via.placeholder.com/160x160?text=You" alt="Professional" class="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover border-4 border-primary/15 shadow-sm" />
+            <button id="editPhotoBtn" class="absolute -bottom-1 -right-1 bg-primary text-white p-2.5 rounded-full shadow-lg hover:bg-primary/90 ring-4 ring-white" type="button"><i data-feather="camera" class="w-4 h-4"></i></button>
+            <input type="file" id="profileImageInput" class="hidden" accept="image/*" />
+          </div>
+          <div class="space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:gap-3">
+              <h2 id="proName" class="text-2xl md:text-3xl font-semibold text-gray-900 leading-tight">Professional Name</h2>
+              <span id="proStatusBadge" class="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full bg-amber-100 text-amber-700 mt-2 sm:mt-0">
+                <i data-feather="shield" class="w-3 h-3"></i>
+                Pending review
+              </span>
+            </div>
+            <p id="proProfession" class="text-sm text-gray-500">Profession • Regulatory Body</p>
+            <div class="flex flex-wrap items-center gap-3 text-sm">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary">
+                <i data-feather="star" class="w-4 h-4"></i>
+                <span id="statAverageRating">0.0</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-600">
+                <i data-feather="message-square" class="w-4 h-4"></i>
+                <span id="statReviewCount">0 reviews</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-600">
+                <i data-feather="users" class="w-4 h-4"></i>
+                <span id="statClients">0 clients</span>
+              </span>
+            </div>
+          </div>
         </div>
-        <p class="text-3xl font-semibold text-primary mb-1" id="statClients">142</p>
-        <p class="text-xs text-gray-500">Across online and in-person consultations.</p>
-      </article>
-      <article class="glass-panel rounded-2xl p-6 shadow-sm">
-        <div class="flex items-center justify-between mb-3">
-          <span class="text-sm font-medium text-gray-500">Upcoming sessions</span>
-          <span class="text-xs text-primary bg-primary/10 px-2 py-1 rounded-full font-semibold">3 today</span>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full md:w-auto">
+          <article class="sm:col-span-2 bg-primary rounded-2xl text-white p-5 shadow-lg relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-28 h-28 bg-white/10 rounded-full"></div>
+            <div class="absolute -left-8 bottom-0 w-24 h-24 bg-white/10 rounded-full"></div>
+            <div class="flex items-center gap-3 relative">
+              <div class="bg-white/20 p-3 rounded-xl">
+                <i data-feather="credit-card" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-wider text-white/70">Net earnings</p>
+                <p id="statNetEarnings" class="text-2xl font-semibold mt-1">₦0</p>
+              </div>
+            </div>
+            <p class="text-xs text-white/70 mt-4">Total cleared funds you can withdraw at any time.</p>
+          </article>
+          <article class="glass-card rounded-2xl p-5 border border-gray-200/70">
+            <div class="flex items-center gap-3">
+              <div class="bg-primary/10 text-primary p-3 rounded-xl">
+                <i data-feather="clock" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-wider text-gray-500">Pending earnings</p>
+                <p id="statPendingEarnings" class="text-xl font-semibold text-primary mt-1">₦0</p>
+              </div>
+            </div>
+            <p class="text-xs text-gray-500 mt-4">Awaiting client confirmation before release to your wallet.</p>
+          </article>
         </div>
-        <p class="text-3xl font-semibold text-primary mb-1" id="statUpcoming">9</p>
-        <p class="text-xs text-gray-500">Confirm attendance to release payouts faster.</p>
-      </article>
-      <article class="glass-panel rounded-2xl p-6 shadow-sm">
-        <div class="flex items-center justify-between mb-3">
-          <span class="text-sm font-medium text-gray-500">Net earnings (month)</span>
-          <span class="text-xs text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full font-semibold">▲ 18%</span>
-        </div>
-        <p class="text-3xl font-semibold text-primary mb-1" id="statNetEarnings">₦372,500</p>
-        <p class="text-xs text-gray-500">After Sirius fees and outstanding payouts.</p>
-      </article>
-      <article class="glass-panel rounded-2xl p-6 shadow-sm">
-        <div class="flex items-center justify-between mb-3">
-          <span class="text-sm font-medium text-gray-500">Average rating</span>
-          <span class="text-xs text-amber-600 bg-amber-100 px-2 py-1 rounded-full font-semibold flex items-center gap-1"><i data-feather="star" class="w-3.5 h-3.5"></i>4.8</span>
-        </div>
-        <p class="text-3xl font-semibold text-primary mb-1" id="statRating">4.8</p>
-        <p class="text-xs text-gray-500">From 210 verified client reviews.</p>
-      </article>
+      </div>
     </section>
 
-    <!-- SCHEDULE + WALLET -->
-    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-2 glass-panel rounded-2xl shadow-sm overflow-hidden">
-        <header class="flex items-center justify-between px-6 py-4 border-b border-gray-200/60">
-          <div>
-            <h3 class="text-lg font-semibold text-gray-800">Today’s consultations</h3>
-            <p class="text-sm text-gray-500">Confirm sessions or mark them as complete to release payouts.</p>
-          </div>
-          <button class="text-sm text-primary font-medium hover:underline" id="syncCalendarBtn">Sync calendar</button>
-        </header>
-        <div class="divide-y divide-gray-200/70" id="consultationList"></div>
-      </div>
-      <aside class="glass-panel rounded-2xl shadow-sm p-6 space-y-6">
-        <header>
-          <h3 class="text-lg font-semibold text-gray-800">Wallet snapshot</h3>
-          <p class="text-sm text-gray-500">Track every credit, debit, and payout request.</p>
-        </header>
-        <div class="space-y-4" id="walletHistory"></div>
-        <button class="w-full bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition" id="exportWalletBtn">
-          <i data-feather="download-cloud" class="inline-block w-4 h-4 mr-2"></i>Export wallet history
-        </button>
+    <!-- SCHEDULE & PAYOUT -->
+    <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <aside class="xl:col-span-3 space-y-6">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Wallet history</h3>
+          <div id="walletHistory" class="space-y-3"></div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">Payout account</h3>
+          <p class="text-sm text-gray-500 mb-4">Add a Nigerian bank account to receive earnings anytime.</p>
+          <form id="payoutForm" class="space-y-3">
+            <div>
+              <label for="bankName" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Bank name</label>
+              <input id="bankName" name="bankName" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="e.g. GTBank" required>
+            </div>
+            <div>
+              <label for="accountNumber" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Account number</label>
+              <input id="accountNumber" name="accountNumber" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="10-digit number" required>
+            </div>
+            <div>
+              <label for="accountHolder" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Account holder</label>
+              <input id="accountHolder" name="accountHolder" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="Name on account" required>
+            </div>
+            <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition">Save payout account</button>
+          </form>
+          <p id="payoutFormStatus" class="text-xs text-gray-500 mt-3"></p>
+        </div>
       </aside>
     </section>
 
-    <!-- PERFORMANCE -->
-    <section class="glass-panel rounded-2xl shadow-sm p-6">
-      <header class="flex items-center justify-between mb-6">
+    <!-- REVIEWS -->
+    <section class="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6 md:p-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <div>
-          <h3 class="text-lg font-semibold text-gray-800">Performance insights</h3>
-          <p class="text-sm text-gray-500">Understand how your consultations convert into income.</p>
+          <h3 class="text-lg font-semibold text-gray-800">Latest reviews</h3>
+          <p class="text-sm text-gray-500">Clients can review each consultation. Share these ratings with prospective employers.</p>
         </div>
-        <select id="insightRange" class="text-sm border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20">
-          <option value="30">Last 30 days</option>
-          <option value="60">Last 60 days</option>
-          <option value="90">Last 90 days</option>
-        </select>
-      </header>
-      <div class="grid gap-6 md:grid-cols-3">
-        <article class="bg-white rounded-xl border border-gray-200/60 p-4">
-          <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Consultation fulfilment</p>
-          <p class="text-2xl font-semibold text-primary" id="metricFulfilment">96%</p>
-          <p class="text-xs text-gray-500 mt-2">Clients who completed and confirmed their sessions.</p>
-        </article>
-        <article class="bg-white rounded-xl border border-gray-200/60 p-4">
-          <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Repeat clients</p>
-          <p class="text-2xl font-semibold text-primary" id="metricRepeats">48%</p>
-          <p class="text-xs text-gray-500 mt-2">One in two clients booked more than once in the selected window.</p>
-        </article>
-        <article class="bg-white rounded-xl border border-gray-200/60 p-4">
-          <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Average payout time</p>
-          <p class="text-2xl font-semibold text-primary" id="metricPayoutTime">21 hrs</p>
-          <p class="text-xs text-gray-500 mt-2">From session confirmation to wallet credit.</p>
-        </article>
+        <button id="refreshReviewsBtn" class="text-sm text-primary font-medium hover:underline">Refresh reviews</button>
       </div>
+      <div id="reviewList" class="space-y-4"></div>
+      <p id="noReviewsState" class="text-sm text-gray-500 hidden">No reviews yet. Encourage clients to leave feedback after each consultation.</p>
     </section>
   </main>
 
   <!-- FOOTER -->
-  <footer class="bg-gray-900 text-white py-12 mt-12">
+  <footer class="bg-gray-900 text-white py-12">
     <div class="container mx-auto px-4">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
-          <div class="flex items-center gap-2 mb-4">
+          <div class="flex items-center space-x-2 mb-4">
             <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-              <i data-feather="star" class="w-4 h-4 text-white"></i>
+              <i data-feather="star" class="text-white w-4 h-4"></i>
             </div>
-            <span class="text-lg font-semibold">Sirius Jobs</span>
+            <span class="text-lg font-bold">Sirius Jobs</span>
           </div>
-          <p class="text-sm text-gray-400">Affordable consultations, trusted artisans, and employer tools that make hiring safer.</p>
+          <p class="text-gray-400 mb-4">Connecting talent, trusted professionals and fast support across Nigeria.</p>
+          <div class="flex space-x-4">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="text-gray-400 hover:text-white transition-all"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" class="text-gray-400 hover:text-white transition-all"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" class="text-gray-400 hover:text-white transition-all"><i data-feather="linkedin"></i></a>
+          </div>
         </div>
         <div>
-          <h4 class="text-sm font-semibold uppercase tracking-wide mb-3">Quick links</h4>
-          <ul class="space-y-2 text-gray-400 text-sm">
-            <li><a href="consultations.html" class="hover:text-white transition">Book a consultation</a></li>
-            <li><a href="jobs.html" class="hover:text-white transition">Browse jobs</a></li>
-            <li><a href="findworker.html" class="hover:text-white transition">Find artisans</a></li>
+          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="index.html" class="hover:text-white transition-all">Home</a></li>
+            <li><a href="jobs.html" class="hover:text-white transition-all">Jobs</a></li>
+            <li><a href="services.html" class="hover:text-white transition-all">Services</a></li>
+            <li><a href="consultations.html" class="hover:text-white transition-all">Consultations</a></li>
+            <li><a href="findworker.html" class="hover:text-white transition-all">Find Workers</a></li>
+            <li><a href="contact.html" class="hover:text-white transition-all">Contact</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="text-sm font-semibold uppercase tracking-wide mb-3">Support</h4>
-          <ul class="space-y-2 text-gray-400 text-sm">
-            <li>Email: support@siriusjobsng.com</li>
-            <li>WhatsApp: 0704 447 0559</li>
-            <li>Hours: 8am – 8pm (Mon-Sat)</li>
+          <h4 class="text-lg font-semibold mb-4">Support</h4>
+          <ul class="space-y-2 text-gray-400">
+            <li><span>Email: support@siriusjobsng.com</span></li>
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Hours: 8am – 8pm (Mon-Sat)</span></li>
           </ul>
         </div>
         <div>
-          <h4 class="text-sm font-semibold uppercase tracking-wide mb-3">Lagos office</h4>
-          <p class="text-sm text-gray-400">14 Admiralty Way,<br> Lekki Phase 1, Lagos.</p>
+          <h4 class="text-lg font-semibold mb-4">Head Office</h4>
+          <ul class="space-y-2 text-gray-400">
+            <li>Port Harcourt, Rivers State</li>
+            <li>Nigeria</li>
+          </ul>
         </div>
       </div>
-      <div class="border-t border-white/10 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
-        <span>© 2025 Sirius Jobs. All rights reserved.</span>
-        <div class="flex gap-6">
-          <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
-          <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+      <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0">© 2022 Sirius Jobs. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="privacypolicy.html" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
+          <a href="terms.html" class="text-gray-400 hover:text-white text-sm">Terms of Service</a>
         </div>
       </div>
     </div>
@@ -231,70 +252,216 @@
 
   <script>
     feather.replace();
-    document.getElementById('menu-btn').addEventListener('click', () => {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
+    const mobileMenuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+    function handleLogout(){
+      sessionStorage.clear();
+      alert('You have been logged out.');
+      window.location.href = 'login.html';
+    }
+    document.getElementById('professionalLogout').addEventListener('click', handleLogout);
+    document.getElementById('professionalLogoutMobile').addEventListener('click', handleLogout);
+
+    const avatarImg = document.getElementById('proAvatar');
+    const photoInput = document.getElementById('profileImageInput');
+    document.getElementById('editPhotoBtn').addEventListener('click', () => photoInput.click());
+    photoInput.addEventListener('change', event => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        avatarImg.src = reader.result;
+        alert('Profile image updated locally. Save to server when API is ready.');
+      };
+      reader.readAsDataURL(file);
     });
 
-    const consultations = [
-      { id: 'CNS-2412', client: 'Amaka U.', type: 'Telemedicine', schedule: '09:30', status: 'Awaiting payment confirmation', amount: 3000 },
-      { id: 'CNS-2413', client: 'Kelechi D.', type: 'In-person', schedule: '12:00', status: 'Confirmed', amount: 3000 },
-      { id: 'CNS-2414', client: 'Omolara B.', type: 'Telemedicine', schedule: '16:30', status: 'Pending notes', amount: 3000 },
-    ];
+    const formatCurrency = amount => {
+      const value = typeof amount === 'number' ? amount / 100 : 0;
+      return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(value);
+    };
 
-    const walletHistory = [
-      { type: 'credit', label: 'Consultation payout – Kelechi D.', amount: 2500, time: '1 hour ago' },
-      { type: 'credit', label: 'Consultation payout – Emeka A.', amount: 2500, time: 'Yesterday' },
-      { type: 'debit', label: 'Payout to GTBank • 1234', amount: -15000, time: '2 days ago' },
-      { type: 'credit', label: 'Consultation payout – Amaka U.', amount: 2500, time: '3 days ago' },
-    ];
+    const walletHistoryEl = document.getElementById('walletHistory');
+    const reviewList = document.getElementById('reviewList');
+    const noReviewsState = document.getElementById('noReviewsState');
+    const payoutForm = document.getElementById('payoutForm');
+    const payoutFormStatus = document.getElementById('payoutFormStatus');
+    const syncCalendarBtn = document.getElementById('syncCalendarBtn');
 
-    function renderConsultations() {
-      const container = document.getElementById('consultationList');
-      container.innerHTML = consultations.map(session => `
-        <article class="px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    async function loadProfessionalData(){
+      try {
+        const res = await fetch('/api/dashboard/professional');
+        if (!res.ok) throw new Error('Unable to fetch professional dashboard');
+        const data = await res.json();
+        hydrateDashboard(data);
+      } catch (error) {
+        console.warn(error);
+        hydrateDashboard(getFallbackProfessional());
+      }
+    }
+
+    function hydrateDashboard(data){
+      const { profile, wallet, stats, reviews } = data;
+     const name = `${profile?.user?.firstName ?? 'Professional'} ${profile?.user?.lastName ?? ''}`.trim();
+     document.getElementById('proName').textContent = name || 'Professional Name';
+     document.getElementById('proProfession').textContent = `${profile?.profession ?? 'Specialist'}${profile?.regulatoryBody ? ' • ' + profile.regulatoryBody : ''}`;
+     if (profile?.profileImageUrl) {
+       avatarImg.src = profile.profileImageUrl;
+     }
+
+      const statusBadge = document.getElementById('proStatusBadge');
+      if (statusBadge) {
+        const baseClasses = 'inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full mt-2 sm:mt-0';
+        if (profile?.verifiedBadge || profile?.licenseVerified) {
+          statusBadge.innerHTML = '<i data-feather="shield" class="w-3 h-3"></i> Verified';
+          statusBadge.className = `${baseClasses} bg-emerald-100 text-emerald-700`;
+        } else {
+          statusBadge.innerHTML = '<i data-feather="shield" class="w-3 h-3"></i> Pending review';
+          statusBadge.className = `${baseClasses} bg-amber-100 text-amber-700`;
+        }
+      }
+
+      const averageRating = stats?.averageRating ? Number(stats.averageRating).toFixed(1) : '0.0';
+      const reviewCount = stats?.reviewCount ?? 0;
+      const clientsServed = stats?.clientsServed ?? 0;
+      document.getElementById('statAverageRating').textContent = averageRating;
+      document.getElementById('statReviewCount').textContent = `${reviewCount} review${reviewCount === 1 ? '' : 's'}`;
+      document.getElementById('statClients').textContent = `${clientsServed} client${clientsServed === 1 ? '' : 's'}`;
+      document.getElementById('statNetEarnings').textContent = formatCurrency(stats?.netEarnings ?? 0);
+      document.getElementById('statPendingEarnings').textContent = formatCurrency(stats?.pendingEarnings ?? 0);
+      document.getElementById('statConsultations').textContent = String(profile?.consultations?.length ?? 0);
+
+      document.getElementById('walletAvailable').textContent = formatCurrency(wallet?.available ?? 0);
+      document.getElementById('walletPending').textContent = formatCurrency(wallet?.pending ?? 0);
+
+      renderWalletHistory(wallet?.history ?? []);
+      renderReviews(reviews ?? []);
+
+      document.getElementById('bankName').value = data.payoutAccount?.bankName ?? '';
+      document.getElementById('accountNumber').value = data.payoutAccount?.accountNumber ?? '';
+      document.getElementById('accountHolder').value = data.payoutAccount?.accountHolder ?? name;
+      feather.replace();
+    }
+
+    function renderWalletHistory(entries){
+      if (!entries.length){
+        walletHistoryEl.innerHTML = '<p class="text-sm text-gray-500">Wallet history will appear here after your first consultation.</p>';
+        return;
+      }
+      walletHistoryEl.innerHTML = entries.map(entry => `
+        <div class="border border-gray-200/70 rounded-xl px-4 py-3 flex items-center justify-between text-sm">
           <div>
-            <p class="text-sm font-semibold text-gray-900">#${session.id} • ${session.client}</p>
-            <p class="text-xs text-gray-500">${session.type} • Today ${session.schedule}</p>
+            <p class="font-medium text-gray-800">${entry.type}</p>
+            <p class="text-xs text-gray-500">${new Date(entry.createdAt).toLocaleString()}</p>
           </div>
-          <div class="flex items-center gap-3 text-sm">
-            <span class="inline-flex items-center gap-1 text-primary font-medium"><i data-feather="clock" class="w-4 h-4"></i>${session.schedule}</span>
-            <span class="text-gray-500">${session.status}</span>
-            <span class="font-semibold text-gray-900">₦${session.amount.toLocaleString()}</span>
-            <button class="border border-primary text-primary rounded-lg px-3 py-1.5 text-xs font-medium hover:bg-primary hover:text-white transition">Open notes</button>
+          <span class="${entry.amount >= 0 ? 'text-emerald-600' : 'text-red-500'} font-semibold">${formatCurrency(Math.abs(entry.amount ?? 0))}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderReviews(reviews){
+      if (!reviews.length){
+        reviewList.innerHTML = '';
+        noReviewsState.classList.remove('hidden');
+        return;
+      }
+      noReviewsState.classList.add('hidden');
+      reviewList.innerHTML = reviews.map(review => `
+        <article class="border border-gray-200/70 rounded-xl p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-semibold text-gray-800">${review.client?.firstName ?? 'Client'} ${review.client?.lastName ?? ''}</p>
+              <p class="text-xs text-gray-500">${new Date(review.createdAt).toLocaleDateString()}</p>
+            </div>
+            <span class="inline-flex items-center gap-1 text-primary font-semibold"><i data-feather="star" class="w-4 h-4"></i>${review.rating}</span>
           </div>
+          <p class="text-sm text-gray-600 mt-3">${review.comment ?? 'No comment left.'}</p>
         </article>
       `).join('');
       feather.replace();
     }
 
-    function renderWallet() {
-      const container = document.getElementById('walletHistory');
-      container.innerHTML = walletHistory.map(entry => `
-        <div class="bg-white rounded-xl border border-gray-200/60 px-4 py-3 flex items-center justify-between text-sm">
-          <div>
-            <p class="font-medium text-gray-800">${entry.label}</p>
-            <p class="text-xs text-gray-500">${entry.time}</p>
-          </div>
-          <span class="${entry.amount >= 0 ? 'text-emerald-600' : 'text-red-500'} font-semibold">₦${Math.abs(entry.amount).toLocaleString()}</span>
-        </div>
-      `).join('');
-    }
-
-    renderConsultations();
-    renderWallet();
-
     document.getElementById('requestPayoutBtn').addEventListener('click', () => {
-      alert('Payout request submitted. You will see the status under Wallet history.');
+      alert('Payout request submitted. Funds will arrive after verification.');
     });
     document.getElementById('viewWalletBtn').addEventListener('click', () => {
-      window.location.hash = '#wallet';
+      walletHistoryEl.scrollIntoView({ behavior: 'smooth' });
     });
-    document.getElementById('exportWalletBtn').addEventListener('click', () => {
-      alert('Export will download a CSV of your wallet history in the live app.');
+    document.getElementById('refreshReviewsBtn').addEventListener('click', loadProfessionalData);
+    if (syncCalendarBtn) {
+      syncCalendarBtn.addEventListener('click', () => alert('Calendar sync will connect to Google/Outlook in production.'));
+    }
+
+    payoutForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const formData = Object.fromEntries(new FormData(payoutForm).entries());
+      try {
+        const res = await fetch('/api/dashboard/professional/payout-account', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({ message: 'Unable to save payout account' }));
+          throw new Error(body.message || 'Unable to save payout account');
+        }
+        payoutFormStatus.textContent = 'Payout account saved successfully.';
+        payoutFormStatus.className = 'text-xs text-green-600 mt-3';
+      } catch (error) {
+        payoutFormStatus.textContent = error.message;
+        payoutFormStatus.className = 'text-xs text-red-600 mt-3';
+      }
     });
-    document.getElementById('syncCalendarBtn').addEventListener('click', () => {
-      alert('Calendar sync will connect Google Calendar or Outlook in the production build.');
-    });
+
+    function getFallbackProfessional(){
+      return {
+        profile: {
+          user: { firstName: 'Chukwuemeka', lastName: 'Obi' },
+          profession: 'Family Doctor',
+          regulatoryBody: 'MDCN',
+          profileImageUrl: '',
+          licenseVerified: true,
+          verifiedBadge: true,
+          consultations: [
+            { id: 'C-01', scheduledFor: new Date().toISOString(), status: 'PENDING', fee: 3000, client: { firstName: 'Amaka', lastName: 'U.' } },
+            { id: 'C-02', scheduledFor: new Date(Date.now() + 3_600_000).toISOString(), status: 'CONFIRMED', fee: 3000, client: { firstName: 'Kelechi', lastName: 'D.' } },
+          ],
+          bankName: 'GTBank',
+          accountNumber: '0123456789',
+          accountHolder: 'Chukwuemeka Obi',
+        },
+        wallet: {
+          available: 18550000,
+          pending: 3750000,
+          history: [
+            { type: 'Consultation payout – Amaka U.', amount: 250000, createdAt: new Date().toISOString() },
+            { type: 'Consultation payout – Emeka A.', amount: 250000, createdAt: new Date(Date.now() - 86_400_000).toISOString() },
+            { type: 'Payout to GTBank • 1234', amount: -1500000, createdAt: new Date(Date.now() - 2 * 86_400_000).toISOString() },
+          ],
+        },
+        stats: {
+          clientsServed: 142,
+          netEarnings: 37250000,
+          pendingEarnings: 3750000,
+          consultationsScheduled: 2,
+          averageRating: 4.8,
+          reviewCount: 48,
+        },
+        payoutAccount: {
+          bankName: 'GTBank',
+          accountNumber: '0123456789',
+          accountHolder: 'Chukwuemeka Obi',
+        },
+        reviews: [
+          { rating: 5, comment: 'Amazing consultation, quick diagnosis and follow-up plan.', createdAt: new Date().toISOString(), client: { firstName: 'Amaka', lastName: 'U.' } },
+          { rating: 4, comment: 'Helpful and patient throughout the session.', createdAt: new Date(Date.now() - 172_800_000).toISOString(), client: { firstName: 'Kelechi', lastName: 'D.' } },
+        ],
+      };
+    }
+
+    loadProfessionalData();
   </script>
   <script src="assistant.js"></script>
 </body>

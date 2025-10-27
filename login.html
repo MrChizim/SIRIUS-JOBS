@@ -81,35 +81,99 @@
     <!-- Login Form -->
     <section class="py-16 bg-white">
         <div class="container mx-auto px-4">
-            <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">Login to Your Account</h2>
-                <form>
-                    <div class="mb-6">
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address*</label>
-                        <input type="email" id="email" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" placeholder="your@email.com" required>
+            <div class="max-w-4xl mx-auto space-y-10">
+                <div id="workerEmployerCard" class="bg-white rounded-lg shadow-md p-8 space-y-6">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.35em] text-primary/70 font-semibold mb-2">Primary login</p>
+                        <h2 class="text-2xl font-bold text-gray-800">Workers &amp; Employers</h2>
+                        <p id="workerLoginSubtitle" class="text-sm text-gray-500 mt-1">Artisans sign in to manage gigs and applications. Switch to employer mode to monitor hires.</p>
                     </div>
-                    
-                    <div class="mb-6">
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password*</label>
-                        <input type="password" id="password" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" placeholder="••••••••" required>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" class="workerAccountBtn px-4 py-2 rounded-lg text-sm font-medium bg-primary text-white shadow-sm hover:bg-primary/90 transition" data-account="worker">
+                            <i data-feather="tool" class="w-4 h-4"></i>
+                            Worker Login
+                        </button>
+                        <button type="button" class="workerAccountBtn px-4 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:border-primary hover:text-primary transition" data-account="employer">
+                            <i data-feather="briefcase" class="w-4 h-4"></i>
+                            Employer Login
+                        </button>
                     </div>
-                    
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center">
-                            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
-                            <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                    <form id="workerEmployerLoginForm" class="space-y-5">
+                        <div>
+                            <label for="workerEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address*</label>
+                            <input type="email" id="workerEmail" class="w-full rounded-lg border border-gray-200 shadow-sm focus:border-primary focus:ring-primary/20 py-2 px-3" placeholder="artisan@example.com" required>
                         </div>
-                        <div class="text-sm">
-                            <a href="#" class="font-medium text-primary hover:text-opacity-80">Forgot password?</a>
+                        <div class="relative">
+                            <label for="workerPassword" class="block text-sm font-medium text-gray-700 mb-1">Password*</label>
+                            <input type="password" id="workerPassword" class="w-full rounded-lg border border-gray-200 shadow-sm focus:border-primary focus:ring-primary/20 py-2 pl-3 pr-16" placeholder="Enter your password" required>
+                            <button type="button" class="absolute inset-y-0 right-0 grid place-items-center px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="workerPassword">Show</button>
                         </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <label class="flex items-center gap-2 text-gray-600">
+                                <input id="workerRemember" name="workerRemember" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                                Remember me
+                            </label>
+                            <button type="button" class="font-medium text-primary hover:text-primary/80 transition forgotPasswordTrigger">Forgot password?</button>
+                        </div>
+                        <p id="workerLoginMessage" class="hidden text-sm"></p>
+                        <button id="workerLoginSubmitBtn" type="submit" class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-primary/90 transition">Sign In</button>
+                    </form>
+                    <div class="pt-4 border-t border-gray-200 text-sm text-gray-500">
+                        Need a worker or employer account? <a href="register.html" class="font-medium text-primary hover:text-primary/80">Register on the main jobs portal</a>.
                     </div>
-                    
-                    <button type="submit" class="w-full bg-primary text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition-all mb-4">Login</button>
-                    
-                    <div class="text-center">
-                        <p class="text-sm text-gray-600">Don't have an account? <a href="register.html" class="font-medium text-primary hover:text-opacity-80">Register here</a></p>
+                </div>
+
+                <p class="text-sm text-gray-500 text-center">Need to book consultations or manage a professional listing? Use the dedicated login box below.</p>
+
+                <div class="bg-white rounded-lg shadow-sm p-6 sm:p-8 space-y-5" id="consultationLoginCard">
+                    <div class="space-y-2">
+                        <p class="text-xs uppercase tracking-[0.35em] text-primary/70 font-semibold">Consultations</p>
+                        <h3 class="text-xl font-semibold text-gray-800">Clients &amp; Consultation Professionals</h3>
+                        <p class="text-sm text-gray-500">Clients log in to unlock contact details and leave reviews. Doctors and lawyers track earnings and payouts.</p>
                     </div>
-                </form>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" class="consultationAccountBtn px-4 py-2 rounded-lg text-sm font-medium bg-primary text-white shadow-sm hover:bg-primary/90 transition" data-account="client">
+                            <i data-feather="unlock" class="w-4 h-4"></i>
+                            Client Login
+                        </button>
+                        <button type="button" class="consultationAccountBtn px-4 py-2 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:border-primary hover:text-primary transition" data-account="professional">
+                            <i data-feather="activity" class="w-4 h-4"></i>
+                            Professional Login
+                        </button>
+                    </div>
+                    <form id="consultationLoginForm" class="space-y-5">
+                        <div>
+                            <label for="consultationEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address*</label>
+                            <input type="email" id="consultationEmail" class="w-full rounded-lg border border-gray-200 shadow-sm focus:border-primary focus:ring-primary/20 py-2 px-3" placeholder="you@example.com" required>
+                        </div>
+                        <div class="relative">
+                            <label for="consultationPassword" class="block text-sm font-medium text-gray-700 mb-1">Password*</label>
+                            <input type="password" id="consultationPassword" class="w-full rounded-lg border border-gray-200 shadow-sm focus:border-primary focus:ring-primary/20 py-2 pl-3 pr-16" placeholder="Enter your password" required>
+                            <button type="button" class="absolute inset-y-0 right-0 grid place-items-center px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="consultationPassword">Show</button>
+                        </div>
+                        <div id="professionalRoleRow" class="hidden">
+                            <label for="professionalRole" class="block text-sm font-medium text-gray-700 mb-1">Profession</label>
+                            <select id="professionalRole" class="w-full rounded-lg border border-gray-200 shadow-sm focus:border-primary focus:ring-primary/20 py-2 px-3">
+                                <option value="">Select your practice</option>
+                                <option value="DOCTOR">Doctor</option>
+                                <option value="LAWYER">Lawyer</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <label class="flex items-center gap-2 text-gray-600">
+                                <input id="consultationRemember" name="consultationRemember" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                                Remember me
+                            </label>
+                            <button type="button" class="font-medium text-primary hover:text-primary/80 transition forgotPasswordTrigger">Forgot password?</button>
+                        </div>
+                        <p id="consultationLoginMessage" class="hidden text-sm"></p>
+                        <button id="consultationLoginSubmitBtn" type="submit" class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-primary/90 transition">Sign In</button>
+                    </form>
+                    <div class="pt-4 border-t border-gray-200 text-sm text-gray-500 space-y-1">
+                        <p>Need to sign up? <a href="pro-client-register.html" class="font-medium text-primary hover:text-primary/80">Create a client or professional consultation account</a>.</p>
+                        <p class="text-xs text-gray-400">Only verified professionals can appear in public searches. Clients must verify their email before unlocking contacts.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -185,13 +249,527 @@
         </div>
     </footer>
 
+    <div id="forgotPasswordModal" class="fixed inset-0 hidden items-center justify-center px-4 py-6 z-50">
+        <div id="forgotPasswordBackdrop" class="absolute inset-0 bg-gray-900/70 backdrop-blur-sm"></div>
+        <div class="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 sm:p-8 space-y-6 overflow-hidden">
+            <button id="closeForgotPasswordModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition" aria-label="Close">
+                <i data-feather="x"></i>
+            </button>
+            <div class="space-y-2">
+                <p class="text-xs uppercase tracking-[0.35em] text-primary/70 font-semibold">Password help</p>
+                <h3 class="text-2xl font-semibold text-gray-900">Reset your Sirius Jobs password</h3>
+                <p class="text-sm text-gray-500">Enter your registered email to receive a one-time reset code. For testing, we will display the code instantly.</p>
+            </div>
+            <form id="forgotPasswordRequestForm" class="space-y-4">
+                <div>
+                    <label for="forgotPasswordEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="forgotPasswordEmail" required class="w-full rounded-lg border border-gray-200 px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="you@example.com">
+                </div>
+                <button type="submit" class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-primary/90 transition">Send reset code</button>
+                <p id="forgotPasswordRequestMessage" class="hidden text-sm"></p>
+            </form>
+            <div id="resetPasswordSection" class="space-y-4 hidden border-t border-gray-200 pt-4">
+                <p class="text-sm text-gray-500">Already have a code? Enter it below with your new password.</p>
+                <form id="resetPasswordForm" class="space-y-4">
+                    <div>
+                        <label for="resetPasswordToken" class="block text-sm font-medium text-gray-700 mb-1">Reset Code</label>
+                        <input type="text" id="resetPasswordToken" required class="w-full rounded-lg border border-gray-200 px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Paste the code you received">
+                    </div>
+                    <div class="relative">
+                        <label for="resetPasswordNew" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                        <input type="password" id="resetPasswordNew" required minlength="8" class="w-full rounded-lg border border-gray-200 px-3 pr-16 py-2 focus:border-primary focus:ring-primary/20" placeholder="Minimum 8 characters">
+                        <button type="button" class="absolute inset-y-0 right-0 grid place-items-center px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="resetPasswordNew">Show</button>
+                    </div>
+                    <div class="relative">
+                        <label for="resetPasswordConfirm" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                        <input type="password" id="resetPasswordConfirm" required minlength="8" class="w-full rounded-lg border border-gray-200 px-3 pr-16 py-2 focus:border-primary focus:ring-primary/20" placeholder="Repeat your password">
+                        <button type="button" class="absolute inset-y-0 right-0 grid place-items-center px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="resetPasswordConfirm">Show</button>
+                    </div>
+                    <button type="submit" class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-primary/90 transition">Reset password</button>
+                    <p id="resetPasswordMessage" class="hidden text-sm"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Mobile menu toggle
-        document.getElementById('menu-btn').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+        const mobileMenuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        const togglePasswordButtons = Array.from(document.querySelectorAll('[data-password-toggle]'));
+        togglePasswordButtons.forEach(btn => {
+            const target = document.getElementById(btn.dataset.target ?? '');
+            if (!target) return;
+            btn.addEventListener('click', () => {
+                const isHidden = target.type === 'password';
+                target.type = isHidden ? 'text' : 'password';
+                btn.textContent = isHidden ? 'Hide' : 'Show';
+                btn.setAttribute('aria-pressed', String(isHidden));
+            });
         });
 
-        // Feather icons
+        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+        const forgotPasswordBackdrop = document.getElementById('forgotPasswordBackdrop');
+        const closeForgotPasswordModalBtn = document.getElementById('closeForgotPasswordModal');
+        const forgotPasswordRequestForm = document.getElementById('forgotPasswordRequestForm');
+        const forgotPasswordEmailInput = document.getElementById('forgotPasswordEmail');
+        const forgotPasswordRequestMessage = document.getElementById('forgotPasswordRequestMessage');
+        const resetPasswordSection = document.getElementById('resetPasswordSection');
+        const resetPasswordForm = document.getElementById('resetPasswordForm');
+        const resetPasswordMessage = document.getElementById('resetPasswordMessage');
+        const resetPasswordTokenInput = document.getElementById('resetPasswordToken');
+        const resetPasswordNewInput = document.getElementById('resetPasswordNew');
+        const resetPasswordConfirmInput = document.getElementById('resetPasswordConfirm');
+        const forgotPasswordTriggers = Array.from(document.querySelectorAll('.forgotPasswordTrigger'));
+
+        const resetForgotPasswordMessages = () => {
+            [forgotPasswordRequestMessage, resetPasswordMessage].forEach(el => {
+                if (!el) return;
+                el.classList.add('hidden');
+                el.classList.remove('text-red-600', 'text-green-600', 'text-blue-600');
+                el.textContent = '';
+            });
+        };
+
+        const setStatusMessage = (element, message, tone = 'info') => {
+            if (!element) return;
+            element.classList.remove('hidden', 'text-red-600', 'text-green-600', 'text-blue-600');
+            const toneClass = tone === 'success' ? 'text-green-600' : tone === 'error' ? 'text-red-600' : 'text-blue-600';
+            element.classList.add(toneClass);
+            element.textContent = message;
+        };
+
+        const resetForgotPasswordFlow = () => {
+            resetForgotPasswordMessages();
+            forgotPasswordRequestForm?.reset();
+            resetPasswordForm?.reset();
+            resetPasswordSection?.classList.add('hidden');
+            resetPasswordTokenInput?.removeAttribute('readonly');
+        };
+
+        const openForgotPasswordModal = () => {
+            if (!forgotPasswordModal) return;
+            resetForgotPasswordFlow();
+            forgotPasswordModal.classList.remove('hidden');
+            forgotPasswordModal.classList.add('flex');
+            forgotPasswordEmailInput?.focus();
+        };
+
+        const closeForgotPasswordModal = () => {
+            if (!forgotPasswordModal) return;
+            forgotPasswordModal.classList.remove('flex');
+            forgotPasswordModal.classList.add('hidden');
+        };
+
+        forgotPasswordTriggers.forEach(btn => btn.addEventListener('click', openForgotPasswordModal));
+        closeForgotPasswordModalBtn?.addEventListener('click', closeForgotPasswordModal);
+        forgotPasswordBackdrop?.addEventListener('click', closeForgotPasswordModal);
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && forgotPasswordModal && forgotPasswordModal.classList.contains('flex')) {
+                closeForgotPasswordModal();
+            }
+        });
+
+        forgotPasswordRequestForm?.addEventListener('submit', async event => {
+            event.preventDefault();
+            resetForgotPasswordMessages();
+            const email = forgotPasswordEmailInput?.value.trim();
+            if (!email) {
+                setStatusMessage(forgotPasswordRequestMessage, 'Enter the email linked to your account.', 'error');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/auth/forgot-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email }),
+                });
+
+                const data = await res.json().catch(() => ({ message: 'Check your email for further instructions.' }));
+                if (!res.ok) {
+                    throw new Error(data.message || 'Unable to start password reset right now.');
+                }
+
+                setStatusMessage(
+                    forgotPasswordRequestMessage,
+                    data.message || 'Check your email for further instructions.',
+                    'success',
+                );
+                if (data.resetToken) {
+                    resetPasswordSection?.classList.remove('hidden');
+                    if (resetPasswordTokenInput) {
+                        resetPasswordTokenInput.value = data.resetToken;
+                        resetPasswordTokenInput.setAttribute('readonly', 'true');
+                    }
+                    resetPasswordNewInput?.focus();
+                }
+            } catch (error) {
+                setStatusMessage(
+                    forgotPasswordRequestMessage,
+                    error.message || 'Unable to start password reset right now.',
+                    'error',
+                );
+            }
+        });
+
+        resetPasswordForm?.addEventListener('submit', async event => {
+            event.preventDefault();
+            resetPasswordMessage && setStatusMessage(resetPasswordMessage, 'Updating your password...', 'info');
+            const token = resetPasswordTokenInput?.value.trim();
+            const password = resetPasswordNewInput?.value || '';
+            const confirm = resetPasswordConfirmInput?.value || '';
+
+            if (!token) {
+                setStatusMessage(resetPasswordMessage, 'Enter your reset code to continue.', 'error');
+                return;
+            }
+            if (password.length < 8) {
+                setStatusMessage(resetPasswordMessage, 'Passwords must be at least 8 characters long.', 'error');
+                return;
+            }
+            if (password !== confirm) {
+                setStatusMessage(resetPasswordMessage, 'Passwords do not match. Please try again.', 'error');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/auth/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token, password }),
+                });
+                const data = await res.json().catch(() => ({ message: 'Password updated successfully.' }));
+                if (!res.ok) {
+                    throw new Error(data.message || 'Unable to reset password right now.');
+                }
+
+                setStatusMessage(resetPasswordMessage, data.message || 'Password updated successfully.', 'success');
+                setTimeout(() => {
+                    closeForgotPasswordModal();
+                }, 1200);
+            } catch (error) {
+                setStatusMessage(
+                    resetPasswordMessage,
+                    error.message || 'Unable to reset password right now.',
+                    'error',
+                );
+            }
+        });
+
+        const toTitleCase = (value) => {
+            if (!value) return '';
+            return value
+                .replace(/[_\-\.]/g, ' ')
+                .split(' ')
+                .map(part => part ? part[0].toUpperCase() + part.slice(1).toLowerCase() : '')
+                .join(' ')
+                .trim();
+        };
+
+        // Workers & Employers
+        const workerAccountButtons = Array.from(document.querySelectorAll('.workerAccountBtn'));
+        const workerSubtitle = document.getElementById('workerLoginSubtitle');
+        const workerForm = document.getElementById('workerEmployerLoginForm');
+        const workerEmailInput = document.getElementById('workerEmail');
+        const workerPasswordInput = document.getElementById('workerPassword');
+        const workerMessage = document.getElementById('workerLoginMessage');
+        const workerSubmitBtn = document.getElementById('workerLoginSubmitBtn');
+
+        const workerCopy = {
+            worker: {
+                subtitle: 'Artisans sign in to manage gigs, respond to employers and keep profiles updated.',
+                redirect: 'worker-dashboard.html',
+                sessionKey: 'siriusWorkerAuth',
+                defaultName: 'Worker',
+                role: 'ARTISAN',
+                allowedRoles: ['ARTISAN']
+            },
+            employer: {
+                subtitle: 'Employers monitor applications, accept hires and manage payout requests.',
+                redirect: 'employer-dashboard.html',
+                sessionKey: 'siriusEmployerAuth',
+                defaultName: 'Employer',
+                role: 'EMPLOYER',
+                allowedRoles: ['EMPLOYER', 'ADMIN']
+            }
+        };
+
+        let activeWorkerAccount = 'worker';
+
+        const resetWorkerMessage = () => {
+            workerMessage.classList.add('hidden');
+            workerMessage.classList.remove('text-green-600', 'text-red-600', 'text-blue-600');
+            workerMessage.textContent = '';
+        };
+
+        const showWorkerMessage = (message, tone = 'info') => {
+            workerMessage.classList.remove('hidden', 'text-green-600', 'text-red-600', 'text-blue-600');
+            const toneClass = tone === 'success' ? 'text-green-600'
+                : tone === 'error' ? 'text-red-600'
+                : 'text-blue-600';
+            workerMessage.classList.add(toneClass);
+            workerMessage.textContent = message;
+        };
+
+        const setWorkerAccount = (type) => {
+            activeWorkerAccount = type;
+            workerAccountButtons.forEach(btn => {
+                const isActive = btn.dataset.account === type;
+                btn.classList.toggle('bg-primary', isActive);
+                btn.classList.toggle('text-white', isActive);
+                btn.classList.toggle('shadow-sm', isActive);
+                btn.classList.toggle('border', !isActive);
+                btn.classList.toggle('border-gray-300', !isActive);
+                btn.classList.toggle('text-gray-700', !isActive);
+            });
+            workerSubtitle.textContent = workerCopy[type].subtitle;
+            workerSubmitBtn.disabled = false;
+            workerSubmitBtn.textContent = 'Sign In';
+            resetWorkerMessage();
+            workerPasswordInput.value = '';
+        };
+
+        workerAccountButtons.forEach(btn => {
+            btn.addEventListener('click', () => setWorkerAccount(btn.dataset.account));
+        });
+
+        const loginRequest = async (email, password) => {
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const bodyText = await res.text();
+            let body;
+            try {
+                body = bodyText ? JSON.parse(bodyText) : null;
+            } catch (error) {
+                console.warn('Could not parse login response JSON', error);
+            }
+
+            if (!res.ok) {
+                const message =
+                    body?.message ||
+                    body?.errors?.formErrors?.join('. ') ||
+                    'Could not sign you in. Please check your details and try again.';
+                throw new Error(message);
+            }
+
+            if (!body) {
+                throw new Error('Login response was empty. Please try again.');
+            }
+
+            return body;
+        };
+
+        const buildSessionPayload = (data) => {
+            const user = data.user ?? {};
+            return {
+                token: data.token,
+                userId: user.id,
+                email: user.email,
+                role: user.role,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                verified: Boolean(user.emailVerifiedAt) || Boolean(user.verified),
+                emailVerifiedAt: user.emailVerifiedAt,
+                professionalProfile: user.professionalProfile ?? null,
+                artisanProfile: user.artisanProfile ?? null,
+                employerProfile: user.employerProfile ?? null,
+                loggedInAt: new Date().toISOString(),
+            };
+        };
+
+        workerForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const email = workerEmailInput.value.trim();
+            const password = workerPasswordInput.value.trim();
+            if (!email || !password) {
+                showWorkerMessage('Enter your email and password to continue.', 'error');
+                return;
+            }
+
+            workerSubmitBtn.disabled = true;
+            workerSubmitBtn.textContent = 'Signing in...';
+            showWorkerMessage('Checking your details...', 'info');
+
+            try {
+                const data = await loginRequest(email, password);
+                const userRole = data?.user?.role;
+                const { allowedRoles, defaultName } = workerCopy[activeWorkerAccount];
+                if (!allowedRoles.includes(userRole)) {
+                    const readableRole = toTitleCase(userRole?.toLowerCase() ?? 'account');
+                    throw new Error(`That account is set up as ${readableRole}. Switch to the correct login tab to continue.`);
+                }
+
+                const sessionPayload = buildSessionPayload(data);
+                if (!sessionPayload.firstName) {
+                    const [localPart] = email.split('@');
+                    sessionPayload.firstName = toTitleCase(localPart) || defaultName;
+                }
+
+                sessionStorage.setItem(workerCopy[activeWorkerAccount].sessionKey, JSON.stringify(sessionPayload));
+                showWorkerMessage('Welcome back! Redirecting you now...', 'success');
+                setTimeout(() => {
+                    window.location.href = workerCopy[activeWorkerAccount].redirect;
+                }, 400);
+            } catch (error) {
+                console.error('Worker/employer login failed', error);
+                showWorkerMessage(error.message || 'We could not sign you in. Please try again.', 'error');
+                workerSubmitBtn.disabled = false;
+                workerSubmitBtn.textContent = 'Sign In';
+                return;
+            }
+
+            workerSubmitBtn.disabled = false;
+            workerSubmitBtn.textContent = 'Sign In';
+        });
+
+        // Clients & Professionals
+        const consultationAccountButtons = Array.from(document.querySelectorAll('.consultationAccountBtn'));
+        const consultationForm = document.getElementById('consultationLoginForm');
+        const consultationEmailInput = document.getElementById('consultationEmail');
+        const consultationPasswordInput = document.getElementById('consultationPassword');
+        const consultationMessage = document.getElementById('consultationLoginMessage');
+        const consultationSubmitBtn = document.getElementById('consultationLoginSubmitBtn');
+        const professionalRoleRow = document.getElementById('professionalRoleRow');
+        const professionalRoleSelect = document.getElementById('professionalRole');
+
+        const consultationCopy = {
+            client: {
+                redirect: 'consultations.html',
+                sessionKey: 'siriusClientAuth',
+                defaultName: 'Client',
+                allowedRoles: ['CLIENT']
+            },
+            professional: {
+                redirect: 'professional-dashboard.html',
+                sessionKey: 'siriusProAuth',
+                defaultName: 'Professional',
+                allowedRoles: ['DOCTOR', 'LAWYER']
+            }
+        };
+
+        let activeConsultationAccount = 'client';
+
+        const resetConsultationMessage = () => {
+            consultationMessage.classList.add('hidden');
+            consultationMessage.classList.remove('text-green-600', 'text-red-600', 'text-blue-600');
+            consultationMessage.textContent = '';
+        };
+
+        const showConsultationMessage = (message, tone = 'info') => {
+            consultationMessage.classList.remove('hidden', 'text-green-600', 'text-red-600', 'text-blue-600');
+            const toneClass = tone === 'success' ? 'text-green-600'
+                : tone === 'error' ? 'text-red-600'
+                : 'text-blue-600';
+            consultationMessage.classList.add(toneClass);
+            consultationMessage.textContent = message;
+        };
+
+        const setConsultationAccount = (type) => {
+            activeConsultationAccount = type;
+            consultationAccountButtons.forEach(btn => {
+                const isActive = btn.dataset.account === type;
+                btn.classList.toggle('bg-primary', isActive);
+                btn.classList.toggle('text-white', isActive);
+                btn.classList.toggle('shadow-sm', isActive);
+                btn.classList.toggle('border', !isActive);
+                btn.classList.toggle('border-gray-300', !isActive);
+                btn.classList.toggle('text-gray-700', !isActive);
+            });
+            professionalRoleRow.classList.toggle('hidden', type !== 'professional');
+            consultationSubmitBtn.disabled = false;
+            consultationSubmitBtn.textContent = 'Sign In';
+            resetConsultationMessage();
+            consultationPasswordInput.value = '';
+            if (type !== 'professional') {
+                professionalRoleSelect.value = '';
+            }
+        };
+
+        consultationAccountButtons.forEach(btn => {
+            btn.addEventListener('click', () => setConsultationAccount(btn.dataset.account));
+        });
+
+        consultationForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const email = consultationEmailInput.value.trim();
+            const password = consultationPasswordInput.value.trim();
+            if (!email || !password) {
+                showConsultationMessage('Enter your email and password to continue.', 'error');
+                return;
+            }
+            if (activeConsultationAccount === 'professional' && !professionalRoleSelect.value) {
+                showConsultationMessage('Select your profession to continue.', 'error');
+                return;
+            }
+
+            consultationSubmitBtn.disabled = true;
+            consultationSubmitBtn.textContent = 'Signing in...';
+            showConsultationMessage('Authenticating your account...', 'info');
+
+            try {
+                const data = await loginRequest(email, password);
+                const userRole = data?.user?.role;
+                const { allowedRoles, defaultName } = consultationCopy[activeConsultationAccount];
+                if (!allowedRoles.includes(userRole)) {
+                    const readableRole = toTitleCase(userRole?.toLowerCase() ?? 'account');
+                    throw new Error(`That account is registered as ${readableRole}. Switch tabs to continue.`);
+                }
+
+                const sessionPayload = buildSessionPayload(data);
+                if (!sessionPayload.firstName) {
+                    const [localPart] = email.split('@');
+                    sessionPayload.firstName = toTitleCase(localPart) || defaultName;
+                }
+
+                if (activeConsultationAccount === 'professional') {
+                    sessionPayload.profession =
+                        data?.user?.professionalProfile?.profession ||
+                        professionalRoleSelect.value ||
+                        null;
+                    sessionPayload.onboardingPaid = Boolean(data?.user?.professionalProfile?.verifiedBadge);
+                }
+
+                sessionStorage.setItem(consultationCopy[activeConsultationAccount].sessionKey, JSON.stringify(sessionPayload));
+                showConsultationMessage('Login successful! Redirecting you now...', 'success');
+                setTimeout(() => {
+                    window.location.href = consultationCopy[activeConsultationAccount].redirect;
+                }, 400);
+            } catch (error) {
+                console.error('Consultation login failed', error);
+                showConsultationMessage(error.message || 'We could not sign you in. Please try again.', 'error');
+                consultationSubmitBtn.disabled = false;
+                consultationSubmitBtn.textContent = 'Sign In';
+                return;
+            }
+
+            consultationSubmitBtn.disabled = false;
+            consultationSubmitBtn.textContent = 'Sign In';
+        });
+
+        const params = new URLSearchParams(window.location.search);
+        const accountParam = (params.get('account') || '').toLowerCase();
+        if (accountParam === 'employer' || accountParam === 'worker') {
+            setWorkerAccount(accountParam);
+            document.getElementById('workerEmployerCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (accountParam === 'professional' || accountParam === 'client') {
+            setWorkerAccount('worker');
+            setConsultationAccount(accountParam === 'professional' ? 'professional' : 'client');
+            document.getElementById('consultationLoginCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+            setWorkerAccount('worker');
+            setConsultationAccount('client');
+        }
+
         feather.replace();
     </script>
   <script src="assistant.js"></script>

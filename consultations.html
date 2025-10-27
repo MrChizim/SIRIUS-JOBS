@@ -26,11 +26,13 @@
         </div>
         <span class="text-xl font-bold text-primary">Sirius Jobs</span>
       </div>
-      <div class="hidden md:flex space-x-8 items-center">
+      <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
         <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
+        <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
         <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
         <a href="consultations.html" class="text-primary font-semibold">Consultations</a>
-        <a href="contact.html" class="text-gray-600 hover:text-primary transition-all">Contact</a>
+        <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
+        <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
       </div>
       <div class="md:hidden">
         <button id="menu-btn" class="text-gray-600 focus:outline-none">
@@ -38,11 +40,13 @@
         </button>
       </div>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
       <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
+      <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
       <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
       <a href="consultations.html" class="block py-2 text-primary font-medium">Consultations</a>
-      <a href="contact.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Contact</a>
+      <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
+      <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
     </div>
   </nav>
 
@@ -60,6 +64,10 @@
           <a href="#lawyers" class="inline-flex items-center justify-center gap-2 border border-white text-white font-semibold px-5 py-3 rounded-lg hover:bg-white hover:text-primary transition">
             <i data-feather="briefcase"></i>
             Consult Lawyers
+          </a>
+          <a href="login.html" class="inline-flex items-center justify-center gap-2 bg-primary/20 text-white font-semibold px-5 py-3 rounded-lg hover:bg-white hover:text-primary transition">
+            <i data-feather="log-in"></i>
+            Login
           </a>
         </div>
       </div>
@@ -226,7 +234,7 @@
         <div class="grid gap-6 md:grid-cols-3">
           <div>
             <h3 class="font-semibold text-primary mb-2">1. Choose a Professional</h3>
-            <p class="text-sm text-gray-600">Browse the lists above or send us a quick WhatsApp message with your request.</p>
+            <p class="text-sm text-gray-600">Browse the lists above and select a professional to consult with.</p>
           </div>
           <div>
             <h3 class="font-semibold text-primary mb-2">2. Confirm a Cheap Session</h3>
@@ -234,10 +242,9 @@
           </div>
           <div>
             <h3 class="font-semibold text-primary mb-2">3. Get Support</h3>
-            <p class="text-sm text-gray-600">Meet virtually or in-person and receive follow-up summaries after every consultation.</p>
+            <p class="text-sm text-gray-600">Call or send a message to the unlocked professional for assistance.</p>
           </div>
         </div>
-        <p class="mt-4 text-xs text-gray-500">We remit ₦2,500 to the doctor or lawyer after you confirm who attended. Sirius Jobs retains ₦500 to power the concierge service.</p>
       </section>
 
       <!-- JOIN NETWORK -->
@@ -248,70 +255,34 @@
             <p class="text-sm text-gray-600">Apply to join our affordable consultation network. We verify every professional and charge a flat ₦3,000 monthly partnership fee that unlocks featured visibility and inbound leads.</p>
           </div>
           <div class="md:w-1/3 mt-4 md:mt-0 space-y-3">
-            <button type="button" class="applyProBtn w-full inline-flex items-center justify-center gap-2 border border-primary text-primary px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition text-sm font-medium" data-profession="DOCTOR">
+            <a href="pro-client-register.html?account=professional&profession=DOCTOR" class="applyProBtn w-full inline-flex items-center justify-center gap-2 border border-primary text-primary px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition text-sm font-medium" data-profession="DOCTOR">
               Apply as Doctor
-            </button>
-            <button type="button" class="applyProBtn w-full inline-flex items-center justify-center gap-2 border border-primary text-primary px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition text-sm font-medium" data-profession="LAWYER">
+            </a>
+            <a href="pro-client-register.html?account=professional&profession=LAWYER" class="applyProBtn w-full inline-flex items-center justify-center gap-2 border border-primary text-primary px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition text-sm font-medium" data-profession="LAWYER">
               Apply as Lawyer
-            </button>
+            </a>
           </div>
         </div>
       </section>
     </div>
   </main>
 
-  <!-- PAYMENT MODAL -->
-  <div id="proApplyModal" class="fixed inset-0 hidden items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-6 z-50">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl relative overflow-hidden">
-      <button id="closeProApplyModal" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow text-gray-500 hover:text-gray-900 transition">
-        <i data-feather="x" class="w-5 h-5"></i>
-      </button>
-      <div class="p-6 md:p-8 space-y-5">
-        <header class="space-y-2">
-          <p class="text-sm uppercase tracking-wide text-primary font-semibold" id="proApplyBadge">Professional Listing</p>
-          <h3 id="proApplyHeading" class="text-2xl font-semibold text-gray-900">Join as a Professional</h3>
-          <p class="text-sm text-gray-600">Pay a one-time onboarding fee of ₦1,000 to be listed. For every consultation, Sirius Jobs retains ₦500, and you take home ₦2,500. Consultation fees are capped at ₦3,000 to stay affordable.</p>
-        </header>
-        <section class="grid gap-5 md:grid-cols-2">
-          <div class="bg-primary/5 border border-primary/10 rounded-xl p-4 space-y-2">
-            <h4 class="text-sm font-semibold text-primary uppercase tracking-wide">What you get</h4>
-            <ul class="text-sm text-gray-600 space-y-1.5">
-              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-primary mt-0.5"></i>Priority listing on consultation search</li>
-              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-primary mt-0.5"></i>Alerts when matched clients request your service</li>
-              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-primary mt-0.5"></i>Wallet tracking for payouts anytime</li>
-            </ul>
-          </div>
-          <div class="border border-gray-200 rounded-xl p-4 space-y-2">
-            <h4 class="text-sm font-semibold text-gray-800 uppercase tracking-wide">Payout model</h4>
-            <ul class="text-sm text-gray-600 space-y-1.5">
-              <li>Consultation fee: ₦3,000 flat per session</li>
-              <li>You receive ₦2,500 per confirmed session</li>
-              <li>Sirius Jobs retains ₦500 to fund support &amp; background checks</li>
-            </ul>
-          </div>
-        </section>
-        <form id="proApplyForm" class="space-y-4">
-          <input type="hidden" id="proApplyProfession">
-          <div class="space-y-2">
-            <label for="proApplyEmail" class="text-sm font-medium text-gray-700">Email for Paystack receipt</label>
-            <input type="email" id="proApplyEmail" class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary" placeholder="you@example.com" required>
-          </div>
-          <div class="flex items-center justify-between text-sm text-gray-600 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
-            <span>One-time onboarding fee</span>
-            <strong class="text-gray-900">₦1,000</strong>
-          </div>
-          <div class="flex items-center gap-3">
-            <button type="submit" class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-lg hover:bg-primary/90 transition">
-              <i data-feather="credit-card" class="w-4 h-4"></i>
-              Pay with Paystack
-            </button>
-            <button type="button" id="proApplyLater" class="text-sm text-gray-500 hover:text-gray-700">I’ll pay later</button>
-          </div>
-          <p class="text-xs text-gray-500">After payment, you’ll be redirected to complete ID verification. Professionals only appear publicly after verification succeeds.</p>
-        </form>
+  <section class="container mx-auto px-4 py-12" id="client-feedback">
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-8 space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-semibold text-gray-900">Share a review after your session</h2>
+          <p class="text-sm text-gray-600">Rate the professional who attended to you so we can reward great service and keep payouts accurate.</p>
+        </div>
+        <span class="inline-flex items-center gap-2 text-xs text-primary bg-primary/10 px-3 py-1 rounded-full">
+          <i data-feather="star" class="w-4 h-4"></i>
+          Clients control professional ratings
+        </span>
       </div>
+      <div id="clientConsultationsList" class="space-y-4"></div>
+      <p id="noClientConsultations" class="text-sm text-gray-500 hidden">Once you complete a consultation, it will appear here for feedback.</p>
     </div>
-  </div>
+  </section>
 
   <div id="consultPaymentModal" class="fixed inset-0 hidden items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6 z-50">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl relative overflow-hidden">
@@ -344,6 +315,51 @@
           </div>
         </div>
         <div class="text-xs text-gray-500">Need help? <a href="https://wa.me/2347012345678" target="_blank" class="text-primary hover:underline">Chat with our concierge team</a>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK ACCOUNT MODAL -->
+  <div id="clientAccountModal" class="fixed inset-0 hidden items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-6 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden">
+      <button id="closeClientAccountModal" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow text-gray-500 hover:text-gray-900 transition">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+      <div class="p-6 md:p-8 space-y-5">
+        <header class="space-y-2">
+          <h3 class="text-2xl font-semibold text-gray-900">Create a quick account</h3>
+          <p class="text-sm text-gray-600">We’ll save your progress so you can unlock consultations, leave reviews, and get follow-up summaries.</p>
+        </header>
+        <form id="clientAccountForm" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="clientFirstName" class="text-sm font-medium text-gray-700">First name</label>
+              <input id="clientFirstName" type="text" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Ada">
+            </div>
+            <div>
+              <label for="clientLastName" class="text-sm font-medium text-gray-700">Last name</label>
+              <input id="clientLastName" type="text" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Grace">
+            </div>
+          </div>
+          <div>
+            <label for="clientEmail" class="text-sm font-medium text-gray-700">Email</label>
+            <input id="clientEmail" type="email" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="you@example.com">
+          </div>
+          <div>
+            <label for="clientPassword" class="text-sm font-medium text-gray-700">Create password</label>
+            <input id="clientPassword" type="password" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Minimum 8 characters">
+          </div>
+          <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition">Register &amp; send verification email</button>
+        </form>
+        <p id="clientAccountMessage" class="text-xs text-gray-500 hidden"></p>
+        <form id="clientVerificationForm" class="space-y-3 hidden">
+          <div>
+            <label for="clientVerificationToken" class="text-sm font-medium text-gray-700">Enter verification code</label>
+            <input id="clientVerificationToken" type="text" class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Paste the code sent to your email" required>
+          </div>
+          <button type="submit" class="w-full border border-primary text-primary py-2.5 rounded-lg font-medium hover:bg-primary hover:text-white transition">Verify email</button>
+        </form>
+        <p class="text-xs text-gray-500">Already verified? Jump straight to payment after signing in.</p>
       </div>
     </div>
   </div>
@@ -394,7 +410,7 @@
         </div>
       </div>
       <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 mb-4 md:mb-0">© 2025 Sirius Jobs. All rights reserved.</p>
+        <p class="text-gray-400 mb-4 md:mb-0">© 2022 Sirius Jobs. All rights reserved.</p>
         <div class="flex space-x-6 text-gray-400">
           <a href="privacypolicy.html" class="hover:text-white transition-all text-sm">Privacy Policy</a>
           <a href="terms.html" class="hover:text-white transition-all text-sm">Terms of Service</a>
@@ -413,96 +429,30 @@
       });
     }
 
-    const proApplyModal = document.getElementById('proApplyModal');
-    const closeProApplyModalBtn = document.getElementById('closeProApplyModal');
-    const proApplyForm = document.getElementById('proApplyForm');
-    const proApplyProfessionInput = document.getElementById('proApplyProfession');
-    const proApplyHeading = document.getElementById('proApplyHeading');
-    const proApplyBadge = document.getElementById('proApplyBadge');
-    const proApplyEmail = document.getElementById('proApplyEmail');
-    const proApplyLaterBtn = document.getElementById('proApplyLater');
-    const applyButtons = document.querySelectorAll('.applyProBtn');
-
-    function openProApplyModal(profession){
-      proApplyProfessionInput.value = profession;
-      if(profession === 'DOCTOR'){
-        proApplyHeading.textContent = 'Join as a Doctor';
-        proApplyBadge.textContent = 'Doctor Listing';
-      } else {
-        proApplyHeading.textContent = 'Join as a Lawyer';
-        proApplyBadge.textContent = 'Lawyer Listing';
-      }
-      proApplyModal.classList.remove('hidden');
-      proApplyModal.classList.add('flex');
-      document.body.classList.add('overflow-hidden');
-      proApplyEmail.focus();
-    }
-
-    function closeProApplyModal(){
-      proApplyModal.classList.add('hidden');
-      proApplyModal.classList.remove('flex');
-      document.body.classList.remove('overflow-hidden');
-      proApplyForm.reset();
-    }
-
-    applyButtons.forEach(btn => {
-      btn.addEventListener('click', (event)=>{
-        const profession = event.currentTarget.getAttribute('data-profession');
-        openProApplyModal(profession);
-      });
-    });
-
-    if(closeProApplyModalBtn){
-      closeProApplyModalBtn.addEventListener('click', closeProApplyModal);
-    }
-    if(proApplyLaterBtn){
-      proApplyLaterBtn.addEventListener('click', closeProApplyModal);
-    }
-    if(proApplyModal){
-      proApplyModal.addEventListener('click', (event)=>{
-        if(event.target === proApplyModal){
-          closeProApplyModal();
-        }
-      });
-    }
-
-    if(proApplyForm){
-      proApplyForm.addEventListener('submit', async (event)=>{
-        event.preventDefault();
-        const payload = {
-          profession: proApplyProfessionInput.value,
-          email: proApplyEmail.value.trim()
-        };
-        if(!payload.email){
-          alert('Please provide an email for the Paystack receipt.');
-          return;
-        }
-        try{
-          const response = await fetch('/api/payments/professional/apply', {
-            method:'POST',
-            headers:{ 'Content-Type':'application/json' },
-            body: JSON.stringify(payload)
-          });
-          if(!response.ok){
-            const body = await response.json().catch(()=>({ message:'Unable to initialize payment' }));
-            throw new Error(body.message || 'Unable to initialize payment');
-          }
-          const data = await response.json();
-          alert('Redirecting you to Paystack. Complete the payment to finish onboarding.');
-          closeProApplyModal();
-          if(data?.data?.authorization_url){
-            window.location.href = data.data.authorization_url;
-          }
-        } catch(error){
-          alert(error.message || 'Something went wrong, please try again.');
-        }
-      });
-    }
-
     const paymentModal = document.getElementById('consultPaymentModal');
     const closePaymentModalBtn = document.getElementById('closeConsultPaymentModal');
     const selectedProNameEl = document.getElementById('selectedProName');
     const unlockButtons = document.querySelectorAll('.unlockContactBtn');
+    const clientAccountModal = document.getElementById('clientAccountModal');
+    const closeClientAccountModalBtn = document.getElementById('closeClientAccountModal');
+    const clientAccountForm = document.getElementById('clientAccountForm');
+    const clientVerificationForm = document.getElementById('clientVerificationForm');
+    const clientVerificationTokenInput = document.getElementById('clientVerificationToken');
+    const clientAccountMessage = document.getElementById('clientAccountMessage');
+    const clientConsultationsList = document.getElementById('clientConsultationsList');
+    const noClientConsultations = document.getElementById('noClientConsultations');
+    const clientFirstNameInput = document.getElementById('clientFirstName');
+    const clientLastNameInput = document.getElementById('clientLastName');
+    const clientEmailInput = document.getElementById('clientEmail');
+    const clientPasswordInput = document.getElementById('clientPassword');
+    let storedClientAccount = null;
+    try {
+      storedClientAccount = JSON.parse(sessionStorage.getItem('siriusClientAuth') ?? 'null');
+    } catch (error) {
+      storedClientAccount = null;
+    }
+    let clientAuthenticated = Boolean(storedClientAccount?.verified);
+    let pendingClientAction = null;
 
     function openPaymentModal(name){
       if(selectedProNameEl){
@@ -523,10 +473,52 @@
       }
     }
 
+    function openClientAccountModal(){
+      clientAccountModal.classList.remove('hidden');
+      clientAccountModal.classList.add('flex');
+      document.body.classList.add('overflow-hidden');
+      if (storedClientAccount?.email) {
+        clientEmailInput.value = storedClientAccount.email;
+      }
+      clientAccountMessage.classList.add('hidden');
+      clientAccountMessage.classList.remove('text-red-600', 'text-green-600');
+      clientAccountMessage.textContent = '';
+      if (!storedClientAccount?.verified) {
+        clientVerificationForm.classList.add('hidden');
+      }
+    }
+
+    function closeClientAccountModal(){
+      clientAccountModal.classList.add('hidden');
+      clientAccountModal.classList.remove('flex');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    function ensureClientAccount(callback){
+      try {
+        storedClientAccount = JSON.parse(sessionStorage.getItem('siriusClientAuth') ?? 'null');
+      } catch (error) {
+        storedClientAccount = null;
+      }
+      clientAuthenticated = Boolean(storedClientAccount?.verified);
+      if(clientAuthenticated){
+        callback();
+        return;
+      }
+      pendingClientAction = callback;
+      openClientAccountModal();
+      if (storedClientAccount?.email && !storedClientAccount.verified) {
+        clientAccountMessage.classList.remove('hidden');
+        clientAccountMessage.textContent = 'We have already created an account for ' + storedClientAccount.email + '. Please enter the verification code sent to your inbox to continue.';
+        clientVerificationForm.classList.remove('hidden');
+        if (clientVerificationTokenInput) clientVerificationTokenInput.focus();
+      }
+    }
+
     unlockButtons.forEach(btn => {
       btn.addEventListener('click', (event) => {
         const name = event.currentTarget.getAttribute('data-pro') || 'Selected Professional';
-        openPaymentModal(name);
+        ensureClientAccount(() => openPaymentModal(name));
       });
     });
 
@@ -542,16 +534,211 @@
       });
     }
 
+    if(closeClientAccountModalBtn){
+      closeClientAccountModalBtn.addEventListener('click', () => {
+        pendingClientAction = null;
+        closeClientAccountModal();
+      });
+    }
+
+    if(clientAccountForm){
+      clientAccountForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const firstName = clientFirstNameInput.value.trim();
+        const lastName = clientLastNameInput.value.trim();
+        const email = clientEmailInput.value.trim();
+        const password = clientPasswordInput.value;
+
+      clientAccountMessage.classList.remove('hidden');
+      clientAccountMessage.classList.remove('text-red-600', 'text-green-600');
+      clientAccountMessage.textContent = 'Creating your account...';
+
+        try {
+          const res = await fetch('/api/auth/register-client', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ firstName, lastName, email, password }),
+          });
+          if(!res.ok){
+            const body = await res.json().catch(()=>({ message:'Unable to create account' }));
+            throw new Error(body.message || 'Unable to create account');
+          }
+          const data = await res.json();
+          storedClientAccount = { firstName, lastName, email, verified: false };
+          sessionStorage.setItem('siriusClientAuth', JSON.stringify(storedClientAccount));
+          clientAccountMessage.textContent = `We emailed a verification link to ${email}. Use this one-time code if needed: ${data.verificationToken}`;
+          clientAccountMessage.classList.add('text-green-600');
+          clientVerificationForm.classList.remove('hidden');
+          if (clientVerificationTokenInput) clientVerificationTokenInput.focus();
+        } catch(error){
+          clientAccountMessage.textContent = error.message || 'Could not create account. Please try again.';
+          clientAccountMessage.classList.add('text-red-600');
+          clientVerificationForm.classList.add('hidden');
+        }
+      });
+    }
+
+    if(clientVerificationForm){
+      clientVerificationForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const token = clientVerificationTokenInput.value.trim();
+        if(!token){
+          clientAccountMessage.classList.remove('hidden');
+          clientAccountMessage.textContent = 'Enter the verification code from your email.';
+          return;
+        }
+        clientAccountMessage.classList.remove('hidden');
+        clientAccountMessage.classList.remove('text-red-600', 'text-green-600');
+        clientAccountMessage.textContent = 'Verifying your email...';
+        try {
+          const res = await fetch('/api/auth/verify-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token }),
+          });
+          if(!res.ok){
+            const body = await res.json().catch(()=>({ message:'Unable to verify email' }));
+            throw new Error(body.message || 'Unable to verify email');
+          }
+          storedClientAccount = {
+            ...(storedClientAccount ?? {}),
+            verified: true,
+          };
+          sessionStorage.setItem('siriusClientAuth', JSON.stringify(storedClientAccount));
+          clientAuthenticated = true;
+          clientAccountMessage.textContent = 'Email verified! You can now continue to payment.';
+          clientAccountMessage.classList.add('text-green-600');
+          clientVerificationForm.classList.add('hidden');
+          if (clientVerificationTokenInput) clientVerificationTokenInput.value = '';
+          setTimeout(() => {
+            closeClientAccountModal();
+            if(pendingClientAction){
+              pendingClientAction();
+              pendingClientAction = null;
+            }
+          }, 600);
+        } catch(error){
+          clientAccountMessage.textContent = error.message || 'Unable to verify email. Please confirm the code and try again.';
+          clientAccountMessage.classList.add('text-red-600');
+        }
+      });
+    }
+
+    if(clientAccountModal){
+      clientAccountModal.addEventListener('click', (event) => {
+        if(event.target === clientAccountModal){
+          pendingClientAction = null;
+          closeClientAccountModal();
+        }
+      });
+    }
+
     document.addEventListener('keydown', (event) => {
       if(event.key === 'Escape'){
         if(paymentModal && paymentModal.classList.contains('flex')){
           closePaymentModal();
         }
-        if(proApplyModal && proApplyModal.classList.contains('flex')){
-          closeProApplyModal();
+        if(clientAccountModal && clientAccountModal.classList.contains('flex')){
+          pendingClientAction = null;
+          closeClientAccountModal();
         }
       }
     });
+
+    const clientSessions = [
+      { id:'CONS-301', professionalId:'pro-doc-1', professionalName:'Dr. Chukwuemeka Obi', completedOn:'2025-02-08T10:00:00Z', reviewed:false },
+      { id:'CONS-302', professionalId:'pro-law-2', professionalName:'Barr. Halima Yusuf', completedOn:'2025-02-03T14:00:00Z', reviewed:true, rating:5, comment:'Resolved my issue quickly.' }
+    ];
+
+    function renderClientConsultations(){
+      if(!clientSessions.length){
+        clientConsultationsList.innerHTML = '';
+        noClientConsultations.classList.remove('hidden');
+        return;
+      }
+      noClientConsultations.classList.add('hidden');
+      clientConsultationsList.innerHTML = clientSessions.map(session => {
+        if(session.reviewed){
+          return `
+            <article class="border border-gray-200 rounded-xl p-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-sm font-semibold text-gray-800">${session.professionalName}</h3>
+                <p class="text-xs text-gray-500">Session on ${new Date(session.completedOn ?? session.scheduledFor ?? Date.now()).toLocaleString()}</p>
+              </div>
+              <span class="inline-flex items-center gap-1 text-primary font-semibold"><i data-feather="star" class="w-4 h-4"></i>${session.rating}</span>
+            </div>
+            <p class="text-sm text-gray-600 mt-3">${session.comment ?? 'Thank you for your feedback!'}</p>
+          </article>
+          `;
+        }
+        return `
+          <form class="border border-gray-200 rounded-xl p-4 space-y-3 reviewForm" data-consultation="${session.id}">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-sm font-semibold text-gray-800">${session.professionalName}</h3>
+                <p class="text-xs text-gray-500">Session on ${new Date(session.completedOn ?? session.scheduledFor ?? Date.now()).toLocaleString()}</p>
+              </div>
+              <span class="text-xs text-gray-500">Leave a review</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs font-medium text-gray-600 uppercase tracking-wide">Rating</label>
+                <select class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" required>
+                  <option value="">Select rating</option>
+                  <option value="5">5 - Excellent</option>
+                  <option value="4">4 - Great</option>
+                  <option value="3">3 - Good</option>
+                  <option value="2">2 - Fair</option>
+                  <option value="1">1 - Poor</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-medium text-gray-600 uppercase tracking-wide">Comment</label>
+                <textarea class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" rows="2" placeholder="How did it go?"></textarea>
+              </div>
+            </div>
+            <button type="submit" class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition">Submit review</button>
+          </form>
+        `;
+      }).join('');
+      clientConsultationsList.querySelectorAll('.reviewForm').forEach(form => {
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const consultationId = form.dataset.consultation;
+          const rating = Number(form.querySelector('select').value);
+          const comment = form.querySelector('textarea').value.trim();
+          if(!rating){
+            alert('Select a rating before submitting.');
+            return;
+          }
+          try{
+            const res = await fetch(`/api/consultations/${consultationId}/reviews`, {
+              method:'POST',
+              headers:{ 'Content-Type':'application/json' },
+              body: JSON.stringify({ rating, comment })
+            });
+            if(!res.ok){
+              const body = await res.json().catch(()=>({ message:'Unable to submit review' }));
+              throw new Error(body.message || 'Unable to submit review');
+            }
+            const session = clientSessions.find(item => item.id === consultationId);
+            if(session){
+              session.reviewed = true;
+              session.rating = rating;
+              session.comment = comment;
+            }
+            renderClientConsultations();
+            alert('Thank you! Your review has been submitted.');
+          } catch(error){
+            alert(error.message);
+          }
+        });
+      });
+      feather.replace();
+    }
+
+    renderClientConsultations();
   </script>
   <script src="assistant.js"></script>
 </body>

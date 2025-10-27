@@ -10,6 +10,17 @@ const applySchema = z.object({
   jobId: z.string(),
   coverLetter: z.string().min(20).optional(),
   expectedPay: z.number().int().positive().optional(),
+  supportingDocuments: z
+    .array(
+      z.object({
+        name: z.string(),
+        type: z.string().optional(),
+        size: z.number().optional(),
+        data: z.string().min(10),
+      }),
+    )
+    .max(5)
+    .optional(),
 });
 
 const decisionSchema = z.object({
@@ -46,6 +57,7 @@ router.post('/', requireAuth(['ARTISAN', 'DOCTOR', 'LAWYER']), async (req: Authe
       applicantId: req.user!.id,
       coverLetter: payload.data.coverLetter,
       expectedPay: payload.data.expectedPay,
+      attachments: payload.data.supportingDocuments,
     },
   });
 
@@ -160,6 +172,52 @@ router.post('/:id/decision', requireAuth(['EMPLOYER', 'ADMIN']), async (req: Aut
   });
 
   res.json({ message: 'Decision recorded' });
+});
+
+router.post('/:id/withdraw', requireAuth(['ARTISAN', 'DOCTOR', 'LAWYER']), async (req: AuthenticatedRequest, res) => {
+  const application = await prisma.jobApplication.findUnique({
+    where: { id: req.params.id },
+    include: { job: true },
+  });
+
+  if (!application) {
+    return res.status(404).json({ message: 'Application not found' });
+  }
+
+  if (application.applicantId !== req.user!.id) {
+    return res.status(403).json({ message: 'You can only withdraw your applications' });
+  }
+
+  if (application.status !== 'PENDING') {
+    return res.status(409).json({ message: 'Only pending applications can be withdrawn' });
+  }
+
+  await prisma.jobApplication.update({
+    where: { id: application.id },
+    data: {
+      status: 'WITHDRAWN',
+      reviewedAt: new Date(),
+      reviewedById: req.user!.id,
+    },
+  });
+
+  await prisma.notification.create({
+    data: {
+      userId: application.job.postedById,
+      title: 'Application withdrawn',
+      message: 'A worker withdrew their application to your job.',
+      metadata: { jobId: application.jobId, applicationId: application.id },
+    },
+  });
+
+  events.emit('notification:new', {
+    userId: application.job.postedById,
+    title: 'Application withdrawn',
+    message: 'A worker withdrew their application to your job.',
+    metadata: { jobId: application.jobId, applicationId: application.id },
+  });
+
+  res.json({ message: 'Application withdrawn' });
 });
 
 export default router;

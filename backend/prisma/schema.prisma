@@ -12,6 +12,7 @@ enum UserRole {
   ARTISAN
   DOCTOR
   LAWYER
+  CLIENT
   ADMIN
 }
 
@@ -60,6 +61,11 @@ model User {
   verificationStatus      VerificationStatus        @default(PENDING)
   profileCompletion       Int                       @default(0)
   lastProfileAudit        DateTime?                 @map("last_profile_audit")
+  emailVerifiedAt         DateTime?
+  emailVerificationToken  String?
+  emailVerificationTokenExpires DateTime?
+  passwordResetToken     String?
+  passwordResetTokenExpires DateTime?
   createdAt               DateTime                  @default(now())
   updatedAt               DateTime                  @updatedAt
 
@@ -75,6 +81,8 @@ model User {
   alertSubscriptions      AlertSubscription[]
   wallet                  Wallet?
   payoutRequests          PayoutRequest[]
+  consultationsAsClient   Consultation[]         @relation("ConsultationClient")
+  consultationReviews     ConsultationReview[]   @relation("ConsultationReviewClient")
 }
 
 model ArtisanProfile {
@@ -93,8 +101,6 @@ model ArtisanProfile {
   verifiedBadge      Boolean             @default(false)
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
-
-  directHires        HireAction[]        @relation("HireArtisan")
 }
 
 model EmployerProfile {
@@ -106,8 +112,6 @@ model EmployerProfile {
   verifiedBadge Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-
-  hires         HireAction[] @relation("HireEmployer")
 }
 
 model ProfessionalProfile {
@@ -124,10 +128,18 @@ model ProfessionalProfile {
   verifiedBadge         Boolean          @default(false)
   subscriptionStatus    SubscriptionStatus @default(NONE)
   subscriptionEndsAt    DateTime?
+  profileImageUrl       String?
+  bankName              String?
+  accountNumber         String?
+  accountHolder         String?
+  licenseDocumentUrl    String?
+  licenseVerified       Boolean          @default(false)
+  licenseSubmittedAt    DateTime?
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt
 
   consultations         Consultation[]
+  reviews               ConsultationReview[]
 }
 
 model ServiceCategory {
@@ -140,6 +152,7 @@ model ServiceCategory {
 
   artisans    ArtisanProfile[]
   jobs        Job[]
+  alertSubscriptions AlertSubscription[]
 }
 
 model Job {
@@ -171,6 +184,7 @@ model JobApplication {
   status         ApplicationStatus @default(PENDING)
   reviewedAt     DateTime?
   reviewedById   String?
+  attachments    Json?
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
 
@@ -244,7 +258,22 @@ model Consultation {
   createdAt           DateTime             @default(now())
 
   professional        ProfessionalProfile  @relation(fields: [professionalId], references: [id])
-  client              User                 @relation(fields: [clientId], references: [id])
+  client              User                 @relation("ConsultationClient", fields: [clientId], references: [id])
+  review              ConsultationReview?
+}
+
+model ConsultationReview {
+  id               String      @id @default(cuid())
+  consultationId   String      @unique
+  professionalId   String
+  clientId         String
+  rating           Int
+  comment          String?
+  createdAt        DateTime    @default(now())
+
+  consultation     Consultation @relation(fields: [consultationId], references: [id])
+  professional     ProfessionalProfile @relation(fields: [professionalId], references: [id])
+  client           User        @relation("ConsultationReviewClient", fields: [clientId], references: [id])
 }
 
 model Wallet {
