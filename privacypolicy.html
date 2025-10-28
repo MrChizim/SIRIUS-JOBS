@@ -41,41 +41,27 @@
             transition: all 0.3s ease;
         }
          /* Sirius Jobs blue login button */
-  .sirius-login {
-    background-color: #0056b3;
-    color: #fff !important;
-    padding: 0.4rem 1rem;
-    border-radius: 0.375rem;
-    font-weight: 500;
-    line-height: 1.25rem;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-  }
-  .sirius-login:hover {
-    background-color: #004a99;
-  }
     </style>
 </head>
 <body class="bg-white text-gray-800">
     <!-- Navigation -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                    <i data-feather="star" class="text-white"></i>
-                </div>
-                <span class="text-xl font-bold text-primary">Sirius Jobs</span>
+            <div class="flex items-center space-x-3">
+                <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
+                <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
             </div>
-            <div class="hidden md:flex space-x-8">
+            <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
                 <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
-                
-                <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
                 <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
-               <a href="login.html" class="sirius-login">Login</a>
-
-            
-                
+                <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
+                <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
+                <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
+                <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
+                <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">
+                    <i data-feather="log-in" class="w-4 h-4"></i>
+                    Login
+                </a>
             </div>
             <div class="md:hidden">
                 <button id="menu-btn" class="text-gray-600 focus:outline-none">
@@ -84,13 +70,17 @@
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
             <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
-            <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
             <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
-            <a href="login.html" class="block sirius-login mt-2 text-center">Login</a>
-
-           
+            <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
+            <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
+            <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
+            <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
+            <a href="login.html" class="flex items-center gap-2 text-gray-600 hover:text-primary transition-all">
+                <i data-feather="log-in" class="w-4 h-4"></i>
+                Login
+            </a>
         </div>
     </nav>
 
@@ -178,10 +168,8 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
                     <div class="flex items-center space-x-2 mb-4">
-                        <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                            <i data-feather="star" class="text-white w-4 h-4"></i>
-                        </div>
-                        <span class="text-lg font-bold">Sirius Jobs</span>
+                        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
+                        <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
                     </div>
                     <p class="text-gray-400 mb-4">Connecting Talent With Trust across Nigeria since 2022.</p>
                     <div class="flex space-x-4">
@@ -235,7 +223,7 @@
             </div>
             
             <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 mb-4 md:mb-0">© 2022 Sirius Jobs. All rights reserved.</p>
+                <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
                 <div class="flex space-x-6">
                     <a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
                     <a href="terms.html" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>

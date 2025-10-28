@@ -40,11 +40,9 @@
     <!-- Navigation -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                    <i data-feather="star" class="text-white"></i>
-                </div>
-                <span class="text-xl font-bold text-primary">Sirius Jobs</span>
+            <div class="flex items-center space-x-3">
+                <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
+                <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
             </div>
             <div class="hidden md:flex space-x-8">
                 <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
@@ -103,10 +101,12 @@
                             <label for="workerEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address*</label>
                             <input type="email" id="workerEmail" class="w-full rounded-lg border border-gray-200 shadow-sm focus:border-primary focus:ring-primary/20 py-2 px-3" placeholder="artisan@example.com" required>
                         </div>
-                        <div class="relative">
+                        <div>
                             <label for="workerPassword" class="block text-sm font-medium text-gray-700 mb-1">Password*</label>
-                            <input type="password" id="workerPassword" class="w-full rounded-lg border border-gray-200 shadow-sm focus:border-primary focus:ring-primary/20 py-2 pl-3 pr-16" placeholder="Enter your password" required>
-                            <button type="button" class="absolute inset-y-0 right-0 grid place-items-center px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="workerPassword">Show</button>
+                            <div class="relative flex items-center gap-2">
+                                <input type="password" id="workerPassword" class="w-full rounded-lg border border-gray-200 shadow-sm focus:border-primary focus:ring-primary/20 py-2 px-3" placeholder="Enter your password" required>
+                                <button type="button" class="absolute right-0 px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="workerPassword">Show</button>
+                            </div>
                         </div>
                         <div class="flex items-center justify-between text-sm">
                             <label class="flex items-center gap-2 text-gray-600">
@@ -146,10 +146,12 @@
                             <label for="consultationEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address*</label>
                             <input type="email" id="consultationEmail" class="w-full rounded-lg border border-gray-200 shadow-sm focus:border-primary focus:ring-primary/20 py-2 px-3" placeholder="you@example.com" required>
                         </div>
-                        <div class="relative">
+                        <div>
                             <label for="consultationPassword" class="block text-sm font-medium text-gray-700 mb-1">Password*</label>
-                            <input type="password" id="consultationPassword" class="w-full rounded-lg border border-gray-200 shadow-sm focus:border-primary focus:ring-primary/20 py-2 pl-3 pr-16" placeholder="Enter your password" required>
-                            <button type="button" class="absolute inset-y-0 right-0 grid place-items-center px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="consultationPassword">Show</button>
+                            <div class="relative flex items-center gap-2">
+                                <input type="password" id="consultationPassword" class="w-full rounded-lg border border-gray-200 shadow-sm focus:border-primary focus:ring-primary/20 py-2 px-3" placeholder="Enter your password" required>
+                                <button type="button" class="absolute right-0 px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="consultationPassword">Show</button>
+                            </div>
                         </div>
                         <div id="professionalRoleRow" class="hidden">
                             <label for="professionalRole" class="block text-sm font-medium text-gray-700 mb-1">Profession</label>
@@ -184,10 +186,8 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
                     <div class="flex items-center space-x-2 mb-4">
-                        <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                            <i data-feather="star" class="text-white w-4 h-4"></i>
-                        </div>
-                        <span class="text-lg font-bold">Sirius Jobs</span>
+                        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
+                        <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
                     </div>
                     <p class="text-gray-400 mb-4">Bridging Talent and Opportunity with Trust</p>
                     <div class="flex space-x-4">
@@ -240,7 +240,7 @@
             </div>
             
             <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 mb-4 md:mb-0">© 2022 Sirius Jobs. All rights reserved.</p>
+                <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
                 <div class="flex space-x-6">
                     <a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
                     <a href="terms.html" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>
@@ -275,15 +275,19 @@
                         <label for="resetPasswordToken" class="block text-sm font-medium text-gray-700 mb-1">Reset Code</label>
                         <input type="text" id="resetPasswordToken" required class="w-full rounded-lg border border-gray-200 px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Paste the code you received">
                     </div>
-                    <div class="relative">
+                    <div>
                         <label for="resetPasswordNew" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-                        <input type="password" id="resetPasswordNew" required minlength="8" class="w-full rounded-lg border border-gray-200 px-3 pr-16 py-2 focus:border-primary focus:ring-primary/20" placeholder="Minimum 8 characters">
-                        <button type="button" class="absolute inset-y-0 right-0 grid place-items-center px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="resetPasswordNew">Show</button>
+                        <div class="relative flex items-center gap-2">
+                            <input type="password" id="resetPasswordNew" required minlength="8" class="w-full rounded-lg border border-gray-200 px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Minimum 8 characters">
+                            <button type="button" class="absolute right-0 px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="resetPasswordNew">Show</button>
+                        </div>
                     </div>
-                    <div class="relative">
+                    <div>
                         <label for="resetPasswordConfirm" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-                        <input type="password" id="resetPasswordConfirm" required minlength="8" class="w-full rounded-lg border border-gray-200 px-3 pr-16 py-2 focus:border-primary focus:ring-primary/20" placeholder="Repeat your password">
-                        <button type="button" class="absolute inset-y-0 right-0 grid place-items-center px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="resetPasswordConfirm">Show</button>
+                        <div class="relative flex items-center gap-2">
+                            <input type="password" id="resetPasswordConfirm" required minlength="8" class="w-full rounded-lg border border-gray-200 px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Repeat your password">
+                            <button type="button" class="absolute right-0 px-3 text-[11px] font-semibold tracking-wide uppercase leading-none text-primary hover:text-primary/80 transition" data-password-toggle data-target="resetPasswordConfirm">Show</button>
+                        </div>
                     </div>
                     <button type="submit" class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-primary/90 transition">Reset password</button>
                     <p id="resetPasswordMessage" class="hidden text-sm"></p>

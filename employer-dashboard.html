@@ -20,11 +20,9 @@
   <!-- NAV -->
   <nav class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-2">
-        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-          <i data-feather="star" class="text-white"></i>
-        </div>
-        <span class="text-xl font-bold text-primary">Sirius Jobs</span>
+      <div class="flex items-center space-x-3">
+        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
+        <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
       </div>
       <div class="hidden md:flex space-x-8 items-center">
         <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
@@ -112,8 +110,9 @@
         <div class="bg-white rounded-lg shadow p-6">
           <h3 class="font-semibold mb-2">Subscription & Limits</h3>
           <p class="text-sm text-gray-600">Free job posting left: <span id="freePostsLeft" class="font-bold text-primary">1</span></p>
+          <p class="text-sm text-gray-600 mt-1">Direct recommendations left: <span id="recommendationCredits" class="font-bold text-primary">0</span></p>
           <p class="text-sm text-gray-600 mt-1">Free hire left: <span id="freeHiresLeft" class="font-bold text-primary">1</span></p>
-          <p id="planStatus" class="text-xs text-gray-500 mt-2">Monthly plan inactive — unlock unlimited posts and hires for ₦1,000/month.</p>
+          <p id="planStatus" class="text-xs text-gray-500 mt-2">Post 1 job for free. Afterwards, settle ₦1,000 per role or upgrade to Premium Plus for tailored matches.</p>
           <button id="upgradeBtn" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mt-3">Upgrade Plan</button>
         </div>
       </aside>
@@ -128,8 +127,8 @@
       </button>
       <div class="grid md:grid-cols-2">
         <div class="bg-primary/10 p-8 flex flex-col justify-center">
-          <h2 class="text-2xl font-semibold text-primary mb-2">Keep hiring after your free 1</h2>
-          <p class="text-sm text-gray-600 mb-6">Unlock continued access to skilled workers or let our team find the perfect match for your request.</p>
+          <h2 class="text-2xl font-semibold text-primary mb-2">Choose how to keep hiring</h2>
+          <p class="text-sm text-gray-600 mb-6">Grab a single extra job post when you need it or upgrade to Premium Plus and let us hand you vetted hires.</p>
           <div class="flex items-center space-x-3 text-sm text-gray-500 bg-white/70 border border-primary/10 rounded-lg px-4 py-3">
             <i data-feather="briefcase" class="text-primary w-4 h-4"></i>
             <span>Flexible add-ons billed securely via Paystack (coming soon)</span>
@@ -138,29 +137,29 @@
         <div class="p-8 space-y-6">
           <div class="border border-primary/30 rounded-xl p-6 hover:border-primary transition-colors">
             <div class="flex items-center justify-between mb-3">
-              <h3 class="text-lg font-semibold text-primary">Monthly Unlimited</h3>
-              <span class="text-xs uppercase tracking-wide text-primary/70 bg-primary/10 px-2 py-1 rounded-full">After free limit</span>
+              <h3 class="text-lg font-semibold text-primary">Pay per job post</h3>
+              <span class="text-xs uppercase tracking-wide text-primary/70 bg-primary/10 px-2 py-1 rounded-full">Simple</span>
             </div>
-            <p class="text-3xl font-bold text-gray-900">₦1,000<span class="text-base font-medium text-gray-500"> / month</span></p>
+            <p class="text-3xl font-bold text-gray-900">₦1,000<span class="text-base font-medium text-gray-500"> / post</span></p>
             <ul class="mt-4 space-y-2 text-sm text-gray-600">
-              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Unlimited job postings for 30 days</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Unlimited hires with contract tracking</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Priority placement in worker search results</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="zap" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Pay only when you need another job slot</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="users" class="w-4 h-4 text-green-500 mt-0.5"></i><span>We keep your access to all worker contacts open</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="shield" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Upload proof and we’ll publish the job immediately</span></li>
             </ul>
-            <button data-plan="continue-hiring" class="employerSubscribeBtn mt-6 w-full bg-primary text-white py-2.5 rounded-lg hover:bg-primary/90 transition-colors">Get Monthly Access</button>
+            <button data-plan="pay-per-post" class="employerSubscribeBtn mt-6 w-full bg-primary text-white py-2.5 rounded-lg hover:bg-primary/90 transition-colors">Pay ₦1,000 & post now</button>
           </div>
           <div class="border border-gray-200 rounded-xl p-6 hover:border-primary transition-colors">
             <div class="flex items-center justify-between mb-3">
-              <h3 class="text-lg font-semibold text-gray-900">Concierge Recommendation</h3>
+              <h3 class="text-lg font-semibold text-gray-900">Premium Plus</h3>
               <span class="text-xs uppercase tracking-wide text-primary bg-primary/10 px-2 py-1 rounded-full flex items-center gap-1"><i data-feather="award" class="w-3.5 h-3.5"></i>Recommended</span>
             </div>
-            <p class="text-3xl font-bold text-gray-900">₦3,000<span class="text-base font-medium text-gray-500"> / request</span></p>
+            <p class="text-3xl font-bold text-gray-900">₦5,000<span class="text-base font-medium text-gray-500"> / month</span></p>
             <ul class="mt-4 space-y-2 text-sm text-gray-600">
-              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>We personally vet and recommend the best fit for your role</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Priority visibility for your openings in worker searches</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Concierge follow-up until hire is confirmed</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Unlimited job posts plus 3 direct recommendations monthly</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="briefcase" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Dedicated talent manager introducing pre-vetted hires</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="message-circle" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Concierge follow-up until you confirm the hire</span></li>
             </ul>
-            <button data-plan="concierge" class="employerSubscribeBtn mt-6 w-full border border-primary text-primary py-2.5 rounded-lg hover:bg-primary hover:text-white transition-colors">Request Concierge Match</button>
+            <button data-plan="premium-plus" class="employerSubscribeBtn mt-6 w-full border border-primary text-primary py-2.5 rounded-lg hover:bg-primary hover:text-white transition-colors">Activate Premium Plus</button>
           </div>
         </div>
       </div>
@@ -173,10 +172,8 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <div class="flex items-center space-x-2 mb-4">
-            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-              <i data-feather="star" class="text-white w-4 h-4"></i>
-            </div>
-            <span class="text-lg font-bold">Sirius Jobs</span>
+            <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
+            <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
           </div>
           <p class="text-gray-400 mb-4">Connecting Talent With Trust across Nigeria since 2022.</p>
           <div class="flex space-x-4">
@@ -225,7 +222,7 @@
         </div>
       </div>
       <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 mb-4 md:mb-0">© 2022 Sirius Jobs. All rights reserved.</p>
+        <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
         <div class="flex space-x-6">
           <a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
           <a href="terms.html" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>
@@ -305,7 +302,9 @@
 
     let freePostsLeft = 1;
     let freeHiresLeft = 1;
-    let monthlyPlanActive = false;
+    let premiumPlusActive = false;
+    let directRecommendationCredits = 0;
+    let paidPostReady = false;
     let totalHires = 124;
 
     const jobs = [
@@ -386,11 +385,21 @@
       document.getElementById('appsTotal').textContent = applicants.length;
       document.getElementById('hiresTotal').textContent = totalHires;
       document.getElementById('activeListings').textContent = jobs.filter(j=>j.status==='Open').length;
-      document.getElementById('freePostsLeft').textContent = monthlyPlanActive ? 'Unlimited' : freePostsLeft;
-      document.getElementById('freeHiresLeft').textContent = monthlyPlanActive ? 'Unlimited' : freeHiresLeft;
-      document.getElementById('planStatus').textContent = monthlyPlanActive
-        ? 'Monthly plan active — unlimited posts and hires for the next 30 days.'
-        : 'Monthly plan inactive — unlock unlimited posts and hires for ₦1,000/month.';
+      const freePostsEl = document.getElementById('freePostsLeft');
+      const recEl = document.getElementById('recommendationCredits');
+      freePostsEl.textContent = premiumPlusActive ? 'Unlimited' : freePostsLeft;
+      recEl.textContent = premiumPlusActive ? `${directRecommendationCredits}` : '—';
+      document.getElementById('freeHiresLeft').textContent = premiumPlusActive ? 'Unlimited' : freeHiresLeft;
+      const planStatus = document.getElementById('planStatus');
+      if (premiumPlusActive) {
+        planStatus.textContent = `Premium Plus active — unlimited posts and ${directRecommendationCredits} direct recommendation${directRecommendationCredits === 1 ? '' : 's'} left this month.`;
+      } else if (paidPostReady) {
+        planStatus.textContent = 'Payment received — click “Post New Job” to publish your paid listing.';
+      } else if (freePostsLeft > 0) {
+        planStatus.textContent = 'Your free post is available. Publish now to reach verified workers.';
+      } else {
+        planStatus.textContent = 'Pay ₦1,000 for each additional job post or upgrade to Premium Plus for concierge matches.';
+      }
     }
     function renderJobs(){
       const list = document.getElementById('jobList'); list.innerHTML = '';
@@ -585,8 +594,8 @@
     const closeEmployerModalBtn = document.getElementById('closeEmployerModalBtn');
     const employerSubscribeBtns = document.querySelectorAll('.employerSubscribeBtn');
     const employerPlanLabels = {
-      'continue-hiring': 'Monthly Unlimited (₦1,000/month)',
-      'concierge': 'Concierge Recommendation (₦3,000)'
+      'pay-per-post': 'Pay per job post (₦1,000)',
+      'premium-plus': 'Premium Plus (₦5,000/month)'
     };
 
     function openEmployerModal(){
@@ -615,16 +624,21 @@
     employerSubscribeBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         const plan = btn.dataset.plan;
-        if(plan === 'continue-hiring'){
-          monthlyPlanActive = true;
-          freePostsLeft = 0;
-          freeHiresLeft = 0;
-          alert('🎉 Monthly plan activated! Enjoy unlimited posts and hires this month.');
+        if(plan === 'pay-per-post'){
+          paidPostReady = true;
+          window.open('https://paystack.com/pay/siriusjobs-post', '_blank', 'noopener');
+          alert('✅ After completing the ₦1,000 payment, click “Post New Job” to publish your role.');
           closeEmployerModal();
           renderMetrics();
-        } else if(plan === 'concierge'){
-          alert('🤝 Concierge request received! Our team will reach out shortly.');
+        } else if(plan === 'premium-plus'){
+          premiumPlusActive = true;
+          freePostsLeft = 0;
+          freeHiresLeft = 0;
+          directRecommendationCredits = 3;
+          paidPostReady = false;
+          alert('🎉 Premium Plus activated! Expect three direct candidate recommendations from our team this month.');
           closeEmployerModal();
+          renderMetrics();
         } else {
           alert(`🎉 ${employerPlanLabels[plan]} checkout is coming soon.`);
           closeEmployerModal();
@@ -633,12 +647,12 @@
     });
 
     function handleHire(applicant, triggerButton){
-      if(monthlyPlanActive){
+      if(premiumPlusActive){
         totalHires += 1;
         triggerButton.textContent = 'Hired';
         triggerButton.disabled = true;
         triggerButton.classList.add('opacity-60', 'cursor-not-allowed');
-        alert(`🎉 ${applicant.name} hired under your unlimited plan!`);
+        alert(`🎉 ${applicant.name} hired under your Premium Plus plan!`);
         renderMetrics();
         return;
       }
@@ -651,7 +665,7 @@
         alert(`✅ ${applicant.name} hired! Free hires remaining: ${freeHiresLeft}`);
         renderMetrics();
       } else {
-        alert('🚧 Free hires exhausted. Activate the monthly plan for unlimited hires.');
+        alert('🚧 Free hires exhausted. Buy a job credit or activate Premium Plus to keep hiring.');
         openEmployerModal();
       }
     }
@@ -664,9 +678,9 @@
         applicants:0,
         posted:'Just now'
       };
-      if(monthlyPlanActive){
+      if(premiumPlusActive){
         jobs.unshift(newJob);
-        alert('✅ Job posted under your unlimited plan!');
+        alert('✅ Job posted under your Premium Plus plan!');
         renderJobs();
         renderMetrics();
         return;
@@ -678,7 +692,15 @@
         renderJobs();
         renderMetrics();
       } else {
-        alert('🚧 Free postings exhausted. Activate the monthly plan for unlimited posts.');
+        if (paidPostReady) {
+          paidPostReady = false;
+          jobs.unshift(newJob);
+          alert('✅ Paid job posted! Thank you for settling the ₦1,000 fee.');
+          renderJobs();
+          renderMetrics();
+          return;
+        }
+        alert('🚧 Free postings exhausted. Pay ₦1,000 via the button below or upgrade to Premium Plus for unlimited posts.');
         openEmployerModal();
       }
     });

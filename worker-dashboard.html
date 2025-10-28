@@ -20,11 +20,9 @@
   <!-- NAV -->
   <nav class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-2">
-        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-          <i data-feather="star" class="text-white"></i>
-        </div>
-        <span class="text-xl font-bold text-primary">Sirius Jobs</span>
+      <div class="flex items-center space-x-3">
+        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
+        <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
       </div>
       <div class="hidden md:flex space-x-8 items-center">
         <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
@@ -125,14 +123,6 @@
           <button class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mt-3" id="renewBtn">Renew Subscription</button>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
-          <h3 class="font-semibold mb-2">Suggested Jobs Nearby</h3>
-          <ul class="text-sm text-gray-700 space-y-1">
-            <li>AC Repair — Kano</li>
-            <li>Electrical Fix — Lagos</li>
-            <li>Plumbing — Port Harcourt</li>
-          </ul>
-        </div>
       </aside>
     </div>
   </main>
@@ -160,10 +150,10 @@
             </div>
             <p class="text-3xl font-bold text-gray-900">₦1,000<span class="text-base font-medium text-gray-500"> / month</span></p>
             <ul class="mt-4 space-y-2 text-sm text-gray-600">
-              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Priority placement in worker search results</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Listed on the public Sirius worker marketplace</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Priority placement when employers search by skill</span></li>
               <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Upload up to 5 photos of past jobs (portfolio)</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Weekly insights on trending gigs</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Unlimited applications to open roles</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Weekly insight email on trending gigs and rates</span></li>
             </ul>
             <button data-plan="premium" class="subscribeBtn mt-6 w-full bg-primary text-white py-2.5 rounded-lg hover:bg-primary/90 transition-colors">Choose Premium</button>
           </div>
@@ -174,11 +164,11 @@
             </div>
             <p class="text-3xl font-bold text-gray-900">₦5,000<span class="text-base font-medium text-gray-500"> / month</span></p>
             <ul class="mt-4 space-y-2 text-sm text-gray-600">
-              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Top priority placement in employer searches</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Upload up to 20 photos of past jobs (portfolio)</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Dedicated success manager and priority gigs</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Exclusive invites to employer hiring events</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Unlimited applications to premium roles</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Guaranteed 3 direct employer introductions every month</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Top-of-list placement for Premium Plus recommendation requests</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Dedicated success manager who preps you before each intro</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Access to exclusive concierge-only gigs before the public</span></li>
+              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Unlimited applications to premium roles plus priority review</span></li>
             </ul>
             <button data-plan="premium-plus" class="subscribeBtn mt-6 w-full border border-primary text-primary py-2.5 rounded-lg hover:bg-primary hover:text-white transition-colors">Choose Premium Plus</button>
           </div>
@@ -193,10 +183,8 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <div class="flex items-center space-x-2 mb-4">
-            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-              <i data-feather="star" class="text-white w-4 h-4"></i>
-            </div>
-            <span class="text-lg font-bold">Sirius Jobs</span>
+            <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
+            <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
           </div>
           <p class="text-gray-400 mb-4">Connecting Talent With Trust across Nigeria since 2022.</p>
           <div class="flex space-x-4">
@@ -246,7 +234,7 @@
       </div>
 
       <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 mb-4 md:mb-0">© 2022 Sirius Jobs. All rights reserved.</p>
+        <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
         <div class="flex space-x-6">
           <a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
           <a href="terms.html" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>

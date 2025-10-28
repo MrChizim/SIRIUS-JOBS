@@ -36,10 +36,8 @@
   <nav class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center space-x-3">
-        <!-- Logo placeholder: replace /images/logo.png with your logo file -->
-        <!-- Replace this with your actual logo file (recommended size 80x80) -->
-        <img src="/images/logo.png" alt="Sirius Jobs Logo" class="w-10 h-10 object-cover rounded-full" onerror="this.src='https://via.placeholder.com/80x80?text=S'"/>
-        <span class="text-xl font-bold text-primary">Sirius Jobs</span>
+        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
+        <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
       </div>
 
       <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
@@ -52,9 +50,10 @@
       </div>
 
       <div class="flex items-center space-x-3">
-        <!-- Login link opens a modal or goes to login page -->
-        <button id="login-btn" class="bg-primary text-white py-2 px-4 rounded-md font-medium hover:opacity-95">Login</button>
-
+        <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition">
+          <i data-feather="log-in" class="w-4 h-4"></i>
+          Login
+        </a>
         <div class="md:hidden">
           <button id="menu-btn" class="text-gray-600 focus:outline-none">
             <i data-feather="menu"></i>
@@ -71,6 +70,10 @@
       <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
       <a href="findworker.html" class="block py-2 text-primary font-medium transition-all">Find Workers</a>
       <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
+      <a href="login.html" class="flex items-center gap-2 text-gray-600 hover:text-primary transition-all">
+        <i data-feather="log-in" class="w-4 h-4"></i>
+        Login
+      </a>
     </div>
   </nav>
 
@@ -249,10 +252,8 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <div class="flex items-center space-x-2 mb-4">
-            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-              <i data-feather="star" class="text-white w-4 h-4"></i>
-            </div>
-            <span class="text-lg font-bold">Sirius Jobs</span>
+            <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
+            <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
           </div>
           <p class="text-gray-400 mb-4">Bridging Talent and Opportunity with Trust</p>
           <div class="flex space-x-4">
@@ -304,7 +305,7 @@
       </div>
 
       <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 mb-4 md:mb-0">© 2022 Sirius Jobs. All rights reserved.</p>
+        <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
         <div class="flex space-x-6">
           <a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
           <a href="terms.html" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>

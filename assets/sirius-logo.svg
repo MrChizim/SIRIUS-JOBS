@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="title">
+  <title id="title">SIRIUS JOBS Logo</title>
+  <defs>
+    <linearGradient id="siriusGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a3d91"/>
+      <stop offset="100%" stop-color="#00a9e0"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="56" fill="url(#siriusGradient)" stroke="#0a3d91" stroke-width="4"/>
+  <path d="M60 28l8.8 22.7 24.7 1.8-19.1 15.4 6.2 23.3L60 77.4 39.4 91.2l6.2-23.3-19.1-15.4 24.7-1.8z"
+        fill="#ffffff" stroke="#0a3d91" stroke-width="3" stroke-linejoin="round"/>
+  <text x="60" y="111" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" fill="#0a3d91" font-weight="600">SIRIUS</text>
+</svg>

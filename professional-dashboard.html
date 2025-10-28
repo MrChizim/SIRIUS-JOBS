@@ -30,9 +30,9 @@
   <!-- NAV -->
   <nav class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-2">
-        <img src="logo.png" alt="Sirius Jobs Logo" class="w-10 h-10 rounded-full object-cover" onerror="this.src='https://via.placeholder.com/80x80?text=SJ'" />
-        <span class="text-xl font-bold text-primary">Sirius Jobs</span>
+      <div class="flex items-center space-x-3">
+        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
+        <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
       </div>
       <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
         <a href="index.html" class="text-gray-600 hover:text-primary transition">Home</a>
@@ -86,99 +86,188 @@
 
   <main class="container mx-auto px-4 py-12 space-y-12">
     <!-- PROFILE SUMMARY -->
-    <section class="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6 md:p-8">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-        <div class="flex items-start gap-5">
-          <div class="relative">
-            <img id="proAvatar" src="https://via.placeholder.com/160x160?text=You" alt="Professional" class="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover border-4 border-primary/15 shadow-sm" />
-            <button id="editPhotoBtn" class="absolute -bottom-1 -right-1 bg-primary text-white p-2.5 rounded-full shadow-lg hover:bg-primary/90 ring-4 ring-white" type="button"><i data-feather="camera" class="w-4 h-4"></i></button>
-            <input type="file" id="profileImageInput" class="hidden" accept="image/*" />
+    <section class="space-y-8">
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
+        <article class="bg-white rounded-3xl shadow-sm border border-gray-200/70 p-6 md:p-8 space-y-6">
+          <div class="flex flex-col md:flex-row md:items-start md:gap-6">
+            <div class="relative mx-auto md:mx-0">
+              <img id="proAvatar" src="https://via.placeholder.com/160x160?text=You" alt="Professional" class="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover border-4 border-primary/20 shadow-md" />
+              <button id="editPhotoBtn" class="absolute -bottom-1 -right-1 bg-primary text-white p-2.5 rounded-full shadow-lg hover:bg-primary/90 ring-4 ring-white transition" type="button"><i data-feather="camera" class="w-4 h-4"></i></button>
+              <input type="file" id="profileImageInput" class="hidden" accept="image/*" />
+            </div>
+            <div class="flex-1 space-y-4 text-center md:text-left">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <div>
+                  <h2 id="proName" class="text-2xl md:text-3xl font-semibold text-gray-900 leading-tight">Professional Name</h2>
+                  <p id="proProfession" class="text-sm text-gray-500 mt-1">Profession • Regulatory Body</p>
+                </div>
+                <span id="proStatusBadge" class="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full bg-amber-100 text-amber-700">
+                  <i data-feather="shield" class="w-3 h-3"></i>
+                  Pending review
+                </span>
+                <p id="licenseStatusText" class="text-xs text-gray-500 md:text-right">Licence verification pending</p>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3 text-left">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-primary/70">Average rating</p>
+                  <p id="statAverageRating" class="text-xl font-semibold text-primary mt-1">0.0</p>
+                </div>
+                <div class="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-left shadow-sm">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Reviews</p>
+                  <p id="statReviewCount" class="text-xl font-semibold text-gray-800 mt-1">0 reviews</p>
+                </div>
+                <div class="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-left shadow-sm">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Clients served</p>
+                  <p id="statClients" class="text-xl font-semibold text-gray-800 mt-1">0 clients</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="space-y-3">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-              <h2 id="proName" class="text-2xl md:text-3xl font-semibold text-gray-900 leading-tight">Professional Name</h2>
-              <span id="proStatusBadge" class="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full bg-amber-100 text-amber-700 mt-2 sm:mt-0">
-                <i data-feather="shield" class="w-3 h-3"></i>
-                Pending review
-              </span>
-            </div>
-            <p id="proProfession" class="text-sm text-gray-500">Profession • Regulatory Body</p>
-            <div class="flex flex-wrap items-center gap-3 text-sm">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary">
-                <i data-feather="star" class="w-4 h-4"></i>
-                <span id="statAverageRating">0.0</span>
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-600">
-                <i data-feather="message-square" class="w-4 h-4"></i>
-                <span id="statReviewCount">0 reviews</span>
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-600">
-                <i data-feather="users" class="w-4 h-4"></i>
-                <span id="statClients">0 clients</span>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full md:w-auto">
-          <article class="sm:col-span-2 bg-primary rounded-2xl text-white p-5 shadow-lg relative overflow-hidden">
-            <div class="absolute -right-10 -top-10 w-28 h-28 bg-white/10 rounded-full"></div>
-            <div class="absolute -left-8 bottom-0 w-24 h-24 bg-white/10 rounded-full"></div>
-            <div class="flex items-center gap-3 relative">
-              <div class="bg-white/20 p-3 rounded-xl">
-                <i data-feather="credit-card" class="w-6 h-6"></i>
+        </article>
+        <aside class="space-y-4">
+          <article class="bg-primary rounded-3xl text-white p-6 shadow-lg relative overflow-hidden h-full">
+            <div class="absolute -right-12 -top-16 w-40 h-40 bg-white/10 rounded-full"></div>
+            <div class="absolute -left-16 bottom-0 w-36 h-36 bg-white/10 rounded-full"></div>
+            <div class="relative space-y-6">
+              <div class="flex items-center gap-3">
+                <div class="bg-white/20 p-3 rounded-xl">
+                  <i data-feather="credit-card" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <p class="text-xs uppercase tracking-[0.3em] text-white/60">Net earnings</p>
+                  <p id="statNetEarnings" class="text-3xl font-semibold mt-1">₦0</p>
+                </div>
               </div>
-              <div>
-                <p class="text-xs uppercase tracking-wider text-white/70">Net earnings</p>
-                <p id="statNetEarnings" class="text-2xl font-semibold mt-1">₦0</p>
+              <p class="text-sm text-white/80 leading-relaxed">Total cleared funds ready for payout. Request withdrawals anytime after client confirmation.</p>
+              <div class="rounded-2xl bg-white/10 px-4 py-3">
+                <p class="text-xs uppercase tracking-wide text-white/70">Pending earnings</p>
+                <p id="statPendingEarnings" class="text-2xl font-semibold mt-1">₦0</p>
+                <p class="text-xs text-white/70 mt-2">Released automatically once sessions are approved.</p>
               </div>
             </div>
-            <p class="text-xs text-white/70 mt-4">Total cleared funds you can withdraw at any time.</p>
           </article>
-          <article class="glass-card rounded-2xl p-5 border border-gray-200/70">
-            <div class="flex items-center gap-3">
-              <div class="bg-primary/10 text-primary p-3 rounded-xl">
-                <i data-feather="clock" class="w-5 h-5"></i>
-              </div>
-              <div>
-                <p class="text-xs uppercase tracking-wider text-gray-500">Pending earnings</p>
-                <p id="statPendingEarnings" class="text-xl font-semibold text-primary mt-1">₦0</p>
-              </div>
-            </div>
-            <p class="text-xs text-gray-500 mt-4">Awaiting client confirmation before release to your wallet.</p>
-          </article>
-        </div>
+        </aside>
       </div>
     </section>
 
     <!-- SCHEDULE & PAYOUT -->
-    <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-      <aside class="xl:col-span-3 space-y-6">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6">
+    <section class="space-y-6">
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <div class="xl:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6">
           <h3 class="text-lg font-semibold text-gray-800 mb-4">Wallet history</h3>
           <div id="walletHistory" class="space-y-3"></div>
         </div>
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6">
-          <h3 class="text-lg font-semibold text-gray-800 mb-2">Payout account</h3>
-          <p class="text-sm text-gray-500 mb-4">Add a Nigerian bank account to receive earnings anytime.</p>
-          <form id="payoutForm" class="space-y-3">
-            <div>
-              <label for="bankName" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Bank name</label>
-              <input id="bankName" name="bankName" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="e.g. GTBank" required>
-            </div>
-            <div>
-              <label for="accountNumber" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Account number</label>
-              <input id="accountNumber" name="accountNumber" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="10-digit number" required>
-            </div>
-            <div>
-              <label for="accountHolder" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Account holder</label>
-              <input id="accountHolder" name="accountHolder" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="Name on account" required>
-            </div>
-            <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition">Save payout account</button>
-          </form>
-          <p id="payoutFormStatus" class="text-xs text-gray-500 mt-3"></p>
-        </div>
-      </aside>
+        <aside id="onboardingPaymentCard" class="bg-white border border-primary/30 rounded-2xl shadow-sm p-6 space-y-4">
+          <div class="space-y-2">
+            <p class="text-xs uppercase tracking-[0.35em] text-primary/80 font-semibold">One-time Activation</p>
+            <h3 class="text-xl font-semibold text-gray-900">Pay ₦3,000 to go public</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">Settle the onboarding fee so we can verify you, feature your profile publicly, and allow clients to unlock your contact details.</p>
+          </div>
+          <ul class="text-xs text-gray-500 space-y-1">
+            <li class="flex items-center gap-2"><i data-feather="check" class="w-3 h-3 text-primary"></i>Instant listing on the consultations page</li>
+            <li class="flex items-center gap-2"><i data-feather="check" class="w-3 h-3 text-primary"></i>Secure payments handled by Paystack</li>
+            <li class="flex items-center gap-2"><i data-feather="check" class="w-3 h-3 text-primary"></i>Concierge support for every consultation</li>
+          </ul>
+          <button id="openOnboardingModalBtn" type="button" class="inline-flex items-center justify-center gap-2 w-full bg-primary text-white font-semibold text-sm px-4 py-2.5 rounded-lg hover:bg-primary/90 transition">
+            <i data-feather="credit-card" class="w-4 h-4"></i>
+            Pay ₦3,000 onboarding
+          </button>
+          <p id="onboardingStatusNote" class="text-xs text-gray-500">Already paid? Click the button again after payment and we’ll confirm instantly.</p>
+        </aside>
+        <aside id="licenseVerificationCard" class="bg-white border border-amber-300/70 rounded-2xl shadow-sm p-6 space-y-4">
+          <div class="space-y-2">
+            <p class="text-xs uppercase tracking-[0.35em] text-amber-600 font-semibold">Licence Verification</p>
+            <h3 class="text-xl font-semibold text-gray-900">Confirm your professional licence</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">We cross-check your licence format and regulatory body so clients can trust your credentials. Submit once and we’ll keep the badge beside your profile.</p>
+          </div>
+          <div class="flex items-center gap-2 text-sm">
+            <span id="licenseStatusBadge" class="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full bg-amber-100 text-amber-700">
+              <i data-feather="clipboard" class="w-3 h-3"></i>
+              Pending check
+            </span>
+            <span id="licenseStatusNote" class="text-xs text-gray-500">Use the button below to run verification.</span>
+          </div>
+          <button id="startLicenseVerificationBtn" type="button" class="inline-flex items-center justify-center gap-2 w-full border border-amber-500 text-amber-600 font-semibold text-sm px-4 py-2.5 rounded-lg hover:bg-amber-500 hover:text-white transition">
+            <i data-feather="search" class="w-4 h-4"></i>
+            Verify licence now
+          </button>
+          <p id="licenseVerificationStatus" class="text-xs text-gray-500">We’ll run a quick validation against the expected format for your regulatory body.</p>
+        </aside>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Payout account</h3>
+        <p class="text-sm text-gray-500 mb-4">Add a Nigerian bank account to receive earnings anytime.</p>
+        <form id="payoutForm" class="space-y-3">
+          <div>
+            <label for="bankName" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Bank name</label>
+            <input id="bankName" name="bankName" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="e.g. GTBank" required>
+          </div>
+          <div>
+            <label for="accountNumber" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Account number</label>
+            <input id="accountNumber" name="accountNumber" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="10-digit number" required>
+          </div>
+          <div>
+            <label for="accountHolder" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Account holder</label>
+            <input id="accountHolder" name="accountHolder" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="Name on account" required>
+          </div>
+          <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition">Save payout account</button>
+        </form>
+        <p id="payoutFormStatus" class="text-xs text-gray-500 mt-3"></p>
+      </div>
     </section>
+
+    <div id="onboardingModal" class="fixed inset-0 hidden items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6 z-50">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden">
+        <div class="flex items-center justify-between bg-primary text-white px-6 py-4">
+          <div>
+            <p class="text-xs uppercase tracking-[0.35em] text-white/70 font-semibold">Onboarding Payment</p>
+            <h3 class="text-lg font-semibold">Activate your professional listing</h3>
+          </div>
+          <button id="closeOnboardingModalBtn" class="rounded-full bg-white/20 hover:bg-white/30 p-2 transition" type="button" aria-label="Close payment modal">
+            <i data-feather="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div class="grid gap-6 lg:grid-cols-[2fr_1fr] p-6 bg-white">
+          <div class="space-y-4">
+            <div>
+              <h4 class="text-sm font-semibold text-gray-800">Pay securely with card or transfer</h4>
+              <p class="text-sm text-gray-600 mt-2">Use the Paystack button below for instant approval. Prefer bank transfer? You’ll find the account details on the right; return here afterwards to confirm payment.</p>
+            </div>
+            <button id="paystackCardBtn" type="button" class="inline-flex items-center gap-3 bg-primary text-white font-semibold text-sm px-5 py-3 rounded-lg hover:bg-primary/90 transition">
+              <i data-feather="smartphone" class="w-4 h-4"></i>
+              Pay with Paystack (card, USSD or transfer)
+            </button>
+            <div id="paymentStatusMessage" class="hidden text-sm"></div>
+            <div class="rounded-xl border border-dashed border-gray-300 p-4 space-y-2">
+              <p class="text-sm font-semibold text-gray-700">What happens next?</p>
+              <ol class="text-sm text-gray-600 space-y-1 list-decimal list-inside">
+                <li>Complete the payment using Paystack or direct transfer.</li>
+                <li>Click the confirmation button below once you’re done.</li>
+                <li>Your profile will be unlocked for public visibility instantly.</li>
+              </ol>
+            </div>
+            <button id="markOnboardingPaidBtn" type="button" class="inline-flex items-center gap-2 border border-primary text-primary font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition">
+              <i data-feather="check-circle" class="w-4 h-4"></i>
+              I have paid — mark my profile public
+            </button>
+          </div>
+          <aside class="bg-primary/5 border border-primary/10 rounded-xl p-4 space-y-3">
+            <div>
+              <h4 class="text-sm font-semibold text-primary uppercase tracking-wide">Transfer option</h4>
+              <p class="text-sm text-gray-600 mt-1">Send exactly ₦3,000 to the account below, then click the confirmation button.</p>
+            </div>
+            <div class="bg-white border border-primary/20 rounded-lg p-3 text-sm text-gray-700 space-y-1">
+              <p><span class="font-semibold">Account name:</span> Sirius Jobs NG</p>
+              <p><span class="font-semibold">Bank:</span> GTBank</p>
+              <p><span class="font-semibold">Account number:</span> 0123456789</p>
+              <p><span class="font-semibold">Narration:</span> Your email address</p>
+            </div>
+            <p class="text-xs text-gray-500">Need help? Chat with us on
+              <a href="https://wa.me/2347012345678" target="_blank" class="text-primary hover:underline">WhatsApp</a>.</p>
+          </aside>
+        </div>
+      </div>
+    </div>
 
     <!-- REVIEWS -->
     <section class="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6 md:p-8">
@@ -200,10 +289,8 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <div class="flex items-center space-x-2 mb-4">
-            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-              <i data-feather="star" class="text-white w-4 h-4"></i>
-            </div>
-            <span class="text-lg font-bold">Sirius Jobs</span>
+            <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
+            <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
           </div>
           <p class="text-gray-400 mb-4">Connecting talent, trusted professionals and fast support across Nigeria.</p>
           <div class="flex space-x-4">
@@ -241,7 +328,7 @@
         </div>
       </div>
       <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 mb-4 md:mb-0">© 2022 Sirius Jobs. All rights reserved.</p>
+        <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
         <div class="flex space-x-6">
           <a href="privacypolicy.html" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
           <a href="terms.html" class="text-gray-400 hover:text-white text-sm">Terms of Service</a>
@@ -250,6 +337,7 @@
     </div>
   </footer>
 
+  <script src="platform.js"></script>
   <script>
     feather.replace();
     const mobileMenuBtn = document.getElementById('menu-btn');
@@ -289,10 +377,341 @@
     const payoutForm = document.getElementById('payoutForm');
     const payoutFormStatus = document.getElementById('payoutFormStatus');
     const syncCalendarBtn = document.getElementById('syncCalendarBtn');
+    const onboardingCard = document.getElementById('onboardingPaymentCard');
+    const openOnboardingModalBtn = document.getElementById('openOnboardingModalBtn');
+    const onboardingModal = document.getElementById('onboardingModal');
+    const closeOnboardingModalBtn = document.getElementById('closeOnboardingModalBtn');
+    const paystackCardBtn = document.getElementById('paystackCardBtn');
+    const markOnboardingPaidBtn = document.getElementById('markOnboardingPaidBtn');
+    const paymentStatusMessage = document.getElementById('paymentStatusMessage');
+    const onboardingStatusNote = document.getElementById('onboardingStatusNote');
+    const licenseCard = document.getElementById('licenseVerificationCard');
+    const licenseStatusBadge = document.getElementById('licenseStatusBadge');
+    const licenseStatusNote = document.getElementById('licenseStatusNote');
+    const startLicenseVerificationBtn = document.getElementById('startLicenseVerificationBtn');
+    const licenseVerificationStatus = document.getElementById('licenseVerificationStatus');
+    const licenseStatusText = document.getElementById('licenseStatusText');
+
+    function readProfessionalSession(){
+      try {
+        return JSON.parse(sessionStorage.getItem('siriusProAuth') ?? 'null');
+      } catch (error) {
+        console.warn('Unable to read professional session', error);
+        return null;
+      }
+    }
+
+    function persistProfessionalSession(session){
+      try {
+        sessionStorage.setItem('siriusProAuth', JSON.stringify(session));
+      } catch (error) {
+        console.warn('Unable to persist professional session', error);
+      }
+    }
+
+    const platformAvailable = typeof window.SiriusPlatform !== 'undefined';
+    let professionalSession = readProfessionalSession() ?? {};
+    if ((!professionalSession || !professionalSession.email) && platformAvailable) {
+      const fallbackProfessional = window.SiriusPlatform.getAnyProfessional();
+      if (fallbackProfessional) {
+        professionalSession = {
+          email: fallbackProfessional.email,
+          firstName: fallbackProfessional.firstName,
+          lastName: fallbackProfessional.lastName,
+          profession: fallbackProfessional.profession,
+          emailVerified: Boolean(fallbackProfessional.emailVerified ?? fallbackProfessional.verifiedAt),
+          licenseVerified: Boolean(fallbackProfessional.licenseVerified),
+          licenseVerification: fallbackProfessional.licenseVerification ?? null,
+          licenseNumber: fallbackProfessional.licenseNumber,
+          regulatoryBody: fallbackProfessional.regulatoryBody,
+        };
+        persistProfessionalSession(professionalSession);
+      }
+    }
+
+    let onboardingPaid = Boolean(professionalSession.onboardingPaid);
+    let profilePublic = Boolean(professionalSession.profilePublic);
+    let licenseVerified = Boolean(professionalSession.licenseVerified);
+    let emailVerified = professionalSession.emailVerified !== false;
+    let licenseVerification = professionalSession.licenseVerification ?? (licenseVerified ? { status: 'VERIFIED' } : { status: 'UNVERIFIED' });
+    let latestSnapshot = null;
+
+    const paystackPublicKey = window.PAYSTACK_PUBLIC_KEY || 'pk_test_xxxxxxxxxxxxxxxxxxxxxx';
+
+    const setProfessionalSession = (updates = {}) => {
+      const previousOnboardingState = onboardingPaid;
+      const previousVisibility = profilePublic;
+      const previousLicenseState = licenseVerified;
+      professionalSession = { ...professionalSession, ...updates };
+      persistProfessionalSession(professionalSession);
+      onboardingPaid = Boolean(professionalSession.onboardingPaid);
+      profilePublic = Boolean(professionalSession.profilePublic);
+      licenseVerified = Boolean(professionalSession.licenseVerified);
+      emailVerified = professionalSession.emailVerified !== false;
+      licenseVerification = professionalSession.licenseVerification ?? licenseVerification;
+      if (platformAvailable && professionalSession.email) {
+        try {
+          if (onboardingPaid && !previousOnboardingState && typeof window.SiriusPlatform.markProfessionalPaid === 'function') {
+            window.SiriusPlatform.markProfessionalPaid(professionalSession.email);
+          }
+          if (previousVisibility !== profilePublic && typeof window.SiriusPlatform.toggleProfessionalVisibility === 'function') {
+            window.SiriusPlatform.toggleProfessionalVisibility(professionalSession.email, profilePublic);
+          }
+        } catch (error) {
+          console.warn('Unable to update platform onboarding state', error);
+        }
+      }
+      updateOnboardingUI();
+      updateLicenseUI();
+    };
+
+    updateOnboardingUI();
+
+    const openOnboardingModal = () => {
+      if (!onboardingModal) return;
+      onboardingModal.classList.remove('hidden');
+      onboardingModal.classList.add('flex');
+      paymentStatusMessage?.classList.add('hidden');
+      paymentStatusMessage?.classList.remove('text-emerald-600', 'text-red-600');
+      document.body.classList.add('overflow-hidden');
+      try { feather.replace(); } catch (error) {}
+    };
+
+    const closeOnboardingModal = () => {
+      if (!onboardingModal) return;
+      onboardingModal.classList.remove('flex');
+      onboardingModal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    };
+
+    const showPaymentStatus = (message, tone = 'info') => {
+      if (!paymentStatusMessage) return;
+      paymentStatusMessage.classList.remove('hidden', 'text-emerald-600', 'text-red-600', 'text-gray-600');
+      if (tone === 'success') {
+        paymentStatusMessage.classList.add('text-emerald-600');
+      } else if (tone === 'error') {
+        paymentStatusMessage.classList.add('text-red-600');
+      } else {
+        paymentStatusMessage.classList.add('text-gray-600');
+      }
+      paymentStatusMessage.textContent = message;
+    };
+
+    const openFallbackCheckout = () => {
+      window.open('https://paystack.com/pay/siriusconsult', '_blank', 'noopener');
+      showPaymentStatus('Opening Paystack checkout in a new tab. If it does not open, please disable pop-up blockers.', 'info');
+    };
+
+    const startPaystackPayment = () => {
+      if (!paystackPublicKey || paystackPublicKey.includes('xxxxxxxxx')) {
+        openFallbackCheckout();
+        return;
+      }
+      if (typeof PaystackPop === 'undefined') {
+        openFallbackCheckout();
+        return;
+      }
+      const email = professionalSession?.email || ''; // fallback handled by Paystack modal
+      if (!email) {
+        showPaymentStatus('We could not detect your email address. Please sign in again.', 'error');
+        return;
+      }
+      const handler = PaystackPop.setup({
+        key: paystackPublicKey,
+        email,
+        amount: 3000 * 100,
+        currency: 'NGN',
+        reference: `SJ-ONBOARD-${Date.now()}`,
+        metadata: {
+          custom_fields: [
+            { display_name: 'Professional Email', variable_name: 'professional_email', value: email },
+          ],
+        },
+        onClose: () => {
+          showPaymentStatus('Payment window closed. If you have paid, click the confirmation button below.', 'error');
+        },
+        callback: response => {
+          showPaymentStatus('Payment confirmed! Making your profile public…', 'success');
+          setProfessionalSession({ onboardingPaid: true, profilePublic: true, onboardingReference: response.reference });
+          setTimeout(() => {
+            closeOnboardingModal();
+            loadProfessionalData();
+          }, 600);
+        },
+      });
+      handler.openIframe();
+    };
+
+    openOnboardingModalBtn?.addEventListener('click', openOnboardingModal);
+    closeOnboardingModalBtn?.addEventListener('click', closeOnboardingModal);
+    onboardingModal?.addEventListener('click', event => {
+      if (event.target === onboardingModal) {
+        closeOnboardingModal();
+      }
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        closeOnboardingModal();
+      }
+    });
+    paystackCardBtn?.addEventListener('click', startPaystackPayment);
+    markOnboardingPaidBtn?.addEventListener('click', () => {
+      showPaymentStatus('Thanks! We have marked your profile as public.', 'success');
+      setProfessionalSession({ onboardingPaid: true, profilePublic: true });
+      setTimeout(() => {
+        closeOnboardingModal();
+        loadProfessionalData();
+      }, 600);
+    });
+
+    startLicenseVerificationBtn?.addEventListener('click', () => {
+      if (licenseVerificationStatus) {
+        licenseVerificationStatus.textContent = 'Checking your licence details...';
+        licenseVerificationStatus.className = 'text-xs text-primary';
+      }
+      runLicenseVerification();
+    });
+
+    function updateOnboardingUI(){
+      if (!onboardingCard) return;
+      onboardingCard.classList.remove('hidden');
+      if (onboardingStatusNote) {
+        onboardingStatusNote.textContent = onboardingPaid
+          ? 'Payment received. You can click the button to view your payment options again anytime.'
+          : 'Already paid? Click the button again after payment and we’ll confirm instantly.';
+      }
+    }
+
+    function updateLicenseUI(snapshotProfile = latestSnapshot?.profile) {
+      if (!licenseCard) return;
+      const verificationDetails = snapshotProfile?.licenseVerification ?? licenseVerification ?? { status: licenseVerified ? 'VERIFIED' : 'UNVERIFIED' };
+      const status = (verificationDetails.status || (licenseVerified ? 'VERIFIED' : 'UNVERIFIED')).toUpperCase();
+      const statusNote = verificationDetails.notes || (licenseVerified ? 'Licence verified. Clients can see your badge.' : 'Submit for verification to display your verified badge to clients.');
+
+      if (licenseStatusBadge) {
+        let badgeClasses = 'inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full ';
+        let badgeIcon = 'clipboard';
+        if (status === 'VERIFIED') {
+          badgeClasses += 'bg-emerald-100 text-emerald-700';
+          badgeIcon = 'check-circle';
+        } else if (status === 'FAILED') {
+          badgeClasses += 'bg-red-100 text-red-700';
+          badgeIcon = 'alert-triangle';
+        } else {
+          badgeClasses += 'bg-amber-100 text-amber-700';
+          badgeIcon = 'clipboard';
+        }
+        licenseStatusBadge.className = badgeClasses;
+        licenseStatusBadge.innerHTML = `<i data-feather="${badgeIcon}" class="w-3 h-3"></i>${status === 'VERIFIED' ? 'Verified' : status === 'FAILED' ? 'Needs review' : 'Pending check'}`;
+      }
+
+      if (licenseStatusText) {
+        licenseStatusText.textContent = licenseVerified ? 'Licence verified' : status === 'FAILED' ? 'Licence verification failed' : 'Licence verification pending';
+      }
+
+      if (licenseStatusNote) {
+        licenseStatusNote.textContent = statusNote;
+      }
+
+      if (licenseVerificationStatus) {
+        licenseVerificationStatus.textContent = statusNote;
+        licenseVerificationStatus.className = status === 'VERIFIED' ? 'text-xs text-emerald-600' : status === 'FAILED' ? 'text-xs text-red-600' : 'text-xs text-gray-500';
+      }
+
+      if (startLicenseVerificationBtn) {
+        if (licenseVerified) {
+          startLicenseVerificationBtn.disabled = true;
+          startLicenseVerificationBtn.className = 'inline-flex items-center justify-center gap-2 w-full border border-emerald-500 text-emerald-600 font-semibold text-sm px-4 py-2.5 rounded-lg bg-emerald-50 cursor-default';
+          startLicenseVerificationBtn.innerHTML = '<i data-feather="check-circle" class="w-4 h-4"></i>Licence verified';
+        } else {
+          startLicenseVerificationBtn.disabled = false;
+          startLicenseVerificationBtn.className = 'inline-flex items-center justify-center gap-2 w-full border border-amber-500 text-amber-600 font-semibold text-sm px-4 py-2.5 rounded-lg hover:bg-amber-500 hover:text-white transition';
+          startLicenseVerificationBtn.innerHTML = '<i data-feather="search" class="w-4 h-4"></i>Verify licence now';
+        }
+      }
+      feather.replace();
+    }
+
+    async function runLicenseVerification(){
+      if (licenseVerified) {
+        updateLicenseUI();
+        return;
+      }
+      const email = professionalSession?.email;
+      if (!email) {
+        if (licenseVerificationStatus) {
+          licenseVerificationStatus.textContent = 'Sign in again before verifying your licence.';
+          licenseVerificationStatus.className = 'text-xs text-red-600';
+        }
+        return;
+      }
+      try {
+        const shouldReloadFromPlatform = platformAvailable && typeof window.SiriusPlatform.verifyProfessionalLicense === 'function';
+        if (shouldReloadFromPlatform) {
+          const result = window.SiriusPlatform.verifyProfessionalLicense({
+            email,
+            licenseNumber: latestSnapshot?.profile?.licenseNumber ?? professionalSession.licenseNumber,
+            regulatoryBody: latestSnapshot?.profile?.regulatoryBody ?? professionalSession.regulatoryBody,
+          });
+          setProfessionalSession({
+            licenseVerified: Boolean(result.licenseVerified ?? true),
+            licenseVerification: result.licenseVerification ?? {
+              status: 'VERIFIED',
+              checkedAt: new Date().toISOString(),
+              notes: 'Verified locally. Awaiting regulatory confirmation.',
+            },
+            licenseNumber: result.licenseNumber ?? professionalSession.licenseNumber,
+            regulatoryBody: result.regulatoryBody ?? professionalSession.regulatoryBody,
+          });
+        } else {
+          setProfessionalSession({
+            licenseVerified: true,
+            licenseVerification: {
+              status: 'VERIFIED',
+              checkedAt: new Date().toISOString(),
+              notes: 'Marked as verified manually.',
+            },
+          });
+        }
+        if (licenseVerificationStatus) {
+          licenseVerificationStatus.textContent = 'Licence verified successfully. Your profile badge is now active.';
+          licenseVerificationStatus.className = 'text-xs text-emerald-600';
+        }
+        updateLicenseUI();
+        if (shouldReloadFromPlatform) {
+          await loadProfessionalData();
+        }
+      } catch (error) {
+        const message = error?.message || 'Unable to verify licence. Check the details and try again.';
+        if (licenseVerificationStatus) {
+          licenseVerificationStatus.textContent = message;
+          licenseVerificationStatus.className = 'text-xs text-red-600';
+        }
+        setProfessionalSession({
+          licenseVerification: {
+            status: 'FAILED',
+            checkedAt: new Date().toISOString(),
+            notes: message,
+          },
+        });
+        updateLicenseUI();
+      }
+    }
 
     async function loadProfessionalData(){
+      if (platformAvailable && professionalSession?.email) {
+        try {
+          const snapshot = window.SiriusPlatform.getProfessionalSnapshot(professionalSession.email);
+          if (snapshot) {
+            hydrateDashboard(snapshot);
+            return;
+          }
+        } catch (error) {
+          console.warn('Unable to load local professional snapshot', error);
+        }
+      }
       try {
-        const res = await fetch('/api/dashboard/professional');
+        const res = await fetch('/api/dashboard/professional', { cache: 'no-store' });
         if (!res.ok) throw new Error('Unable to fetch professional dashboard');
         const data = await res.json();
         hydrateDashboard(data);
@@ -303,6 +722,7 @@
     }
 
     function hydrateDashboard(data){
+      latestSnapshot = data;
       const { profile, wallet, stats, reviews } = data;
      const name = `${profile?.user?.firstName ?? 'Professional'} ${profile?.user?.lastName ?? ''}`.trim();
      document.getElementById('proName').textContent = name || 'Professional Name';
@@ -311,14 +731,29 @@
        avatarImg.src = profile.profileImageUrl;
      }
 
+      const derivedOnboardingPaid = Boolean((profile && profile.onboardingPaid !== undefined) ? profile.onboardingPaid : professionalSession.onboardingPaid);
+      const derivedProfilePublic = (profile && typeof profile.isPublic === 'boolean') ? profile.isPublic : Boolean(professionalSession.profilePublic);
+      setProfessionalSession({
+        onboardingPaid: derivedOnboardingPaid,
+        profilePublic: derivedProfilePublic,
+        licenseVerified: Boolean(profile?.licenseVerified),
+        licenseVerification: profile?.licenseVerification,
+        emailVerified: profile?.emailVerified ?? emailVerified,
+        licenseNumber: profile?.licenseNumber ?? professionalSession.licenseNumber,
+        regulatoryBody: profile?.regulatoryBody ?? professionalSession.regulatoryBody,
+      });
+
       const statusBadge = document.getElementById('proStatusBadge');
       if (statusBadge) {
         const baseClasses = 'inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full mt-2 sm:mt-0';
-        if (profile?.verifiedBadge || profile?.licenseVerified) {
-          statusBadge.innerHTML = '<i data-feather="shield" class="w-3 h-3"></i> Verified';
+        if (licenseVerified || profile?.verifiedBadge) {
+          statusBadge.innerHTML = '<i data-feather="shield" class="w-3 h-3"></i> Licence verified';
           statusBadge.className = `${baseClasses} bg-emerald-100 text-emerald-700`;
+        } else if (onboardingPaid) {
+          statusBadge.innerHTML = '<i data-feather="shield" class="w-3 h-3"></i> Licence pending';
+          statusBadge.className = `${baseClasses} bg-amber-100 text-amber-700`;
         } else {
-          statusBadge.innerHTML = '<i data-feather="shield" class="w-3 h-3"></i> Pending review';
+          statusBadge.innerHTML = '<i data-feather="shield" class="w-3 h-3"></i> Complete onboarding';
           statusBadge.className = `${baseClasses} bg-amber-100 text-amber-700`;
         }
       }
@@ -350,15 +785,26 @@
         walletHistoryEl.innerHTML = '<p class="text-sm text-gray-500">Wallet history will appear here after your first consultation.</p>';
         return;
       }
-      walletHistoryEl.innerHTML = entries.map(entry => `
-        <div class="border border-gray-200/70 rounded-xl px-4 py-3 flex items-center justify-between text-sm">
-          <div>
-            <p class="font-medium text-gray-800">${entry.type}</p>
-            <p class="text-xs text-gray-500">${new Date(entry.createdAt).toLocaleString()}</p>
+      walletHistoryEl.innerHTML = entries.map(entry => {
+        const statusTag =
+          entry.status === 'COMPLETED'
+            ? '<span class="inline-flex items-center gap-1 text-xs text-emerald-600"><i data-feather="check-circle" class="w-3 h-3"></i>Cleared</span>'
+            : '<span class="inline-flex items-center gap-1 text-xs text-amber-600"><i data-feather="clock" class="w-3 h-3"></i>Awaiting confirmation</span>';
+        const label = entry.clientName ? `${entry.type} – ${entry.clientName}` : entry.type;
+        const amountLabel = formatCurrency(Math.abs(entry.amount ?? 0));
+        const amountClass = entry.status === 'COMPLETED' ? 'text-emerald-600' : 'text-amber-600';
+        return `
+          <div class="border border-gray-200/70 rounded-xl px-4 py-3 flex items-center justify-between text-sm">
+            <div class="space-y-1">
+              <p class="font-medium text-gray-800">${label}</p>
+              <p class="text-xs text-gray-500">${new Date(entry.createdAt).toLocaleString()}</p>
+              ${statusTag}
+            </div>
+            <span class="${amountClass} font-semibold">${amountLabel}</span>
           </div>
-          <span class="${entry.amount >= 0 ? 'text-emerald-600' : 'text-red-500'} font-semibold">${formatCurrency(Math.abs(entry.amount ?? 0))}</span>
-        </div>
-      `).join('');
+        `;
+      }).join('');
+      feather.replace();
     }
 
     function renderReviews(reviews){
@@ -398,6 +844,12 @@
       event.preventDefault();
       const formData = Object.fromEntries(new FormData(payoutForm).entries());
       try {
+        if (platformAvailable && professionalSession?.email) {
+          window.SiriusPlatform.saveProfessionalPayoutAccount(professionalSession.email, formData);
+          payoutFormStatus.textContent = 'Payout account saved successfully.';
+          payoutFormStatus.className = 'text-xs text-green-600 mt-3';
+          return;
+        }
         const res = await fetch('/api/dashboard/professional/payout-account', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -462,7 +914,16 @@
     }
 
     loadProfessionalData();
+
+    const dashboardParams = new URLSearchParams(window.location.search);
+    if (dashboardParams.has('pay')) {
+      dashboardParams.delete('pay');
+      const cleaned = dashboardParams.toString();
+      const newUrl = cleaned ? `${window.location.pathname}?${cleaned}` : window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
+    }
   </script>
   <script src="assistant.js"></script>
 </body>
+<script src="https://js.paystack.co/v1/inline.js"></script>
 </html>
