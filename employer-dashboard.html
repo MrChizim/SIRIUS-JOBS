@@ -13,6 +13,7 @@
   <script src="https://unpkg.com/feather-icons"></script>
   <script src="api.js"></script>
   <script src="session-utils.js"></script>
+  <script src="ui-utils.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     body { font-family:'Inter', sans-serif; }
@@ -100,10 +101,24 @@
 
     <!-- STATS -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-      <div class="bg-white rounded-lg shadow p-6 text-center"><p class="text-sm text-gray-500">Jobs Posted</p><h3 class="text-2xl font-bold text-primary" id="jobsPosted">0</h3></div>
-      <div class="bg-white rounded-lg shadow p-6 text-center"><p class="text-sm text-gray-500">Applicants</p><h3 class="text-2xl font-bold text-primary" id="appsTotal">0</h3></div>
-      <div class="bg-white rounded-lg shadow p-6 text-center"><p class="text-sm text-gray-500">Hires</p><h3 class="text-2xl font-bold text-primary" id="hiresTotal">0</h3></div>
-      <div class="bg-white rounded-lg shadow p-6 text-center"><p class="text-sm text-gray-500">Active Listings</p><h3 class="text-2xl font-bold text-primary" id="activeListings">0</h3></div>
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <p class="text-sm text-gray-500">Jobs Posted</p>
+        <h3 class="text-2xl font-bold text-primary" id="jobsPosted">0</h3>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <p class="text-sm text-gray-500">Applicants</p>
+        <h3 class="text-2xl font-bold text-primary" id="appsTotal">0</h3>
+        <p class="text-xs text-gray-500 mt-1" id="appsToday">0 new today</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <p class="text-sm text-gray-500">Hires</p>
+        <h3 class="text-2xl font-bold text-primary" id="hiresTotal">0</h3>
+        <p class="text-xs text-gray-500 mt-1" id="hiresThisMonth">0 this month</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <p class="text-sm text-gray-500">Active Listings</p>
+        <h3 class="text-2xl font-bold text-primary" id="activeListings">0</h3>
+      </div>
     </section>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -115,11 +130,13 @@
             <button id="postBtn" class="bg-primary text-white py-2 px-4 rounded hover:bg-primary/90">Post New Job</button>
           </div>
           <ul id="jobList" class="space-y-3"></ul>
+          <p id="jobListEmpty" class="text-sm text-gray-500 border border-dashed border-gray-300 rounded-lg p-4 text-center hidden">No jobs yet. Click “Post New Job” to publish your first role.</p>
         </div>
 
         <div class="bg-white rounded-lg shadow p-6">
           <h2 class="text-lg font-semibold mb-4">Recent Applicants</h2>
           <ul id="applicantsList" class="space-y-3"></ul>
+          <p id="applicantsListEmpty" class="text-sm text-gray-500 border border-dashed border-gray-300 rounded-lg p-4 text-center hidden">No applicants yet. New candidates will appear here once they apply.</p>
         </div>
       </div>
 
@@ -342,17 +359,17 @@
     });
     const sessionUtils = window.SiriusSession ?? null;
     const employerSessionPayload = sessionUtils?.parse ? sessionUtils.parse('siriusEmployerAuth') : null;
+    const showToast = window.SiriusUI?.showToast ?? ((message, tone) => {
+      const logger = tone === 'error' ? console.error : console.log;
+      logger(message);
+    });
 
-    // sample data
-    const employerProfile = {
-      name: 'Sirius Construction',
-      location: 'Port Harcourt, Nigeria',
-      logoUrl: '/images/logo.png',
-      verified: false
-    };
-
+    let employerProfile = null;
     const employerWeights = { name:25, location:25, logo:20, verified:30 };
     function computeEmployerCompletion(profile){
+      if (!profile) {
+        return { score: 0, missing: ['Add company name (+25%)', 'Add company location (+25%)', 'Upload company logo (+20%)', 'Complete company ID verification (+30%)'] };
+      }
       let score = 0;
       const missing = [];
       if(profile.name) score += employerWeights.name; else missing.push('Add company name (+25%)');
@@ -362,23 +379,53 @@
       return { score, missing };
     }
 
-    let freePostsLeft = 1;
-    let freeHiresLeft = 1;
-    let premiumPlusActive = false;
-    let directRecommendationCredits = 0;
-    let paidPostReady = false;
-    let totalHires = 124;
+    const planState = {
+      freePostsLeft: 0,
+      freeHiresLeft: 0,
+      directRecommendationCredits: 0,
+      premiumPlusActive: false,
+      paidPostReady: false,
+    };
 
-    const jobs = [
-      { title:'Residential Electrician Needed', city:'Lagos', status:'Open', applicants:34, posted:'3 days ago' },
-      { title:'AC Technician - Office Complex', city:'Abuja', status:'Open', applicants:18, posted:'1 week ago' },
-      { title:'Plumber (Emergency)', city:'Port Harcourt', status:'Closed', applicants:25, posted:'3 weeks ago' }
+    const metricsState = {
+      jobsPosted: 0,
+      totalApplicants: 0,
+      totalHires: 0,
+      activeListings: 0,
+      hiresThisMonth: 0,
+    };
+
+    let jobs = [];
+    let applicants = [];
+
+    const relativeTimeFormatter = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+    const RELATIVE_DIVISIONS = [
+      { amount: 60, unit: 'second' },
+      { amount: 60, unit: 'minute' },
+      { amount: 24, unit: 'hour' },
+      { amount: 7, unit: 'day' },
+      { amount: 4.34524, unit: 'week' },
+      { amount: 12, unit: 'month' },
+      { amount: Number.POSITIVE_INFINITY, unit: 'year' },
     ];
-    const applicants = [
-      { id:'app-1', userId:'user-electrician-1', name:'Ifeanyi Okoro', skill:'Electrician', location:'Lagos', applied:'2 days ago' },
-      { id:'app-2', userId:'user-plumber-2', name:'Ngozi Amadi', skill:'Plumber', location:'Port Harcourt', applied:'4 days ago' },
-      { id:'app-3', userId:'user-tiler-3', name:'Aisha Bello', skill:'Tiler', location:'Abuja', applied:'1 week ago' }
-    ];
+
+    function formatRelativeTime(input){
+      if (!input) {
+        return 'Recently';
+      }
+      const time = typeof input === 'string' ? new Date(input) : input;
+      if (!(time instanceof Date) || Number.isNaN(time.getTime())) {
+        return 'Recently';
+      }
+      let duration = (time.getTime() - Date.now()) / 1000;
+      for (const division of RELATIVE_DIVISIONS) {
+        if (Math.abs(duration) < division.amount) {
+          return relativeTimeFormatter.format(Math.round(duration), division.unit);
+        }
+        duration /= division.amount;
+      }
+      return 'Recently';
+    }
 
     const switchToWorkerSection = document.getElementById('employerRoleSwitch');
     const switchToWorkerBtn = document.getElementById('switchToWorkerBtn');
@@ -555,26 +602,47 @@
 
     function renderEmployerProfile(){
       const avatar = document.getElementById('employerAvatar');
-      avatar.src = employerProfile.logoUrl || 'https://via.placeholder.com/120x120?text=Logo';
-      avatar.alt = `${employerProfile.name} logo`;
-      document.getElementById('employerName').textContent = employerProfile.name;
-      document.getElementById('employerLocation').textContent = employerProfile.location;
+      const nameEl = document.getElementById('employerName');
+      const locationEl = document.getElementById('employerLocation');
+      const locationText = employerProfile?.location || employerProfile?.industry || null;
+      if (!employerProfile) {
+        if (avatar) {
+          avatar.src = 'https://via.placeholder.com/120x120?text=Logo';
+          avatar.alt = 'Company logo placeholder';
+        }
+        if (nameEl) nameEl.textContent = 'Your company name';
+        if (locationEl) locationEl.textContent = 'Set your business location';
+      } else {
+        if (avatar) {
+          avatar.src = employerProfile.logoUrl || 'https://via.placeholder.com/120x120?text=Logo';
+          avatar.alt = `${employerProfile.name || 'Employer'} logo`;
+        }
+        if (nameEl) nameEl.textContent = employerProfile.name || 'Your company name';
+        if (locationEl) locationEl.textContent = locationText || 'Set your business location';
+      }
       const { score, missing } = computeEmployerCompletion(employerProfile);
-      document.getElementById('employerProfileBar').style.width = `${score}%`;
-      document.getElementById('employerProfilePct').textContent = `${score}% complete`;
-      const checklist = document.getElementById('employerChecklist'); checklist.innerHTML = '';
+      const profileBar = document.getElementById('employerProfileBar');
+      if (profileBar) {
+        profileBar.style.width = `${score}%`;
+      }
+      const profilePct = document.getElementById('employerProfilePct');
+      if (profilePct) {
+        profilePct.textContent = `${score}% complete`;
+      }
+      const checklist = document.getElementById('employerChecklist');
+      if (checklist) checklist.innerHTML = '';
       if(missing.length === 0){
         const li = document.createElement('li'); li.className='text-green-600'; li.textContent='All set! Your company profile is complete.';
-        checklist.appendChild(li);
+        checklist?.appendChild(li);
       } else {
         missing.forEach(item => {
           const li = document.createElement('li'); li.textContent = '• ' + item;
-          checklist.appendChild(li);
+          checklist?.appendChild(li);
         });
       }
       const statusEl = document.getElementById('employerVerifyStatus');
       if(statusEl){
-        if(employerProfile.verified){
+        if(employerProfile?.verified){
           statusEl.textContent = 'ID verification complete';
           statusEl.classList.remove('text-amber-600');
           statusEl.classList.add('text-green-600');
@@ -586,7 +654,7 @@
       }
       const verifyBtn = document.getElementById('verifyEmployerBtn');
       if(verifyBtn){
-        if(employerProfile.verified){
+        if(employerProfile?.verified){
           verifyBtn.textContent = 'Company ID Verified';
           verifyBtn.disabled = true;
           verifyBtn.classList.add('bg-green-600','text-white','border-transparent','opacity-80','cursor-not-allowed');
@@ -601,51 +669,102 @@
     }
 
     function renderMetrics(){
-      document.getElementById('jobsPosted').textContent = jobs.length;
-      document.getElementById('appsTotal').textContent = applicants.length;
-      document.getElementById('hiresTotal').textContent = totalHires;
-      document.getElementById('activeListings').textContent = jobs.filter(j=>j.status==='Open').length;
+      const jobsPostedEl = document.getElementById('jobsPosted');
+      const appsTotalEl = document.getElementById('appsTotal');
+      const hiresTotalEl = document.getElementById('hiresTotal');
+      const activeListingsEl = document.getElementById('activeListings');
+      if (jobsPostedEl) jobsPostedEl.textContent = metricsState.jobsPosted ?? jobs.length;
+      if (appsTotalEl) appsTotalEl.textContent = metricsState.totalApplicants ?? applicants.length;
+      if (hiresTotalEl) hiresTotalEl.textContent = metricsState.totalHires ?? 0;
+      if (activeListingsEl) {
+        const activeCount =
+          metricsState.activeListings ??
+          jobs.filter(j => (j.status || '').toString().toUpperCase() === 'OPEN').length;
+        activeListingsEl.textContent = activeCount;
+      }
       const freePostsEl = document.getElementById('freePostsLeft');
       const recEl = document.getElementById('recommendationCredits');
-      freePostsEl.textContent = premiumPlusActive ? 'Unlimited' : freePostsLeft;
-      recEl.textContent = premiumPlusActive ? `${directRecommendationCredits}` : '—';
-      document.getElementById('freeHiresLeft').textContent = premiumPlusActive ? 'Unlimited' : freeHiresLeft;
+      const freeHiresEl = document.getElementById('freeHiresLeft');
+      if (freePostsEl) freePostsEl.textContent = planState.premiumPlusActive ? 'Unlimited' : planState.freePostsLeft;
+      if (recEl) {
+        if (planState.premiumPlusActive) {
+          recEl.textContent = `${planState.directRecommendationCredits ?? 0}`;
+        } else {
+          recEl.textContent = planState.directRecommendationCredits > 0 ? `${planState.directRecommendationCredits}` : '—';
+        }
+      }
+      if (freeHiresEl) freeHiresEl.textContent = planState.premiumPlusActive ? 'Unlimited' : planState.freeHiresLeft;
       const planStatus = document.getElementById('planStatus');
-      if (premiumPlusActive) {
-        planStatus.textContent = `Premium Plus active — unlimited posts and ${directRecommendationCredits} direct recommendation${directRecommendationCredits === 1 ? '' : 's'} left this month.`;
-      } else if (paidPostReady) {
-        planStatus.textContent = 'Payment received — click “Post New Job” to publish your paid listing.';
-      } else if (freePostsLeft > 0) {
-        planStatus.textContent = 'Your free post is available. Publish now to reach verified workers.';
-      } else {
-        planStatus.textContent = 'Pay ₦1,000 for each additional job post or upgrade to Premium Plus for concierge matches.';
+      if (planStatus) {
+        if (planState.premiumPlusActive) {
+          const credits = planState.directRecommendationCredits ?? 0;
+          planStatus.textContent = `Premium Plus active — unlimited posts and ${credits} direct recommendation${credits === 1 ? '' : 's'} available this month.`;
+        } else if (planState.paidPostReady) {
+          planStatus.textContent = 'Payment received — click “Post New Job” to publish your paid listing.';
+        } else if (planState.freePostsLeft > 0) {
+          planStatus.textContent = 'Your free post is available. Publish now to reach verified workers.';
+        } else {
+          planStatus.textContent = 'Pay ₦1,000 for each additional job post or upgrade to Premium Plus for concierge matches.';
+        }
       }
     }
     function renderJobs(){
-      const list = document.getElementById('jobList'); list.innerHTML = '';
+      const list = document.getElementById('jobList');
+      const emptyState = document.getElementById('jobListEmpty');
+      if (!list) return;
+      list.innerHTML = '';
+      if (!jobs.length) {
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+      }
+      if (emptyState) emptyState.classList.add('hidden');
       jobs.forEach(j => {
+        const statusRaw = (j.status ?? '').toString();
+        const statusUpper = statusRaw.toUpperCase();
+        const statusLabel =
+          j.statusLabel ??
+          (statusUpper ? `${statusUpper.charAt(0)}${statusUpper.slice(1).toLowerCase()}` : 'Pending');
+        const statusClass =
+          statusUpper === 'OPEN'
+            ? 'text-green-600'
+            : statusUpper === 'DRAFT'
+            ? 'text-amber-500'
+            : 'text-gray-400';
+        const locationText = j.city || j.location || 'Location TBC';
+        const postedLabel = j.posted || j.postedAt || formatRelativeTime(j.createdAt);
         const li = document.createElement('li');
         li.className = 'border rounded p-3 flex justify-between items-start';
         li.innerHTML = `<div>
             <h4 class="font-semibold">${j.title}</h4>
-            <p class="text-sm text-gray-500">${j.city} • ${j.posted}</p>
-            <p class="text-xs text-gray-400 mt-1">${j.applicants} applicants</p>
+            <p class="text-sm text-gray-500">${locationText} • ${postedLabel || 'Recently'}</p>
+            <p class="text-xs text-gray-400 mt-1">${j.applicants ?? 0} applicant${(j.applicants ?? 0) === 1 ? '' : 's'}</p>
           </div>
-          <span class="text-xs ${j.status === 'Open' ? 'text-green-600' : 'text-gray-400'} font-semibold">${j.status}</span>`;
+          <span class="text-xs ${statusClass} font-semibold">${statusLabel}</span>`;
         list.appendChild(li);
       });
     }
     function renderApplicants(){
-      const list = document.getElementById('applicantsList'); list.innerHTML='';
+      const list = document.getElementById('applicantsList');
+      const emptyState = document.getElementById('applicantsListEmpty');
+      if (!list) return;
+      list.innerHTML='';
+      if (!applicants.length) {
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+      }
+      if (emptyState) emptyState.classList.add('hidden');
       applicants.forEach((a)=>{
+        const skillLabel = a.skill || 'General';
+        const applicantLocation = a.location || 'Location TBC';
+        const appliedLabel = formatRelativeTime(a.appliedAt);
         const li=document.createElement('li');
         li.className='border rounded-lg p-4 text-sm space-y-3 shadow-sm';
         li.innerHTML = `<div class="flex justify-between items-start gap-3">
             <div>
               <div class="font-medium text-gray-900">${a.name}</div>
-              <div class="text-xs text-gray-500">${a.skill} • ${a.location}</div>
+              <div class="text-xs text-gray-500">${skillLabel} • ${applicantLocation}</div>
             </div>
-            <span class="text-xs text-gray-400 whitespace-nowrap">${a.applied}</span>
+            <span class="text-xs text-gray-400 whitespace-nowrap">${appliedLabel}</span>
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <button class="viewProfileBtn inline-flex items-center gap-1 border border-primary text-primary px-3 py-1.5 rounded hover:bg-primary hover:text-white transition text-xs font-medium" data-user="${a.userId}">
@@ -680,6 +799,111 @@
         });
       });
       feather.replace();
+    }
+
+    function applyDashboardSnapshot(snapshot){
+      if (!snapshot) {
+        renderEmployerProfile();
+        renderMetrics();
+        renderJobs();
+        renderApplicants();
+        return;
+      }
+
+      if (snapshot.profile) {
+        employerProfile = {
+          ...snapshot.profile,
+          name: snapshot.profile.name ?? employerProfile?.name ?? null,
+          location: snapshot.profile.location ?? employerProfile?.location ?? null,
+          logoUrl: snapshot.profile.logoUrl ?? employerProfile?.logoUrl ?? null,
+          verified: Boolean(snapshot.profile.verified ?? employerProfile?.verified),
+          industry: snapshot.profile.industry ?? employerProfile?.industry ?? null,
+        };
+      }
+
+      jobs = Array.isArray(snapshot.jobs) ? snapshot.jobs : [];
+      applicants = Array.isArray(snapshot.applicants) ? snapshot.applicants : [];
+
+      if (snapshot.plan) {
+        planState.freePostsLeft =
+          typeof snapshot.plan.freePostsLeft === 'number'
+            ? snapshot.plan.freePostsLeft
+            : planState.freePostsLeft;
+        planState.freeHiresLeft =
+          typeof snapshot.plan.freeHiresLeft === 'number'
+            ? snapshot.plan.freeHiresLeft
+            : planState.freeHiresLeft;
+        planState.directRecommendationCredits =
+          typeof snapshot.plan.directRecommendationCredits === 'number'
+            ? snapshot.plan.directRecommendationCredits
+            : planState.directRecommendationCredits;
+        planState.premiumPlusActive = Boolean(
+          snapshot.plan.premiumPlusActive ?? planState.premiumPlusActive,
+        );
+        planState.paidPostReady = Boolean(snapshot.plan.paidPostReady ?? planState.paidPostReady);
+      }
+
+      if (snapshot.stats) {
+        metricsState.jobsPosted =
+          typeof snapshot.stats.jobsPosted === 'number'
+            ? snapshot.stats.jobsPosted
+            : jobs.length;
+        metricsState.totalApplicants =
+          typeof snapshot.stats.totalApplicants === 'number'
+            ? snapshot.stats.totalApplicants
+            : metricsState.totalApplicants;
+        metricsState.totalHires =
+          typeof snapshot.stats.totalHires === 'number'
+            ? snapshot.stats.totalHires
+            : metricsState.totalHires;
+        metricsState.activeListings =
+          typeof snapshot.stats.activeListings === 'number'
+            ? snapshot.stats.activeListings
+            : jobs.filter(j => (j.status || '').toString().toUpperCase() === 'OPEN').length;
+        metricsState.hiresThisMonth =
+          typeof snapshot.stats.hiresThisMonth === 'number'
+            ? snapshot.stats.hiresThisMonth
+            : metricsState.hiresThisMonth;
+      } else {
+        metricsState.jobsPosted = jobs.length;
+        metricsState.activeListings = jobs.filter(
+          j => (j.status || '').toString().toUpperCase() === 'OPEN',
+        ).length;
+        metricsState.totalApplicants = applicants.length;
+      }
+
+      renderEmployerProfile();
+      renderMetrics();
+      renderJobs();
+      renderApplicants();
+    }
+
+    async function loadEmployerDashboard(){
+      if (!employerSessionPayload?.token) {
+        showToast('Please log in again to view your dashboard.', 'error');
+        window.location.href = 'login.html';
+        return;
+      }
+      try {
+        const res = await fetch('/api/dashboard/employer', {
+          cache: 'no-store',
+          headers: { Authorization: `Bearer ${employerSessionPayload.token}` },
+        });
+        if (res.status === 401 || res.status === 403) {
+          showToast('Your session expired. Please log in again.', 'error');
+          window.location.href = 'login.html';
+          return;
+        }
+        if (!res.ok) {
+          throw new Error('Unable to load employer dashboard data.');
+        }
+        const data = await res.json();
+        applyDashboardSnapshot(data);
+      } catch (error) {
+        console.error(error);
+        showToast('Unable to load latest dashboard data. Showing the most recent snapshot.', 'error');
+        applyDashboardSnapshot(null);
+      }
     }
 
     async function openProfileModal(userId){
@@ -797,16 +1021,16 @@
           const errorBody = await res.json().catch(()=>({ message:'Unknown error' }));
           throw new Error(errorBody.message || 'Unable to record decision');
         }
-        alert(payload.decision === 'ACCEPT' ? '✅ Applicant accepted. Hire recorded.' : 'Applicant rejected.');
+        showToast(payload.decision === 'ACCEPT' ? 'Applicant accepted. Hire recorded.' : 'Applicant rejected.', payload.decision === 'ACCEPT' ? 'success' : 'info');
         closeDecisionModal();
       } catch(error){
-        alert(error.message);
+        showToast(error.message, 'error');
       }
     });
 
     const verifyEmployerBtn = document.getElementById('verifyEmployerBtn');
-    verifyEmployerBtn.addEventListener('click', () => {
-      if (employerProfile.verified) return;
+    verifyEmployerBtn?.addEventListener('click', () => {
+      if (employerProfile?.verified) return;
       window.location.href = 'verify.html?returnTo=employer-dashboard';
     });
 
@@ -845,82 +1069,103 @@
       btn.addEventListener('click', () => {
         const plan = btn.dataset.plan;
         if(plan === 'pay-per-post'){
-          paidPostReady = true;
+          planState.paidPostReady = true;
           window.open('https://paystack.com/pay/siriusjobs-post', '_blank', 'noopener');
-          alert('✅ After completing the ₦1,000 payment, click “Post New Job” to publish your role.');
+          showToast('After completing the ₦1,000 payment, click “Post New Job” to publish your role.', 'info');
           closeEmployerModal();
           renderMetrics();
         } else if(plan === 'premium-plus'){
-          premiumPlusActive = true;
-          freePostsLeft = 0;
-          freeHiresLeft = 0;
-          directRecommendationCredits = 3;
-          paidPostReady = false;
-          alert('🎉 Premium Plus activated! Expect three direct candidate recommendations from our team this month.');
+          planState.premiumPlusActive = true;
+          planState.freePostsLeft = 0;
+          planState.freeHiresLeft = 0;
+          planState.directRecommendationCredits = Math.max(planState.directRecommendationCredits, 3);
+          planState.paidPostReady = false;
+          showToast('Premium Plus activated! Expect three direct candidate recommendations this month.', 'success');
           closeEmployerModal();
           renderMetrics();
         } else {
-          alert(`🎉 ${employerPlanLabels[plan]} checkout is coming soon.`);
+          showToast(`${employerPlanLabels[plan]} checkout is coming soon.`, 'info');
           closeEmployerModal();
         }
       });
     });
 
     function handleHire(applicant, triggerButton){
-      if(premiumPlusActive){
-        totalHires += 1;
+      if(planState.premiumPlusActive){
+        metricsState.totalHires += 1;
+        metricsState.totalApplicants = Math.max(metricsState.totalApplicants - 1, applicants.length);
         triggerButton.textContent = 'Hired';
         triggerButton.disabled = true;
         triggerButton.classList.add('opacity-60', 'cursor-not-allowed');
-        alert(`🎉 ${applicant.name} hired under your Premium Plus plan!`);
+        showToast(`${applicant.name} hired under your Premium Plus plan!`, 'success');
         renderMetrics();
         return;
       }
-      if(freeHiresLeft > 0){
-        freeHiresLeft -= 1;
-        totalHires += 1;
+      if(planState.freeHiresLeft > 0){
+        planState.freeHiresLeft -= 1;
+        metricsState.totalHires += 1;
+        metricsState.totalApplicants = Math.max(metricsState.totalApplicants - 1, applicants.length);
         triggerButton.textContent = 'Hired';
         triggerButton.disabled = true;
         triggerButton.classList.add('opacity-60', 'cursor-not-allowed');
-        alert(`✅ ${applicant.name} hired! Free hires remaining: ${freeHiresLeft}`);
+        showToast(`${applicant.name} hired! Free hires remaining: ${planState.freeHiresLeft}`, 'success');
         renderMetrics();
       } else {
-        alert('🚧 Free hires exhausted. Buy a job credit or activate Premium Plus to keep hiring.');
+        showToast('Free hires exhausted. Buy a job credit or activate Premium Plus to keep hiring.', 'error');
         openEmployerModal();
       }
     }
 
-    document.getElementById('postBtn').addEventListener('click', ()=>{
+    const postBtn = document.getElementById('postBtn');
+    postBtn?.addEventListener('click', ()=>{
+      const fallbackLocation = employerProfile?.location || employerProfile?.industry || 'Nigeria';
+      const inferredCity = fallbackLocation.includes(',')
+        ? fallbackLocation.split(',')[0].trim()
+        : fallbackLocation;
       const newJob = {
         title:`New Role ${jobs.length + 1}`,
-        city: employerProfile.location.split(',')[0] || employerProfile.location,
-        status:'Open',
+        city: inferredCity || 'Lagos',
+        location: fallbackLocation,
+        status:'OPEN',
+        statusLabel: 'Open',
         applicants:0,
-        posted:'Just now'
+        createdAt: new Date().toISOString()
       };
-      if(premiumPlusActive){
+      if(planState.premiumPlusActive){
         jobs.unshift(newJob);
-        alert('✅ Job posted under your Premium Plus plan!');
+        showToast('Job posted under your Premium Plus plan!', 'success');
+        metricsState.jobsPosted += 1;
+        metricsState.activeListings = jobs.filter(
+          job => (job.status || '').toString().toUpperCase() === 'OPEN',
+        ).length;
         renderJobs();
         renderMetrics();
         return;
       }
-      if(freePostsLeft > 0){
-        freePostsLeft -= 1;
+      if(planState.freePostsLeft > 0){
+        planState.freePostsLeft -= 1;
         jobs.unshift(newJob);
-        alert(`✅ Job posted! Free postings remaining: ${freePostsLeft}`);
+        showToast(`Job posted! Free postings remaining: ${planState.freePostsLeft}`, 'success');
+        metricsState.jobsPosted += 1;
+        metricsState.activeListings = jobs.filter(
+          job => (job.status || '').toString().toUpperCase() === 'OPEN',
+        ).length;
         renderJobs();
         renderMetrics();
       } else {
-        if (paidPostReady) {
-          paidPostReady = false;
+        if (planState.paidPostReady) {
+          planState.paidPostReady = false;
           jobs.unshift(newJob);
-          alert('✅ Paid job posted! Thank you for settling the ₦1,000 fee.');
+          showToast('Paid job posted! Thank you for settling the ₦1,000 fee.', 'success');
+          metricsState.jobsPosted += 1;
+          metricsState.activeListings = jobs.filter(
+            job => (job.status || '').toString().toUpperCase() === 'OPEN',
+          ).length;
           renderJobs();
           renderMetrics();
           return;
         }
-        alert('🚧 Free postings exhausted. Pay ₦1,000 via the button below or upgrade to Premium Plus for unlimited posts.');
+        showToast('Free postings exhausted. Pay ₦1,000 via the button below or upgrade to Premium Plus for unlimited posts.', 'error');
         openEmployerModal();
       }
     });
@@ -929,14 +1174,17 @@
 
     function handleLogout(){
       sessionStorage.clear();
-      alert('You have been logged out of Sirius Jobs.');
+      showToast('You have been logged out of Sirius Jobs.', 'info');
       window.location.href = 'login.html';
     }
     document.getElementById('employerLogout').addEventListener('click', handleLogout);
     document.getElementById('employerLogoutMobile').addEventListener('click', handleLogout);
 
     renderEmployerProfile();
-    renderMetrics(); renderJobs(); renderApplicants();
+    renderMetrics();
+    renderJobs();
+    renderApplicants();
+    loadEmployerDashboard();
   </script>
   <script src="assistant.js"></script>
 </body>

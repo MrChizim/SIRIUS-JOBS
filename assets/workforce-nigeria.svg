@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title">
+  <title id="title">Nigerian Workforce Illustration</title>
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a3d91"/>
+      <stop offset="100%" stop-color="#23d398"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bgGradient)" opacity="0.85"/>
+  <g transform="translate(80 80)" fill="#ffffff" opacity="0.9">
+    <path d="M120 360c0-100 60-160 120-160s120 60 120 160H120z" opacity="0.8"/>
+    <path d="M320 360c0-120 70-200 150-200s150 80 150 200H320z" opacity="0.75"/>
+    <path d="M0 360c0-80 50-120 100-120s100 40 100 120H0z" opacity="0.7"/>
+  </g>
+  <g transform="translate(140 120)" fill="#f5faff" stroke="#103a73" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="100" cy="140" r="60"/>
+    <path d="M60 260h80l20 140H40z" fill="#0f4fbe"/>
+    <path d="M88 120l32-80 32 80" stroke="#23d398"/>
+  </g>
+  <g transform="translate(320 90)" fill="#f5faff" stroke="#103a73" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="120" cy="120" r="70"/>
+    <path d="M70 240h100l30 150H40z" fill="#23d398"/>
+    <path d="M112 108l48-92 48 92" stroke="#0f4fbe"/>
+  </g>
+  <g transform="translate(520 150)" fill="#f5faff" stroke="#103a73" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="80" cy="100" r="50"/>
+    <path d="M50 190h60l16 120H34z" fill="#0f4fbe"/>
+    <path d="M70 90l28-60 28 60" stroke="#23d398"/>
+  </g>
+</svg>

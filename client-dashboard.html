@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Client Dashboard - Sirius Jobs</title>
+  <meta name="description" content="Track your unlocked consultations, leave reviews, and stay in touch with professionals on Sirius Jobs." />
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0056b3',
+            secondary: '#111827',
+          },
+        },
+      },
+    };
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="api.js"></script>
+  <script src="session-utils.js"></script>
+  <script src="ui-utils.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    #chatMessages::-webkit-scrollbar, #reviewList::-webkit-scrollbar { width: 6px; }
+    #chatMessages::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.2); border-radius: 999px; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <nav class="bg-white shadow-sm sticky top-0 z-40">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/sirius-logo.svg" alt="Sirius Jobs logo" class="w-10 h-10">
+        <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
+      </a>
+      <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+        <a href="consultations.html" class="text-gray-600 hover:text-primary transition">Consultations</a>
+        <a href="services.html" class="text-gray-600 hover:text-primary transition">Services</a>
+        <a href="findworker.html" class="text-gray-600 hover:text-primary transition">Find Workers</a>
+        <button id="clientLogoutBtn" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 transition">
+          <i data-feather="log-out" class="w-4 h-4"></i>
+          Logout
+        </button>
+      </div>
+      <button id="clientMenuBtn" class="md:hidden text-gray-600 focus:outline-none">
+        <i data-feather="menu"></i>
+      </button>
+    </div>
+    <div id="clientMobileMenu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pb-4 space-y-2 text-sm font-medium">
+      <a href="consultations.html" class="block text-gray-600 hover:text-primary transition py-2">Consultations</a>
+      <a href="services.html" class="block text-gray-600 hover:text-primary transition py-2">Services</a>
+      <a href="findworker.html" class="block text-gray-600 hover:text-primary transition py-2">Find Workers</a>
+      <button id="clientLogoutBtnMobile" class="block text-left w-full py-2 text-gray-600 hover:text-primary">Logout</button>
+    </div>
+  </nav>
+
+  <header class="bg-gradient-to-r from-primary to-blue-700 text-white py-14">
+    <div class="container mx-auto px-4">
+      <p class="uppercase text-xs tracking-[0.3em] text-white/80 mb-3">Client Control Centre</p>
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div>
+          <h1 class="text-3xl md:text-4xl font-semibold">Welcome back, <span id="clientGreetingName">Client</span>!</h1>
+          <p class="mt-3 text-white/80 max-w-2xl">Manage every consultation in one place. Continue conversations, leave reviews, and wrap sessions once you’re done so we can release payouts promptly.</p>
+        </div>
+        <div class="bg-white/10 border border-white/20 rounded-2xl px-6 py-4 backdrop-blur-sm text-sm">
+          <p class="text-white/70 mb-2">Need help?</p>
+          <a href="contact.html" class="inline-flex items-center gap-2 text-white hover:text-white/90 transition">
+            <i data-feather="life-buoy" class="w-4 h-4"></i>
+            Chat with support
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-12 space-y-14">
+    <section>
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div>
+          <h2 class="text-2xl font-semibold text-gray-900">Active consultations</h2>
+          <p class="text-gray-500 text-sm">Unlocked professionals you can contact for the next 24 hours.</p>
+        </div>
+        <a href="consultations.html" class="inline-flex items-center gap-2 text-sm text-primary font-medium hover:text-primary/80">
+          <i data-feather="search" class="w-4 h-4"></i>
+          Unlock another professional
+        </a>
+      </div>
+      <div id="activeConsultationsList" class="grid gap-5 lg:grid-cols-2"></div>
+      <div id="noActiveConsultations" class="hidden rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center text-gray-500">
+        <i data-feather="coffee" class="mx-auto mb-4 w-10 h-10 text-gray-300"></i>
+        <p class="font-medium text-gray-700">No active consultations yet.</p>
+        <p class="text-sm mt-2">Unlock a doctor or lawyer to start a 24-hour session.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div>
+          <h2 class="text-2xl font-semibold text-gray-900">Past consultations &amp; reviews</h2>
+          <p class="text-gray-500 text-sm">Confirm sessions and share your experience to help future clients.</p>
+        </div>
+      </div>
+      <div id="completedConsultationsList" class="grid gap-5 lg:grid-cols-2"></div>
+      <div id="noCompletedConsultations" class="hidden rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center text-gray-500">
+        <i data-feather="star" class="mx-auto mb-4 w-10 h-10 text-gray-300"></i>
+        <p class="font-medium text-gray-700">You haven’t wrapped up any consultations yet.</p>
+        <p class="text-sm mt-2">Once you mark a session as done, it appears here for final review.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Chat Drawer -->
+  <div id="chatDrawer" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" data-chat-close></div>
+    <aside class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
+      <header class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+        <div>
+          <p class="text-xs uppercase tracking-[0.3em] text-gray-400">Consultation chat</p>
+          <h3 id="chatDrawerTitle" class="text-lg font-semibold text-gray-900">Professional</h3>
+          <p id="chatDrawerSubtitle" class="text-xs text-gray-500">Session window running...</p>
+        </div>
+        <button class="p-2 rounded-full bg-gray-100 hover:bg-gray-200" data-chat-close>
+          <i data-feather="x" class="w-4 h-4 text-gray-500"></i>
+        </button>
+      </header>
+      <div id="chatMessages" class="flex-1 overflow-y-auto px-5 py-4 space-y-4 bg-gray-50"></div>
+      <form id="chatForm" class="px-5 py-4 border-t border-gray-100 bg-white space-y-3">
+        <textarea id="chatInput" rows="3" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="Type your message..."></textarea>
+        <div class="flex items-center justify-between gap-3">
+          <p class="text-xs text-gray-400">All messages stay on Sirius Jobs for safety.</p>
+          <button type="submit" class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition">
+            <i data-feather="send" class="w-4 h-4"></i>
+            Send
+          </button>
+        </div>
+      </form>
+    </aside>
+  </div>
+
+  <!-- Review Modal -->
+  <div id="reviewModal" class="fixed inset-0 z-40 hidden">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" data-review-close></div>
+    <div class="absolute inset-0 px-4 py-8 flex items-center justify-center">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 space-y-5 relative">
+        <button class="absolute top-4 right-4 p-2 rounded-full bg-gray-100 hover:bg-gray-200" data-review-close>
+          <i data-feather="x" class="w-4 h-4 text-gray-500"></i>
+        </button>
+        <h3 class="text-xl font-semibold text-gray-900">Share your experience</h3>
+        <p class="text-sm text-gray-600" id="reviewModalSubtitle">Leave a review so others know what to expect.</p>
+        <form id="reviewForm" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase text-gray-500 tracking-[0.3em]">Rating</label>
+            <select id="reviewRating" class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" required>
+              <option value="">Select rating</option>
+              <option value="5">5 - Excellent</option>
+              <option value="4">4 - Good</option>
+              <option value="3">3 - Okay</option>
+              <option value="2">2 - Needs improvement</option>
+              <option value="1">1 - Poor</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase text-gray-500 tracking-[0.3em]">Comment (optional)</label>
+            <textarea id="reviewComment" rows="4" class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="How did the consultation help?"></textarea>
+          </div>
+          <div class="flex items-center justify-end gap-3">
+            <button type="button" class="text-sm text-gray-500 hover:text-gray-700" data-review-close>Cancel</button>
+            <button type="submit" class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition">
+              <i data-feather="save" class="w-4 h-4"></i>
+              Submit review
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sessionUtils = window.SiriusSession ?? null;
+    const showToast = window.SiriusUI?.showToast ?? ((message, tone) => {
+      const logger = tone === 'error' ? console.error : console.log;
+      logger(message);
+    });
+
+    function parseClientSession() {
+      if (sessionUtils?.parse) {
+        return sessionUtils.parse('siriusClientAuth');
+      }
+      try {
+        return JSON.parse(sessionStorage.getItem('siriusClientAuth') ?? 'null');
+      } catch (error) {
+        return null;
+      }
+    }
+
+    let clientSession = parseClientSession();
+    if (!clientSession?.token) {
+      window.location.href = 'login.html?account=client&redirect=client-dashboard.html';
+    }
+
+    const authHeaders = () => ({
+      Authorization: `Bearer ${clientSession.token}`,
+      'Content-Type': 'application/json',
+    });
+
+    const greetingName = document.getElementById('clientGreetingName');
+    if (greetingName) {
+      greetingName.textContent = clientSession?.firstName || 'Client';
+    }
+
+    const menuBtn = document.getElementById('clientMenuBtn');
+    const mobileMenu = document.getElementById('clientMobileMenu');
+    menuBtn?.addEventListener('click', () => mobileMenu?.classList.toggle('hidden'));
+
+    const logout = () => {
+      sessionStorage.removeItem('siriusClientAuth');
+      showToast('You have been signed out.', 'info');
+      window.location.href = 'login.html?account=client';
+    };
+    document.getElementById('clientLogoutBtn')?.addEventListener('click', logout);
+    document.getElementById('clientLogoutBtnMobile')?.addEventListener('click', logout);
+
+    const activeList = document.getElementById('activeConsultationsList');
+    const noActive = document.getElementById('noActiveConsultations');
+    const completedList = document.getElementById('completedConsultationsList');
+    const noCompleted = document.getElementById('noCompletedConsultations');
+
+    const chatDrawer = document.getElementById('chatDrawer');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+    const chatTitle = document.getElementById('chatDrawerTitle');
+    const chatSubtitle = document.getElementById('chatDrawerSubtitle');
+    let chatConsultationId = null;
+
+    const reviewModal = document.getElementById('reviewModal');
+    const reviewForm = document.getElementById('reviewForm');
+    const reviewRating = document.getElementById('reviewRating');
+    const reviewComment = document.getElementById('reviewComment');
+    const reviewSubtitle = document.getElementById('reviewModalSubtitle');
+    let reviewConsultationId = null;
+    let consultationsCache = [];
+    let countdownInterval = null;
+
+    function closeChatDrawer() {
+      chatConsultationId = null;
+      chatDrawer?.classList.add('hidden');
+      if (chatMessages) chatMessages.innerHTML = '';
+    }
+
+    function openChatDrawer(consultation) {
+      chatConsultationId = consultation.id;
+      if (chatTitle) chatTitle.textContent = consultation.professional.name;
+      if (chatSubtitle) {
+        chatSubtitle.textContent = consultation.status === 'COMPLETED'
+          ? 'This consultation is marked as completed.'
+          : 'We recommend keeping all calls and messages within Sirius Jobs.';
+      }
+      chatDrawer?.classList.remove('hidden');
+      loadMessages(consultation.id);
+    }
+
+    document.querySelectorAll('[data-chat-close]').forEach(el => {
+      el.addEventListener('click', closeChatDrawer);
+    });
+
+    function closeReviewModal() {
+      reviewConsultationId = null;
+      reviewModal?.classList.add('hidden');
+      if (reviewForm) reviewForm.reset();
+    }
+
+    document.querySelectorAll('[data-review-close]').forEach(el => {
+      el.addEventListener('click', closeReviewModal);
+    });
+
+    function renderCountdowns() {
+      if (!Array.isArray(consultationsCache)) return;
+      const now = Date.now();
+      consultationsCache.forEach(consultation => {
+        if (!consultation.expiresAt || consultation.status === 'COMPLETED' || consultation.status === 'EXPIRED') {
+          return;
+        }
+        const badge = document.querySelector(`[data-consultation-countdown="${consultation.id}"]`);
+        if (!badge) return;
+        const expiresMs = new Date(consultation.expiresAt).getTime();
+        const diff = Math.max(expiresMs - now, 0);
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        if (diff <= 0) {
+          badge.textContent = 'Session expired';
+          badge.classList.remove('text-emerald-600');
+          badge.classList.add('text-red-500');
+        } else {
+          badge.textContent = `Ends in ${hours}h ${minutes}m`;
+        }
+      });
+    }
+
+    async function loadConsultations() {
+      try {
+        const res = await fetch('/api/consultations/client/me', {
+          headers: authHeaders(),
+          cache: 'no-store',
+        });
+        if (res.status === 401) {
+          logout();
+          return;
+        }
+        if (!res.ok) {
+          throw new Error('Unable to load consultations.');
+        }
+        const data = await res.json();
+        consultationsCache = Array.isArray(data?.consultations) ? data.consultations : [];
+        renderConsultations();
+        if (countdownInterval) clearInterval(countdownInterval);
+        countdownInterval = window.setInterval(renderCountdowns, 30_000);
+        renderCountdowns();
+      } catch (error) {
+        console.error(error);
+        showToast(error.message || 'Unable to load your consultations right now.', 'error');
+      }
+    }
+
+    function renderConsultations() {
+      const active = consultationsCache.filter(item => item.status !== 'COMPLETED' && item.status !== 'EXPIRED');
+      const completed = consultationsCache.filter(item => item.status === 'COMPLETED' || item.status === 'EXPIRED');
+
+      if (!active.length) {
+        noActive?.classList.remove('hidden');
+        if (activeList) activeList.innerHTML = '';
+      } else {
+        noActive?.classList.add('hidden');
+        if (activeList) {
+          activeList.innerHTML = active.map(item => {
+            const statusBadge = item.status === 'ACTIVE'
+              ? `<span class="inline-flex items-center gap-1 text-xs font-medium text-emerald-600"><i data-feather="activity" class="w-4 h-4"></i>Active</span>`
+              : `<span class="inline-flex items-center gap-1 text-xs font-medium text-amber-600"><i data-feather="clock" class="w-4 h-4"></i>${item.status}</span>`;
+            const contactRows = [
+              item.contact.phone ? `<div class="flex items-center gap-2 text-sm text-gray-600"><i data-feather="phone" class="w-4 h-4 text-gray-400"></i>${item.contact.phone}</div>` : '',
+              item.contact.email ? `<div class="flex items-center gap-2 text-sm text-gray-600"><i data-feather="mail" class="w-4 h-4 text-gray-400"></i>${item.contact.email}</div>` : '',
+              item.contact.whatsapp ? `<a href="${item.contact.whatsapp}" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition"><i data-feather="message-circle" class="w-4 h-4"></i>Open WhatsApp</a>` : '',
+            ].filter(Boolean).join('');
+
+            return `
+              <article class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <p class="text-xs uppercase tracking-[0.3em] text-gray-400">${item.professional.profession}</p>
+                    <h3 class="text-xl font-semibold text-gray-900">${item.professional.name}</h3>
+                    <p class="text-xs text-gray-500 mt-1">Unlocked ${new Date(item.createdAt).toLocaleString()}</p>
+                  </div>
+                  <div class="text-right space-y-1">
+                    ${statusBadge}
+                    <p class="text-xs text-gray-400" data-consultation-countdown="${item.id}">Calculating...</p>
+                  </div>
+                </div>
+                <div class="space-y-2">${contactRows || '<p class="text-sm text-gray-500">Contact details are on file.</p>'}</div>
+                <div class="flex flex-wrap items-center gap-3">
+                  <button class="openChatBtn inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition" data-id="${item.id}">
+                    <i data-feather="message-square" class="w-4 h-4"></i>
+                    Open chat
+                  </button>
+                  <button class="markDoneBtn inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition" data-id="${item.id}">
+                    <i data-feather="check-circle" class="w-4 h-4"></i>
+                    Mark done
+                  </button>
+                </div>
+              </article>
+            `;
+          }).join('');
+        }
+      }
+
+      if (!completed.length) {
+        noCompleted?.classList.remove('hidden');
+        if (completedList) completedList.innerHTML = '';
+      } else {
+        noCompleted?.classList.add('hidden');
+        if (completedList) {
+          completedList.innerHTML = completed.map(item => {
+            const reviewBlock = item.review
+              ? `<div class="text-sm text-gray-600 space-y-1">
+                  <div class="inline-flex items-center gap-1 text-amber-500">
+                    ${'★'.repeat(item.review.rating)}${'☆'.repeat(5 - item.review.rating)}
+                  </div>
+                  <p>${item.review.comment || 'No comment left.'}</p>
+                </div>`
+              : `<button class="openReviewBtn inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition" data-id="${item.id}">
+                  <i data-feather="star" class="w-4 h-4"></i>
+                  Leave a review
+                </button>`;
+
+            return `
+              <article class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <p class="text-xs uppercase tracking-[0.3em] text-gray-400">${item.professional.profession}</p>
+                    <h3 class="text-xl font-semibold text-gray-900">${item.professional.name}</h3>
+                    <p class="text-xs text-gray-500 mt-1">Completed ${item.endedAt ? new Date(item.endedAt).toLocaleString() : new Date(item.updatedAt).toLocaleString()}</p>
+                  </div>
+                  <span class="inline-flex items-center gap-1 text-xs font-medium ${item.status === 'EXPIRED' ? 'text-red-500' : 'text-emerald-600'}">
+                    <i data-feather="${item.status === 'EXPIRED' ? 'alert-triangle' : 'check'}" class="w-4 h-4"></i>
+                    ${item.status === 'EXPIRED' ? 'Expired' : 'Completed'}
+                  </span>
+                </div>
+                ${reviewBlock}
+                <button class="openChatBtn inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition" data-id="${item.id}">
+                  <i data-feather="message-square" class="w-4 h-4"></i>
+                  View conversation
+                </button>
+              </article>
+            `;
+          }).join('');
+        }
+      }
+
+      document.querySelectorAll('.openChatBtn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const consultation = consultationsCache.find(item => item.id === btn.dataset.id);
+          if (consultation) openChatDrawer(consultation);
+        });
+      });
+
+      document.querySelectorAll('.markDoneBtn').forEach(btn => {
+        btn.addEventListener('click', () => markConsultationDone(btn.dataset.id));
+      });
+
+      document.querySelectorAll('.openReviewBtn').forEach(btn => {
+        btn.addEventListener('click', () => openReviewModal(btn.dataset.id));
+      });
+
+      try { feather.replace(); } catch (error) {}
+    }
+
+    async function markConsultationDone(id) {
+      if (!id) return;
+      try {
+        const res = await fetch(`/api/consultations/${id}/done`, {
+          method: 'POST',
+          headers: authHeaders(),
+        });
+        if (res.status === 401) {
+          logout();
+          return;
+        }
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({ message: 'Unable to mark as done.' }));
+          throw new Error(body.message || 'Unable to mark as done.');
+        }
+        showToast('Session marked as completed. Thank you!', 'success');
+        await loadConsultations();
+      } catch (error) {
+        showToast(error.message || 'Unable to mark as done.', 'error');
+      }
+    }
+
+    async function loadMessages(id) {
+      if (!chatMessages) return;
+      chatMessages.innerHTML = '<div class="flex justify-center py-8 text-gray-400 text-sm">Loading conversation...</div>';
+      try {
+        const res = await fetch(`/api/consultations/${id}/messages`, {
+          headers: authHeaders(),
+          cache: 'no-store',
+        });
+        if (res.status === 401) {
+          logout();
+          return;
+        }
+        if (!res.ok) {
+          throw new Error('Unable to load messages right now.');
+        }
+        const data = await res.json();
+        const messages = Array.isArray(data?.messages) ? data.messages : [];
+        if (!messages.length) {
+          chatMessages.innerHTML = '<div class="flex flex-col items-center justify-center py-12 text-center text-sm text-gray-400 gap-2"><i data-feather="message-circle" class="w-8 h-8"></i><p>No messages yet. Say hello to start the conversation.</p></div>';
+          feather.replace();
+          return;
+        }
+        chatMessages.innerHTML = messages.map(msg => {
+          const isClient = msg.sender.id === clientSession.userId;
+          return `
+            <div class="flex ${isClient ? 'justify-end' : 'justify-start'}">
+              <div class="${isClient ? 'bg-primary text-white' : 'bg-white text-gray-800'} rounded-2xl px-4 py-2 max-w-xs shadow-sm text-sm">
+                <p>${msg.body}</p>
+                <p class="mt-2 text-[10px] ${isClient ? 'text-white/70' : 'text-gray-400'}">${new Date(msg.createdAt).toLocaleString()}</p>
+              </div>
+            </div>
+          `;
+        }).join('');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      } catch (error) {
+        console.error(error);
+        chatMessages.innerHTML = '<div class="flex justify-center py-8 text-sm text-red-500">Unable to load messages.</div>';
+      }
+    }
+
+    chatForm?.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!chatConsultationId) return;
+      const body = (chatInput?.value || '').trim();
+      if (!body) return;
+      try {
+        const res = await fetch(`/api/consultations/${chatConsultationId}/messages`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: JSON.stringify({ body }),
+        });
+        if (res.status === 401) {
+          logout();
+          return;
+        }
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ message: 'Unable to send message.' }));
+          throw new Error(err.message || 'Unable to send message.');
+        }
+        chatInput.value = '';
+        await loadMessages(chatConsultationId);
+      } catch (error) {
+        showToast(error.message || 'Unable to send message.', 'error');
+      }
+    });
+
+    function openReviewModal(id) {
+      const consultation = consultationsCache.find(item => item.id === id);
+      if (!consultation) return;
+      reviewConsultationId = id;
+      reviewModal?.classList.remove('hidden');
+      if (reviewSubtitle) {
+        reviewSubtitle.textContent = `Tell us how your session with ${consultation.professional.name} went.`;
+      }
+    }
+
+    reviewForm?.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!reviewConsultationId) return;
+      const rating = Number(reviewRating?.value || 0);
+      const comment = (reviewComment?.value || '').trim();
+      if (!rating) {
+        showToast('Select a rating before submitting your review.', 'error');
+        return;
+      }
+      try {
+        const res = await fetch(`/api/consultations/${reviewConsultationId}/reviews`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: JSON.stringify({ rating, comment }),
+        });
+        if (res.status === 401) {
+          logout();
+          return;
+        }
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({ message: 'Unable to submit review.' }));
+          throw new Error(body.message || 'Unable to submit review.');
+        }
+        closeReviewModal();
+        showToast('Thank you! Your review has been submitted.', 'success');
+        await loadConsultations();
+      } catch (error) {
+        showToast(error.message || 'Unable to submit review right now.', 'error');
+      }
+    });
+
+    loadConsultations();
+  </script>
+  <script src="assistant.js"></script>
+</body>
+</html>

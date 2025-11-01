@@ -22,13 +22,14 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="api.js"></script>
     <script src="session-utils.js"></script>
+    <script src="ui-utils.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
         }
         .register-hero {
-            background: linear-gradient(rgba(0, 86, 179, 0.9), rgba(0, 86, 179, 0.9)), url('http://static.photos/office/1200x630/8');
+            background: linear-gradient(rgba(0, 86, 179, 0.88), rgba(0, 86, 179, 0.88)), url('assets/hero-nigeria.svg');
             background-size: cover;
             background-position: center;
         }
@@ -260,6 +261,13 @@
         const passwordInput = document.getElementById('password');
         const confirmPasswordInput = document.getElementById('confirm-password');
         const sessionUtils = window.SiriusSession ?? null;
+        const showToast = window.SiriusUI?.showToast ?? ((message, tone) => {
+            if (tone === 'error') {
+                console.error(message);
+            } else {
+                console.log(message);
+            }
+        });
 
         const accountConfig = {
             worker: {
@@ -286,6 +294,7 @@
             registerMessage.classList.remove('hidden', 'text-red-600', 'text-green-600');
             registerMessage.classList.add(tone === 'success' ? 'text-green-600' : 'text-red-600');
             registerMessage.textContent = text;
+            showToast(text, tone === 'success' ? 'success' : 'error');
         };
 
         const buildSessionPayload = (data, options = {}) => {

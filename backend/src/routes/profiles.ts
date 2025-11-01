@@ -104,4 +104,66 @@ router.post('/hire', requireAuth(['EMPLOYER', 'ADMIN']), async (req: Authenticat
   res.status(201).json({ message: 'Hire recorded successfully' });
 });
 
+const professionalProfileSchema = z.object({
+  profileImageUrl: z
+    .string()
+    .min(10, 'Provide a valid image payload')
+    .max(500_000, 'Image payload too large')
+    .optional(),
+  regulatoryBody: z.string().min(2).max(120).optional(),
+  profession: z.string().min(2).max(120).optional(),
+});
+
+router.put('/professional/me', requireAuth(['DOCTOR', 'LAWYER']), async (req: AuthenticatedRequest, res) => {
+  const payload = professionalProfileSchema.safeParse(req.body);
+  if (!payload.success) {
+    return res.status(400).json({ errors: payload.error.flatten() });
+  }
+
+  const profile = await prisma.professionalProfile.update({
+    where: { userId: req.user!.id },
+    data: {
+      profileImageUrl: payload.data.profileImageUrl,
+      regulatoryBody: payload.data.regulatoryBody,
+      profession: payload.data.profession ?? undefined,
+    },
+    select: {
+      profileImageUrl: true,
+      regulatoryBody: true,
+      profession: true,
+      onboardingPaid: true,
+      licenseVerified: true,
+      licenseNumber: true,
+    },
+  });
+
+  res.json({ message: 'Professional profile updated', profile });
+});
+
+const completionSchema = z.object({
+  completion: z.number().int().min(0).max(100),
+});
+
+router.post(
+  '/professional/completion',
+  requireAuth(['DOCTOR', 'LAWYER']),
+  async (req: AuthenticatedRequest, res) => {
+    const payload = completionSchema.safeParse(req.body);
+    if (!payload.success) {
+      return res.status(400).json({ errors: payload.error.flatten() });
+    }
+
+    const user = await prisma.user.update({
+      where: { id: req.user!.id },
+      data: {
+        profileCompletion: payload.data.completion,
+        lastProfileAudit: new Date(),
+      },
+      select: { profileCompletion: true, lastProfileAudit: true },
+    });
+
+    res.json({ message: 'Profile completion updated', profileCompletion: user.profileCompletion });
+  },
+);
+
 export default router;

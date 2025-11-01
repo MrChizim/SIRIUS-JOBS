@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { prisma } from '../lib/prisma.js';
-import type { VerificationType } from '@prisma/client';
+import type { VerificationType, LicenseCheckStatus } from '@prisma/client';
 
 type VerificationPayload = {
   userId: string;
@@ -96,4 +96,34 @@ export async function markVerificationResult(
       });
     }
   }
+}
+
+type ProfessionalLicensePayload = {
+  userId: string;
+  licenseNumber: string;
+  regulatoryBody: string;
+};
+
+export async function verifyProfessionalLicenseStub(
+  payload: ProfessionalLicensePayload,
+): Promise<{ status: LicenseCheckStatus; notes?: string }> {
+  const normalizedNumber = payload.licenseNumber.trim().toUpperCase();
+  const normalizedBody = payload.regulatoryBody.trim().toUpperCase();
+
+  const looksValid =
+    normalizedNumber.length >= 6 &&
+    /^[A-Z0-9\-\/]+$/.test(normalizedNumber) &&
+    normalizedBody.length >= 3;
+
+  if (looksValid) {
+    return {
+      status: 'VERIFIED',
+      notes: 'Verified via placeholder registry logic. Replace with real registry integration.',
+    };
+  }
+
+  return {
+    status: 'FAILED',
+    notes: 'The provided licence details did not match the expected format.',
+  };
 }

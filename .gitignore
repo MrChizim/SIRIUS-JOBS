@@ -1,0 +1,15 @@
+# Dependency directories
+node_modules/
+backend/node_modules/
+
+# Build outputs
+dist/
+backend/dist/
+
+# Local environment & logs
+.env
+backend/.env
+backend-dev.log
+
+# Prisma engines and generated clients will be re-created on install
+backend/node_modules/.prisma/

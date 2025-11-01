@@ -29,7 +29,7 @@
             font-family: 'Inter', sans-serif;
         }
         .login-hero {
-            background: linear-gradient(rgba(0, 86, 179, 0.9), rgba(0, 86, 179, 0.9)), url('http://static.photos/office/1200x630/6');
+            background: linear-gradient(rgba(0, 86, 179, 0.88), rgba(0, 86, 179, 0.88)), url('assets/hero-nigeria.svg');
             background-size: cover;
             background-position: center;
         }
@@ -545,12 +545,41 @@
             btn.addEventListener('click', () => setWorkerAccount(btn.dataset.account));
         });
 
-        const loginRequest = async (email, password) => {
-            const res = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
+        const platformAvailable = typeof window !== 'undefined' && typeof window.SiriusPlatform !== 'undefined';
+
+        const authenticateOfflineConsultation = (accountType, email, password, extras = {}) => {
+            if (!platformAvailable) {
+                throw new Error('Unable to reach the Sirius Jobs API. Please try again shortly.');
+            }
+            if (accountType === 'professional') {
+                return window.SiriusPlatform.authenticateProfessional({
+                    email,
+                    password,
+                    profession: extras.profession,
+                });
+            }
+            if (accountType === 'client') {
+                return window.SiriusPlatform.authenticateClient({ email, password });
+            }
+            throw new Error('Offline login is not supported for this account type yet.');
+        };
+
+        const loginRequest = async (email, password, options = {}) => {
+            let res;
+            try {
+                res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                });
+            } catch (networkError) {
+                if (options.audience === 'consultation') {
+                    return authenticateOfflineConsultation(options.account ?? 'client', email, password, {
+                        profession: options.profession,
+                    });
+                }
+                throw networkError;
+            }
 
             const bodyText = await res.text();
             let body;
@@ -569,6 +598,11 @@
             }
 
             if (!body) {
+                if (options.audience === 'consultation') {
+                    return authenticateOfflineConsultation(options.account ?? 'client', email, password, {
+                        profession: options.profession,
+                    });
+                }
                 throw new Error('Login response was empty. Please try again.');
             }
 
@@ -594,7 +628,10 @@
             showWorkerMessage('Checking your details...', 'info');
 
             try {
-                const data = await loginRequest(email, password);
+                const data = await loginRequest(email, password, {
+                    audience: 'worker',
+                    account: activeWorkerAccount,
+                });
                 const sessionConfig = workerCopy[activeWorkerAccount];
                 const availableRoles = sessionUtils?.deriveRoles(data) ?? [data?.user?.role].filter(Boolean);
                 const hasAccess = sessionConfig.requiredRoles.some(role => availableRoles.includes(role));
@@ -647,7 +684,7 @@
 
         const consultationCopy = {
             client: {
-                redirect: 'consultations.html',
+                redirect: 'client-dashboard.html',
                 sessionKey: 'siriusClientAuth',
                 defaultName: 'Client',
                 allowedRoles: ['CLIENT']
@@ -720,7 +757,13 @@
             showConsultationMessage('Authenticating your account...', 'info');
 
             try {
-                const data = await loginRequest(email, password);
+                const data = await loginRequest(email, password, {
+                    audience: 'consultation',
+                    account: activeConsultationAccount,
+                    profession: activeConsultationAccount === 'professional'
+                        ? professionalRoleSelect.value || null
+                        : null,
+                });
                 const userRole = data?.user?.role;
                 const { allowedRoles, defaultName } = consultationCopy[activeConsultationAccount];
                 if (!allowedRoles.includes(userRole)) {

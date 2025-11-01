@@ -145,6 +145,15 @@ router.post('/verify', requireAuth(), async (req: AuthenticatedRequest, res) => 
       update: { available: { increment: 2500 * 100 } },
       create: { userId: req.user!.id, available: 2500 * 100, pending: 0 },
     });
+
+    await tx.professionalProfile.updateMany({
+      where: { userId: req.user!.id },
+      data: {
+        onboardingPaid: true,
+        onboardingPaidAt: new Date(),
+        subscriptionStatus: 'ACTIVE',
+      },
+    });
   });
 
   events.emit('notification:new', {
@@ -198,7 +207,11 @@ router.post('/professional/verify-public', async (req, res) => {
 
     await tx.professionalProfile.updateMany({
       where: { userId: user.id },
-      data: { subscriptionStatus: 'ACTIVE' },
+      data: {
+        subscriptionStatus: 'ACTIVE',
+        onboardingPaid: true,
+        onboardingPaidAt: new Date(),
+      },
     });
   });
 

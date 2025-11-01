@@ -49,6 +49,12 @@ enum PayoutStatus {
   REJECTED
 }
 
+enum LicenseCheckStatus {
+  PENDING
+  VERIFIED
+  FAILED
+}
+
 model User {
   id                      String                    @id @default(cuid())
   email                   String                    @unique
@@ -84,6 +90,8 @@ model User {
   payoutRequests          PayoutRequest[]
   consultationsAsClient   Consultation[]         @relation("ConsultationClient")
   consultationReviews     ConsultationReview[]   @relation("ConsultationReviewClient")
+  consultationMessages    ConsultationMessage[]
+  licenseChecks           ProfessionalLicenseAudit[]
 }
 
 model ArtisanProfile {
@@ -136,11 +144,27 @@ model ProfessionalProfile {
   licenseDocumentUrl    String?
   licenseVerified       Boolean          @default(false)
   licenseSubmittedAt    DateTime?
+  onboardingPaid        Boolean          @default(false)
+  onboardingPaidAt      DateTime?
+  lastLicenseCheckAt    DateTime?
+  lastLicenseCheckStatus LicenseCheckStatus?
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt
 
   consultations         Consultation[]
   reviews               ConsultationReview[]
+}
+
+model ProfessionalLicenseAudit {
+  id             String              @id @default(cuid())
+  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  licenseNumber  String
+  regulatoryBody String
+  status         LicenseCheckStatus
+  notes          String?
+  checkedBy      String?             // optional admin identifier or external reference
+  createdAt      DateTime            @default(now())
 }
 
 model ServiceCategory {
@@ -256,11 +280,17 @@ model Consultation {
   payoutStatus        PayoutStatus         @default(REQUESTED)
   payoutRequestedAt   DateTime?
   payoutProcessedAt   DateTime?
+  contactEmail        String?
+  contactPhone        String?
+  contactWhatsapp     String?
+  expiresAt           DateTime?
+  endedAt             DateTime?
   createdAt           DateTime             @default(now())
 
   professional        ProfessionalProfile  @relation(fields: [professionalId], references: [id])
   client              User                 @relation("ConsultationClient", fields: [clientId], references: [id])
   review              ConsultationReview?
+  messages            ConsultationMessage[]
 }
 
 model ConsultationReview {
@@ -275,6 +305,17 @@ model ConsultationReview {
   consultation     Consultation @relation(fields: [consultationId], references: [id])
   professional     ProfessionalProfile @relation(fields: [professionalId], references: [id])
   client           User        @relation("ConsultationReviewClient", fields: [clientId], references: [id])
+}
+
+model ConsultationMessage {
+  id              String        @id @default(cuid())
+  consultationId  String
+  senderId        String
+  body            String
+  createdAt       DateTime      @default(now())
+
+  consultation    Consultation  @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+  sender          User          @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
 
 model Wallet {

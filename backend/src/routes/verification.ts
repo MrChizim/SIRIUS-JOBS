@@ -2,7 +2,8 @@ import express from 'express';
 import { z } from 'zod';
 import { prisma } from '../lib/prisma.js';
 import { requireAuth, type AuthenticatedRequest } from '../middleware/auth.js';
-import { verifyGovernmentId, markVerificationResult } from '../services/verification.js';
+import { verifyGovernmentId, markVerificationResult, verifyProfessionalLicenseStub } from '../services/verification.js';
+import { scheduleLicenseRecheck } from '../services/license-recheck-queue.js';
 import { events } from '../services/event-bus.js';
 
 const router = express.Router();
@@ -92,6 +93,58 @@ router.post('/license', requireAuth(['DOCTOR', 'LAWYER']), async (req: Authentic
   });
 
   res.json({ message: 'License documents submitted for review.' });
+});
+
+const licenseCheckSchema = z.object({
+  licenseNumber: z.string().min(4),
+  regulatoryBody: z.string().min(2),
+});
+
+router.post('/license/check', requireAuth(['DOCTOR', 'LAWYER', 'ADMIN']), async (req: AuthenticatedRequest, res) => {
+  const payload = licenseCheckSchema.safeParse(req.body);
+  if (!payload.success) {
+    return res.status(400).json({ errors: payload.error.flatten() });
+  }
+
+  const result = await verifyProfessionalLicenseStub({
+    userId: req.user!.id,
+    licenseNumber: payload.data.licenseNumber,
+    regulatoryBody: payload.data.regulatoryBody,
+  });
+
+  await prisma.professionalLicenseAudit.create({
+    data: {
+      userId: req.user!.id,
+      licenseNumber: payload.data.licenseNumber,
+      regulatoryBody: payload.data.regulatoryBody,
+      status: result.status,
+      notes: result.notes,
+      checkedBy: req.user?.id,
+    },
+  });
+
+  await prisma.professionalProfile.updateMany({
+    where: { userId: req.user!.id },
+    data: {
+      licenseVerified: result.status === 'VERIFIED',
+      lastLicenseCheckAt: new Date(),
+      lastLicenseCheckStatus: result.status,
+      licenseNumber: payload.data.licenseNumber,
+      regulatoryBody: payload.data.regulatoryBody,
+    },
+  });
+
+  scheduleLicenseRecheck({
+    userId: req.user!.id,
+    licenseNumber: payload.data.licenseNumber,
+    regulatoryBody: payload.data.regulatoryBody,
+    delayMs: result.status === 'VERIFIED' ? undefined : 1000 * 60 * 60 * 24 * 7,
+  });
+
+  res.json({
+    status: result.status,
+    notes: result.notes,
+  });
 });
 
 export default router;

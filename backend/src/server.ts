@@ -2,6 +2,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 import app from './app.js';
 import { events } from './services/event-bus.js';
+import { startLicenseRecheckWorker, primeLicenseQueueFromDatabase } from './services/license-recheck-queue.js';
 
 const port = Number(process.env.PORT ?? 4000);
 const server = http.createServer(app);
@@ -22,6 +23,11 @@ io.on('connection', socket => {
 events.on('notification:new', payload => {
   if (!payload.userId) return;
   io.to(`user:${payload.userId}`).emit('notification:new', payload);
+});
+
+startLicenseRecheckWorker();
+primeLicenseQueueFromDatabase().catch(error => {
+  console.error('Unable to prime licence recheck queue', error);
 });
 
 server.listen(port, () => {

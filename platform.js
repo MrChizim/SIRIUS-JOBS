@@ -166,6 +166,20 @@
     return { valid: true, licence: value, body: formattedBody };
   }
 
+  function deriveProfessionalRole(profession) {
+    const normalized = (profession ?? '').toString().trim().toUpperCase();
+    if (!normalized) {
+      return 'PROFESSIONAL';
+    }
+    if (normalized.includes('LAW')) {
+      return 'LAWYER';
+    }
+    if (normalized.includes('DOCTOR') || normalized.includes('MEDIC') || normalized.includes('PHYSICIAN')) {
+      return 'DOCTOR';
+    }
+    return normalized;
+  }
+
   function seedDatabase() {
     const db = normalizeDatabase({});
     saveDB(db);
@@ -184,10 +198,15 @@
     }
     const verificationToken = makeId('VRF');
     db.clients[normalizedEmail] = {
+      id: makeId('CLI'),
       firstName,
       lastName,
       email: normalizedEmail,
       password,
+      role: 'CLIENT',
+      roles: ['CLIENT'],
+      sessionToken: null,
+      lastLoginAt: null,
       verified: false,
       verificationToken,
       createdAt: nowISO(),
@@ -214,6 +233,65 @@
     return { ...record, password: undefined };
   }
 
+  function ensureClientAccountShape(record) {
+    if (!record) return null;
+    if (!record.id) {
+      record.id = makeId('CLI');
+    }
+    const existingRoles = Array.isArray(record.roles) ? record.roles.filter(Boolean) : [];
+    if (!existingRoles.includes('CLIENT')) {
+      existingRoles.push('CLIENT');
+    }
+    record.roles = existingRoles;
+    record.role = 'CLIENT';
+    if (!record.sessionToken) {
+      record.sessionToken = makeId('TOK');
+    }
+    if (!record.email) {
+      record.email = '';
+    }
+    return record;
+  }
+
+  function authenticateClient({ email, password }) {
+    const db = loadDB();
+    const normalizedEmail = email?.toLowerCase?.();
+    const record = db.clients[normalizedEmail];
+    if (!record) {
+      throw new Error('We could not find a client account with that email.');
+    }
+    if (record.password !== password) {
+      throw new Error('Incorrect email or password. Please try again.');
+    }
+    if (!record.verified) {
+      throw new Error('Please verify your email before signing in.');
+    }
+    ensureClientAccountShape(record);
+    record.lastLoginAt = nowISO();
+    saveDB(db);
+    const sessionToken = record.sessionToken;
+    const roleList = Array.isArray(record.roles) && record.roles.length ? record.roles.slice() : ['CLIENT'];
+    return {
+      source: 'platform',
+      token: sessionToken,
+      roles: roleList,
+      user: {
+        id: record.id,
+        email: record.email,
+        firstName: record.firstName,
+        lastName: record.lastName,
+        role: 'CLIENT',
+        roles: roleList,
+        emailVerifiedAt: record.verifiedAt ?? nowISO(),
+        verified: true,
+        clientProfile: {
+          verified: true,
+          createdAt: record.createdAt,
+        },
+      },
+    };
+  }
+
   function registerProfessional(payload) {
     const {
       firstName,
@@ -229,8 +307,10 @@
     if (db.professionals[normalizedEmail]) {
       throw new Error('A professional with this email already exists.');
     }
+    const primaryRole = deriveProfessionalRole(profession);
     const verificationToken = makeId('PRF');
     db.professionals[normalizedEmail] = {
+      id: makeId('PRO'),
       firstName,
       lastName,
       email: normalizedEmail,
@@ -238,6 +318,10 @@
       profession,
       licenseNumber,
       regulatoryBody,
+      role: primaryRole,
+      roles: [primaryRole],
+      sessionToken: null,
+      lastLoginAt: null,
       onboardingPaid: false,
       profilePublic: false,
       licenseVerified: false,
@@ -303,6 +387,67 @@
     };
     saveDB(db);
     return stripPassword(record);
+  }
+
+  function ensureProfessionalAccountShape(record) {
+    if (!record) return null;
+    if (!record.id) {
+      record.id = makeId('PRO');
+    }
+    const derivedRole = deriveProfessionalRole(record.role || record.profession);
+    const roles = Array.isArray(record.roles) ? record.roles.filter(Boolean) : [];
+    if (!roles.includes(derivedRole)) {
+      roles.push(derivedRole);
+    }
+    record.role = derivedRole;
+    record.roles = roles;
+    if (!record.sessionToken) {
+      record.sessionToken = makeId('TOK');
+    }
+    return record;
+  }
+
+  function authenticateProfessional({ email, password, profession }) {
+    const db = loadDB();
+    const normalizedEmail = email?.toLowerCase?.();
+    const record = db.professionals[normalizedEmail];
+    if (!record) {
+      throw new Error('We could not find a professional account with that email.');
+    }
+    if (record.password !== password) {
+      throw new Error('Incorrect email or password. Please try again.');
+    }
+    if (!record.emailVerified) {
+      throw new Error('Please verify your email before signing in.');
+    }
+    if (profession) {
+      record.profession = profession;
+    }
+    ensureProfessionalAccountShape(record);
+    record.lastLoginAt = nowISO();
+    saveDB(db);
+    const roleList = Array.isArray(record.roles) && record.roles.length ? record.roles.slice() : [record.role];
+    return {
+      source: 'platform',
+      token: record.sessionToken,
+      roles: roleList,
+      user: {
+        id: record.id,
+        email: record.email,
+        firstName: record.firstName,
+        lastName: record.lastName,
+        role: record.role,
+        roles: roleList,
+        professionalProfile: {
+          profession: record.profession,
+          licenseNumber: record.licenseNumber,
+          regulatoryBody: record.regulatoryBody,
+          verifiedBadge: Boolean(record.onboardingPaid),
+          licenseVerified: Boolean(record.licenseVerified),
+          onboardingPaid: Boolean(record.onboardingPaid),
+        },
+      },
+    };
   }
 
   function markProfessionalPaid(email) {
@@ -576,9 +721,11 @@
   window.SiriusPlatform = {
     registerClient,
     verifyClient,
+    authenticateClient,
     registerProfessional,
     verifyProfessional,
     verifyProfessionalLicense,
+    authenticateProfessional,
     markProfessionalPaid,
     toggleProfessionalVisibility,
     recordConsultationUnlock,

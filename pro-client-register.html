@@ -30,13 +30,14 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="api.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="ui-utils.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
         }
         .register-hero {
-            background: linear-gradient(rgba(0, 86, 179, 0.9), rgba(0, 86, 179, 0.9)), url('http://static.photos/office/1200x630/8');
+            background: linear-gradient(rgba(0, 86, 179, 0.88), rgba(0, 86, 179, 0.88)), url('assets/hero-nigeria.svg');
             background-size: cover;
             background-position: center;
         }
@@ -339,6 +340,13 @@
         const professionalMessage = document.getElementById('professionalRegisterMessage');
         const pendingUnlockNotice = document.getElementById('pendingUnlockNotice');
         const platformAvailable = typeof window.SiriusPlatform !== 'undefined';
+        const showToast = window.SiriusUI?.showToast ?? ((message, tone) => {
+          if (tone === 'error') {
+            console.error(message);
+          } else {
+            console.log(message);
+          }
+        });
         const hiddenProfessionInput = document.getElementById('registerProProfession');
         const hiddenLicenseInput = document.getElementById('registerProLicense');
         const hiddenRegBodyInput = document.getElementById('registerProRegBody');
@@ -395,6 +403,11 @@
             professionalLicenseMessage.classList.add('text-gray-500');
           }
           professionalLicenseMessage.textContent = message;
+          if (tone === 'success') {
+            showToast(message, 'success');
+          } else if (tone === 'error') {
+            showToast(message, 'error');
+          }
         }
 
         function resetProfessionalLicenseGate() {
@@ -483,8 +496,10 @@
           professionalMessage.classList.remove('hidden', 'text-red-600', 'text-green-600');
           if (tone === 'error') {
             professionalMessage.classList.add('text-red-600');
+            showToast(message, 'error');
           } else if (tone === 'success') {
             professionalMessage.classList.add('text-green-600');
+            showToast(message, 'success');
           }
           professionalMessage.textContent = message;
         }
@@ -503,11 +518,12 @@
             password: document.getElementById('registerClientPassword').value,
           };
           const confirmedPassword = document.getElementById('registerClientConfirmPassword').value;
-          if (payload.password !== confirmedPassword) {
-            clientMessage.textContent = 'Passwords do not match. Please re-enter them.';
-            clientMessage.classList.add('text-red-600');
-            return;
-          }
+  if (payload.password !== confirmedPassword) {
+    clientMessage.textContent = 'Passwords do not match. Please re-enter them.';
+    clientMessage.classList.add('text-red-600');
+    showToast('Passwords do not match. Please re-enter them.', 'error');
+    return;
+  }
           try {
             if (platformAvailable) {
               const { record, verificationToken } = window.SiriusPlatform.registerClient(payload);
@@ -558,6 +574,7 @@
             sessionStorage.setItem('siriusClientAuth', JSON.stringify(clientSession));
             clientMessage.textContent = `Success! ${payload.email} is verified and ready. Temporary code (for testing): ${data.verificationToken}. Redirecting you to finish unlocking your professional...`;
             clientMessage.classList.add('text-green-600');
+            showToast(`Client account created for ${payload.email}. Redirecting...`, 'success');
             clientRegisterForm.reset();
             setTimeout(() => {
               window.location.href = 'consultations.html';
@@ -565,6 +582,7 @@
           } catch (error) {
             clientMessage.textContent = error.message || 'Could not create account. Please try again.';
             clientMessage.classList.add('text-red-600');
+            showToast(error.message || 'Could not create account. Please try again.', 'error');
           }
         });
 
@@ -606,8 +624,38 @@
 
           try {
             let verificationResult = null;
+            let serverRejected = false;
 
-            if (platformAvailable && typeof window.SiriusPlatform?.verifyProfessionalLicense === 'function') {
+            try {
+              const res = await fetch('/api/verification/license/check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  licenseNumber,
+                  regulatoryBody,
+                }),
+              });
+              const bodyText = await res.text();
+              const body = bodyText ? JSON.parse(bodyText) : {};
+              if (!res.ok) {
+                serverRejected = true;
+                throw new Error(body?.message || body?.notes || 'Unable to verify licence right now.');
+              }
+              const status = (body?.status || '').toUpperCase();
+              if (status !== 'VERIFIED') {
+                serverRejected = true;
+                throw new Error(body?.notes || 'Unable to verify licence with the registry.');
+              }
+              verificationResult = {
+                licenseVerified: true,
+                licenseNumber,
+                regulatoryBody,
+                profession: normalizeProfession(profession),
+              };
+            } catch (apiError) {
+              if (serverRejected || !platformAvailable || typeof window.SiriusPlatform?.verifyProfessionalLicense !== 'function') {
+                throw apiError;
+              }
               const maybeResult = window.SiriusPlatform.verifyProfessionalLicense({
                 profession: normalizeProfession(profession),
                 licenseNumber,
@@ -618,19 +666,10 @@
               if (!licenceOk) {
                 throw new Error(verificationResult?.message || 'We could not verify that licence yet. Double-check the details and try again.');
               }
-            } else {
-              if (licenseNumber.length < 5) {
-                throw new Error('Enter a valid licence number (at least 5 characters).');
-              }
-              if (regulatoryBody.length < 3) {
-                throw new Error('Enter a valid regulatory body (minimum 3 characters).');
-              }
-              verificationResult = {
-                licenseVerified: true,
-                licenseNumber,
-                regulatoryBody,
-                profession: normalizeProfession(profession),
-              };
+            }
+
+            if (!verificationResult) {
+              throw new Error('We could not verify that licence yet. Double-check the details and try again.');
             }
 
             const normalizedProfession = normalizeProfession(verificationResult?.profession || profession);

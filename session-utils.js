@@ -48,6 +48,21 @@
       sessionStorage.removeItem('siriusWorkerAuth');
     }
 
+    if (roles.includes('CLIENT')) {
+      const clientPayload = { ...base, activeRole: 'CLIENT' };
+      sessionStorage.setItem('siriusClientAuth', JSON.stringify(clientPayload));
+    } else {
+      sessionStorage.removeItem('siriusClientAuth');
+    }
+
+    if (roles.includes('DOCTOR') || roles.includes('LAWYER')) {
+      const professionalRole = roles.includes('DOCTOR') ? 'DOCTOR' : 'LAWYER';
+      const professionalPayload = { ...base, activeRole: professionalRole };
+      sessionStorage.setItem('siriusProAuth', JSON.stringify(professionalPayload));
+    } else {
+      sessionStorage.removeItem('siriusProAuth');
+    }
+
     const hasEmployerRole = roles.includes('EMPLOYER') || roles.includes('ADMIN');
     if (hasEmployerRole) {
       const employerActiveRole = roles.includes('EMPLOYER') ? 'EMPLOYER' : 'ADMIN';
