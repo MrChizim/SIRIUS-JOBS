@@ -20,6 +20,8 @@
         }
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
+    <script src="api.js"></script>
+    <script src="session-utils.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {
@@ -39,15 +41,21 @@
     <!-- Navigation -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
+            <a href="index.html" class="flex items-center space-x-3">
                 <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
                 <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
-            </div>
-            <div class="hidden md:flex space-x-8">
+            </a>
+            <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
                 <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
-                <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
                 <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
-                <a href="about.html" class="text-gray-600 hover:text-primary transition-all">About Us</a>
+                <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
+                <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
+                <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
+                <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
+                <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">
+                    <i data-feather="log-in" class="w-4 h-4"></i>
+                    Login
+                </a>
             </div>
             <div class="md:hidden">
                 <button id="menu-btn" class="text-gray-600 focus:outline-none">
@@ -56,11 +64,17 @@
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
             <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
-            <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
             <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
-            <a href="about.html" class="block py-2 text-gray-600 hover:text-primary transition-all">About Us</a>
+            <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
+            <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
+            <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
+            <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
+            <a href="login.html" class="flex items-center gap-2 text-gray-600 hover:text-primary transition-all">
+                <i data-feather="log-in" class="w-4 h-4"></i>
+                Login
+            </a>
         </div>
     </nav>
 
@@ -245,17 +259,20 @@
         const registerMessage = document.getElementById('registerMessage');
         const passwordInput = document.getElementById('password');
         const confirmPasswordInput = document.getElementById('confirm-password');
+        const sessionUtils = window.SiriusSession ?? null;
 
         const accountConfig = {
             worker: {
                 endpoint: '/api/auth/register-worker',
-                sessionKey: 'siriusWorkerAuth',
-                redirect: 'worker-dashboard.html'
+                redirect: 'worker-dashboard.html',
+                sessionRole: 'ARTISAN',
+                successCopy: 'Worker access is ready! Redirecting you to your dashboard...'
             },
             employer: {
                 endpoint: '/api/auth/register-employer',
-                sessionKey: 'siriusEmployerAuth',
-                redirect: 'employer-dashboard.html'
+                redirect: 'employer-dashboard.html',
+                sessionRole: 'EMPLOYER',
+                successCopy: 'Employer tools unlocked! Taking you to your dashboard...'
             }
         };
 
@@ -271,23 +288,11 @@
             registerMessage.textContent = text;
         };
 
-        const buildSessionPayload = (data) => {
-            const user = data.user ?? {};
-            return {
-                token: data.token,
-                userId: user.id,
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                role: user.role,
-                phone: user.phone ?? '',
-                verified: Boolean(user.emailVerifiedAt) || Boolean(user.verified),
-                emailVerifiedAt: user.emailVerifiedAt,
-                professionalProfile: user.professionalProfile ?? null,
-                artisanProfile: user.artisanProfile ?? null,
-                employerProfile: user.employerProfile ?? null,
-                loggedInAt: new Date().toISOString(),
-            };
+        const buildSessionPayload = (data, options = {}) => {
+            if (!sessionUtils) return null;
+            const payload = sessionUtils.createPayload(data, options);
+            payload.phone = data?.user?.phone ?? options.phone ?? '';
+            return payload;
         };
 
         const toNameParts = (fullName) => {
@@ -365,10 +370,28 @@
                 }
 
                 const data = await res.json();
-                const sessionPayload = buildSessionPayload(data);
-                sessionStorage.setItem(config.sessionKey, JSON.stringify(sessionPayload));
+                const sessionPayload = buildSessionPayload(data, {
+                    activeRole: config.sessionRole,
+                    email,
+                    firstName,
+                    lastName,
+                    phone,
+                });
+                if (!sessionPayload) {
+                    throw new Error('We created your account but could not start the session. Please sign in.');
+                }
 
-                setRegisterMessage('Account created! Redirecting you to your dashboard...', 'success');
+                if (!sessionPayload.firstName) {
+                    sessionPayload.firstName = firstName;
+                }
+                if (!sessionPayload.lastName) {
+                    sessionPayload.lastName = lastName;
+                }
+
+                sessionUtils.persist(sessionPayload);
+
+                const successText = data?.message ?? config.successCopy ?? 'Account created! Redirecting you to your dashboard...';
+                setRegisterMessage(successText, 'success');
                 registerForm.reset();
                 setTimeout(() => {
                     window.location.href = config.redirect;

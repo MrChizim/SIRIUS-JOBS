@@ -16,12 +16,15 @@ import alertsRouter from './routes/alerts.js';
 import consultationsRouter from './routes/consultations.js';
 import authRouter from './routes/auth.js';
 
+const rawOrigins = process.env.CLIENT_ORIGIN?.split(',').map(origin => origin.trim()).filter(Boolean) ?? [];
+const corsOrigin = rawOrigins.length > 0 ? rawOrigins : true;
+
 const app = express();
 
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN?.split(',') ?? ['http://localhost:5173'],
+    origin: corsOrigin,
     credentials: true,
   }),
 );

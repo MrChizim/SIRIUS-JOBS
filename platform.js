@@ -384,6 +384,72 @@
     return consultation;
   }
 
+  function bookCrossConsultation({ clientEmail, targetProfession, reason, preferredDate, mode }) {
+    const db = loadDB();
+    const normalizedClient = clientEmail?.toLowerCase?.();
+    if (!normalizedClient) {
+      throw new Error('Client email is required.');
+    }
+    const clientRecord = db.professionals[normalizedClient];
+    if (!clientRecord) {
+      throw new Error('Professional account not found.');
+    }
+    const clientProfession = (clientRecord.profession ?? '').toLowerCase();
+    const isDoctor = (clientRecord.role ?? '').toUpperCase() === 'DOCTOR' || clientProfession.includes('doctor');
+    const isLawyer = (clientRecord.role ?? '').toUpperCase() === 'LAWYER' || clientProfession.includes('lawyer');
+    if (targetProfession === 'LAWYER' && !isDoctor) {
+      throw new Error('Only doctors can request lawyer consultations from this panel.');
+    }
+    if (targetProfession === 'DOCTOR' && !isLawyer) {
+      throw new Error('Only lawyers can request doctor consultations from this panel.');
+    }
+
+    const candidates = Object.values(db.professionals ?? {}).filter((entry) => {
+      const profession = (entry.profession ?? '').toLowerCase();
+      if (targetProfession === 'LAWYER') {
+        return profession.includes('lawyer');
+      }
+      return profession.includes('doctor');
+    });
+
+    if (!candidates.length) {
+      throw new Error('No available professionals found right now.');
+    }
+    const target = candidates[Math.floor(Math.random() * candidates.length)];
+    const scheduledDate = preferredDate ? new Date(preferredDate) : new Date(Date.now() + 36 * 60 * 60 * 1000);
+    const safeScheduledDate = Number.isNaN(scheduledDate.getTime()) ? new Date(Date.now() + 36 * 60 * 60 * 1000) : scheduledDate;
+
+    const consultation = {
+      id: makeId('CONS'),
+      professionalEmail: target.email?.toLowerCase?.() ?? '',
+      professionalName: `${target.firstName ?? ''} ${target.lastName ?? ''}`.trim() || 'Assigned Professional',
+      clientEmail: normalizedClient,
+      clientName: `${clientRecord.firstName ?? ''} ${clientRecord.lastName ?? ''}`.trim() || normalizedClient,
+      status: 'PAID_HOLD',
+      amountKobo: CONSULTATION_FEE_KOBO,
+      proAmountKobo: PROFESSIONAL_SHARE_KOBO,
+      platformFeeKobo: PLATFORM_SHARE_KOBO,
+      createdAt: nowISO(),
+      updatedAt: nowISO(),
+      scheduledFor: safeScheduledDate.toISOString(),
+      crossConsult: {
+        targetProfession,
+        reason,
+        mode: mode ?? 'VIDEO',
+      },
+    };
+    db.consultations.push(consultation);
+    saveDB(db);
+    return {
+      consultation,
+      assignedProfessional: {
+        email: target.email,
+        name: `${target.firstName ?? ''} ${target.lastName ?? ''}`.trim() || 'Assigned Professional',
+        profession: target.profession,
+      },
+    };
+  }
+
   function getClientConsultations(email) {
     const db = loadDB();
     const normalizedEmail = email?.toLowerCase?.();
@@ -518,6 +584,7 @@
     recordConsultationUnlock,
     completeConsultation,
     getClientConsultations,
+    bookCrossConsultation,
     getProfessionalSnapshot,
     saveProfessionalPayoutAccount,
     getAnyProfessional,

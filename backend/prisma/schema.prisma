@@ -57,6 +57,7 @@ model User {
   firstName               String
   lastName                String
   role                    UserRole
+  roles                   String[]                 @default([])
   isVerified              Boolean                   @default(false)
   verificationStatus      VerificationStatus        @default(PENDING)
   profileCompletion       Int                       @default(0)

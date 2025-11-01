@@ -3,10 +3,12 @@ import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 import crypto from 'node:crypto';
 import jwt from 'jsonwebtoken';
-import type { Prisma } from '@prisma/client';
+import type { Prisma, UserRole } from '@prisma/client';
 import { prisma } from '../lib/prisma.js';
 
 const router = express.Router();
+
+const normalizeEmail = (email: string) => email.trim().toLowerCase();
 
 const authUserInclude = {
   professionalProfile: true,
@@ -15,6 +17,28 @@ const authUserInclude = {
 } satisfies Prisma.UserInclude;
 
 type UserWithRelations = Prisma.UserGetPayload<{ include: typeof authUserInclude }>;
+
+const collectUserRoles = (user: UserWithRelations) => {
+  const roles = new Set<UserRole>();
+  if (user.role) {
+    roles.add(user.role);
+  }
+  if (Array.isArray(user.roles)) {
+    for (const role of user.roles) {
+      roles.add(role as UserRole);
+    }
+  }
+  if (user.artisanProfile) {
+    roles.add('ARTISAN');
+  }
+  if (user.employerProfile) {
+    roles.add('EMPLOYER');
+  }
+  if (user.professionalProfile && (user.role === 'DOCTOR' || user.role === 'LAWYER')) {
+    roles.add(user.role);
+  }
+  return Array.from(roles);
+};
 
 const buildAuthResponse = (user: UserWithRelations) => {
   const token = jwt.sign(
@@ -27,14 +51,18 @@ const buildAuthResponse = (user: UserWithRelations) => {
     { expiresIn: '7d' },
   );
 
+  const roles = collectUserRoles(user);
+
   return {
     token,
+    roles,
     user: {
       id: user.id,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
       role: user.role,
+      roles,
       phone: user.phone,
       verified: user.isVerified,
       emailVerifiedAt: user.emailVerifiedAt,
@@ -58,7 +86,9 @@ router.post('/register-client', async (req, res) => {
     return res.status(400).json({ errors: payload.error.flatten() });
   }
 
-  const existing = await prisma.user.findUnique({ where: { email: payload.data.email } });
+  const email = normalizeEmail(payload.data.email);
+
+  const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
     return res.status(409).json({ message: 'Email already registered' });
   }
@@ -71,9 +101,10 @@ router.post('/register-client', async (req, res) => {
     data: {
       firstName: payload.data.firstName,
       lastName: payload.data.lastName,
-      email: payload.data.email,
+      email,
       passwordHash,
       role: 'CLIENT',
+      roles: ['CLIENT'],
       emailVerificationToken: token,
       emailVerificationTokenExpires: expires,
     },
@@ -103,7 +134,9 @@ router.post('/register-professional', async (req, res) => {
     return res.status(400).json({ errors: payload.error.flatten() });
   }
 
-  const existing = await prisma.user.findUnique({ where: { email: payload.data.email } });
+  const email = normalizeEmail(payload.data.email);
+
+  const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
     return res.status(409).json({ message: 'Email already registered' });
   }
@@ -116,9 +149,10 @@ router.post('/register-professional', async (req, res) => {
     data: {
       firstName: payload.data.firstName,
       lastName: payload.data.lastName,
-      email: payload.data.email,
+      email,
       passwordHash,
       role: payload.data.profession,
+      roles: [payload.data.profession],
       emailVerificationToken: token,
       emailVerificationTokenExpires: expires,
       professionalProfile: {
@@ -152,8 +186,10 @@ router.post('/login', async (req, res) => {
     return res.status(400).json({ errors: payload.error.flatten() });
   }
 
+  const email = normalizeEmail(payload.data.email);
+
   const user = await prisma.user.findUnique({
-    where: { email: payload.data.email },
+    where: { email },
     include: authUserInclude,
   });
 
@@ -212,7 +248,9 @@ router.post('/forgot-password', async (req, res) => {
     return res.status(400).json({ errors: payload.error.flatten() });
   }
 
-  const user = await prisma.user.findUnique({ where: { email: payload.data.email } });
+  const email = normalizeEmail(payload.data.email);
+
+  const user = await prisma.user.findUnique({ where: { email } });
   if (user) {
     const token = crypto.randomBytes(32).toString('hex');
     const expiresAt = new Date(Date.now() + 1000 * 60 * 30);
@@ -284,9 +322,48 @@ router.post('/register-worker', async (req, res) => {
     return res.status(400).json({ errors: payload.error.flatten() });
   }
 
-  const existing = await prisma.user.findUnique({ where: { email: payload.data.email } });
+  const email = normalizeEmail(payload.data.email);
+
+  const existing = await prisma.user.findUnique({
+    where: { email },
+    include: authUserInclude,
+  });
   if (existing) {
-    return res.status(409).json({ message: 'Email already registered' });
+    const hasWorkerAccess =
+      existing.role === 'ARTISAN' ||
+      existing.artisanProfile !== null ||
+      (existing.roles ?? []).includes('ARTISAN');
+
+    if (hasWorkerAccess) {
+      return res.status(409).json({ message: 'This account already has worker access.' });
+    }
+
+    if (payload.data.phone && payload.data.phone !== existing.phone) {
+      const phoneOwner = await prisma.user.findUnique({ where: { phone: payload.data.phone } });
+      if (phoneOwner && phoneOwner.id !== existing.id) {
+        return res.status(409).json({ message: 'Phone number already registered' });
+      }
+    }
+
+    const updatedRoles = Array.from(new Set([...(existing.roles ?? []), 'ARTISAN']));
+    const user = await prisma.user.update({
+      where: { id: existing.id },
+      data: {
+        firstName: existing.firstName || payload.data.firstName,
+        lastName: existing.lastName || payload.data.lastName,
+        phone: payload.data.phone || existing.phone,
+        roles: updatedRoles,
+        role: existing.role === 'EMPLOYER' ? existing.role : 'ARTISAN',
+        isVerified: true,
+        emailVerifiedAt: existing.emailVerifiedAt ?? new Date(),
+      },
+      include: authUserInclude,
+    });
+
+    return res.status(200).json({
+      message: 'Worker access added to your account.',
+      ...buildAuthResponse(user),
+    });
   }
 
   if (payload.data.phone) {
@@ -303,10 +380,11 @@ router.post('/register-worker', async (req, res) => {
     data: {
       firstName: payload.data.firstName,
       lastName: payload.data.lastName,
-      email: payload.data.email,
+      email,
       phone: payload.data.phone,
       passwordHash,
       role: 'ARTISAN',
+       roles: ['ARTISAN'],
       isVerified: true,
       emailVerifiedAt: new Date(),
     },
@@ -325,9 +403,54 @@ router.post('/register-employer', async (req, res) => {
     return res.status(400).json({ errors: payload.error.flatten() });
   }
 
-  const existing = await prisma.user.findUnique({ where: { email: payload.data.email } });
+  const email = normalizeEmail(payload.data.email);
+
+  const existing = await prisma.user.findUnique({
+    where: { email },
+    include: authUserInclude,
+  });
   if (existing) {
-    return res.status(409).json({ message: 'Email already registered' });
+    const hasEmployerAccess =
+      existing.role === 'EMPLOYER' ||
+      existing.employerProfile !== null ||
+      (existing.roles ?? []).includes('EMPLOYER') ||
+      (existing.roles ?? []).includes('ADMIN');
+
+    if (hasEmployerAccess) {
+      return res.status(409).json({ message: 'This account already has employer access.' });
+    }
+
+    if (payload.data.phone && payload.data.phone !== existing.phone) {
+      const phoneOwner = await prisma.user.findUnique({ where: { phone: payload.data.phone } });
+      if (phoneOwner && phoneOwner.id !== existing.id) {
+        return res.status(409).json({ message: 'Phone number already registered' });
+      }
+    }
+
+    const updatedRoles = Array.from(new Set([...(existing.roles ?? []), 'EMPLOYER']));
+    const user = await prisma.user.update({
+      where: { id: existing.id },
+      data: {
+        firstName: existing.firstName || payload.data.firstName,
+        lastName: existing.lastName || payload.data.lastName,
+        phone: payload.data.phone || existing.phone,
+        roles: updatedRoles,
+        role: existing.role === 'ARTISAN' ? existing.role : 'EMPLOYER',
+        isVerified: true,
+        emailVerifiedAt: existing.emailVerifiedAt ?? new Date(),
+        employerProfile: existing.employerProfile
+          ? undefined
+          : {
+              create: {},
+            },
+      },
+      include: authUserInclude,
+    });
+
+    return res.status(200).json({
+      message: 'Employer access added to your account.',
+      ...buildAuthResponse(user),
+    });
   }
 
   if (payload.data.phone) {
@@ -344,10 +467,11 @@ router.post('/register-employer', async (req, res) => {
     data: {
       firstName: payload.data.firstName,
       lastName: payload.data.lastName,
-      email: payload.data.email,
+      email,
       phone: payload.data.phone,
       passwordHash,
       role: 'EMPLOYER',
+      roles: ['EMPLOYER'],
       isVerified: true,
       emailVerifiedAt: new Date(),
       employerProfile: {
@@ -361,6 +485,98 @@ router.post('/register-employer', async (req, res) => {
     message: 'Employer account created successfully.',
     ...buildAuthResponse(user),
   });
+});
+
+const extendRoleSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
+  targetRole: z.enum(['ARTISAN', 'EMPLOYER']),
+  phone: z.string().trim().min(6).optional(),
+});
+
+router.post('/extend-role', async (req, res) => {
+  const payload = extendRoleSchema.safeParse(req.body);
+  if (!payload.success) {
+    return res.status(400).json({ errors: payload.error.flatten() });
+  }
+
+  const email = normalizeEmail(payload.data.email);
+  const user = await prisma.user.findUnique({
+    where: { email },
+    include: authUserInclude,
+  });
+
+  if (!user) {
+    return res.status(404).json({ message: 'We could not find an account with that email.' });
+  }
+
+  const passwordValid = await bcrypt.compare(payload.data.password, user.passwordHash);
+  if (!passwordValid) {
+    return res.status(401).json({ message: 'Incorrect password. Please try again.' });
+  }
+
+  const currentRoles = collectUserRoles(user);
+  if (currentRoles.includes(payload.data.targetRole)) {
+    return res.status(200).json({
+      message: 'This account already has that access level.',
+      ...buildAuthResponse(user),
+    });
+  }
+
+  if (payload.data.targetRole === 'ARTISAN') {
+    const phone = payload.data.phone ?? user.phone;
+    if (!phone) {
+      return res.status(400).json({ message: 'Add a phone number to continue.' });
+    }
+    const updatedRoles = Array.from(new Set([...(user.roles ?? []), 'ARTISAN']));
+    const updatedUser = await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        phone,
+        roles: updatedRoles,
+        role: user.role === 'EMPLOYER' ? user.role : 'ARTISAN',
+        isVerified: user.isVerified || true,
+        emailVerifiedAt: user.emailVerifiedAt ?? new Date(),
+      },
+      include: authUserInclude,
+    });
+
+    return res.json({
+      message: 'Worker tools activated on your account.',
+      ...buildAuthResponse(updatedUser),
+    });
+  }
+
+  if (payload.data.targetRole === 'EMPLOYER') {
+    const phone = payload.data.phone ?? user.phone;
+    if (!phone) {
+      return res.status(400).json({ message: 'Add a phone number to continue.' });
+    }
+    const updatedRoles = Array.from(new Set([...(user.roles ?? []), 'EMPLOYER']));
+    const updatedUser = await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        phone,
+        roles: updatedRoles,
+        role: user.role === 'ARTISAN' ? user.role : 'EMPLOYER',
+        isVerified: user.isVerified || true,
+        emailVerifiedAt: user.emailVerifiedAt ?? new Date(),
+        employerProfile: user.employerProfile
+          ? undefined
+          : {
+              create: {},
+            },
+      },
+      include: authUserInclude,
+    });
+
+    return res.json({
+      message: 'Employer tools activated on your account.',
+      ...buildAuthResponse(updatedUser),
+    });
+  }
+
+  return res.status(400).json({ message: 'Role extension not supported yet.' });
 });
 
 export default router;

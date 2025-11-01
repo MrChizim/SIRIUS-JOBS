@@ -21,6 +21,8 @@
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="api.js"></script>
+    <script src="session-utils.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {
@@ -40,16 +42,17 @@
     <!-- Navigation -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
+            <a href="index.html" class="flex items-center space-x-3">
                 <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
                 <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
-            </div>
-            <div class="hidden md:flex space-x-8">
+            </a>
+            <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
                 <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
-                
-                <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
                 <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
-                <a href="about.html" class="text-gray-600 hover:text-primary transition-all">About Us</a>
+                <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
+                <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
+                <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
+                <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
             </div>
             <div class="md:hidden">
                 <button id="menu-btn" class="text-gray-600 focus:outline-none">
@@ -58,13 +61,13 @@
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
             <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
-           
-            <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
             <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
-            <a href="about.html" class="block py-2 text-gray-600 hover:text-primary transition-all">About Us</a>
-        
+            <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
+            <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
+            <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
+            <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
         </div>
     </nav>
 
@@ -484,23 +487,22 @@
         const workerPasswordInput = document.getElementById('workerPassword');
         const workerMessage = document.getElementById('workerLoginMessage');
         const workerSubmitBtn = document.getElementById('workerLoginSubmitBtn');
+        const sessionUtils = window.SiriusSession ?? null;
 
         const workerCopy = {
             worker: {
                 subtitle: 'Artisans sign in to manage gigs, respond to employers and keep profiles updated.',
                 redirect: 'worker-dashboard.html',
-                sessionKey: 'siriusWorkerAuth',
                 defaultName: 'Worker',
-                role: 'ARTISAN',
-                allowedRoles: ['ARTISAN']
+                sessionRole: 'ARTISAN',
+                requiredRoles: ['ARTISAN']
             },
             employer: {
                 subtitle: 'Employers monitor applications, accept hires and manage payout requests.',
                 redirect: 'employer-dashboard.html',
-                sessionKey: 'siriusEmployerAuth',
                 defaultName: 'Employer',
-                role: 'EMPLOYER',
-                allowedRoles: ['EMPLOYER', 'ADMIN']
+                sessionRole: 'EMPLOYER',
+                requiredRoles: ['EMPLOYER', 'ADMIN']
             }
         };
 
@@ -573,22 +575,9 @@
             return body;
         };
 
-        const buildSessionPayload = (data) => {
-            const user = data.user ?? {};
-            return {
-                token: data.token,
-                userId: user.id,
-                email: user.email,
-                role: user.role,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                verified: Boolean(user.emailVerifiedAt) || Boolean(user.verified),
-                emailVerifiedAt: user.emailVerifiedAt,
-                professionalProfile: user.professionalProfile ?? null,
-                artisanProfile: user.artisanProfile ?? null,
-                employerProfile: user.employerProfile ?? null,
-                loggedInAt: new Date().toISOString(),
-            };
+        const buildSessionPayload = (data, options = {}) => {
+            if (!sessionUtils) return null;
+            return sessionUtils.createPayload(data, options);
         };
 
         workerForm.addEventListener('submit', async (event) => {
@@ -606,23 +595,33 @@
 
             try {
                 const data = await loginRequest(email, password);
-                const userRole = data?.user?.role;
-                const { allowedRoles, defaultName } = workerCopy[activeWorkerAccount];
-                if (!allowedRoles.includes(userRole)) {
-                    const readableRole = toTitleCase(userRole?.toLowerCase() ?? 'account');
-                    throw new Error(`That account is set up as ${readableRole}. Switch to the correct login tab to continue.`);
+                const sessionConfig = workerCopy[activeWorkerAccount];
+                const availableRoles = sessionUtils?.deriveRoles(data) ?? [data?.user?.role].filter(Boolean);
+                const hasAccess = sessionConfig.requiredRoles.some(role => availableRoles.includes(role));
+                if (!hasAccess) {
+                    const readableRole = availableRoles.length
+                        ? availableRoles.map(role => toTitleCase(role.toLowerCase())).join(' / ')
+                        : 'a different account type';
+                    throw new Error(`That account is currently set up for ${readableRole}. Switch tabs to continue.`);
                 }
 
-                const sessionPayload = buildSessionPayload(data);
+                const sessionPayload = buildSessionPayload(data, {
+                    activeRole: sessionConfig.sessionRole,
+                    email,
+                });
+                if (!sessionPayload) {
+                    throw new Error('Unable to store your session. Please try again.');
+                }
+
                 if (!sessionPayload.firstName) {
                     const [localPart] = email.split('@');
-                    sessionPayload.firstName = toTitleCase(localPart) || defaultName;
+                    sessionPayload.firstName = toTitleCase(localPart) || sessionConfig.defaultName;
                 }
 
-                sessionStorage.setItem(workerCopy[activeWorkerAccount].sessionKey, JSON.stringify(sessionPayload));
+                sessionUtils.persist(sessionPayload);
                 showWorkerMessage('Welcome back! Redirecting you now...', 'success');
                 setTimeout(() => {
-                    window.location.href = workerCopy[activeWorkerAccount].redirect;
+                    window.location.href = sessionConfig.redirect;
                 }, 400);
             } catch (error) {
                 console.error('Worker/employer login failed', error);
@@ -729,7 +728,10 @@
                     throw new Error(`That account is registered as ${readableRole}. Switch tabs to continue.`);
                 }
 
-                const sessionPayload = buildSessionPayload(data);
+                const sessionPayload = buildSessionPayload(data, {
+                    activeRole: userRole,
+                    email,
+                });
                 if (!sessionPayload.firstName) {
                     const [localPart] = email.split('@');
                     sessionPayload.firstName = toTitleCase(localPart) || defaultName;
@@ -743,7 +745,11 @@
                     sessionPayload.onboardingPaid = Boolean(data?.user?.professionalProfile?.verifiedBadge);
                 }
 
-                sessionStorage.setItem(consultationCopy[activeConsultationAccount].sessionKey, JSON.stringify(sessionPayload));
+                if (sessionUtils) {
+                    sessionUtils.persist(sessionPayload);
+                } else {
+                    sessionStorage.setItem(consultationCopy[activeConsultationAccount].sessionKey, JSON.stringify(sessionPayload));
+                }
                 showConsultationMessage('Login successful! Redirecting you now...', 'success');
                 setTimeout(() => {
                     window.location.href = consultationCopy[activeConsultationAccount].redirect;

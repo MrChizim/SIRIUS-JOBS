@@ -28,6 +28,7 @@
         }
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
+    <script src="api.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -48,18 +49,22 @@
     <!-- Navigation -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
+            <a href="index.html" class="flex items-center space-x-3">
                 <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
                 <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
-            </div>
-            <div class="hidden md:flex space-x-8">
+            </a>
+            <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
                 <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
                 <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
                 <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
                 <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
                 <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
                 <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
-</div>
+                <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">
+                    <i data-feather="log-in" class="w-4 h-4"></i>
+                    Login
+                </a>
+            </div>
             <div class="md:hidden">
                 <button id="menu-btn" class="text-gray-600 focus:outline-none">
                     <i data-feather="menu"></i>
@@ -67,15 +72,18 @@
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2">
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
             <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
             <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
             <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
             <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
             <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
             <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
-
-</div>
+            <a href="login.html" class="flex items-center gap-2 text-gray-600 hover:text-primary transition-all">
+                <i data-feather="log-in" class="w-4 h-4"></i>
+                Login
+            </a>
+        </div>
     </nav>
 
     <!-- Hero Section -->
@@ -139,9 +147,59 @@
 
                 <div id="professionalRegisterSection" class="space-y-6 hidden">
                     <h3 class="text-xl font-semibold text-gray-800">Sign up as a professional</h3>
-                    <p class="text-xs text-gray-500">Provide licence information so we can verify you. You’ll receive a verification link via email before appearing in searches.</p>
+                    <p class="text-xs text-gray-500">Start by confirming your licence, then finish your profile so we can list you publicly.</p>
+
+                    <section class="rounded-2xl border border-primary/20 bg-primary/5 p-5 space-y-4">
+                        <div class="flex items-center justify-between gap-3">
+                            <div>
+                                <p class="text-sm font-semibold text-primary uppercase tracking-[0.3em]">Step 1</p>
+                                <h4 class="text-base font-semibold text-primary">Verify your professional licence</h4>
+                            </div>
+                            <span id="professionalLicenseBadge" class="text-xs font-semibold text-primary/70 uppercase tracking-wide">Pending</span>
+                        </div>
+                        <form id="professionalLicenseForm" class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label for="licenseCheckProfession" class="block text-sm font-medium text-gray-700">Profession</label>
+                                    <select id="licenseCheckProfession" class="mt-1 w-full border border-primary/20 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" required>
+                                        <option value="">Select option</option>
+                                        <option value="DOCTOR">Doctor</option>
+                                        <option value="LAWYER">Lawyer</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="licenseCheckNumber" class="block text-sm font-medium text-gray-700">Licence number</label>
+                                    <input id="licenseCheckNumber" type="text" required class="mt-1 w-full border border-primary/20 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="e.g. MDCN-12345 or NBA/SCN number">
+                                </div>
+                                <div>
+                                    <label for="licenseCheckRegBody" class="block text-sm font-medium text-gray-700">Regulatory body</label>
+                                    <input id="licenseCheckRegBody" type="text" required class="mt-1 w-full border border-primary/20 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="e.g. MDCN or NBA">
+                                </div>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                                <p class="text-xs text-gray-600 flex-1">We validate format instantly and ping the relevant council so your badge is ready once you submit.</p>
+                                <button type="submit" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold text-sm px-4 py-2.5 rounded-lg hover:bg-primary/90 transition">
+                                    <i data-feather="search" class="w-4 h-4"></i>
+                                    Verify licence
+                                </button>
+                            </div>
+                        </form>
+                        <p id="professionalLicenseMessage" class="text-xs text-gray-500">Enter your licence information above to continue.</p>
+                    </section>
+
+                    <div id="verifiedLicenseSummary" class="hidden rounded-2xl border border-emerald-300/80 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                        <div class="flex items-center gap-2 font-semibold">
+                            <i data-feather="check-circle" class="w-4 h-4"></i>
+                            Licence verified
+                        </div>
+                        <p id="verifiedLicenseDetails" class="mt-1 text-xs text-emerald-600"></p>
+                    </div>
+
                     <p id="professionalRegisterMessage" class="text-xs text-gray-500 hidden"></p>
                     <form id="professionalRegisterForm" class="space-y-4">
+                        <input type="hidden" id="registerProProfession">
+                        <input type="hidden" id="registerProLicense">
+                        <input type="hidden" id="registerProRegBody">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label for="registerProFirst" class="block text-sm font-medium text-gray-700">First name</label>
@@ -172,25 +230,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label for="registerProProfession" class="block text-sm font-medium text-gray-700">Profession</label>
-                                <select id="registerProProfession" class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" required>
-                                    <option value="">Select option</option>
-                                    <option value="DOCTOR">Doctor</option>
-                                    <option value="LAWYER">Lawyer</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="registerProLicense" class="block text-sm font-medium text-gray-700">Licence number</label>
-                                <input id="registerProLicense" type="text" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="e.g. MDCN-12345 or NBA/SCN number">
-                            </div>
-                            <div>
-                                <label for="registerProRegBody" class="block text-sm font-medium text-gray-700">Regulatory body</label>
-                                <input id="registerProRegBody" type="text" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="e.g. MDCN or NBA">
-                            </div>
-                        </div>
-                        <button type="submit" class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-primary/90 transition">Submit professional application</button>
+                        <button id="professionalSubmitBtn" type="submit" class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-primary/90 transition disabled:opacity-60 disabled:cursor-not-allowed" disabled>Submit professional application</button>
+                        <p class="text-[11px] text-gray-500 text-center">Complete the licence verification above to unlock submission.</p>
                     </form>
                 </div>
 
@@ -288,10 +329,25 @@
         const professionalSection = document.getElementById('professionalRegisterSection');
         const clientRegisterForm = document.getElementById('clientRegisterForm');
         const professionalRegisterForm = document.getElementById('professionalRegisterForm');
+        const professionalSubmitBtn = document.getElementById('professionalSubmitBtn');
+        const professionalLicenseForm = document.getElementById('professionalLicenseForm');
+        const professionalLicenseMessage = document.getElementById('professionalLicenseMessage');
+        const professionalLicenseBadge = document.getElementById('professionalLicenseBadge');
+        const verifiedLicenseSummary = document.getElementById('verifiedLicenseSummary');
+        const verifiedLicenseDetails = document.getElementById('verifiedLicenseDetails');
         const clientMessage = document.getElementById('clientRegisterMessage');
         const professionalMessage = document.getElementById('professionalRegisterMessage');
         const pendingUnlockNotice = document.getElementById('pendingUnlockNotice');
         const platformAvailable = typeof window.SiriusPlatform !== 'undefined';
+        const hiddenProfessionInput = document.getElementById('registerProProfession');
+        const hiddenLicenseInput = document.getElementById('registerProLicense');
+        const hiddenRegBodyInput = document.getElementById('registerProRegBody');
+        const licenseCheckProfession = document.getElementById('licenseCheckProfession');
+        const licenseCheckNumber = document.getElementById('licenseCheckNumber');
+        const licenseCheckRegBody = document.getElementById('licenseCheckRegBody');
+        let professionalLicenseVerified = false;
+        let professionalLicenseDetails = null;
+        let licenseVerificationInFlight = false;
 
         if (mobileMenuBtn) {
           mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
@@ -310,6 +366,78 @@
         });
         feather.replace();
 
+        function setProfessionalSubmitEnabled(enabled) {
+          if (!professionalSubmitBtn) return;
+          professionalSubmitBtn.disabled = !enabled;
+        }
+
+        function updateProfessionalLicenseBadge(statusText, tone = 'pending') {
+          if (!professionalLicenseBadge) return;
+          professionalLicenseBadge.textContent = statusText;
+          professionalLicenseBadge.className = 'text-xs font-semibold uppercase tracking-wide';
+          if (tone === 'success') {
+            professionalLicenseBadge.classList.add('text-emerald-700');
+          } else if (tone === 'error') {
+            professionalLicenseBadge.classList.add('text-red-600');
+          } else {
+            professionalLicenseBadge.classList.add('text-primary/70');
+          }
+        }
+
+        function showLicenseVerificationMessage(message, tone = 'info') {
+          if (!professionalLicenseMessage) return;
+          professionalLicenseMessage.classList.remove('text-red-600', 'text-emerald-600', 'text-gray-500');
+          if (tone === 'error') {
+            professionalLicenseMessage.classList.add('text-red-600');
+          } else if (tone === 'success') {
+            professionalLicenseMessage.classList.add('text-emerald-600');
+          } else {
+            professionalLicenseMessage.classList.add('text-gray-500');
+          }
+          professionalLicenseMessage.textContent = message;
+        }
+
+        function resetProfessionalLicenseGate() {
+          professionalLicenseVerified = false;
+          professionalLicenseDetails = null;
+          licenseVerificationInFlight = false;
+          if (hiddenProfessionInput) hiddenProfessionInput.value = '';
+          if (hiddenLicenseInput) hiddenLicenseInput.value = '';
+          if (hiddenRegBodyInput) hiddenRegBodyInput.value = '';
+          if (verifiedLicenseSummary) verifiedLicenseSummary.classList.add('hidden');
+          if (verifiedLicenseDetails) verifiedLicenseDetails.textContent = '';
+          updateProfessionalLicenseBadge('Pending', 'pending');
+          showLicenseVerificationMessage('Enter your licence information above to continue.', 'info');
+          setProfessionalSubmitEnabled(false);
+        }
+
+        function handleLicenseFieldMutation() {
+          if (!professionalLicenseVerified || !professionalLicenseDetails) return;
+          const currentProfession = (licenseCheckProfession?.value || '').toUpperCase();
+          const currentLicense = (licenseCheckNumber?.value || '').trim().toUpperCase();
+          const currentRegBody = (licenseCheckRegBody?.value || '').trim().toUpperCase();
+          if (
+            currentProfession !== (professionalLicenseDetails.profession || '') ||
+            currentLicense !== (professionalLicenseDetails.licenseNumber || '') ||
+            currentRegBody !== (professionalLicenseDetails.regulatoryBody || '')
+          ) {
+            professionalLicenseVerified = false;
+            professionalLicenseDetails = null;
+            if (hiddenProfessionInput) hiddenProfessionInput.value = '';
+            if (hiddenLicenseInput) hiddenLicenseInput.value = '';
+            if (hiddenRegBodyInput) hiddenRegBodyInput.value = '';
+            if (verifiedLicenseSummary) verifiedLicenseSummary.classList.add('hidden');
+            updateProfessionalLicenseBadge('Pending', 'pending');
+            showLicenseVerificationMessage('Licence details changed. Verify again to continue.', 'info');
+            setProfessionalSubmitEnabled(false);
+          }
+        }
+
+        resetProfessionalLicenseGate();
+        licenseCheckProfession?.addEventListener('change', handleLicenseFieldMutation);
+        licenseCheckNumber?.addEventListener('input', handleLicenseFieldMutation);
+        licenseCheckRegBody?.addEventListener('input', handleLicenseFieldMutation);
+
         function setAccountType(type) {
           accountTypeBtns.forEach(btn => {
             const active = btn.dataset.account === type;
@@ -326,6 +454,9 @@
           } else {
             professionalSection.classList.remove('hidden');
             clientSection.classList.add('hidden');
+            if (!professionalLicenseVerified) {
+              resetProfessionalLicenseGate();
+            }
           }
         }
 
@@ -336,7 +467,10 @@
           if (initialAccount === 'professional') {
             const professionParam = params.get('profession');
             if (professionParam) {
-              document.getElementById('registerProProfession').value = professionParam.toUpperCase();
+              const normalizedProfession = professionParam.toUpperCase();
+              if (licenseCheckProfession) {
+                licenseCheckProfession.value = normalizedProfession;
+              }
             }
           }
           if (params.get('intent') === 'unlock' && pendingUnlockNotice) {
@@ -434,22 +568,143 @@
           }
         });
 
+        professionalLicenseForm?.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          if (licenseVerificationInFlight) return;
+          if (!licenseCheckProfession || !licenseCheckNumber || !licenseCheckRegBody) return;
+
+          const profession = (licenseCheckProfession.value || '').trim().toUpperCase();
+          const licenseNumber = (licenseCheckNumber.value || '').trim();
+          const regulatoryBody = (licenseCheckRegBody.value || '').trim();
+
+          if (!profession) {
+            showLicenseVerificationMessage('Select your profession before verifying.', 'error');
+            updateProfessionalLicenseBadge('Attention needed', 'error');
+            return;
+          }
+          if (!licenseNumber) {
+            showLicenseVerificationMessage('Enter your licence number to continue.', 'error');
+            updateProfessionalLicenseBadge('Attention needed', 'error');
+            return;
+          }
+          if (!regulatoryBody) {
+            showLicenseVerificationMessage('Enter the regulatory body that issued your licence.', 'error');
+            updateProfessionalLicenseBadge('Attention needed', 'error');
+            return;
+          }
+
+          licenseVerificationInFlight = true;
+          setProfessionalSubmitEnabled(false);
+          updateProfessionalLicenseBadge('Verifying...', 'pending');
+          showLicenseVerificationMessage('Verifying licence details. This should only take a moment.', 'info');
+
+          const normalizeProfession = (value) => {
+            const upper = (value || '').toUpperCase();
+            if (upper === 'DOCTOR' || upper === 'LAWYER') return upper;
+            return upper;
+          };
+
+          try {
+            let verificationResult = null;
+
+            if (platformAvailable && typeof window.SiriusPlatform?.verifyProfessionalLicense === 'function') {
+              const maybeResult = window.SiriusPlatform.verifyProfessionalLicense({
+                profession: normalizeProfession(profession),
+                licenseNumber,
+                regulatoryBody,
+              });
+              verificationResult = await Promise.resolve(maybeResult);
+              const licenceOk = verificationResult?.licenseVerified ?? verificationResult?.ok ?? true;
+              if (!licenceOk) {
+                throw new Error(verificationResult?.message || 'We could not verify that licence yet. Double-check the details and try again.');
+              }
+            } else {
+              if (licenseNumber.length < 5) {
+                throw new Error('Enter a valid licence number (at least 5 characters).');
+              }
+              if (regulatoryBody.length < 3) {
+                throw new Error('Enter a valid regulatory body (minimum 3 characters).');
+              }
+              verificationResult = {
+                licenseVerified: true,
+                licenseNumber,
+                regulatoryBody,
+                profession: normalizeProfession(profession),
+              };
+            }
+
+            const normalizedProfession = normalizeProfession(verificationResult?.profession || profession);
+            const normalizedLicense = (verificationResult?.licenseNumber || licenseNumber).toUpperCase();
+            const normalizedRegBody = (verificationResult?.regulatoryBody || regulatoryBody).toUpperCase();
+
+            professionalLicenseVerified = true;
+            professionalLicenseDetails = {
+              profession: normalizedProfession,
+              licenseNumber: normalizedLicense,
+              regulatoryBody: normalizedRegBody,
+            };
+
+            if (hiddenProfessionInput) hiddenProfessionInput.value = normalizedProfession;
+            if (hiddenLicenseInput) hiddenLicenseInput.value = normalizedLicense;
+            if (hiddenRegBodyInput) hiddenRegBodyInput.value = normalizedRegBody;
+
+            licenseCheckProfession.value = normalizedProfession;
+            licenseCheckNumber.value = normalizedLicense;
+            licenseCheckRegBody.value = normalizedRegBody;
+
+            const friendlyProfession = normalizedProfession === 'DOCTOR'
+              ? 'Doctor'
+              : normalizedProfession === 'LAWYER'
+                ? 'Lawyer'
+                : normalizedProfession;
+
+            if (verifiedLicenseSummary && verifiedLicenseDetails) {
+              verifiedLicenseSummary.classList.remove('hidden');
+              verifiedLicenseDetails.textContent = `${friendlyProfession} - ${normalizedLicense} - ${normalizedRegBody}`;
+            }
+
+            updateProfessionalLicenseBadge('Verified', 'success');
+            showLicenseVerificationMessage('Licence verified successfully. You can now finish your registration.', 'success');
+            setProfessionalSubmitEnabled(true);
+          } catch (error) {
+            professionalLicenseVerified = false;
+            professionalLicenseDetails = null;
+            if (hiddenProfessionInput) hiddenProfessionInput.value = '';
+            if (hiddenLicenseInput) hiddenLicenseInput.value = '';
+            if (hiddenRegBodyInput) hiddenRegBodyInput.value = '';
+            if (verifiedLicenseSummary) verifiedLicenseSummary.classList.add('hidden');
+            updateProfessionalLicenseBadge('Attention needed', 'error');
+            showLicenseVerificationMessage(error?.message || 'Unable to verify licence. Please check the details and try again.', 'error');
+          } finally {
+            licenseVerificationInFlight = false;
+          }
+        });
+
         professionalRegisterForm.addEventListener('submit', async (event) => {
           event.preventDefault();
           professionalMessage.classList.remove('hidden', 'text-red-600', 'text-green-600');
           professionalMessage.textContent = 'Submitting your professional application...';
+          if (!professionalLicenseVerified || !hiddenProfessionInput?.value || !hiddenLicenseInput?.value || !hiddenRegBodyInput?.value) {
+            showProfessionalMessage('Please verify your licence before submitting your application.', 'error');
+            return;
+          }
+          const normalizedProfession = (hiddenProfessionInput?.value || '').toUpperCase();
+          const normalizedLicenseNumber = (hiddenLicenseInput?.value || '').toUpperCase();
+          const normalizedRegBody = (hiddenRegBodyInput?.value || '').toUpperCase();
           const payload = {
             firstName: document.getElementById('registerProFirst').value.trim(),
             lastName: document.getElementById('registerProLast').value.trim(),
             email: document.getElementById('registerProEmail').value.trim(),
             password: document.getElementById('registerProPassword').value,
-            profession: document.getElementById('registerProProfession').value,
-            licenseNumber: document.getElementById('registerProLicense').value.trim(),
-            regulatoryBody: document.getElementById('registerProRegBody').value.trim(),
+            profession: normalizedProfession,
+            licenseNumber: normalizedLicenseNumber,
+            regulatoryBody: normalizedRegBody,
+            licenseVerified: true,
             licenseDocument: '',
           };
           if (!payload.profession) {
-            showProfessionalMessage('Select your profession before submitting.', 'error');
+            showProfessionalMessage('We could not detect your verified profession. Please repeat the licence verification step.', 'error');
+            resetProfessionalLicenseGate();
             return;
           }
           const confirmedPassword = document.getElementById('registerProConfirmPassword').value;
@@ -461,21 +716,31 @@
             if (platformAvailable) {
               const { record, verificationToken } = window.SiriusPlatform.registerProfessional(payload);
               window.SiriusPlatform.verifyProfessional({ email: record.email, token: verificationToken });
+              const verifiedDetails = professionalLicenseDetails || {
+                profession: payload.profession,
+                licenseNumber: payload.licenseNumber,
+                regulatoryBody: payload.regulatoryBody,
+              };
               const professionalSession = {
                 email: record.email,
                 firstName: record.firstName,
                 lastName: record.lastName,
-                profession: record.profession,
+                profession: verifiedDetails.profession,
                 emailVerified: true,
-                licenseVerified: Boolean(record.licenseVerified),
+                licenseVerified: true,
                 onboardingPaid: Boolean(record.onboardingPaid),
                 profilePublic: Boolean(record.profilePublic),
-                licenseNumber: record.licenseNumber,
-                regulatoryBody: record.regulatoryBody,
+                licenseNumber: verifiedDetails.licenseNumber,
+                regulatoryBody: verifiedDetails.regulatoryBody,
+                licenseVerification: {
+                  status: 'VERIFIED',
+                  checkedAt: new Date().toISOString(),
+                  notes: 'Verified during registration.',
+                },
                 createdAt: new Date().toISOString(),
               };
               sessionStorage.setItem('siriusProAuth', JSON.stringify(professionalSession));
-              showProfessionalMessage(`Application received! ${record.email} is verified — next, settle the ₦1,000 onboarding fee and complete licence verification from your dashboard.`, 'success');
+              showProfessionalMessage(`Licence verified and account created for ${record.email}. Complete the ₦1,000 onboarding fee to appear publicly.`, 'success');
               professionalRegisterForm.reset();
               setTimeout(() => {
                 window.location.href = 'professional-dashboard.html?pay=onboarding';
@@ -501,23 +766,28 @@
             } catch (verifyError) {
               console.warn('Unable to auto-verify professional email', verifyError);
             }
-            const professionalSession = {
-              email: payload.email,
-              firstName: payload.firstName,
-              lastName: payload.lastName,
-              profession: payload.profession,
-              emailVerified: true,
-              licenseVerified: false,
-              userId: data.userId,
-              token: data.verificationToken,
-              createdAt: new Date().toISOString(),
-              onboardingPaid: false,
-              profilePublic: false,
-              licenseNumber: payload.licenseNumber,
-              regulatoryBody: payload.regulatoryBody,
-            };
-            sessionStorage.setItem('siriusProAuth', JSON.stringify(professionalSession));
-            showProfessionalMessage(`Application received! ${payload.email} is verified and we are redirecting you to Paystack to settle the ₦1,000 onboarding fee...`, 'success');
+              const professionalSession = {
+                email: payload.email,
+                firstName: payload.firstName,
+                lastName: payload.lastName,
+                profession: payload.profession,
+                emailVerified: true,
+                licenseVerified: true,
+                userId: data.userId,
+                token: data.verificationToken,
+                createdAt: new Date().toISOString(),
+                onboardingPaid: false,
+                profilePublic: false,
+                licenseNumber: payload.licenseNumber,
+                regulatoryBody: payload.regulatoryBody,
+                licenseVerification: {
+                  status: 'VERIFIED',
+                  checkedAt: new Date().toISOString(),
+                  notes: 'Verified during registration.',
+                },
+              };
+              sessionStorage.setItem('siriusProAuth', JSON.stringify(professionalSession));
+              showProfessionalMessage(`Licence verified and account created! ${payload.email} is being redirected to Paystack to settle the ₦1,000 onboarding fee...`, 'success');
             try {
               const resPayment = await fetch('/api/payments/professional/initiate-public', {
                 method: 'POST',

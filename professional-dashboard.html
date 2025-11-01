@@ -20,6 +20,8 @@
     }
   </script>
   <script src="https://unpkg.com/feather-icons"></script>
+  <script src="api.js"></script>
+  <script src="session-utils.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     body { font-family: 'Inter', sans-serif; }
@@ -30,29 +32,39 @@
   <!-- NAV -->
   <nav class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
+      <a href="index.html" class="flex items-center space-x-3">
         <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
         <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
-      </div>
+      </a>
       <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
-        <a href="index.html" class="text-gray-600 hover:text-primary transition">Home</a>
-        <a href="consultations.html" class="text-gray-600 hover:text-primary transition">Consultations</a>
-        <a href="jobs.html" class="text-gray-600 hover:text-primary transition">Jobs</a>
-        <a href="services.html" class="text-gray-600 hover:text-primary transition">Services</a>
-        <a href="verify.html" class="text-gray-600 hover:text-primary transition">Verify</a>
-        <button id="professionalLogout" class="text-gray-600 hover:text-primary transition">Logout</button>
+        <a href="index.html" class="text-primary font-semibold transition-all">Home</a>
+        <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
+        <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
+        <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
+        <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
+        <a href="verify.html" class="text-gray-600 hover:text-primary transition-all">Verify</a>
+        <button id="professionalLogout" class="inline-flex items-center gap-2 text-gray-600 hover:text-primary transition-all">
+          <i data-feather="log-out" class="w-4 h-4"></i>
+          Logout
+        </button>
       </div>
       <div class="md:hidden">
-        <button id="menu-btn" class="text-gray-600 focus:outline-none"><i data-feather="menu"></i></button>
+        <button id="menu-btn" class="text-gray-600 focus:outline-none">
+          <i data-feather="menu"></i>
+        </button>
       </div>
     </div>
     <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
-      <a href="index.html" class="block py-2 text-gray-600 hover:text-primary">Home</a>
-      <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary">Consultations</a>
-      <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary">Jobs</a>
-      <a href="services.html" class="block py-2 text-gray-600 hover:text-primary">Services</a>
-      <a href="verify.html" class="block py-2 text-gray-600 hover:text-primary">Verify</a>
-      <button id="professionalLogoutMobile" class="w-full text-left py-2 text-gray-600 hover:text-primary">Logout</button>
+      <a href="index.html" class="block py-2 text-primary font-semibold transition-all">Home</a>
+      <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
+      <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
+      <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
+      <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
+      <a href="verify.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Verify</a>
+      <button id="professionalLogoutMobile" class="flex items-center gap-2 w-full text-left py-2 text-gray-600 hover:text-primary transition-all">
+        <i data-feather="log-out" class="w-4 h-4"></i>
+        Logout
+      </button>
     </div>
   </nav>
 
@@ -85,6 +97,28 @@
   </header>
 
   <main class="container mx-auto px-4 py-12 space-y-12">
+    <section id="crossConsultSection" class="hidden">
+      <div class="bg-white border border-primary/20 rounded-3xl shadow-sm p-6 md:p-8 flex flex-col lg:flex-row gap-6">
+        <div class="flex-1 space-y-4">
+          <p id="crossConsultTag" class="text-xs font-semibold uppercase tracking-[0.35em] text-primary/70">Cross-discipline support</p>
+          <h2 id="crossConsultTitle" class="text-2xl font-semibold text-gray-900">Book a specialist consultation</h2>
+          <p id="crossConsultCopy" class="text-sm text-gray-600">Stay within Sirius Jobs and get rapid help from trusted colleagues in another field.</p>
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <button id="openCrossConsultModalBtn" type="button" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40 transition">
+              <i data-feather="calendar"></i>
+              <span id="crossConsultBtnLabel">Book a consultation now</span>
+            </button>
+            <span id="crossConsultPriceBlurb" class="text-sm text-gray-500">₦3,000 concierge-hosted session billed instantly.</span>
+          </div>
+        </div>
+        <div class="flex-1 bg-primary/5 rounded-2xl p-5 space-y-4">
+          <h3 class="text-sm font-semibold text-primary uppercase tracking-wide">Recent cross consults</h3>
+          <ul id="crossConsultHistory" class="space-y-3"></ul>
+          <div id="crossConsultEmpty" class="text-sm text-gray-500">No cross-discipline consultations yet. Book your first one above.</div>
+        </div>
+      </div>
+    </section>
+
     <!-- PROFILE SUMMARY -->
     <section class="space-y-8">
       <div class="grid gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
@@ -105,18 +139,17 @@
                   <i data-feather="shield" class="w-3 h-3"></i>
                   Pending review
                 </span>
-                <p id="licenseStatusText" class="text-xs text-gray-500 md:text-right">Licence verification pending</p>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div class="rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3 text-left">
+                <div class="rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3 text-left h-full flex flex-col justify-between">
                   <p class="text-xs font-semibold uppercase tracking-wide text-primary/70">Average rating</p>
                   <p id="statAverageRating" class="text-xl font-semibold text-primary mt-1">0.0</p>
                 </div>
-                <div class="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-left shadow-sm">
+                <div class="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-left shadow-sm h-full flex flex-col justify-between">
                   <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Reviews</p>
                   <p id="statReviewCount" class="text-xl font-semibold text-gray-800 mt-1">0 reviews</p>
                 </div>
-                <div class="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-left shadow-sm">
+                <div class="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-left shadow-sm h-full flex flex-col justify-between">
                   <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Clients served</p>
                   <p id="statClients" class="text-xl font-semibold text-gray-800 mt-1">0 clients</p>
                 </div>
@@ -174,113 +207,43 @@
           </button>
           <p id="onboardingStatusNote" class="text-xs text-gray-500">Already paid? Click the button again after payment and we’ll confirm instantly.</p>
         </aside>
-        <aside id="licenseVerificationCard" class="bg-white border border-amber-300/70 rounded-2xl shadow-sm p-6 space-y-4">
-          <div class="space-y-2">
-            <p class="text-xs uppercase tracking-[0.35em] text-amber-600 font-semibold">Licence Verification</p>
-            <h3 class="text-xl font-semibold text-gray-900">Confirm your professional licence</h3>
-            <p class="text-sm text-gray-600 leading-relaxed">We cross-check your licence format and regulatory body so clients can trust your credentials. Submit once and we’ll keep the badge beside your profile.</p>
-          </div>
-          <div class="flex items-center gap-2 text-sm">
-            <span id="licenseStatusBadge" class="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full bg-amber-100 text-amber-700">
-              <i data-feather="clipboard" class="w-3 h-3"></i>
-              Pending check
-            </span>
-            <span id="licenseStatusNote" class="text-xs text-gray-500">Use the button below to run verification.</span>
-          </div>
-          <button id="startLicenseVerificationBtn" type="button" class="inline-flex items-center justify-center gap-2 w-full border border-amber-500 text-amber-600 font-semibold text-sm px-4 py-2.5 rounded-lg hover:bg-amber-500 hover:text-white transition">
-            <i data-feather="search" class="w-4 h-4"></i>
-            Verify licence now
-          </button>
-          <p id="licenseVerificationStatus" class="text-xs text-gray-500">We’ll run a quick validation against the expected format for your regulatory body.</p>
-        </aside>
       </div>
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">Payout account</h3>
-        <p class="text-sm text-gray-500 mb-4">Add a Nigerian bank account to receive earnings anytime.</p>
-        <form id="payoutForm" class="space-y-3">
-          <div>
-            <label for="bankName" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Bank name</label>
-            <input id="bankName" name="bankName" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="e.g. GTBank" required>
-          </div>
-          <div>
-            <label for="accountNumber" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Account number</label>
-            <input id="accountNumber" name="accountNumber" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="10-digit number" required>
-          </div>
-          <div>
-            <label for="accountHolder" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Account holder</label>
-            <input id="accountHolder" name="accountHolder" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="Name on account" required>
-          </div>
-          <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition">Save payout account</button>
-        </form>
-        <p id="payoutFormStatus" class="text-xs text-gray-500 mt-3"></p>
-      </div>
-    </section>
 
-    <div id="onboardingModal" class="fixed inset-0 hidden items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6 z-50">
-      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden">
-        <div class="flex items-center justify-between bg-primary text-white px-6 py-4">
-          <div>
-            <p class="text-xs uppercase tracking-[0.35em] text-white/70 font-semibold">Onboarding Payment</p>
-            <h3 class="text-lg font-semibold">Activate your professional listing</h3>
-          </div>
-          <button id="closeOnboardingModalBtn" class="rounded-full bg-white/20 hover:bg-white/30 p-2 transition" type="button" aria-label="Close payment modal">
-            <i data-feather="x" class="w-4 h-4"></i>
-          </button>
-        </div>
-        <div class="grid gap-6 lg:grid-cols-[2fr_1fr] p-6 bg-white">
-          <div class="space-y-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">Payout account</h3>
+          <p class="text-sm text-gray-500 mb-4">Add a Nigerian bank account to receive earnings anytime.</p>
+          <form id="payoutForm" class="space-y-3">
             <div>
-              <h4 class="text-sm font-semibold text-gray-800">Pay securely with card or transfer</h4>
-              <p class="text-sm text-gray-600 mt-2">Use the Paystack button below for instant approval. Prefer bank transfer? You’ll find the account details on the right; return here afterwards to confirm payment.</p>
+              <label for="bankName" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Bank name</label>
+              <input id="bankName" name="bankName" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="e.g. GTBank" required>
             </div>
-            <button id="paystackCardBtn" type="button" class="inline-flex items-center gap-3 bg-primary text-white font-semibold text-sm px-5 py-3 rounded-lg hover:bg-primary/90 transition">
-              <i data-feather="smartphone" class="w-4 h-4"></i>
-              Pay with Paystack (card, USSD or transfer)
-            </button>
-            <div id="paymentStatusMessage" class="hidden text-sm"></div>
-            <div class="rounded-xl border border-dashed border-gray-300 p-4 space-y-2">
-              <p class="text-sm font-semibold text-gray-700">What happens next?</p>
-              <ol class="text-sm text-gray-600 space-y-1 list-decimal list-inside">
-                <li>Complete the payment using Paystack or direct transfer.</li>
-                <li>Click the confirmation button below once you’re done.</li>
-                <li>Your profile will be unlocked for public visibility instantly.</li>
-              </ol>
-            </div>
-            <button id="markOnboardingPaidBtn" type="button" class="inline-flex items-center gap-2 border border-primary text-primary font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition">
-              <i data-feather="check-circle" class="w-4 h-4"></i>
-              I have paid — mark my profile public
-            </button>
-          </div>
-          <aside class="bg-primary/5 border border-primary/10 rounded-xl p-4 space-y-3">
             <div>
-              <h4 class="text-sm font-semibold text-primary uppercase tracking-wide">Transfer option</h4>
-              <p class="text-sm text-gray-600 mt-1">Send exactly ₦3,000 to the account below, then click the confirmation button.</p>
+              <label for="accountNumber" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Account number</label>
+              <input id="accountNumber" name="accountNumber" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="10-digit number" required>
             </div>
-            <div class="bg-white border border-primary/20 rounded-lg p-3 text-sm text-gray-700 space-y-1">
-              <p><span class="font-semibold">Account name:</span> Sirius Jobs NG</p>
-              <p><span class="font-semibold">Bank:</span> GTBank</p>
-              <p><span class="font-semibold">Account number:</span> 0123456789</p>
-              <p><span class="font-semibold">Narration:</span> Your email address</p>
+            <div>
+              <label for="accountHolder" class="block text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Account holder</label>
+              <input id="accountHolder" name="accountHolder" type="text" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="Name on account" required>
             </div>
-            <p class="text-xs text-gray-500">Need help? Chat with us on
-              <a href="https://wa.me/2347012345678" target="_blank" class="text-primary hover:underline">WhatsApp</a>.</p>
-          </aside>
+            <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition">Save payout account</button>
+          </form>
+          <p id="payoutFormStatus" class="text-xs text-gray-500 mt-3"></p>
         </div>
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">Latest reviews</h3>
+              <p class="text-sm text-gray-500">Clients can review each consultation. Share these ratings with prospective employers.</p>
+            </div>
+            <button id="refreshReviewsBtn" class="text-sm text-primary font-medium hover:underline">Refresh reviews</button>
+          </div>
+          <div id="reviewList" class="space-y-4"></div>
+          <p id="noReviewsState" class="text-sm text-gray-500 hidden">No reviews yet. Encourage clients to leave feedback after each consultation.</p>
+        </section>
       </div>
-    </div>
+  </section>
 
-    <!-- REVIEWS -->
-    <section class="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-6 md:p-8">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-        <div>
-          <h3 class="text-lg font-semibold text-gray-800">Latest reviews</h3>
-          <p class="text-sm text-gray-500">Clients can review each consultation. Share these ratings with prospective employers.</p>
-        </div>
-        <button id="refreshReviewsBtn" class="text-sm text-primary font-medium hover:underline">Refresh reviews</button>
-      </div>
-      <div id="reviewList" class="space-y-4"></div>
-      <p id="noReviewsState" class="text-sm text-gray-500 hidden">No reviews yet. Encourage clients to leave feedback after each consultation.</p>
-    </section>
   </main>
 
   <!-- FOOTER -->
@@ -371,6 +334,17 @@
       return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(value);
     };
 
+    const formatDateTime = value => {
+      if (!value) return 'Schedule pending';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return 'Schedule pending';
+      return date.toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' });
+    };
+
+    const makeLocalId = (prefix = 'CROSS') => `${prefix}-${Math.random().toString(36).slice(2, 8)}-${Date.now().toString(36)}`;
+
+    const CROSS_CONSULT_AMOUNT_KOBO = 3000 * 100;
+
     const walletHistoryEl = document.getElementById('walletHistory');
     const reviewList = document.getElementById('reviewList');
     const noReviewsState = document.getElementById('noReviewsState');
@@ -385,12 +359,27 @@
     const markOnboardingPaidBtn = document.getElementById('markOnboardingPaidBtn');
     const paymentStatusMessage = document.getElementById('paymentStatusMessage');
     const onboardingStatusNote = document.getElementById('onboardingStatusNote');
-    const licenseCard = document.getElementById('licenseVerificationCard');
-    const licenseStatusBadge = document.getElementById('licenseStatusBadge');
-    const licenseStatusNote = document.getElementById('licenseStatusNote');
-    const startLicenseVerificationBtn = document.getElementById('startLicenseVerificationBtn');
-    const licenseVerificationStatus = document.getElementById('licenseVerificationStatus');
-    const licenseStatusText = document.getElementById('licenseStatusText');
+    const crossConsultSection = document.getElementById('crossConsultSection');
+    const crossConsultTag = document.getElementById('crossConsultTag');
+    const crossConsultTitle = document.getElementById('crossConsultTitle');
+    const crossConsultCopy = document.getElementById('crossConsultCopy');
+    const crossConsultBtnLabel = document.getElementById('crossConsultBtnLabel');
+    const crossConsultPriceBlurb = document.getElementById('crossConsultPriceBlurb');
+    const crossConsultHistoryList = document.getElementById('crossConsultHistory');
+    const crossConsultEmpty = document.getElementById('crossConsultEmpty');
+    const openCrossConsultModalBtn = document.getElementById('openCrossConsultModalBtn');
+    const crossConsultModal = document.getElementById('crossConsultModal');
+    const crossConsultForm = document.getElementById('crossConsultForm');
+    const crossConsultReason = document.getElementById('crossConsultReason');
+    const crossConsultDate = document.getElementById('crossConsultDate');
+    const crossConsultMode = document.getElementById('crossConsultMode');
+    const crossConsultStatus = document.getElementById('crossConsultStatus');
+    const crossConsultSubmit = document.getElementById('crossConsultSubmit');
+    const crossConsultSubmitLabel = document.getElementById('crossConsultSubmitLabel');
+    const crossModalTag = document.getElementById('crossModalTag');
+    const crossModalTitle = document.getElementById('crossModalTitle');
+    const crossModalCopy = document.getElementById('crossModalCopy');
+    const closeCrossConsultModalBtn = document.getElementById('closeCrossConsultModal');
 
     function readProfessionalSession(){
       try {
@@ -420,20 +409,43 @@
           lastName: fallbackProfessional.lastName,
           profession: fallbackProfessional.profession,
           emailVerified: Boolean(fallbackProfessional.emailVerified ?? fallbackProfessional.verifiedAt),
-          licenseVerified: Boolean(fallbackProfessional.licenseVerified),
-          licenseVerification: fallbackProfessional.licenseVerification ?? null,
-          licenseNumber: fallbackProfessional.licenseNumber,
           regulatoryBody: fallbackProfessional.regulatoryBody,
         };
         persistProfessionalSession(professionalSession);
       }
     }
 
+    const fallbackProfession = professionalSession?.profession
+      || professionalSession?.professionalProfile?.profession
+      || '';
+    let professionalRole = (professionalSession?.role || '').toUpperCase();
+    const professionLabel = fallbackProfession.toLowerCase();
+    if (!professionalRole) {
+      if (professionLabel.includes('doctor')) {
+        professionalRole = 'DOCTOR';
+      } else if (professionLabel.includes('lawyer')) {
+        professionalRole = 'LAWYER';
+      }
+    }
+    const isDoctor = professionalRole === 'DOCTOR';
+    const isLawyer = professionalRole === 'LAWYER';
+    if (!professionalSession.role && professionalRole) {
+      professionalSession.role = professionalRole;
+      persistProfessionalSession(professionalSession);
+    }
+    if (!professionalSession.profession && fallbackProfession) {
+      professionalSession.profession = fallbackProfession;
+      persistProfessionalSession(professionalSession);
+    }
+    const targetProfession = isDoctor ? 'LAWYER' : isLawyer ? 'DOCTOR' : null;
+    const targetProfessionLabel = targetProfession === 'LAWYER' ? 'lawyer' : targetProfession === 'DOCTOR' ? 'doctor' : '';
+
     let onboardingPaid = Boolean(professionalSession.onboardingPaid);
     let profilePublic = Boolean(professionalSession.profilePublic);
-    let licenseVerified = Boolean(professionalSession.licenseVerified);
     let emailVerified = professionalSession.emailVerified !== false;
-    let licenseVerification = professionalSession.licenseVerification ?? (licenseVerified ? { status: 'VERIFIED' } : { status: 'UNVERIFIED' });
+    let crossConsultHistory = Array.isArray(professionalSession.crossConsultHistory)
+      ? professionalSession.crossConsultHistory
+      : [];
     let latestSnapshot = null;
 
     const paystackPublicKey = window.PAYSTACK_PUBLIC_KEY || 'pk_test_xxxxxxxxxxxxxxxxxxxxxx';
@@ -441,14 +453,14 @@
     const setProfessionalSession = (updates = {}) => {
       const previousOnboardingState = onboardingPaid;
       const previousVisibility = profilePublic;
-      const previousLicenseState = licenseVerified;
       professionalSession = { ...professionalSession, ...updates };
       persistProfessionalSession(professionalSession);
       onboardingPaid = Boolean(professionalSession.onboardingPaid);
       profilePublic = Boolean(professionalSession.profilePublic);
-      licenseVerified = Boolean(professionalSession.licenseVerified);
       emailVerified = professionalSession.emailVerified !== false;
-      licenseVerification = professionalSession.licenseVerification ?? licenseVerification;
+      if (Array.isArray(professionalSession.crossConsultHistory)) {
+        crossConsultHistory = professionalSession.crossConsultHistory;
+      }
       if (platformAvailable && professionalSession.email) {
         try {
           if (onboardingPaid && !previousOnboardingState && typeof window.SiriusPlatform.markProfessionalPaid === 'function') {
@@ -462,10 +474,16 @@
         }
       }
       updateOnboardingUI();
-      updateLicenseUI();
+      renderCrossConsultHistory();
     };
 
     updateOnboardingUI();
+
+    if (!Array.isArray(professionalSession.crossConsultHistory)) {
+      professionalSession.crossConsultHistory = [];
+      crossConsultHistory = [];
+      persistProfessionalSession(professionalSession);
+    }
 
     const openOnboardingModal = () => {
       if (!onboardingModal) return;
@@ -551,7 +569,12 @@
     });
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') {
-        closeOnboardingModal();
+        if (onboardingModal?.classList.contains('flex')) {
+          closeOnboardingModal();
+        }
+        if (crossConsultModal?.classList.contains('flex')) {
+          closeCrossConsultModal();
+        }
       }
     });
     paystackCardBtn?.addEventListener('click', startPaystackPayment);
@@ -564,12 +587,117 @@
       }, 600);
     });
 
-    startLicenseVerificationBtn?.addEventListener('click', () => {
-      if (licenseVerificationStatus) {
-        licenseVerificationStatus.textContent = 'Checking your licence details...';
-        licenseVerificationStatus.className = 'text-xs text-primary';
+    openCrossConsultModalBtn?.addEventListener('click', openCrossConsultModal);
+    closeCrossConsultModalBtn?.addEventListener('click', closeCrossConsultModal);
+    crossConsultModal?.addEventListener('click', event => {
+      if (event.target === crossConsultModal) {
+        closeCrossConsultModal();
       }
-      runLicenseVerification();
+    });
+
+    crossConsultForm?.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!professionalSession?.email || !targetProfession) {
+        return;
+      }
+      const reason = crossConsultReason?.value.trim() ?? '';
+      if (reason.length < 10) {
+        if (crossConsultStatus) {
+          crossConsultStatus.classList.remove('hidden', 'text-green-600');
+          crossConsultStatus.classList.add('text-red-600');
+          crossConsultStatus.textContent = 'Tell us a bit more so we can match you with the right specialist.';
+        }
+        crossConsultReason?.focus();
+        return;
+      }
+      const preferredDate = crossConsultDate?.value || null;
+      const mode = crossConsultMode?.value || 'VIDEO';
+      crossConsultSubmit?.setAttribute('disabled', 'true');
+      crossConsultSubmit?.classList.add('opacity-70', 'cursor-wait');
+      if (crossConsultStatus) {
+        crossConsultStatus.classList.add('hidden');
+        crossConsultStatus.classList.remove('text-green-600', 'text-red-600');
+        crossConsultStatus.textContent = '';
+      }
+      let result = null;
+      let errorMessage = '';
+      try {
+        const res = await fetch('/api/consultations/cross-book', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            professionalEmail: professionalSession.email,
+            targetProfession,
+            reason,
+            preferredDate,
+            mode,
+          }),
+        });
+        const text = await res.text();
+        const data = text ? JSON.parse(text) : null;
+        if (!res.ok) {
+          throw new Error(data?.message || 'Unable to book consultation right now.');
+        }
+        result = data;
+      } catch (error) {
+        errorMessage = error.message;
+      }
+
+      if (!result && platformAvailable && typeof window.SiriusPlatform?.bookCrossConsultation === 'function') {
+        try {
+          const fallback = window.SiriusPlatform.bookCrossConsultation({
+            clientEmail: professionalSession.email,
+            targetProfession,
+            reason,
+            preferredDate,
+            mode,
+          });
+          result = {
+            message: 'Consultation booked via offline mode. Concierge will be in touch shortly.',
+            assignedProfessional: fallback.assignedProfessional,
+            consultationId: fallback.consultation?.id,
+            scheduledFor: fallback.consultation?.scheduledFor,
+          };
+        } catch (fallbackError) {
+          errorMessage = fallbackError.message;
+        }
+      }
+
+      if (!result) {
+        if (crossConsultStatus) {
+          crossConsultStatus.classList.remove('hidden', 'text-green-600');
+          crossConsultStatus.classList.add('text-red-600');
+          crossConsultStatus.textContent = errorMessage || 'We could not start the consultation right now. Please try again later.';
+        }
+        crossConsultSubmit?.removeAttribute('disabled');
+        crossConsultSubmit?.classList.remove('opacity-70', 'cursor-wait');
+        return;
+      }
+
+      if (crossConsultStatus) {
+        crossConsultStatus.classList.remove('hidden', 'text-red-600');
+        crossConsultStatus.classList.add('text-green-600');
+        crossConsultStatus.textContent = result.message || 'Consultation booked! We will email you the confirmed details.';
+      }
+
+      const historyEntry = {
+        id: result.consultationId || makeLocalId(),
+        targetProfession,
+        targetLabel: targetProfession === 'LAWYER' ? 'Lawyer consult' : 'Doctor consult',
+        assignedProfessional: result.assignedProfessional?.name ?? null,
+        scheduledFor: result.scheduledFor || preferredDate || null,
+        createdAt: new Date().toISOString(),
+        reason,
+        mode,
+      };
+      crossConsultHistory = [historyEntry, ...crossConsultHistory].slice(0, 10);
+      setProfessionalSession({ crossConsultHistory });
+      renderCrossConsultHistory();
+      setTimeout(() => {
+        closeCrossConsultModal();
+        crossConsultSubmit?.removeAttribute('disabled');
+        crossConsultSubmit?.classList.remove('opacity-70', 'cursor-wait');
+      }, 900);
     });
 
     function updateOnboardingUI(){
@@ -582,121 +710,113 @@
       }
     }
 
-    function updateLicenseUI(snapshotProfile = latestSnapshot?.profile) {
-      if (!licenseCard) return;
-      const verificationDetails = snapshotProfile?.licenseVerification ?? licenseVerification ?? { status: licenseVerified ? 'VERIFIED' : 'UNVERIFIED' };
-      const status = (verificationDetails.status || (licenseVerified ? 'VERIFIED' : 'UNVERIFIED')).toUpperCase();
-      const statusNote = verificationDetails.notes || (licenseVerified ? 'Licence verified. Clients can see your badge.' : 'Submit for verification to display your verified badge to clients.');
-
-      if (licenseStatusBadge) {
-        let badgeClasses = 'inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full ';
-        let badgeIcon = 'clipboard';
-        if (status === 'VERIFIED') {
-          badgeClasses += 'bg-emerald-100 text-emerald-700';
-          badgeIcon = 'check-circle';
-        } else if (status === 'FAILED') {
-          badgeClasses += 'bg-red-100 text-red-700';
-          badgeIcon = 'alert-triangle';
-        } else {
-          badgeClasses += 'bg-amber-100 text-amber-700';
-          badgeIcon = 'clipboard';
-        }
-        licenseStatusBadge.className = badgeClasses;
-        licenseStatusBadge.innerHTML = `<i data-feather="${badgeIcon}" class="w-3 h-3"></i>${status === 'VERIFIED' ? 'Verified' : status === 'FAILED' ? 'Needs review' : 'Pending check'}`;
-      }
-
-      if (licenseStatusText) {
-        licenseStatusText.textContent = licenseVerified ? 'Licence verified' : status === 'FAILED' ? 'Licence verification failed' : 'Licence verification pending';
-      }
-
-      if (licenseStatusNote) {
-        licenseStatusNote.textContent = statusNote;
-      }
-
-      if (licenseVerificationStatus) {
-        licenseVerificationStatus.textContent = statusNote;
-        licenseVerificationStatus.className = status === 'VERIFIED' ? 'text-xs text-emerald-600' : status === 'FAILED' ? 'text-xs text-red-600' : 'text-xs text-gray-500';
-      }
-
-      if (startLicenseVerificationBtn) {
-        if (licenseVerified) {
-          startLicenseVerificationBtn.disabled = true;
-          startLicenseVerificationBtn.className = 'inline-flex items-center justify-center gap-2 w-full border border-emerald-500 text-emerald-600 font-semibold text-sm px-4 py-2.5 rounded-lg bg-emerald-50 cursor-default';
-          startLicenseVerificationBtn.innerHTML = '<i data-feather="check-circle" class="w-4 h-4"></i>Licence verified';
-        } else {
-          startLicenseVerificationBtn.disabled = false;
-          startLicenseVerificationBtn.className = 'inline-flex items-center justify-center gap-2 w-full border border-amber-500 text-amber-600 font-semibold text-sm px-4 py-2.5 rounded-lg hover:bg-amber-500 hover:text-white transition';
-          startLicenseVerificationBtn.innerHTML = '<i data-feather="search" class="w-4 h-4"></i>Verify licence now';
-        }
-      }
-      feather.replace();
-    }
-
-    async function runLicenseVerification(){
-      if (licenseVerified) {
-        updateLicenseUI();
+    const renderCrossConsultHistory = () => {
+      if (!crossConsultHistoryList || !crossConsultEmpty) return;
+      crossConsultHistoryList.innerHTML = '';
+      if (!crossConsultHistory.length) {
+        crossConsultEmpty.classList.remove('hidden');
         return;
       }
-      const email = professionalSession?.email;
-      if (!email) {
-        if (licenseVerificationStatus) {
-          licenseVerificationStatus.textContent = 'Sign in again before verifying your licence.';
-          licenseVerificationStatus.className = 'text-xs text-red-600';
-        }
+      crossConsultEmpty.classList.add('hidden');
+      crossConsultHistory.slice(0, 5).forEach(entry => {
+        const li = document.createElement('li');
+        li.className = 'bg-white border border-primary/10 rounded-xl px-4 py-3 shadow-sm';
+        li.innerHTML = `
+          <div class="flex items-center justify-between text-sm text-gray-700">
+            <span class="font-semibold text-primary">${entry.targetLabel ?? entry.targetProfession}</span>
+            <span class="text-xs text-gray-500">${formatDateTime(entry.scheduledFor || entry.createdAt)}</span>
+          </div>
+          <p class="text-sm text-gray-600 mt-1">${entry.reason ?? 'Consultation booked via concierge.'}</p>
+          <p class="text-xs text-gray-400 mt-2">${entry.assignedProfessional ? `Assigned: ${entry.assignedProfessional}` : 'Concierge matching in progress'}</p>
+        `;
+        crossConsultHistoryList.appendChild(li);
+      });
+      try { feather.replace(); } catch (error) {}
+    };
+
+    const setCrossConsultMinimum = () => {
+      if (!crossConsultDate) return;
+      const now = new Date();
+      now.setHours(now.getHours() + 1);
+      const offsetDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+      crossConsultDate.min = offsetDate.toISOString().slice(0, 16);
+    };
+
+    const closeCrossConsultModal = () => {
+      if (!crossConsultModal) return;
+      crossConsultModal.classList.remove('flex');
+      crossConsultModal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    };
+
+    const openCrossConsultModal = () => {
+      if (!crossConsultModal) return;
+      crossConsultModal.classList.remove('hidden');
+      crossConsultModal.classList.add('flex');
+      document.body.classList.add('overflow-hidden');
+      if (crossConsultReason) {
+        crossConsultReason.value = '';
+      }
+      if (crossConsultDate) {
+        crossConsultDate.value = '';
+        setCrossConsultMinimum();
+      }
+      if (crossConsultMode) {
+        crossConsultMode.value = 'VIDEO';
+      }
+      if (crossConsultStatus) {
+        crossConsultStatus.classList.add('hidden');
+        crossConsultStatus.classList.remove('text-green-600', 'text-red-600');
+        crossConsultStatus.textContent = '';
+      }
+      setTimeout(() => crossConsultReason?.focus(), 90);
+      try { feather.replace(); } catch (error) {}
+    };
+
+    const initializeCrossConsultUI = () => {
+      if (!targetProfession || !crossConsultSection) {
+        crossConsultSection?.classList.add('hidden');
         return;
       }
-      try {
-        const shouldReloadFromPlatform = platformAvailable && typeof window.SiriusPlatform.verifyProfessionalLicense === 'function';
-        if (shouldReloadFromPlatform) {
-          const result = window.SiriusPlatform.verifyProfessionalLicense({
-            email,
-            licenseNumber: latestSnapshot?.profile?.licenseNumber ?? professionalSession.licenseNumber,
-            regulatoryBody: latestSnapshot?.profile?.regulatoryBody ?? professionalSession.regulatoryBody,
-          });
-          setProfessionalSession({
-            licenseVerified: Boolean(result.licenseVerified ?? true),
-            licenseVerification: result.licenseVerification ?? {
-              status: 'VERIFIED',
-              checkedAt: new Date().toISOString(),
-              notes: 'Verified locally. Awaiting regulatory confirmation.',
-            },
-            licenseNumber: result.licenseNumber ?? professionalSession.licenseNumber,
-            regulatoryBody: result.regulatoryBody ?? professionalSession.regulatoryBody,
-          });
-        } else {
-          setProfessionalSession({
-            licenseVerified: true,
-            licenseVerification: {
-              status: 'VERIFIED',
-              checkedAt: new Date().toISOString(),
-              notes: 'Marked as verified manually.',
-            },
-          });
-        }
-        if (licenseVerificationStatus) {
-          licenseVerificationStatus.textContent = 'Licence verified successfully. Your profile badge is now active.';
-          licenseVerificationStatus.className = 'text-xs text-emerald-600';
-        }
-        updateLicenseUI();
-        if (shouldReloadFromPlatform) {
-          await loadProfessionalData();
-        }
-      } catch (error) {
-        const message = error?.message || 'Unable to verify licence. Check the details and try again.';
-        if (licenseVerificationStatus) {
-          licenseVerificationStatus.textContent = message;
-          licenseVerificationStatus.className = 'text-xs text-red-600';
-        }
-        setProfessionalSession({
-          licenseVerification: {
-            status: 'FAILED',
-            checkedAt: new Date().toISOString(),
-            notes: message,
-          },
-        });
-        updateLicenseUI();
+      const feeText = formatCurrency(CROSS_CONSULT_AMOUNT_KOBO);
+      crossConsultSection.classList.remove('hidden');
+      if (crossConsultTag) {
+        crossConsultTag.textContent = targetProfession === 'LAWYER' ? 'Legal backup' : 'Medical insight';
       }
-    }
+      if (crossConsultTitle) {
+        crossConsultTitle.textContent = targetProfession === 'LAWYER'
+          ? 'Need legal cover for a tricky case?'
+          : 'Need a quick medical second opinion?';
+      }
+      if (crossConsultCopy) {
+        crossConsultCopy.textContent = targetProfession === 'LAWYER'
+          ? 'Book a seasoned lawyer on-demand. We handle payment and matching so you stay focused on your patient.'
+          : 'Connect with a trusted doctor instantly. Share files securely and plan next steps without leaving Sirius.';
+      }
+      if (crossConsultBtnLabel) {
+        crossConsultBtnLabel.textContent = targetProfession === 'LAWYER' ? 'Book a lawyer now' : 'Book a doctor now';
+      }
+      if (crossConsultPriceBlurb) {
+        crossConsultPriceBlurb.textContent = `${feeText} concierge-hosted session billed instantly.`;
+      }
+      if (crossModalTag) {
+        crossModalTag.textContent = targetProfession === 'LAWYER' ? 'Legal concierge' : 'Medical concierge';
+      }
+      if (crossModalTitle) {
+        crossModalTitle.textContent = targetProfession === 'LAWYER'
+          ? 'Book a vetted lawyer through Sirius'
+          : 'Book a vetted doctor through Sirius';
+      }
+      if (crossModalCopy) {
+        crossModalCopy.textContent = targetProfession === 'LAWYER'
+          ? 'Pay ₦3,000 and our concierge will match you with a practising lawyer within 24 hours.'
+          : 'Pay ₦3,000 and our concierge will connect you with a trusted doctor within 24 hours.';
+      }
+      if (crossConsultSubmitLabel) {
+        crossConsultSubmitLabel.textContent = `Pay ${feeText} & confirm`;
+      }
+      renderCrossConsultHistory();
+    };
 
     async function loadProfessionalData(){
       if (platformAvailable && professionalSession?.email) {
@@ -736,26 +856,31 @@
       setProfessionalSession({
         onboardingPaid: derivedOnboardingPaid,
         profilePublic: derivedProfilePublic,
-        licenseVerified: Boolean(profile?.licenseVerified),
-        licenseVerification: profile?.licenseVerification,
         emailVerified: profile?.emailVerified ?? emailVerified,
-        licenseNumber: profile?.licenseNumber ?? professionalSession.licenseNumber,
         regulatoryBody: profile?.regulatoryBody ?? professionalSession.regulatoryBody,
       });
 
       const statusBadge = document.getElementById('proStatusBadge');
       if (statusBadge) {
         const baseClasses = 'inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full mt-2 sm:mt-0';
-        if (licenseVerified || profile?.verifiedBadge) {
-          statusBadge.innerHTML = '<i data-feather="shield" class="w-3 h-3"></i> Licence verified';
-          statusBadge.className = `${baseClasses} bg-emerald-100 text-emerald-700`;
+        let badgeClasses = `${baseClasses} bg-amber-100 text-amber-700`;
+        let badgeIcon = 'shield';
+        let badgeText = 'Complete onboarding';
+
+        if (!emailVerified) {
+          badgeClasses = `${baseClasses} bg-red-100 text-red-700`;
+          badgeIcon = 'alert-triangle';
+          badgeText = 'Verify email';
+        } else if (profilePublic || profile?.verifiedBadge) {
+          badgeClasses = `${baseClasses} bg-emerald-100 text-emerald-700`;
+          badgeIcon = 'shield';
+          badgeText = 'Profile live';
         } else if (onboardingPaid) {
-          statusBadge.innerHTML = '<i data-feather="shield" class="w-3 h-3"></i> Licence pending';
-          statusBadge.className = `${baseClasses} bg-amber-100 text-amber-700`;
-        } else {
-          statusBadge.innerHTML = '<i data-feather="shield" class="w-3 h-3"></i> Complete onboarding';
-          statusBadge.className = `${baseClasses} bg-amber-100 text-amber-700`;
+          badgeText = 'Awaiting approval';
         }
+
+        statusBadge.className = badgeClasses;
+        statusBadge.innerHTML = `<i data-feather="${badgeIcon}" class="w-3 h-3"></i> ${badgeText}`;
       }
 
       const averageRating = stats?.averageRating ? Number(stats.averageRating).toFixed(1) : '0.0';
@@ -874,7 +999,6 @@
           profession: 'Family Doctor',
           regulatoryBody: 'MDCN',
           profileImageUrl: '',
-          licenseVerified: true,
           verifiedBadge: true,
           consultations: [
             { id: 'C-01', scheduledFor: new Date().toISOString(), status: 'PENDING', fee: 3000, client: { firstName: 'Amaka', lastName: 'U.' } },
@@ -913,6 +1037,8 @@
       };
     }
 
+    initializeCrossConsultUI();
+    renderCrossConsultHistory();
     loadProfessionalData();
 
     const dashboardParams = new URLSearchParams(window.location.search);

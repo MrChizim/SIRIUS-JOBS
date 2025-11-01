@@ -12,6 +12,7 @@
     tailwind.config = { theme: { extend: { colors: { primary:'#0056b3', secondary:'#808080' } } } }
   </script>
   <script src="https://unpkg.com/feather-icons"></script>
+  <script src="api.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     body { font-family: 'Inter', sans-serif; }
@@ -21,10 +22,10 @@
   <!-- NAV -->
   <nav class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
+      <a href="index.html" class="flex items-center space-x-3">
         <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
         <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
-      </div>
+      </a>
       <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
         <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
         <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>

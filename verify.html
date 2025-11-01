@@ -21,6 +21,7 @@
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="api.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {
@@ -40,14 +41,21 @@
     <!-- Navigation -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
+            <a href="index.html" class="flex items-center space-x-3">
                 <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
                 <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
-            </div>
-            <div class="hidden md:flex space-x-8">
+            </a>
+            <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
                 <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
+                <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
                 <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
-                <a href="login.html" class="text-gray-600 hover:text-primary transition-all">Login</a>
+                <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
+                <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
+                <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
+                <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">
+                    <i data-feather="log-in" class="w-4 h-4"></i>
+                    Login
+                </a>
             </div>
             <div class="md:hidden">
                 <button id="menu-btn" class="text-gray-600 focus:outline-none">
@@ -56,12 +64,17 @@
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
             <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
-          
+            <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
             <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
-           
-            <a href="login.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Login</a>
+            <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
+            <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
+            <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
+            <a href="login.html" class="flex items-center gap-2 text-gray-600 hover:text-primary transition-all">
+                <i data-feather="log-in" class="w-4 h-4"></i>
+                Login
+            </a>
         </div>
     </nav>
 

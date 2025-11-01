@@ -11,6 +11,8 @@
     tailwind.config = { theme: { extend: { colors: { primary:'#0056b3', secondary:'#808080' } } } }
   </script>
   <script src="https://unpkg.com/feather-icons"></script>
+  <script src="api.js"></script>
+  <script src="session-utils.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     body { font-family: 'Inter', sans-serif; }
@@ -20,27 +22,30 @@
   <!-- NAV -->
   <nav class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
+      <a href="index.html" class="flex items-center space-x-3">
         <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
         <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
-      </div>
-      <div class="hidden md:flex space-x-8 items-center">
-        <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
+      </a>
+      <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
+        <a href="index.html" class="text-primary font-semibold">Home</a>
+        <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
         <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
-        <a href="verify.html" class="text-gray-600 hover:text-primary transition-all">Verify</a>
-        <a href="contact.html" class="text-gray-600 hover:text-primary transition-all">Contact Us</a>
+        <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
+        <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
+        <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
         <button id="workerLogout" class="text-gray-600 hover:text-primary transition-all">Logout</button>
-
       </div>
       <div class="md:hidden">
         <button id="menu-btn" class="text-gray-600 focus:outline-none"><i data-feather="menu"></i></button>
       </div>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4">
-      <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
+    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
+      <a href="index.html" class="block py-2 text-primary font-semibold transition-all">Home</a>
+      <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
       <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
-      <a href="verify.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Verify</a>
-      <a href="contact.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Contact Us</a>
+      <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
+      <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
+      <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
       <button id="workerLogoutMobile" class="block w-full text-left py-2 text-gray-600 hover:text-primary transition-all">Logout</button>
     </div>
   </nav>
@@ -52,6 +57,27 @@
       <p class="text-lg text-gray-100">Track your applications, gigs, subscription and profile</p>
     </div>
   </header>
+
+  <section id="workerRoleSwitch" class="mt-6">
+    <div class="container mx-auto px-4 mt-6">
+      <div class="bg-white shadow-lg border border-primary/10 rounded-2xl px-6 py-5 md:py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="flex items-start gap-3">
+          <div class="rounded-full bg-primary/10 p-2.5">
+            <i data-feather="repeat" class="w-5 h-5 text-primary"></i>
+          </div>
+          <div>
+            <p id="workerSwitchTag" class="text-sm font-semibold text-primary uppercase tracking-wide">Hire Someone</p>
+            <h2 id="workerSwitchTitle" class="text-lg font-semibold text-gray-900">Need an extra pair of hands?</h2>
+            <p id="workerSwitchCopy" class="text-sm text-gray-600">Switch to your employer tools to post a job or track applicants without signing out.</p>
+          </div>
+        </div>
+        <button id="switchToEmployerBtn" type="button" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold px-5 py-2.5 rounded-xl shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40 transition">
+          <i id="workerSwitchIcon" data-feather="briefcase" class="w-4 h-4"></i>
+          <span id="workerSwitchBtnLabel">Go to Hire Mode</span>
+        </button>
+      </div>
+    </div>
+  </section>
 
   <!-- MAIN -->
   <main class="container mx-auto px-4 py-10">
@@ -177,6 +203,38 @@
     </div>
   </div>
 
+  <!-- Extend Hire Mode Modal -->
+  <div id="workerExtendModal" class="fixed inset-0 hidden items-center justify-center px-4 py-6 bg-gray-900/60 backdrop-blur-sm z-50">
+    <div class="absolute inset-0"></div>
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 sm:p-8 space-y-6">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-xs uppercase tracking-[0.35em] text-primary/70 font-semibold">Unlock Hire Mode</p>
+          <h3 class="text-2xl font-semibold text-gray-900 mt-1">Add employer tools to this account</h3>
+          <p class="text-sm text-gray-600 mt-2">Confirm your password and phone number so we can enable job posting and hiring features instantly.</p>
+        </div>
+        <button id="closeWorkerExtendModal" class="text-gray-400 hover:text-gray-700 transition">
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <form id="workerExtendForm" class="space-y-4">
+        <div>
+          <label for="workerExtendPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <input type="password" id="workerExtendPassword" required class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Enter your Sirius Jobs password">
+        </div>
+        <div>
+          <label for="workerExtendPhone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+          <input type="tel" id="workerExtendPhone" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="07012345678">
+        </div>
+        <p id="workerExtendMessage" class="hidden text-sm"></p>
+        <button type="submit" id="workerExtendSubmit" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold px-4 py-2.5 rounded-xl shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40 transition">
+          <i data-feather="unlock"></i>
+          Enable Hire Mode
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- FOOTER (identical style) -->
   <footer class="bg-gray-900 text-white py-12">
     <div class="container mx-auto px-4">
@@ -248,6 +306,8 @@
     document.getElementById('menu-btn').addEventListener('click', ()=> {
       document.getElementById('mobile-menu').classList.toggle('hidden');
     });
+    const sessionUtils = window.SiriusSession ?? null;
+    const workerSessionPayload = sessionUtils?.parse ? sessionUtils.parse('siriusWorkerAuth') : null;
 
     // sample data
     const worker = {
@@ -305,6 +365,169 @@
           verifyBtn.classList.add('text-primary','hover:bg-primary','hover:text-white','border-primary');
         }
       }
+    }
+
+    const switchToEmployerSection = document.getElementById('workerRoleSwitch');
+    const switchToEmployerBtn = document.getElementById('switchToEmployerBtn');
+    const switchToEmployerLabel = document.getElementById('workerSwitchBtnLabel');
+    const switchToEmployerIcon = document.getElementById('workerSwitchIcon');
+    const switchTag = document.getElementById('workerSwitchTag');
+    const switchTitle = document.getElementById('workerSwitchTitle');
+    const switchCopy = document.getElementById('workerSwitchCopy');
+    const employerSession = sessionUtils?.parse ? sessionUtils.parse('siriusEmployerAuth') : null;
+    const canSwitchToEmployer = Boolean(employerSession?.roles?.length);
+    const workerExtendModal = document.getElementById('workerExtendModal');
+    const workerExtendForm = document.getElementById('workerExtendForm');
+    const workerExtendPassword = document.getElementById('workerExtendPassword');
+    const workerExtendPhone = document.getElementById('workerExtendPhone');
+    const workerExtendMessage = document.getElementById('workerExtendMessage');
+    const workerExtendSubmit = document.getElementById('workerExtendSubmit');
+    const closeWorkerExtendModalBtn = document.getElementById('closeWorkerExtendModal');
+
+    const handleSwitchToEmployer = () => {
+      window.location.href = 'employer-dashboard.html';
+    };
+
+    const openWorkerExtendModal = () => {
+      if (!workerExtendModal) return;
+      workerExtendModal.classList.remove('hidden');
+      workerExtendModal.classList.add('flex');
+      if (workerExtendPassword) {
+        workerExtendPassword.value = '';
+      }
+      if (workerExtendPhone && workerSessionPayload?.phone) {
+        workerExtendPhone.value = workerSessionPayload.phone;
+      }
+      if (workerExtendMessage) {
+        workerExtendMessage.classList.add('hidden');
+        workerExtendMessage.textContent = '';
+      }
+      setTimeout(() => {
+        workerExtendPassword?.focus();
+      }, 90);
+    };
+
+    const closeWorkerExtendModal = () => {
+      if (!workerExtendModal) return;
+      workerExtendModal.classList.remove('flex');
+      workerExtendModal.classList.add('hidden');
+    };
+
+    closeWorkerExtendModalBtn?.addEventListener('click', closeWorkerExtendModal);
+    workerExtendModal?.addEventListener('click', (event) => {
+      if (event.target === workerExtendModal) {
+        closeWorkerExtendModal();
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && workerExtendModal?.classList.contains('flex')) {
+        closeWorkerExtendModal();
+      }
+    });
+
+    workerExtendForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!workerSessionPayload?.email) {
+        return;
+      }
+      const password = workerExtendPassword?.value.trim() ?? '';
+      const phone = workerExtendPhone?.value.trim() ?? '';
+      if (!password) {
+        workerExtendMessage?.classList.remove('hidden');
+        workerExtendMessage.classList.remove('text-green-600');
+        workerExtendMessage?.classList.add('text-red-600');
+        if (workerExtendMessage) workerExtendMessage.textContent = 'Enter your password to continue.';
+        return;
+      }
+      workerExtendSubmit?.setAttribute('disabled', 'true');
+      workerExtendSubmit?.classList.add('opacity-70', 'cursor-wait');
+      workerExtendMessage?.classList.add('hidden');
+      try {
+        const res = await fetch('/api/auth/extend-role', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: workerSessionPayload.email,
+            password,
+            targetRole: 'EMPLOYER',
+            phone: phone || undefined,
+          }),
+        });
+        const bodyText = await res.text();
+        const data = bodyText ? JSON.parse(bodyText) : {};
+        if (!res.ok) {
+          throw new Error(data?.message || 'Unable to add hire mode right now.');
+        }
+        if (workerExtendMessage) {
+          workerExtendMessage.classList.remove('hidden');
+          workerExtendMessage.classList.remove('text-red-600');
+          workerExtendMessage.classList.add('text-green-600');
+          workerExtendMessage.textContent = data?.message || 'Hire mode activated! Redirecting you now...';
+        }
+        if (sessionUtils) {
+          const sessionPayload = sessionUtils.createPayload(data, {
+            activeRole: 'EMPLOYER',
+            email: workerSessionPayload.email,
+            firstName: data?.user?.firstName ?? workerSessionPayload.firstName,
+            lastName: data?.user?.lastName ?? workerSessionPayload.lastName,
+          });
+          sessionUtils.persist(sessionPayload);
+        }
+        setTimeout(() => {
+          closeWorkerExtendModal();
+          window.location.href = 'employer-dashboard.html';
+        }, 800);
+      } catch (error) {
+        if (workerExtendMessage) {
+          workerExtendMessage.classList.remove('hidden');
+          workerExtendMessage.classList.remove('text-green-600');
+          workerExtendMessage.classList.add('text-red-600');
+          workerExtendMessage.textContent = error.message || 'Unable to add hire mode right now.';
+        }
+      } finally {
+        workerExtendSubmit?.removeAttribute('disabled');
+        workerExtendSubmit?.classList.remove('opacity-70', 'cursor-wait');
+      }
+    });
+
+    if (switchToEmployerSection && switchToEmployerBtn) {
+      if (canSwitchToEmployer) {
+        switchToEmployerBtn.className =
+          'inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold px-5 py-2.5 rounded-xl shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40 transition';
+        if (switchToEmployerLabel) {
+          switchToEmployerLabel.textContent = 'Go to Hire Mode';
+        }
+        if (switchTag) {
+          switchTag.textContent = 'Hire Someone';
+        }
+        if (switchTitle) {
+          switchTitle.textContent = 'Need an extra pair of hands?';
+        }
+        if (switchCopy) {
+          switchCopy.textContent = 'Switch to your employer tools to post jobs or track applicants without signing out.';
+        }
+        switchToEmployerBtn.addEventListener('click', handleSwitchToEmployer);
+      } else {
+        switchToEmployerBtn.className =
+          'inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-5 py-2.5 rounded-xl border border-primary hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/20 transition';
+        if (switchToEmployerLabel) {
+          switchToEmployerLabel.textContent = 'Unlock Hire Mode';
+        }
+        if (switchTag) {
+          switchTag.textContent = 'Quick upgrade';
+        }
+        if (switchTitle) {
+          switchTitle.textContent = 'Want to hire from your phone?';
+        }
+        if (switchCopy) {
+          switchCopy.textContent = 'Add employer access to this account and manage your hires without juggling logins.';
+        }
+        if (switchToEmployerIcon) {
+          switchToEmployerIcon.setAttribute('data-feather', 'plus');
+        }
+        switchToEmployerBtn.addEventListener('click', openWorkerExtendModal);
+      }
+      feather.replace();
     }
 
     // lists
@@ -382,7 +605,7 @@
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-gray-600">
             <div class="flex items-center gap-2"><i data-feather="calendar" class="w-3.5 h-3.5 text-gray-400"></i><span>${application.date}</span></div>
-            <div class="flex items-center gap-2"><i data-feather="dollar-sign" class="w-3.5 h-3.5 text-gray-400"></i><span>${application.rate ?? '—'}</span></div>
+            <div class="flex items-center gap-2"><span class="text-primary font-semibold uppercase tracking-wide text-[11px]">Rate</span><span>${application.rate ?? '—'}</span></div>
             <div class="flex items-center gap-2"><i data-feather="info" class="w-3.5 h-3.5 text-gray-400"></i><span>${application.nextStep ?? ''}</span></div>
           </div>
           <div class="flex items-center justify-between pt-2 border-t border-gray-100 text-xs">
