@@ -52,7 +52,7 @@
 
 .site-footer__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 2rem;
 }
 
@@ -116,9 +116,30 @@
   align-items: center;
   justify-content: center;
   color: white;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .site-footer__social a:hover {
   border-color: white;
+  transform: translateY(-2px);
 }
-*** End of File
+
+@media (max-width: 640px) {
+  .site-footer__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .site-footer__grid > div {
+    text-align: center;
+  }
+  .site-footer__social {
+    justify-content: center;
+  }
+  .site-footer__bottom {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 0.75rem;
+  }
+}

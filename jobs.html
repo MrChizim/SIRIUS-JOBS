@@ -96,41 +96,50 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="pt-32 pb-20 lg:pb-32 bg-gradient-to-br from-black via-primary to-blue-900 text-white animated-gradient relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-            <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+    <!-- HERO -->
+    <header class="pt-32 pb-24 bg-gradient-to-br from-[#020617] via-primary to-blue-700 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20 pointer-events-none">
+            <div class="absolute -top-12 left-6 w-72 h-72 bg-white/25 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-0 w-[26rem] h-[26rem] bg-blue-500/30 rounded-full blur-3xl"></div>
         </div>
-
         <div class="container mx-auto px-4 relative z-10">
-            <div class="max-w-4xl mx-auto text-center">
-                <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 mb-8">
-                    <i data-feather="briefcase" class="w-4 h-4"></i>
-                    <span class="text-sm font-semibold">Job Marketplace</span>
-                </div>
-
-                <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
-                    Find Your Next<br/>Opportunity
-                </h1>
-
-                <p class="text-xl md:text-2xl text-gray-100 font-light leading-relaxed mb-10">
-                    Browse jobs or post your job opportunity — connecting skilled workers with employers across Nigeria
-                </p>
-
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#job-listings" class="inline-flex items-center justify-center gap-2 bg-white text-primary font-bold px-8 py-4 rounded-xl hover:bg-gray-100 transition-all shadow-xl">
-                        <i data-feather="search" class="w-5 h-5"></i>
-                        Browse Jobs
-                    </a>
-                    <a href="#post-job" class="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md border-2 border-white/20 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/20 transition-all">
-                        <i data-feather="plus-circle" class="w-5 h-5"></i>
-                        Post a Job
-                    </a>
+            <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_420px] items-center">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.35em] text-white/60 font-black">Jobs</p>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mt-4">
+                        Post a role in minutes. Only verified employers can go live.
+                    </h1>
+                    <p class="text-base sm:text-lg text-white/80 mt-5 max-w-2xl">
+                        All job posts cost ₦1,000 and unlock only when you are logged in, government ID verified, and payment is confirmed. That way workers deal with real employers, and you get a dashboard that tracks applicants in one place.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-10">
+                        <a href="#job-listings" class="inline-flex items-center gap-2 bg-white text-primary font-bold px-8 py-4 rounded-2xl shadow-xl hover:-translate-y-0.5 transition">
+                            <i data-feather="search" class="w-5 h-5"></i>
+                            Browse openings
+                        </a>
+                        <a href="#post-job" class="inline-flex items-center gap-2 border border-white/60 text-white font-semibold px-8 py-4 rounded-2xl hover:bg-white/10 transition">
+                            <i data-feather="plus-circle" class="w-5 h-5"></i>
+                            Post a job (₦1,000)
+                        </a>
+                    </div>
+                    <div class="mt-10 grid sm:grid-cols-3 gap-5 text-white/80">
+                        <div>
+                            <p class="text-3xl font-black text-white">₦1k</p>
+                            <p class="text-xs uppercase tracking-[0.3em]">Per listing</p>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-black text-white">ID</p>
+                            <p class="text-xs uppercase tracking-[0.3em]">Verification required</p>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-black text-white">24/7</p>
+                            <p class="text-xs uppercase tracking-[0.3em]">Applicant tracking</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </header>
 
     <!-- Job Filters -->
     <section class="py-12 bg-gray-50">

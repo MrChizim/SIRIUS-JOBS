@@ -95,41 +95,51 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section class="pt-32 pb-20 lg:pb-32 bg-gradient-to-br from-black via-primary to-blue-900 text-white animated-gradient relative overflow-hidden">
-    <div class="absolute inset-0 opacity-10">
-      <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-      <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+  <!-- HERO -->
+  <header class="pt-32 pb-24 bg-gradient-to-br from-[#020617] via-primary to-blue-700 text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-20 pointer-events-none">
+      <div class="absolute -top-16 left-4 w-80 h-80 bg-white/20 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-0 w-[28rem] h-[28rem] bg-blue-500/30 rounded-full blur-3xl"></div>
     </div>
-
     <div class="container mx-auto px-4 relative z-10">
-      <div class="max-w-4xl mx-auto text-center">
-        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 mb-8">
-          <i data-feather="briefcase" class="w-4 h-4"></i>
-          <span class="text-sm font-semibold">Professional Services</span>
-        </div>
-
-        <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
-          Every Service,<br/>Every Skill
-        </h1>
-
-        <p class="text-xl md:text-2xl text-gray-100 font-light leading-relaxed mb-10">
-          Verified professionals for every job — from home repairs to legal, health, and business services across Nigeria
-        </p>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="findworker.html" class="inline-flex items-center justify-center gap-2 bg-white text-primary font-bold px-8 py-4 rounded-xl hover:bg-gray-100 transition-all shadow-xl">
-            <i data-feather="search" class="w-5 h-5"></i>
-            Hire an Artisan
-          </a>
-          <a href="consultations.html" class="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md border-2 border-white/20 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/20 transition-all">
-            <i data-feather="calendar" class="w-5 h-5"></i>
-            Book Consultations
-          </a>
+      <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_420px] items-center">
+        <div>
+          <p class="text-xs uppercase tracking-[0.35em] text-white/60 font-black">Services</p>
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mt-4">
+            Tap into 120+ verified service crews across Nigeria.
+          </h1>
+          <p class="text-base sm:text-lg text-white/80 mt-5 max-w-2xl">
+            Whether you’re fixing a burst pipe, installing solar, styling an event, or delivering a fleet of dispatch bikes,
+            every category here is screened, location-tagged, and available with media proof before you call.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 mt-10">
+            <a href="#service-categories" class="inline-flex items-center gap-2 bg-white text-primary font-bold px-8 py-4 rounded-2xl shadow-xl hover:-translate-y-0.5 transition">
+              <i data-feather="layers" class="w-5 h-5"></i>
+              Browse service grid
+            </a>
+            <a href="findworker.html" class="inline-flex items-center gap-2 border border-white/60 text-white font-semibold px-8 py-4 rounded-2xl hover:bg-white/10 transition">
+              <i data-feather="users" class="w-5 h-5"></i>
+              Request a specialist
+            </a>
+          </div>
+          <div class="mt-10 grid sm:grid-cols-3 gap-5 text-white/80">
+            <div>
+              <p class="text-3xl font-black text-white">120+</p>
+              <p class="text-xs uppercase tracking-[0.3em]">Service categories</p>
+            </div>
+            <div>
+              <p class="text-3xl font-black text-white">36 States</p>
+              <p class="text-xs uppercase tracking-[0.3em]">Coverage</p>
+            </div>
+            <div>
+              <p class="text-3xl font-black text-white">24h</p>
+              <p class="text-xs uppercase tracking-[0.3em]">Support window</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </header>
 
   <!-- Marketplace CTA -->
   <section class="py-20 bg-gray-50">
@@ -168,7 +178,7 @@
       <div class="max-w-7xl mx-auto space-y-16">
 
         <!-- Home & Property Repairs -->
-        <div>
+        <div id="service-categories">
           <div class="mb-8">
             <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-2 mb-4">
               <i data-feather="home" class="w-4 h-4"></i>
