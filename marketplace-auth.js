@@ -3,6 +3,20 @@
 
   const STORAGE_KEY = 'siriusMarketplaceMerchants';
   const SESSION_KEY = 'siriusMarketplaceSession';
+  const DEFAULT_MERCHANTS = [
+    {
+      id: 'demo-merchant',
+      businessName: 'Dewiss Finishing',
+      contactName: 'Sirius Demo',
+      email: 'demo@siriusjobs.com',
+      phone: '+2347012345678',
+      instagram: 'https://www.instagram.com/dewissgadgethub',
+      whatsapp: '+2347012345678',
+      password: 'Demo1234!',
+      plan: '12-month',
+      createdAt: new Date().toISOString(),
+    },
+  ];
 
   function normaliseEmail(value) {
     return (value || '').toString().trim().toLowerCase();
@@ -11,12 +25,20 @@
   function loadMerchants() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return [];
+      if (!raw) {
+        saveMerchants(DEFAULT_MERCHANTS);
+        return [...DEFAULT_MERCHANTS];
+      }
       const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : [];
+      if (!Array.isArray(parsed) || parsed.length === 0) {
+        saveMerchants(DEFAULT_MERCHANTS);
+        return [...DEFAULT_MERCHANTS];
+      }
+      return parsed;
     } catch (error) {
       console.warn('Unable to read marketplace merchants from storage', error);
-      return [];
+      saveMerchants(DEFAULT_MERCHANTS);
+      return [...DEFAULT_MERCHANTS];
     }
   }
 

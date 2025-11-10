@@ -7,6 +7,7 @@
     <meta name="description" content="Register as a professional to offer consultations">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="session-utils.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -45,6 +46,7 @@
             width: 100%;
         }
     </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
 </head>
 <body class="bg-gray-50 text-gray-900 antialiased">
     <!-- Navigation -->
@@ -53,7 +55,7 @@
             <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
                 <a href="index.html" class="flex items-center space-x-3 group">
-                    <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm transition-transform group-hover:scale-105" />
+                    <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-16 w-auto drop-shadow-2xl transition-transform group-hover:scale-105" />
                     <span class="sr-only">SiriusJobs home</span>
                 </a>
 
@@ -129,6 +131,108 @@
                 <!-- Registration Form -->
                 <div class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
                     <form id="registration-form" class="space-y-6">
+                        <!-- Account Information -->
+                        <div class="space-y-4">
+                            <div>
+                                <h3 class="text-lg font-black text-gray-900">Account Information</h3>
+                                <p class="text-sm text-gray-500">We’ll use these details to create your consultation account if you don’t already have one.</p>
+                            </div>
+                            <div class="grid gap-4 md:grid-cols-2">
+                                <div>
+                                    <label for="firstName" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        First Name <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="firstName"
+                                        name="firstName"
+                                        placeholder="e.g., Adaeze"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label for="lastName" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        Last Name <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="lastName"
+                                        name="lastName"
+                                        placeholder="e.g., Okoro"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        Email Address <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        placeholder="name@example.com"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        Phone Number
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        placeholder="0701 234 5678"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        Password <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <input
+                                            type="password"
+                                            id="password"
+                                            name="password"
+                                            placeholder="Create a secure password"
+                                            class="w-full pr-24 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                        />
+                                        <button
+                                            type="button"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold uppercase text-primary hover:text-blue-700"
+                                            data-password-toggle
+                                            data-target="password"
+                                        >
+                                            Show
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="confirmPassword" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        Confirm Password <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <input
+                                            type="password"
+                                            id="confirmPassword"
+                                            name="confirmPassword"
+                                            placeholder="Re-type your password"
+                                            class="w-full pr-24 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                        />
+                                        <button
+                                            type="button"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold uppercase text-primary hover:text-blue-700"
+                                            data-password-toggle
+                                            data-target="confirmPassword"
+                                        >
+                                            Show
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Profession -->
                         <div>
                             <label for="profession" class="block text-sm font-semibold text-gray-700 mb-2">
@@ -182,6 +286,57 @@
                             </p>
                         </div>
 
+                        <!-- Regulatory Body -->
+                        <div>
+                            <label for="regulatoryBody" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Regulatory Body <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="regulatoryBody"
+                                name="regulatoryBody"
+                                placeholder="e.g., MDCN, NBA"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                            />
+                        </div>
+
+                        <!-- Licence Verification Method -->
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-700">
+                                Licence Verification Method <span class="text-red-500">*</span>
+                            </label>
+                            <div class="flex flex-wrap gap-4">
+                                <label class="inline-flex items-center gap-2 text-sm font-semibold text-gray-700">
+                                    <input type="radio" name="licenseVerificationType" value="LINK" checked class="text-primary focus:ring-primary">
+                                    Provide Secure Link
+                                </label>
+                                <label class="inline-flex items-center gap-2 text-sm font-semibold text-gray-700">
+                                    <input type="radio" name="licenseVerificationType" value="UPLOAD" class="text-primary focus:ring-primary">
+                                    Upload Document
+                                </label>
+                            </div>
+                            <div id="licenseLinkField" class="space-y-1">
+                                <textarea
+                                    id="licenseDocument"
+                                    name="licenseDocument"
+                                    rows="3"
+                                    placeholder="Paste a secure share link (Google Drive, Dropbox, etc.)"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                ></textarea>
+                                <p class="text-xs text-gray-500">Ensure the link is accessible or share the access key.</p>
+                            </div>
+                            <div id="licenseUploadField" class="space-y-1 hidden">
+                                <input
+                                    type="file"
+                                    id="licenseDocumentFile"
+                                    name="licenseDocumentFile"
+                                    accept=".pdf,.jpg,.jpeg,.png"
+                                    class="w-full px-4 py-3 border border-dashed border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white text-sm"
+                                />
+                                <p class="text-xs text-gray-500">Upload JPG, PNG, or PDF. Max size 5MB.</p>
+                            </div>
+                        </div>
+
                         <!-- Years of Experience -->
                         <div>
                             <label for="yearsOfExperience" class="block text-sm font-semibold text-gray-700 mb-2">
@@ -199,128 +354,156 @@
                             />
                         </div>
 
-                        <!-- Bio -->
-                        <div>
-                            <label for="bio" class="block text-sm font-semibold text-gray-700 mb-2">
-                                Professional Bio <span class="text-red-500">*</span>
-                            </label>
-                            <textarea
-                                id="bio"
-                                name="bio"
-                                required
-                                rows="5"
-                                maxlength="500"
-                                placeholder="Tell potential clients about yourself, your expertise, and what you can help with..."
-                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none"
-                            ></textarea>
-                            <p class="text-sm text-gray-500 mt-1">
-                                <span id="bio-char-count">0</span>/500 characters
-                            </p>
-                        </div>
-
-                        <!-- Terms -->
-                        <div class="flex items-start gap-3">
-                            <input
-                                type="checkbox"
-                                id="terms"
-                                required
-                                class="mt-1 w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary"
-                            />
-                            <label for="terms" class="text-sm text-gray-600">
-                                I agree to the <a href="terms.html" class="text-primary hover:underline">Terms of Service</a> and confirm that all information provided is accurate and truthful.
-                            </label>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <button
-                            type="submit"
-                            id="submit-btn"
-                            class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl text-lg"
-                        >
-                            <span id="btn-text">
-                                <i data-feather="check-circle" class="w-5 h-5 inline"></i>
-                                Complete Registration
-                            </span>
-                            <span id="btn-loading" class="hidden">
-                                <div class="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                Processing...
-                            </span>
-                        </button>
-                    </form>
-
-                    <!-- Info Notice -->
-                    <div class="mt-6 bg-blue-50 rounded-xl p-4">
-                        <p class="text-sm text-gray-700">
-                            <i data-feather="info" class="w-4 h-4 inline text-primary"></i>
-                            <strong>Next steps:</strong> After registration, your profile will be reviewed and verified within 24-48 hours. You'll receive an email notification once approved.
-                        </p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="bg-[#0f172a] text-gray-300">
-        <div class="border-t border-white/10">
-            <div class="container mx-auto px-4 py-12 lg:py-14">
-                <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
-                    <div class="space-y-4">
-                        <a href="index.html" class="inline-flex items-center gap-2">
-
-                          <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm" />
-
-                          <span class="sr-only">SiriusJobs home</span>
-
-                        </a>
-                        <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
-                        <div class="flex items-center gap-3 text-gray-400">
-                            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
-                            <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
-                            <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
-                            <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
-                        <ul class="space-y-2 text-sm text-gray-400">
-                            <li><a href="about.html" class="hover:text-white transition">About</a></li>
-                            <li><a href="services.html" class="hover:text-white transition">Services</a></li>
-                            <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
-                            <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
-                        <ul class="space-y-2 text-sm text-gray-400">
-                            <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
-                            <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
-                            <li><span>WhatsApp: 0704 447 0559</span></li>
-                            <li><span>Email: support@siriusjobsng.com</span></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
-                        <ul class="space-y-2 text-sm text-gray-400">
-                            <li>Port Harcourt, Rivers State</li>
-                            <li>Nigeria</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                    <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
-                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
-                        <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
-                        <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
-                        <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
-                    </div>
-                </div>
-            </div>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="assets/sirius-logo.svg" alt="Sirius logo">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
         </div>
-    </footer>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: support@siriusjobsng.com</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2025 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+
 
     <script>
         const API_URL = 'http://localhost:4000/api';
+        const sessionKeys = ['siriusProAuth', 'siriusWorkerAuth', 'siriusEmployerAuth', 'siriusClientAuth'];
+
+        const getStoredToken = () => {
+            if (window.SiriusSession) {
+                for (const key of sessionKeys) {
+                    const payload = window.SiriusSession.parse(key);
+                    if (payload?.token) {
+                        return payload.token;
+                    }
+                }
+            }
+            return localStorage.getItem('token');
+        };
+
+        const persistLoginSession = (data) => {
+            if (!data) return null;
+            if (window.SiriusSession?.createPayload) {
+                const payload = window.SiriusSession.createPayload(data);
+                window.SiriusSession.persist(payload);
+                if (payload.token) {
+                    localStorage.setItem('token', payload.token);
+                }
+                return payload.token ?? null;
+            }
+            if (data.token) {
+                localStorage.setItem('token', data.token);
+                return data.token;
+            }
+            return null;
+        };
+
+        const registerProfessionalAccount = async (accountInfo, verificationInfo) => {
+            const response = await fetch('/api/auth/register-professional', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstName: accountInfo.firstName,
+                    lastName: accountInfo.lastName,
+                    email: accountInfo.email,
+                    password: accountInfo.password,
+                    profession: verificationInfo.profession,
+                    licenseNumber: verificationInfo.licenseNumber,
+                    regulatoryBody: verificationInfo.regulatoryBody,
+                    licenseDocument: verificationInfo.licenseDocument,
+                }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || data.error || 'Unable to create professional account.');
+            }
+            return data;
+        };
+
+        const loginProfessionalAccount = async (email, password) => {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || data.error || 'Unable to login after registration.');
+            }
+            return persistLoginSession(data);
+        };
+
+        const registerConsultationProfile = async (token, profileData) => {
+            const response = await fetch(`${API_URL}/consultation/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(profileData),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || data.message || 'Registration failed.');
+            }
+            return data;
+        };
+
+        const toBase64 = (file) => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = () => reject(new Error('Unable to read file. Please try again.'));
+            reader.readAsDataURL(file);
+        });
+        const MAX_LICENSE_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
         // Mobile menu toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -331,30 +514,136 @@
             });
         }
 
-        // Bio character count
-        document.getElementById('bio').addEventListener('input', (e) => {
-            document.getElementById('bio-char-count').textContent = e.target.value.length;
+        // Show/Hide password toggles
+        document.querySelectorAll('[data-password-toggle]').forEach(button => {
+            const targetId = button.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            if (!input) return;
+
+            button.setAttribute('aria-controls', targetId);
+            button.setAttribute('aria-pressed', 'false');
+
+            button.addEventListener('click', () => {
+                const showing = input.getAttribute('type') === 'text';
+                input.setAttribute('type', showing ? 'password' : 'text');
+                button.textContent = showing ? 'Show' : 'Hide';
+                button.setAttribute('aria-pressed', (!showing).toString());
+            });
+        });
+
+        // Toggle licence verification fields
+        const verificationRadios = document.querySelectorAll('input[name="licenseVerificationType"]');
+        const linkField = document.getElementById('licenseLinkField');
+        const uploadField = document.getElementById('licenseUploadField');
+        const fileInput = document.getElementById('licenseDocumentFile');
+
+        verificationRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.value === 'UPLOAD') {
+                    linkField.classList.add('hidden');
+                    uploadField.classList.remove('hidden');
+                } else {
+                    uploadField.classList.add('hidden');
+                    linkField.classList.remove('hidden');
+                    if (fileInput) fileInput.value = '';
+                }
+            });
         });
 
         // Form submission
         document.getElementById('registration-form').addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Get form data
-            const formData = {
+            const accountInfo = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                email: document.getElementById('email').value.trim().toLowerCase(),
+                password: document.getElementById('password').value,
+                confirmPassword: document.getElementById('confirmPassword').value,
+            };
+
+            const verificationMethod = (document.querySelector('input[name="licenseVerificationType"]:checked') as HTMLInputElement)?.value || 'LINK';
+            let licenseDocumentLink = document.getElementById('licenseDocument')?.value.trim() ?? '';
+            let licenseDocumentUpload: { name: string; type: string; size: number; data: string } | undefined;
+
+            if (verificationMethod === 'LINK') {
+                if (!licenseDocumentLink) {
+                    alert('Please provide a secure link to your licence document.');
+                    return;
+                }
+            } else {
+                const file = fileInput?.files?.[0];
+                if (!file) {
+                    alert('Please upload your licence document.');
+                    return;
+                }
+                if (file.size > MAX_LICENSE_FILE_SIZE) {
+                    alert('Licence document is larger than 5MB. Please upload a smaller file.');
+                    return;
+                }
+                const data = await toBase64(file);
+                licenseDocumentUpload = {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    data,
+                };
+                licenseDocumentLink = '';
+            }
+
+            const profileData = {
                 profession: document.getElementById('profession').value,
                 specialization: document.getElementById('specialization').value.trim(),
                 licenseNumber: document.getElementById('licenseNumber').value.trim(),
-                yearsOfExperience: parseInt(document.getElementById('yearsOfExperience').value),
-                bio: document.getElementById('bio').value.trim()
+                regulatoryBody: document.getElementById('regulatoryBody').value.trim(),
+                yearsOfExperience: parseInt(document.getElementById('yearsOfExperience').value, 10),
+                verificationMethod,
+                licenseDocumentLink: licenseDocumentLink || undefined,
+                licenseDocumentUpload,
             };
 
-            // Get auth token
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('Please login first');
-                window.location.href = 'login.html';
+            if (!profileData.profession || !profileData.specialization || !profileData.licenseNumber || !profileData.regulatoryBody) {
+                alert('Please complete all profession and verification fields.');
                 return;
+            }
+
+            if (Number.isNaN(profileData.yearsOfExperience)) {
+                alert('Please specify your years of experience.');
+                return;
+            }
+
+            let token = getStoredToken();
+
+            if (!token) {
+                if (!accountInfo.firstName || !accountInfo.lastName || !accountInfo.email || !accountInfo.password || !accountInfo.confirmPassword) {
+                    alert('Enter your basic account information so we can create your login.');
+                    return;
+                }
+
+                if (accountInfo.password.length < 8) {
+                    alert('Password must be at least 8 characters.');
+                    return;
+                }
+
+                if (accountInfo.password !== accountInfo.confirmPassword) {
+                    alert('Passwords do not match.');
+                    return;
+                }
+
+                try {
+                    const licenseProofForAccount = profileData.verificationMethod === 'UPLOAD'
+                        ? (licenseDocumentUpload?.data ?? '')
+                        : (profileData.licenseDocumentLink ?? '');
+
+                    await registerProfessionalAccount(accountInfo, {
+                        ...profileData,
+                        licenseDocument: licenseProofForAccount || 'PENDING_MANUAL_REVIEW',
+                    });
+                    token = await loginProfessionalAccount(accountInfo.email, accountInfo.password);
+                } catch (error) {
+                    alert(error.message);
+                    return;
+                }
             }
 
             // Show loading
@@ -367,29 +656,23 @@
             submitBtn.disabled = true;
 
             try {
-                const response = await fetch(`${API_URL}/consultation/register`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(formData)
+                const result = await registerConsultationProfile(token, {
+                    profession: profileData.profession,
+                    specialization: profileData.specialization,
+                    licenseNumber: profileData.licenseNumber,
+                    yearsOfExperience: profileData.yearsOfExperience,
+                    regulatoryBody: profileData.regulatoryBody,
+                    verificationMethod: profileData.verificationMethod,
+                    licenseDocumentLink: profileData.licenseDocumentLink,
+                    licenseDocumentUpload: profileData.licenseDocumentUpload,
                 });
 
-                const result = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(result.error || result.message || 'Registration failed');
-                }
-
-                alert('Registration successful! Your profile will be reviewed within 24-48 hours.');
+                alert(result.message || 'Registration successful! Finalise your professional bio from your dashboard when verification is complete.');
                 window.location.href = 'consultation-dashboard.html';
-
             } catch (error) {
                 console.error('Registration error:', error);
                 alert(error.message || 'Failed to complete registration. Please try again.');
-
-                // Reset button
+            } finally {
                 btnText.classList.remove('hidden');
                 btnLoading.classList.add('hidden');
                 submitBtn.disabled = false;
@@ -400,5 +683,6 @@
         feather.replace();
     </script>
     <script src="assistant.js"></script>
+  <script src="assets/site-shell.js" defer></script>
 </body>
 </html>

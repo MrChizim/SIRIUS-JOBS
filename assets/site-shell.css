@@ -1,0 +1,124 @@
+:root {
+  --shell-dark: #020617;
+  --shell-muted: #94a3b8;
+  --shell-blue: #0b5cd6;
+}
+
+.nav-brand { gap: 0 !important; }
+.nav-brand img {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 25px rgba(15,23,42,0.3));
+}
+
+@media (max-width: 1023px) {
+  #mobile-menu .container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  #mobile-menu a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 1rem;
+    padding: 0.95rem 1.1rem;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    background: white;
+    font-weight: 600;
+  }
+
+  #mobile-menu a i {
+    width: 18px;
+    height: 18px;
+    color: var(--shell-blue);
+  }
+}
+
+.site-footer {
+  background: radial-gradient(circle at top, rgba(15,118,255,0.15), transparent 55%), var(--shell-dark);
+  color: white;
+  margin-top: 4rem;
+}
+
+.site-footer__inner {
+  padding: 4rem 0 2.5rem;
+}
+
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+}
+
+.site-footer__brand img {
+  width: 90px;
+  height: 90px;
+  filter: drop-shadow(0 15px 35px rgba(15,23,42,0.45));
+}
+
+.site-footer__brand p {
+  color: var(--shell-muted);
+  margin-top: 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.site-footer__grid h4 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #cbd5f5;
+  margin-bottom: 0.9rem;
+}
+
+.site-footer__grid a {
+  color: rgba(226, 232, 240, 0.75);
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.site-footer__grid a:hover {
+  color: white;
+}
+
+.site-footer__bottom {
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--shell-muted);
+  font-size: 0.85rem;
+}
+
+.site-footer__social {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.site-footer__social a {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.site-footer__social a:hover {
+  border-color: white;
+}
+*** End of File

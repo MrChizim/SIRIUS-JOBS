@@ -100,7 +100,7 @@
             localStorage.removeItem('siriusMarketplaceSession');
             if (window.location.pathname.includes('marketplace-dashboard')) {
               alert(`Your session has expired. Please log in again.`);
-              window.location.href = '/marketplace-login.html';
+              window.location.href = '/login.html#merchant-login';
             }
           }
         }

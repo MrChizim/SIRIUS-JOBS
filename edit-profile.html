@@ -29,6 +29,7 @@
       animation: gradient-shift 15s ease infinite;
     }
   </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
 </head>
 <body class="bg-white text-gray-800">
 
@@ -37,8 +38,7 @@
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
       <a href="index.html" class="inline-flex items-center gap-3">
         <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
-        <span class="text-xl font-black text-primary uppercase tracking-tight">SIRIUS JOBS</span>
-      </a>
+        </a>
       <a href="worker-dashboard.html" class="inline-flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-primary transition-colors">
         <i data-feather="arrow-left" class="w-4 h-4"></i>
         Back to Dashboard
@@ -112,62 +112,57 @@
       </form>
     </div>
   </main>
-
   <!-- FOOTER -->
-  <footer class="bg-[#0f172a] text-gray-300 mt-16">
-    <div class="border-t border-white/10">
-      <div class="container mx-auto px-4 py-12 lg:py-14">
-        <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
-          <div class="space-y-4">
-            <a href="index.html" class="inline-flex items-center gap-2">
-              <img src="assets/sirius-logo.svg" alt="Sirius Jobs logo" class="w-10 h-10">
-              <span class="text-lg font-black text-white uppercase tracking-tight">SIRIUS JOBS</span>
-            </a>
-            <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
-            <div class="flex items-center gap-3 text-gray-400">
-              <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
-              <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
-              <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
-              <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
-            </div>
-          </div>
-          <div>
-            <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Company</h4>
-            <ul class="space-y-2 text-sm text-gray-400">
-              <li><a href="about.html" class="hover:text-white transition">About</a></li>
-              <li><a href="services.html" class="hover:text-white transition">Services</a></li>
-              <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
-              <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Support</h4>
-            <ul class="space-y-2 text-sm text-gray-400">
-              <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
-              <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
-              <li><span>WhatsApp: 0704 447 0559</span></li>
-              <li><span>Email: support@siriusjobsng.com</span></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Office</h4>
-            <ul class="space-y-2 text-sm text-gray-400">
-              <li>Port Harcourt, Rivers State</li>
-              <li>Nigeria</li>
-            </ul>
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="assets/sirius-logo.svg" alt="Sirius logo">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
           </div>
         </div>
-        <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
-          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
-            <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
-            <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
-            <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
-          </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
         </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: support@siriusjobsng.com</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2025 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
       </div>
     </div>
   </footer>
+
+
 
   <script>
     feather.replace();
@@ -216,65 +211,57 @@
     });
   </script>
   <script src="assistant.js"></script>
-
-  <!-- Footer -->
-  <footer class="bg-[#0f172a] text-gray-300 mt-16">
-    <div class="border-t border-white/10">
-      <div class="container mx-auto px-4 py-12 lg:py-14">
-        <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
-          <div class="space-y-4">
-            <a href="index.html" class="inline-flex items-center gap-2">
-
-              <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm" />
-
-              <span class="sr-only">SiriusJobs home</span>
-
-            </a>
-            <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
-            <div class="flex items-center gap-3 text-gray-400">
-              <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
-              <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
-              <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
-              <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
-            </div>
-          </div>
-          <div>
-            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
-            <ul class="space-y-2 text-sm text-gray-400">
-              <li><a href="about.html" class="hover:text-white transition">About</a></li>
-              <li><a href="services.html" class="hover:text-white transition">Services</a></li>
-              <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
-              <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
-              <li><a href="marketplace.html" class="hover:text-white transition">Marketplace</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
-            <ul class="space-y-2 text-sm text-gray-400">
-              <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
-              <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
-              <li><span>WhatsApp: 0704 447 0559</span></li>
-              <li><span>Email: support@siriusjobsng.com</span></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
-            <ul class="space-y-2 text-sm text-gray-400">
-              <li>Port Harcourt, Rivers State</li>
-              <li>Nigeria</li>
-            </ul>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="assets/sirius-logo.svg" alt="Sirius logo">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
           </div>
         </div>
-        <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
-          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
-            <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
-            <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
-            <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
-          </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
         </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: support@siriusjobsng.com</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2025 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
       </div>
     </div>
   </footer>
+
+
+  <script src="assets/site-shell.js" defer></script>
 </body>
 </html>

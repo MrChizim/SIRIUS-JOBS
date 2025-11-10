@@ -45,6 +45,11 @@ const loginMerchantSchema = z.object({
   password: z.string().min(1),
 });
 
+const analyticsEventSchema = z.object({
+  vendorId: z.string().min(2),
+  eventType: z.enum(['PROFILE_VIEW', 'WHATSAPP_CLICK', 'INSTAGRAM_CLICK']),
+});
+
 // Check if merchant account is locked
 const isMerchantLocked = (merchant: any): boolean => {
   if (!merchant.accountLockedUntil) return false;
@@ -278,6 +283,81 @@ router.get('/me', async (req, res) => {
   } catch (error) {
     logger.error('Get merchant error:', error);
     res.status(401).json({ message: 'Invalid token' });
+  }
+});
+
+router.post('/analytics/event', async (req, res) => {
+  const payload = analyticsEventSchema.safeParse(req.body);
+  if (!payload.success) {
+    return res.status(400).json({ errors: payload.error.flatten() });
+  }
+
+  const { vendorId, eventType } = payload.data;
+
+  try {
+    const createData = {
+      vendorId,
+      profileViews: eventType === 'PROFILE_VIEW' ? 1 : 0,
+      whatsappClicks: eventType === 'WHATSAPP_CLICK' ? 1 : 0,
+      instagramClicks: eventType === 'INSTAGRAM_CLICK' ? 1 : 0,
+      lastEventAt: new Date(),
+    };
+
+    const updateData: Record<string, any> = {
+      lastEventAt: new Date(),
+    };
+
+    if (eventType === 'PROFILE_VIEW') {
+      updateData.profileViews = { increment: 1 };
+    }
+    if (eventType === 'WHATSAPP_CLICK') {
+      updateData.whatsappClicks = { increment: 1 };
+    }
+    if (eventType === 'INSTAGRAM_CLICK') {
+      updateData.instagramClicks = { increment: 1 };
+    }
+
+    await prisma.marketplaceAnalytics.upsert({
+      where: { vendorId },
+      create: createData,
+      update: updateData,
+    });
+
+    res.json({ message: 'Analytics event tracked' });
+  } catch (error) {
+    logger.error('Marketplace analytics event error:', error);
+    res.status(500).json({ message: 'Unable to record analytics event' });
+  }
+});
+
+router.get('/analytics/:vendorId', async (req, res) => {
+  const vendorId = req.params.vendorId?.trim();
+  if (!vendorId) {
+    return res.status(400).json({ message: 'Vendor ID is required' });
+  }
+
+  try {
+    const analytics = await prisma.marketplaceAnalytics.findUnique({
+      where: { vendorId },
+    });
+
+    const profileViews = analytics?.profileViews ?? 0;
+    const whatsappClicks = analytics?.whatsappClicks ?? 0;
+    const instagramClicks = analytics?.instagramClicks ?? 0;
+    const totalClicks = whatsappClicks + instagramClicks;
+
+    res.json({
+      vendorId,
+      profileViews,
+      whatsappClicks,
+      instagramClicks,
+      totalClicks,
+      lastEventAt: analytics?.lastEventAt ?? null,
+      updatedAt: analytics?.updatedAt ?? null,
+    });
+  } catch (error) {
+    logger.error('Marketplace analytics fetch error:', error);
+    res.status(500).json({ message: 'Unable to fetch analytics' });
   }
 });
 

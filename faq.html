@@ -51,6 +51,7 @@
       transform: rotate(180deg);
     }
   </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
 </head>
 <body class="bg-white">
   <!-- NAVIGATION -->
@@ -58,8 +59,7 @@
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
       <a href="index.html" class="inline-flex items-center gap-3">
         <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
-        <span class="text-xl font-black text-primary uppercase tracking-tight">SIRIUS JOBS</span>
-      </a>
+        </a>
       <div class="hidden md:flex items-center gap-6 text-sm font-bold text-gray-700">
         <a href="index.html" class="hover:text-primary transition-colors">Home</a>
         <a href="services.html" class="hover:text-primary transition-colors">Services</a>
@@ -171,7 +171,7 @@
             <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
           </button>
           <div class="faq-answer px-8 pb-6">
-            <p class="text-base text-gray-600 leading-relaxed">Job posting costs ₦1,000 per listing (pay-per-post), or you can subscribe to Premium Plus for ₦10,000/month for unlimited job postings, priority support, and advanced features.</p>
+            <p class="text-base text-gray-600 leading-relaxed">Every job post costs ₦1,000 and must be paid for before it goes live. The “Post a Job” button only unlocks for logged-in employers with a verified government ID, an active payment receipt, and a confirmed phone number. We removed free posts so that only serious, traceable employers can contact workers.</p>
           </div>
         </div>
 
@@ -210,7 +210,7 @@
             <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
           </button>
           <div class="faq-answer px-8 pb-6">
-            <p class="text-base text-gray-600 leading-relaxed">Professionals set their own consultation rates. After the platform fee (15%), earnings are credited to your wallet. You can request payouts once you reach the minimum threshold of ₦5,000.</p>
+            <p class="text-base text-gray-600 leading-relaxed">Doctors and lawyers choose their own consultation fee (minimum ₦3,000). When a 24-hour session is completed, Sirius keeps a 15% platform fee to cover support and infrastructure, while the balance moves to your wallet. You can request payouts once your available balance hits ₦5,000.</p>
           </div>
         </div>
 
@@ -220,7 +220,7 @@
             <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
           </button>
           <div class="faq-answer px-8 pb-6">
-            <p class="text-base text-gray-600 leading-relaxed">Professionals pay a one-time ₦3,000 onboarding fee to make their profile public and start accepting consultations. This covers credential verification and platform access.</p>
+            <p class="text-base text-gray-600 leading-relaxed">Once your credentials are reviewed you pay a one-time ₦3,000 onboarding fee to push your professional profile live. During onboarding you can choose how to prove your license (document upload or regulator link). You only pay when you are ready to start receiving clients.</p>
           </div>
         </div>
       </div>
@@ -239,27 +239,27 @@
             <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
           </button>
           <div class="faq-answer px-8 pb-6">
-            <p class="text-base text-gray-600 leading-relaxed">The Marketplace is our advertising platform where businesses can run lead generation campaigns across Nigeria. We create your ads, manage the campaigns, and deliver qualified leads to your inbox.</p>
+            <p class="text-base text-gray-600 leading-relaxed">It is our advertising wall where verified merchants showcase up to five photos (and videos on higher tiers), publish pricing info, and attach WhatsApp/Instagram buttons. Customers browse media, tap a profile, and contact the merchant directly—there is no cart or concierge in-between.</p>
           </div>
         </div>
 
         <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
           <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
-            <span class="text-lg font-black text-gray-900">How much does a marketplace campaign cost?</span>
+            <span class="text-lg font-black text-gray-900">How do the merchant plans work?</span>
             <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
           </button>
           <div class="faq-answer px-8 pb-6">
-            <p class="text-base text-gray-600 leading-relaxed">Campaigns start at ₦15,000/month for targeted lead generation. This includes ad creative, campaign management, real-time analytics, and dedicated support. We offer flexible plans based on your reach and targeting needs.</p>
+            <p class="text-base text-gray-600 leading-relaxed">The 3-month Launch plan (₦30,000) keeps you on the wall for 90 days with five photo tiles. The 6-month Spotlight plan (₦57,000) adds one featured video slot plus dashboard analytics for profile views, WhatsApp taps, and Instagram clicks. The 12-month Residency (₦108,000) unlocks two permanent video slots, advanced exports, and a monthly newsletter feature. Longer plans already include the shorter-plan benefits.</p>
           </div>
         </div>
 
         <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
           <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
-            <span class="text-lg font-black text-gray-900">Can I pause or cancel my campaign?</span>
+            <span class="text-lg font-black text-gray-900">How does marketplace analytics work?</span>
             <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
           </button>
           <div class="faq-answer px-8 pb-6">
-            <p class="text-base text-gray-600 leading-relaxed">Yes! You can pause or cancel campaigns anytime from your merchant dashboard. No long-term commitments required. Contact support@siriusjobsng.com for assistance.</p>
+            <p class="text-base text-gray-600 leading-relaxed">Every time a visitor opens your profile or taps WhatsApp/Instagram, the event is logged and surfaced inside the merchant dashboard analytics card. Metrics are tied to your vendor ID only, and you can export the totals (views, WhatsApp clicks, Instagram clicks) for any reporting period.</p>
           </div>
         </div>
       </div>
@@ -325,62 +325,57 @@
       </div>
     </section>
   </main>
-
   <!-- FOOTER -->
-  <footer class="bg-[#0f172a] text-gray-300 mt-16">
-    <div class="border-t border-white/10">
-      <div class="container mx-auto px-4 py-12 lg:py-14">
-        <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
-          <div class="space-y-4">
-            <a href="index.html" class="inline-flex items-center gap-2">
-              <img src="assets/sirius-logo.svg" alt="Sirius Jobs logo" class="w-10 h-10">
-              <span class="text-lg font-black text-white uppercase tracking-tight">SIRIUS JOBS</span>
-            </a>
-            <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
-            <div class="flex items-center gap-3 text-gray-400">
-              <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
-              <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
-              <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
-              <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
-            </div>
-          </div>
-          <div>
-            <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Company</h4>
-            <ul class="space-y-2 text-sm text-gray-400">
-              <li><a href="about.html" class="hover:text-white transition">About</a></li>
-              <li><a href="services.html" class="hover:text-white transition">Services</a></li>
-              <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
-              <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Support</h4>
-            <ul class="space-y-2 text-sm text-gray-400">
-              <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
-              <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
-              <li><span>WhatsApp: 0704 447 0559</span></li>
-              <li><span>Email: support@siriusjobsng.com</span></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Office</h4>
-            <ul class="space-y-2 text-sm text-gray-400">
-              <li>Port Harcourt, Rivers State</li>
-              <li>Nigeria</li>
-            </ul>
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="assets/sirius-logo.svg" alt="Sirius logo">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
           </div>
         </div>
-        <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
-          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
-            <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
-            <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
-            <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
-          </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
         </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: support@siriusjobsng.com</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2025 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
       </div>
     </div>
   </footer>
+
+
 
   <script>
     feather.replace();
@@ -438,5 +433,6 @@
     });
   </script>
   <script src="assistant.js"></script>
+  <script src="assets/site-shell.js" defer></script>
 </body>
 </html>

@@ -46,6 +46,7 @@
             width: 100%;
         }
     </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
 </head>
 <body class="bg-white text-gray-900 antialiased">
     <!-- Modern Navigation -->
@@ -53,7 +54,7 @@
         <div class="container mx-auto px-4 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <a href="index.html" class="flex items-center space-x-3 group">
-                    <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm transition-transform group-hover:scale-105" />
+                    <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-16 w-auto drop-shadow-2xl transition-transform group-hover:scale-105" />
                     <span class="sr-only">SiriusJobs home</span>
                 </a>
                 <div class="hidden lg:flex items-center space-x-8">
@@ -135,7 +136,7 @@
                 </div>
 
                 <!-- Right Side - Login Forms -->
-                <div class="space-y-8">
+                <div id="merchant-login" class="space-y-8">
                     <!-- Mobile Header -->
                     <div class="lg:hidden text-center mb-8">
                         <h1 class="text-4xl font-black mb-4">Welcome Back</h1>
@@ -151,7 +152,7 @@
                         </div>
 
                         <!-- Account Type Selector -->
-                        <div class="flex gap-2 mb-6">
+                        <div class="flex flex-wrap gap-2 mb-6">
                             <button type="button" class="workerAccountBtn flex-1 px-3 py-3 rounded-xl text-xs font-bold bg-primary text-white shadow-sm transition flex items-center justify-center gap-1.5" data-account="worker">
                                 <i data-feather="tool" class="w-4 h-4"></i>
                                 Worker
@@ -163,6 +164,10 @@
                             <button type="button" class="workerAccountBtn flex-1 px-3 py-3 rounded-xl text-xs font-bold border-2 border-gray-200 text-gray-700 transition flex items-center justify-center gap-1.5" data-account="professional">
                                 <i data-feather="user-check" class="w-4 h-4"></i>
                                 Professional
+                            </button>
+                            <button type="button" class="workerAccountBtn flex-1 px-3 py-3 rounded-xl text-xs font-bold border-2 border-gray-200 text-gray-700 transition flex items-center justify-center gap-1.5" data-account="merchant">
+                                <i data-feather="shopping-bag" class="w-4 h-4"></i>
+                                Merchant
                             </button>
                         </div>
 
@@ -254,6 +259,14 @@
         });
 
         // Account type switching - Worker/Employer/Professional
+        const workerLoginSubtitle = document.getElementById('workerLoginSubtitle');
+        const subtitleCopy = {
+            worker: 'Access your dashboard to manage jobs, consultations, and opportunities',
+            employer: 'Post jobs, review applicants, and manage hiring campaigns',
+            professional: 'Join consultation sessions, manage clients, and payouts',
+            merchant: 'Upload media, edit marketplace listings, and monitor clicks',
+        };
+
         document.querySelectorAll('.workerAccountBtn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const accountType = this.getAttribute('data-account');
@@ -266,6 +279,10 @@
                 this.classList.remove('border-2', 'border-gray-200', 'text-gray-700');
                 this.classList.add('bg-primary', 'text-white', 'shadow-sm');
                 feather.replace();
+
+                if (workerLoginSubtitle) {
+                    workerLoginSubtitle.textContent = subtitleCopy[accountType] || subtitleCopy.worker;
+                }
             });
         });
 
@@ -313,6 +330,37 @@
                     workerLoginMessage.classList.add('hidden');
 
                     try {
+                        if (accountType === 'merchant') {
+                            const merchantResp = await fetch('/api/marketplace/login', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email, password })
+                            });
+                            const merchantData = await merchantResp.json();
+                            if (!merchantResp.ok) {
+                                throw new Error(merchantData.message || 'Merchant login failed');
+                            }
+
+                            const marketplaceSession = {
+                                merchantId: merchantData.merchant?.id,
+                                token: merchantData.token,
+                                merchant: merchantData.merchant,
+                                signedInAt: Date.now(),
+                            };
+                            localStorage.setItem('siriusMarketplaceSession', JSON.stringify(marketplaceSession));
+
+                            workerLoginMessage.textContent = 'Login successful! Redirecting...';
+                            workerLoginMessage.className = 'text-sm text-center font-bold text-green-600';
+                            workerLoginMessage.classList.remove('hidden');
+                            if (window.SiriusUI?.showToast) {
+                                window.SiriusUI.showToast('Merchant login successful!', 'success');
+                            }
+                            setTimeout(() => {
+                                window.location.href = 'marketplace-dashboard.html';
+                            }, 600);
+                            return;
+                        }
+
                         // Call login API
                         const response = await fetch('/api/auth/login', {
                             method: 'POST',
@@ -492,65 +540,57 @@
             }
         });
     </script>
-
-    <!-- Footer -->
-    <footer class="bg-[#0f172a] text-gray-300 mt-16">
-        <div class="border-t border-white/10">
-            <div class="container mx-auto px-4 py-12 lg:py-14">
-                <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
-                    <div class="space-y-4">
-                        <a href="index.html" class="inline-flex items-center gap-2">
-
-                          <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm" />
-
-                          <span class="sr-only">SiriusJobs home</span>
-
-                        </a>
-                        <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
-                        <div class="flex items-center gap-3 text-gray-400">
-                            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
-                            <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
-                            <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
-                            <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
-                        <ul class="space-y-2 text-sm text-gray-400">
-                            <li><a href="about.html" class="hover:text-white transition">About</a></li>
-                            <li><a href="services.html" class="hover:text-white transition">Services</a></li>
-                            <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
-                            <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
-                            <li><a href="marketplace.html" class="hover:text-white transition">Marketplace</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
-                        <ul class="space-y-2 text-sm text-gray-400">
-                            <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
-                            <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
-                            <li><span>WhatsApp: 0704 447 0559</span></li>
-                            <li><span>Email: support@siriusjobsng.com</span></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
-                        <ul class="space-y-2 text-sm text-gray-400">
-                            <li>Port Harcourt, Rivers State</li>
-                            <li>Nigeria</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                    <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
-                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
-                        <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
-                        <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
-                        <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
-                    </div>
-                </div>
-            </div>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="assets/sirius-logo.svg" alt="Sirius logo">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
         </div>
-    </footer>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: support@siriusjobsng.com</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2025 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+
+  <script src="assets/site-shell.js" defer></script>
 </body>
 </html>

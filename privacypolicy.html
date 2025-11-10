@@ -37,6 +37,7 @@
             font-weight: 700;
         }
     </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
 </head>
 <body class="bg-white text-gray-800">
 
@@ -45,8 +46,7 @@
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="index.html" class="inline-flex items-center gap-3">
                 <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
-                <span class="text-xl font-black text-primary uppercase tracking-tight">SIRIUS JOBS</span>
-            </a>
+                </a>
             <div class="hidden md:flex items-center gap-6 text-sm font-bold text-gray-700">
                 <a href="index.html" class="hover:text-primary transition-colors">Home</a>
                 <a href="services.html" class="hover:text-primary transition-colors">Services</a>
@@ -101,6 +101,7 @@
                         <a href="#section-5" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">5. User Rights</a>
                         <a href="#section-6" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">6. NDPR Compliance</a>
                         <a href="#section-7" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">7. Policy Updates</a>
+                        <a href="#section-8" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">8. Marketplace Analytics & Cookies</a>
                     </nav>
                 </div>
             </aside>
@@ -114,10 +115,11 @@
                         <h2 class="text-3xl font-black text-gray-900">1. Information We Collect</h2>
                         <p class="text-base text-gray-700 leading-relaxed">We collect:</p>
                         <ul class="list-disc pl-6 space-y-3 text-base text-gray-700">
-                            <li>Personal information you provide when registering (name, email, phone, ID details).</li>
-                            <li>Employment data (job history, applications, employer feedback).</li>
-                            <li>Payment information through secure payment gateways (we never store card numbers).</li>
-                            <li>Verification data such as NIN, Driver's License, or Passport numbers and related documents.</li>
+                            <li>Account details such as your name, email, phone number, password, and chosen role (worker, employer, professional, merchant).</li>
+                            <li>Verification records (NIN, driver’s licence, passport, or regulator links) submitted to unlock hiring, consultation, or merchant tools.</li>
+                            <li>Employment and marketplace data including job posts, applications, consultation notes, merchant media uploads, plan selections, and reviews.</li>
+                            <li>Payment references (transaction IDs, billing contact, Paystack/Flutterwave tokens). We never store raw card numbers.</li>
+                            <li>Marketplace analytics events such as profile views, WhatsApp/Instagram clicks, browser type, and approximate location.</li>
                         </ul>
                     </div>
 
@@ -125,48 +127,53 @@
                         <h2 class="text-3xl font-black text-gray-900">2. How We Use Your Information</h2>
                         <p class="text-base text-gray-700 leading-relaxed">We use your information to:</p>
                         <ul class="list-disc pl-6 space-y-3 text-base text-gray-700">
-                            <li>Verify your identity and eligibility for employment.</li>
-                            <li>Match job seekers with employers.</li>
-                            <li>Process payments and manage subscriptions.</li>
-                            <li>Improve and personalize user experience.</li>
-                            <li>Communicate updates, offers, and system notifications.</li>
+                            <li>Verify your identity before you can post jobs, book consultations, or publish marketplace listings.</li>
+                            <li>Publish job ads, consultation profiles, merchant galleries, and manage the payments or refunds tied to them.</li>
+                            <li>Display aggregated analytics (views, WhatsApp taps, Instagram taps) to the merchant who owns that profile.</li>
+                            <li>Improve user experience, monitor fraud, and comply with NDPR/card-industry requirements.</li>
+                            <li>Send essential notifications about hires, consultations, marketplace plans, and policy updates. Marketing emails remain optional.</li>
                         </ul>
                     </div>
 
                     <div id="section-3" class="space-y-4 mb-12 scroll-mt-24">
                         <h2 class="text-3xl font-black text-gray-900">3. Data Protection</h2>
                         <ul class="list-disc pl-6 space-y-3 text-base text-gray-700">
-                            <li>We store all sensitive data in encrypted form.</li>
-                            <li>Access to verification documents is restricted to authorized administrators only.</li>
-                            <li>We do not sell or share your information with unauthorized third parties.</li>
-                            <li>Data is retained only as long as necessary to fulfill verification and legal requirements.</li>
+                            <li>All IDs, licences, and payout details are encrypted at rest and in transit.</li>
+                            <li>Only a restricted compliance team can view verification files; marketplace analytics are aggregated before display.</li>
+                            <li>We never sell personal information and retain data only while your account is active or for the statutory audit period.</li>
+                            <li>Merchant analytics can be reset or deleted once your campaign ends—simply email the privacy team.</li>
                         </ul>
                     </div>
 
                     <div id="section-4" class="space-y-4 mb-12 scroll-mt-24">
                         <h2 class="text-3xl font-black text-gray-900">4. Third-Party Services</h2>
-                        <p class="text-base text-gray-700 leading-relaxed">We use trusted partners such as Paystack, Flutterwave, and KYC verification providers. These partners follow strict data protection and compliance policies.</p>
+                        <p class="text-base text-gray-700 leading-relaxed">We rely on vetted partners such as Paystack/Flutterwave (payments), AWS/Netlify (hosting), and Google Analytics 4 (event reporting). Each provider signs NDPR-compliant agreements and only receives the minimum data required to deliver their service.</p>
                     </div>
 
                     <div id="section-5" class="space-y-4 mb-12 scroll-mt-24">
                         <h2 class="text-3xl font-black text-gray-900">5. User Rights</h2>
                         <p class="text-base text-gray-700 leading-relaxed">You have the right to:</p>
                         <ul class="list-disc pl-6 space-y-3 text-base text-gray-700">
-                            <li>Access or update your information.</li>
-                            <li>Request deletion of your account.</li>
-                            <li>Withdraw consent for marketing communication.</li>
-                            <li>Contact us for data-related questions at siriusoddjobs@gmail.com.</li>
+                            <li>Access, correct, or export the information we hold about you.</li>
+                            <li>Request deletion of your account, verification documents, or marketplace analytics (subject to legal retention rules).</li>
+                            <li>Opt out of marketing communication while still receiving essential platform updates.</li>
+                            <li>Email privacy@siriusjobsng.com for any data-related questions.</li>
                         </ul>
                     </div>
 
                     <div id="section-6" class="space-y-4 mb-12 scroll-mt-24">
                         <h2 class="text-3xl font-black text-gray-900">6. NDPR Compliance</h2>
-                        <p class="text-base text-gray-700 leading-relaxed">Sirius Jobs adheres to the Nigeria Data Protection Regulation (NDPR). We ensure lawful processing, transparency, and security in all personal data handling.</p>
+                        <p class="text-base text-gray-700 leading-relaxed">Sirius Jobs adheres to the Nigeria Data Protection Regulation (NDPR). We process data lawfully, keep detailed audit logs, and only transfer information outside Nigeria when equivalent protection is guaranteed.</p>
                     </div>
 
                     <div id="section-7" class="space-y-4 scroll-mt-24">
                         <h2 class="text-3xl font-black text-gray-900">7. Updates to This Policy</h2>
-                        <p class="text-base text-gray-700 leading-relaxed">We may update this policy from time to time. Changes will be posted on this page with the updated date.</p>
+                        <p class="text-base text-gray-700 leading-relaxed">We may update this policy occasionally. Material changes will be announced via email or in-app notification before they take effect.</p>
+                    </div>
+
+                    <div id="section-8" class="space-y-4 scroll-mt-24">
+                        <h2 class="text-3xl font-black text-gray-900">8. Marketplace Analytics & Cookies</h2>
+                        <p class="text-base text-gray-700 leading-relaxed">We use first-party cookies and local storage to keep you signed in, remember dashboard filters, and log marketplace interactions such as profile views, WhatsApp clicks, and Instagram clicks. These events are only tied to the vendor ID on your account. You can clear cookies from your browser at any time or request that we wipe historic analytics when a campaign ends.</p>
                     </div>
                 </div>
 
@@ -178,7 +185,7 @@
                         </div>
                         <h2 class="text-3xl md:text-4xl font-black mb-4">Questions about your data?</h2>
                         <p class="text-lg text-white/90 mb-8">Contact our privacy team for any data-related inquiries.</p>
-                        <a href="mailto:siriusoddjobs@gmail.com" class="inline-flex items-center gap-2 bg-white text-primary font-bold py-3.5 px-6 rounded-xl hover:bg-white/90 transition-all shadow-lg">
+                        <a href="mailto:privacy@siriusjobsng.com" class="inline-flex items-center gap-2 bg-white text-primary font-bold py-3.5 px-6 rounded-xl hover:bg-white/90 transition-all shadow-lg">
                             <i data-feather="send" class="w-5 h-5"></i>
                             Email Privacy Team
                         </a>
@@ -214,62 +221,57 @@
             </main>
         </div>
     </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-[#0f172a] text-gray-300 mt-16">
-        <div class="border-t border-white/10">
-            <div class="container mx-auto px-4 py-12 lg:py-14">
-                <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
-                    <div class="space-y-4">
-                        <a href="index.html" class="inline-flex items-center gap-2">
-                            <img src="assets/sirius-logo.svg" alt="Sirius Jobs logo" class="w-10 h-10">
-                            <span class="text-lg font-black text-white uppercase tracking-tight">SIRIUS JOBS</span>
-                        </a>
-                        <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
-                        <div class="flex items-center gap-3 text-gray-400">
-                            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
-                            <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
-                            <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
-                            <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Company</h4>
-                        <ul class="space-y-2 text-sm text-gray-400">
-                            <li><a href="about.html" class="hover:text-white transition">About</a></li>
-                            <li><a href="services.html" class="hover:text-white transition">Services</a></li>
-                            <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
-                            <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Support</h4>
-                        <ul class="space-y-2 text-sm text-gray-400">
-                            <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
-                            <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
-                            <li><span>WhatsApp: 0704 447 0559</span></li>
-                            <li><span>Email: support@siriusjobsng.com</span></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Office</h4>
-                        <ul class="space-y-2 text-sm text-gray-400">
-                            <li>Port Harcourt, Rivers State</li>
-                            <li>Nigeria</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                    <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
-                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
-                        <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
-                        <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
-                        <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
-                    </div>
-                </div>
-            </div>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="assets/sirius-logo.svg" alt="Sirius logo">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
         </div>
-    </footer>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: support@siriusjobsng.com</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2025 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+
 
     <script>
         feather.replace();
@@ -305,5 +307,6 @@
         sections.forEach(section => observer.observe(section));
     </script>
     <script src="assistant.js"></script>
+  <script src="assets/site-shell.js" defer></script>
 </body>
 </html>

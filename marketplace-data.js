@@ -23,6 +23,11 @@
       hero: true,
       categories: ['Tech & Gadgets'],
       logoUrl: '',
+      media: [
+        { type: 'image', url: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80' },
+        { type: 'image', url: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80' },
+        { type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4', thumbnail: 'https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?auto=format&fit=crop&w=900&q=80' },
+      ],
     },
     {
       id: 'glyts-paints',
@@ -43,6 +48,11 @@
       hero: false,
       categories: ['Surface Care'],
       logoUrl: '',
+      media: [
+        { type: 'image', url: 'https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=900&q=80' },
+        { type: 'image', url: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=900&q=80' },
+        { type: 'image', url: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=900&q=80' },
+      ],
     },
     {
       id: 'de-eminent-eatery',
@@ -63,6 +73,11 @@
       hero: false,
       categories: ['Food & Catering'],
       logoUrl: '',
+      media: [
+        { type: 'image', url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80' },
+        { type: 'image', url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80&sat=-50' },
+        { type: 'video', url: 'https://www.w3schools.com/html/movie.mp4', thumbnail: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80' },
+      ],
     },
     {
       id: 'izreal-palm-rich',
@@ -83,6 +98,11 @@
       hero: false,
       categories: ['Food & Agriculture'],
       logoUrl: '',
+      media: [
+        { type: 'image', url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80' },
+        { type: 'image', url: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=900&q=80' },
+        { type: 'image', url: 'https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=900&q=80' },
+      ],
     },
   ];
 
@@ -172,6 +192,18 @@
     vendor.logoUrl = vendor.logoUrl?.trim() || '';
     vendor.name = vendor.name?.trim() || 'Marketplace Vendor';
     vendor.order = typeof vendor.order === 'number' ? vendor.order : 99;
+    vendor.media = Array.isArray(vendor.media)
+      ? vendor.media
+          .map(item => {
+            if (!item || !item.url) return null;
+            return {
+              type: item.type === 'video' ? 'video' : 'image',
+              url: item.url,
+              thumbnail: item.thumbnail || item.url,
+            };
+          })
+          .filter(Boolean)
+      : [];
     return vendor;
   }
 

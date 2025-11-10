@@ -12,61 +12,61 @@
 
   const FAQS = [
     {
-      question: 'How do I hire an artisan on Sirius Jobs?',
+      question: 'How do I post a job on Sirius?',
       answer:
-        'Create an employer account, verify your company details, then open any artisan profile to record a hire. Accepted artisans receive instant notifications.',
-      tags: ['hire', 'artisan', 'employer', 'jobs'],
+        'Log in as an employer, verify a government ID, and pay ₦1,000 for each listing via Paystack. The “Post a Job” button unlocks only after ID + payment are confirmed.',
+      tags: ['post job', 'employer', '1000', 'id'],
     },
     {
-      question: 'What does verification involve for workers and employers?',
+      question: 'What does verification involve?',
       answer:
-        'Both sides submit a NIN, driver’s licence or international passport. Once the ID is confirmed, their profile earns a verified badge and can apply or hire.',
-      tags: ['verify', 'verification', 'badge', 'nin', 'passport'],
+        'Workers, employers, professionals, and merchants submit a NIN, driver’s licence, passport, or regulator link. Once approved you’ll see a verified badge and the locked actions (post job, go live, etc.) will unlock.',
+      tags: ['verify', 'badge', 'nin', 'passport'],
     },
     {
-      question: 'How much do professionals earn from consultations?',
+      question: 'How do the merchant plans work?',
       answer:
-        'Consultations cost ₦3,000. Sirius Jobs retains ₦500 to power support, while the doctor or lawyer receives ₦2,500. Balances appear in the professional dashboard.',
-      tags: ['doctor', 'lawyer', 'consultation', 'earnings', '2,500'],
+        '3-month Launch (₦30k) gives five photo tiles; 6-month Spotlight (₦57k) adds one video slot plus analytics; 12-month Residency (₦108k) includes two video slots, exports, and newsletter features. All plans publish your media wall and direct WhatsApp/Instagram buttons.',
+      tags: ['merchant', 'plan', 'marketplace', 'pricing'],
     },
     {
-      question: 'Can I get alerts when new jobs are posted?',
+      question: 'Where do I see marketplace analytics?',
       answer:
-        'Yes. Subscribe to a service category from the alerts panel. Whenever an employer posts a matching job, you’ll receive an instant notification.',
-      tags: ['alerts', 'subscription', 'jobs', 'notify'],
+        'Open marketplace-dashboard.html after signing in as a merchant. The analytics card shows profile views plus WhatsApp/Instagram clicks logged from the public wall.',
+      tags: ['analytics', 'marketplace', 'dashboard'],
+    },
+    {
+      question: 'How much do doctors or lawyers earn per consultation?',
+      answer:
+        'Professionals set their own fee (minimum ₦3,000). Sirius keeps a 15% platform fee and the balance appears in your wallet once the 24-hour session is marked complete.',
+      tags: ['consultation', 'doctor', 'lawyer', 'earnings'],
+    },
+    {
+      question: 'Can I switch between worker and employer on one login?',
+      answer:
+        'Yes. Use the role selector on login.html to decide which dashboard you’re entering. You can unlock multiple roles (worker, employer, merchant, professional) on the same account.',
+      tags: ['role', 'login', 'worker', 'employer', 'merchant'],
+    },
+    {
+      question: 'What happens if I can’t find a service on the wall?',
+      answer:
+        'Check services.html for the full catalogue. If the service isn’t live yet, use the contact form or WhatsApp to request it and our team will recommend the closest verified vendor.',
+      tags: ['service', 'request', 'support'],
     },
     {
       question: 'How do payouts work?',
       answer:
-        'Professionals can request payouts anytime from their dashboard. Funds move from pending to available after the client confirms completion, then can be transferred.',
-      tags: ['payout', 'wallet', 'withdraw', 'payment'],
-    },
-    {
-      question: 'What happens when I click apply on a job?',
-      answer:
-        'You submit a cover letter, expected rate, and supporting documents. The employer reviews your profile, and you’ll be notified when they accept or decline.',
-      tags: ['apply', 'job', 'cv', 'application'],
-    },
-    {
-      question: 'Do I need to pay to contact artisans?',
-      answer:
-        'Employers with an active plan can contact subscribed artisans without extra fees. For unsubscribed listings, you may be asked to pay to reveal contact details safely.',
-      tags: ['contact', 'plan', 'subscription', 'payment'],
-    },
-    {
-      question: 'Can Sirius Jobs match me with a personal assistant for a day?',
-      answer:
-        'Absolutely. Submit a concierge request from the Find Workers page. Interested day PAs also receive alerts whenever short gigs appear.',
-      tags: ['pa', 'personal assistant', 'concierge', 'day hire'],
+        'Professionals and merchants can request payouts from their dashboard once available funds reach ₦5,000. Transfers are processed through Paystack/Flutterwave within 1–3 business days.',
+      tags: ['payout', 'wallet', 'withdraw'],
     },
   ];
 
   const QUICK_REPLIES = [
-    { label: 'How hiring works', tags: ['hire'] },
-    { label: 'Verification steps', tags: ['verification'] },
-    { label: 'Doctor/Lawyer earnings', tags: ['consultation'] },
-    { label: 'Job alerts', tags: ['alerts'] },
-    { label: 'Payouts', tags: ['payout'] },
+    { label: 'Post a job', tags: ['post job'] },
+    { label: 'Merchant plans', tags: ['merchant'] },
+    { label: 'Verification steps', tags: ['verify'] },
+    { label: 'Consultation fees', tags: ['consultation'] },
+    { label: 'Payout timeline', tags: ['payout'] },
   ];
 
   const style = document.createElement('style');
