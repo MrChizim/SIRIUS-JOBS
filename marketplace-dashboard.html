@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketplace Merchant Dashboard – Sirius Jobs</title>
+  <meta name="description" content="Manage your Sirius Marketplace listing, update contact links, logos, highlights and hero spotlight in one place.">
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0056b3',
+            secondary: '#0f172a'
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="error-handler.js"></script>
+  <script src="loading-utils.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .animated-gradient {
+      background-size: 200% 200%;
+      animation: gradient-shift 15s ease infinite;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50/30 text-gray-900">
+  <!-- HEADER -->
+  <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-200/50 z-50">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between h-16">
+        <a href="marketplace.html" class="flex items-center gap-3">
+          <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-9 h-9">
+          <span class="text-xl font-black text-primary uppercase tracking-tight">SIRIUS JOBS</span>
+        </a>
+
+        <div class="flex items-center gap-4">
+          <a href="marketplace.html" class="hidden md:inline-flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-primary transition-colors">
+            <i data-feather="external-link" class="w-4 h-4"></i>
+            View Public Marketplace
+          </a>
+          <button id="logoutBtn" class="inline-flex items-center gap-2 border-2 border-gray-200 text-gray-700 font-bold px-4 py-2 rounded-full hover:border-red-500 hover:text-red-500 transition-all">
+            <i data-feather="log-out" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Logout</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="pt-24 pb-12 bg-gradient-to-br from-black via-primary to-blue-900 animated-gradient text-white">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="max-w-4xl space-y-4">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs font-bold uppercase tracking-wider">
+          <i data-feather="settings" class="w-4 h-4"></i>
+          Merchant Dashboard
+        </span>
+        <h1 class="text-4xl md:text-5xl font-black leading-tight">Manage Your Marketplace Listing</h1>
+        <p class="text-white/90 text-lg md:text-xl max-w-2xl">Edit business details, upload your logo, set Instagram and WhatsApp links, and decide who takes the hero spotlight on our marketplace homepage.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN DASHBOARD -->
+  <main class="py-12 md:py-16">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
+        <!-- SIDEBAR -->
+        <aside class="space-y-6">
+          <div class="bg-white border-2 border-gray-100 rounded-3xl shadow-xl p-6">
+            <h2 class="text-lg font-black text-gray-900 mb-4 flex items-center gap-2">
+              <i data-feather="briefcase" class="w-5 h-5 text-primary"></i>
+              Your Listings
+            </h2>
+            <div id="vendorList" class="space-y-3"></div>
+          </div>
+
+          <div class="bg-gradient-to-br from-primary/5 to-blue-50 border-2 border-primary/10 rounded-3xl p-6">
+            <h3 class="text-sm font-black text-gray-900 uppercase tracking-wider mb-4">Quick Tips</h3>
+            <ul class="space-y-3 text-sm text-gray-700">
+              <li class="flex items-start gap-2">
+                <i data-feather="star" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+                <span>Only one business can be in the hero spotlight at a time</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-feather="zap" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+                <span>Use clear highlights that show what makes your offer unique</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-feather="image" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+                <span>Upload square logos (at least 400×400) for best quality</span>
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <section class="space-y-8">
+          <!-- EDIT FORM -->
+          <div class="bg-white border-2 border-gray-100 rounded-3xl shadow-xl p-8 md:p-10">
+            <div class="mb-8">
+              <h2 class="text-2xl font-black text-gray-900 mb-2">Edit Business Details</h2>
+              <p class="text-base text-gray-600">Update your marketplace profile information and preview changes in real-time</p>
+            </div>
+
+            <form id="vendorForm" class="space-y-6">
+              <input type="hidden" id="vendorId">
+
+              <div class="grid gap-6 md:grid-cols-2">
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorName">Business Name</label>
+                  <input id="vendorName" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorOwner">Owner / Contact Person</label>
+                  <input id="vendorOwner" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="e.g. Israel Okwu">
+                </div>
+              </div>
+
+              <div class="grid gap-6 md:grid-cols-2">
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorHeadline">Headline</label>
+                  <input id="vendorHeadline" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="One sentence value proposition">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorLocation">Location</label>
+                  <input id="vendorLocation" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="City • service radius">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorSummary">Short Summary</label>
+                <textarea id="vendorSummary" rows="3" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" placeholder="Describe what you sell and how you deliver"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorDelivery">Delivery / Fulfilment Note</label>
+                <textarea id="vendorDelivery" rows="2" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" placeholder="e.g. Same-day delivery within PH, nationwide dispatch within 48h"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorHighlights">Product Highlights (one per line)</label>
+                <textarea id="vendorHighlights" rows="4" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" placeholder="• Highlight 1&#10;• Highlight 2"></textarea>
+                <p class="text-xs text-gray-600 mt-2">These appear as bullet points on your public profile</p>
+              </div>
+
+              <div class="grid gap-6 md:grid-cols-2">
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorWhatsapp">WhatsApp Number</label>
+                  <input id="vendorWhatsapp" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="e.g. 08139669971">
+                  <p class="text-xs text-gray-600 mt-2">Numbers are converted to wa.me links automatically</p>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorInstagram">Instagram Link / Handle</label>
+                  <input id="vendorInstagram" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="https://www.instagram.com/...">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Company Logo</label>
+                <div class="flex flex-col sm:flex-row sm:items-center gap-6">
+                  <div class="w-32 h-32 rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden" id="logoPreviewWrapper">
+                    <span id="logoPreviewFallback" class="text-2xl font-black text-gray-400">SM</span>
+                    <img id="logoPreview" src="" alt="Logo preview" class="hidden w-full h-full object-cover">
+                  </div>
+                  <div class="space-y-3">
+                    <input id="vendorLogo" type="file" accept="image/*" class="text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-primary file:text-white hover:file:bg-primary/90 transition-all">
+                    <button type="button" id="removeLogoBtn" class="block text-sm text-red-600 font-bold hover:underline">Remove logo</button>
+                    <p class="text-xs text-gray-600">Upload a square image (JPG/PNG/SVG). If you skip this, initials will be shown.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3 bg-primary/5 border-2 border-primary/10 rounded-xl p-4">
+                <input id="heroSpotlight" type="checkbox" class="w-5 h-5 text-primary border-gray-300 rounded mt-0.5">
+                <label for="heroSpotlight" class="text-sm font-medium text-gray-700 cursor-pointer">Feature this business on the marketplace hero section</label>
+              </div>
+
+              <div class="flex flex-wrap gap-3 pt-4 border-t-2 border-gray-100">
+                <button type="submit" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-6 py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+                  <i data-feather="save" class="w-4 h-4"></i>
+                  Save Changes
+                </button>
+                <button type="button" id="resetVendorBtn" class="inline-flex items-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3.5 rounded-xl hover:bg-primary hover:text-white transition-all">
+                  <i data-feather="rotate-ccw" class="w-4 h-4"></i>
+                  Reset to Defaults
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- PREVIEW CARD -->
+          <div class="bg-white border-2 border-gray-100 rounded-3xl shadow-xl p-8 md:p-10">
+            <div class="mb-6">
+              <h3 class="text-2xl font-black text-gray-900 mb-2 flex items-center gap-2">
+                <i data-feather="eye" class="w-6 h-6 text-primary"></i>
+                Public Profile Preview
+              </h3>
+              <p class="text-base text-gray-600">This is how your listing will appear on the marketplace</p>
+            </div>
+            <div id="previewCard"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#0f172a] text-gray-300 mt-16">
+    <div class="border-t border-white/10">
+      <div class="container mx-auto px-4 py-12 lg:py-14">
+        <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+          <div class="space-y-4">
+            <a href="index.html" class="inline-flex items-center gap-2">
+
+              <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm" />
+
+              <span class="sr-only">SiriusJobs home</span>
+
+            </a>
+            <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+            <div class="flex items-center gap-3 text-gray-400">
+              <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+              <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+              <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+              <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="about.html" class="hover:text-white transition">About</a></li>
+              <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+              <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+              <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+              <li><a href="marketplace.html" class="hover:text-white transition">Marketplace</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+              <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+              <li><span>WhatsApp: 0704 447 0559</span></li>
+              <li><span>Email: support@siriusjobsng.com</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li>Port Harcourt, Rivers State</li>
+              <li>Nigeria</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+            <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+            <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+            <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="marketplace-data.js"></script>
+  <script>
+    (function () {
+      const marketplace = window.SiriusMarketplace;
+      let vendors = marketplace.loadVendors();
+      let activeVendor = null;
+      let logoDataUrl = '';
+
+      const vendorListEl = document.getElementById('vendorList');
+      const previewEl = document.getElementById('previewCard');
+      const form = document.getElementById('vendorForm');
+      const heroSpotlight = document.getElementById('heroSpotlight');
+      const logoInput = document.getElementById('vendorLogo');
+      const removeLogoBtn = document.getElementById('removeLogoBtn');
+      const logoPreview = document.getElementById('logoPreview');
+      const logoPreviewFallback = document.getElementById('logoPreviewFallback');
+      const logoPreviewWrapper = document.getElementById('logoPreviewWrapper');
+      const resetBtn = document.getElementById('resetVendorBtn');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      logoutBtn?.addEventListener('click', () => {
+        if (confirm('Are you sure you want to logout?')) {
+          window.location.href = 'marketplace-login.html';
+        }
+      });
+
+      function initials(name) {
+        if (!name) return 'SM';
+        const parts = name.trim().split(/\s+/);
+        const first = parts[0]?.charAt(0) ?? '';
+        const last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : '';
+        return (first + last || first || 'SM').toUpperCase();
+      }
+
+      function sanitiseHighlights(value) {
+        if (!value) return [];
+        const lines = Array.isArray(value)
+          ? value
+          : value.split(/\r?\n+/);
+        return lines
+          .map(item => (typeof item === 'string' ? item : String(item)))
+          .map(item => item.replace(/^•\s*/, '').trim())
+          .filter(Boolean);
+      }
+
+      function sanitiseInstagram(value) {
+        if (!value) return '';
+        const trimmed = value.trim();
+        if (!trimmed) return '';
+        if (/^https?:\/\//i.test(trimmed)) return trimmed;
+        if (trimmed.startsWith('@')) {
+          return `https://www.instagram.com/${trimmed.slice(1)}`;
+        }
+        return `https://www.instagram.com/${trimmed}`;
+      }
+
+      function sanitisePhone(value) {
+        if (!value) return '';
+        const trimmed = value.trim();
+        if (!trimmed) return '';
+        const digits = trimmed.replace(/\D/g, '');
+        if (!digits) return '';
+        if (digits.startsWith('234')) return `+${digits}`;
+        if (digits.startsWith('0')) return `+234${digits.slice(1)}`;
+        if (trimmed.startsWith('+')) return `+${digits}`;
+        return digits.length === 10 ? `+234${digits}` : `+${digits}`;
+      }
+
+      function buildWhatsAppLink(phone) {
+        if (!phone) return '';
+        const digits = phone.replace(/\D/g, '');
+        if (!digits) return '';
+        if (digits.startsWith('234')) return `https://wa.me/${digits}`;
+        if (digits.startsWith('0')) return `https://wa.me/234${digits.slice(1)}`;
+        return `https://wa.me/${digits}`;
+      }
+
+      function renderVendorList() {
+        vendorListEl.innerHTML = vendors
+          .map(v => {
+            const heroBadge = v.hero
+              ? '<span class="text-xs font-black uppercase tracking-wide text-white bg-primary px-2 py-1 rounded-full">Hero</span>'
+              : '';
+            return `
+              <button type="button" data-vendor="${v.id}" class="w-full text-left border-2 rounded-2xl px-4 py-3 transition-all ${activeVendor && activeVendor.id === v.id ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-primary/50'}">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="min-w-0">
+                    <p class="text-sm font-bold text-gray-900 truncate">${v.name}</p>
+                    <p class="text-xs text-gray-600 truncate">${v.location || 'Add location'}</p>
+                  </div>
+                  ${heroBadge}
+                </div>
+              </button>
+            `;
+          })
+          .join('');
+
+        vendorListEl.querySelectorAll('button[data-vendor]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-vendor');
+            setActiveVendor(id);
+          });
+        });
+      }
+
+      function populateForm(vendor) {
+        document.getElementById('vendorId').value = vendor.id;
+        document.getElementById('vendorName').value = vendor.name || '';
+        document.getElementById('vendorOwner').value = vendor.owner || '';
+        document.getElementById('vendorHeadline').value = vendor.headline || '';
+        document.getElementById('vendorLocation').value = vendor.location || '';
+        document.getElementById('vendorSummary').value = vendor.summary || '';
+        document.getElementById('vendorDelivery').value = vendor.delivery || '';
+        const highlights = Array.isArray(vendor.highlights) ? vendor.highlights : sanitiseHighlights(vendor.highlights);
+        document.getElementById('vendorHighlights').value = highlights.join('\n');
+        document.getElementById('vendorWhatsapp').value = vendor.whatsapp || '';
+        document.getElementById('vendorInstagram').value = vendor.instagram || '';
+        heroSpotlight.checked = Boolean(vendor.hero);
+        logoDataUrl = vendor.logoUrl || '';
+        updateLogoPreview();
+        const previewVendor = {
+          ...vendor,
+          highlights,
+          whatsappLink: vendor.whatsappLink || buildWhatsAppLink(vendor.whatsapp),
+        };
+        updatePreviewCard(previewVendor);
+      }
+
+      function updateLogoPreview() {
+        if (logoDataUrl) {
+          logoPreview.src = logoDataUrl;
+          logoPreview.classList.remove('hidden');
+          logoPreviewFallback.classList.add('hidden');
+          logoPreviewWrapper.classList.remove('bg-gray-50');
+        } else {
+          logoPreview.src = '';
+          logoPreview.classList.add('hidden');
+          logoPreviewFallback.textContent = initials(activeVendor?.name || 'Vendor');
+          logoPreviewFallback.classList.remove('hidden');
+          logoPreviewWrapper.classList.add('bg-gray-50');
+        }
+      }
+
+      function renderPreviewHighlights(vendor) {
+        if (!vendor.highlights || !vendor.highlights.length) return '';
+        return `<ul class="space-y-2">${vendor.highlights
+          .map(item => `<li class="flex items-start gap-2 text-sm text-gray-700"><i data-feather="check" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i><span>${item}</span></li>`)
+          .join('')}</ul>`;
+      }
+
+      function updatePreviewCard(vendor) {
+        previewEl.innerHTML = `
+          <article class="bg-gradient-to-br from-gray-50 to-blue-50/30 border-2 border-gray-100 rounded-3xl p-8 space-y-5">
+            <div class="flex items-start gap-4">
+              ${logoDataUrl
+                ? `<img src="${logoDataUrl}" alt="${vendor.name} logo" class="w-20 h-20 rounded-2xl object-cover border-2 border-gray-200">`
+                : `<span class="w-20 h-20 rounded-2xl bg-primary/10 text-primary font-black text-xl flex items-center justify-center">${initials(vendor.name)}</span>`}
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap mb-1">
+                  <h4 class="text-xl font-black text-gray-900">${vendor.name}</h4>
+                  ${vendor.hero ? '<span class="inline-flex items-center gap-1 text-xs font-bold bg-primary text-white px-2.5 py-1 rounded-full">Hero</span>' : ''}
+                </div>
+                ${vendor.owner ? `<p class="text-sm text-gray-600 font-medium mb-1">Owned by ${vendor.owner}</p>` : ''}
+                <p class="text-sm text-gray-600 font-medium">${vendor.location || ''}</p>
+              </div>
+            </div>
+            <p class="text-base text-gray-700 leading-relaxed">${vendor.summary || 'This is where your business summary will appear.'}</p>
+            ${renderPreviewHighlights(vendor)}
+            ${vendor.delivery ? `<p class="text-sm text-gray-600">${vendor.delivery}</p>` : ''}
+            <div class="flex flex-wrap gap-3">
+              ${vendor.whatsappLink ? '<span class="inline-flex items-center gap-2 bg-green-100 text-green-700 text-sm font-bold px-3 py-2 rounded-xl"><i data-feather="check-circle" class="w-4 h-4"></i>WhatsApp ready</span>' : '<span class="inline-flex items-center gap-2 border-2 border-dashed border-gray-300 text-gray-500 text-sm px-3 py-2 rounded-xl">Add WhatsApp</span>'}
+              ${vendor.instagram ? '<span class="inline-flex items-center gap-2 bg-pink-100 text-pink-700 text-sm font-bold px-3 py-2 rounded-xl"><i data-feather="check-circle" class="w-4 h-4"></i>Instagram linked</span>' : '<span class="inline-flex items-center gap-2 border-2 border-dashed border-gray-300 text-gray-500 text-sm px-3 py-2 rounded-xl">Add Instagram</span>'}
+            </div>
+          </article>
+        `;
+        feather.replace();
+      }
+
+      function setActiveVendor(id) {
+        const vendor = vendors.find(v => v.id === id) || vendors[0];
+        if (!vendor) return;
+        const sanitisedVendor = {
+          ...vendor,
+          highlights: Array.isArray(vendor.highlights) ? [...vendor.highlights] : sanitiseHighlights(vendor.highlights),
+          whatsappLink: vendor.whatsappLink || buildWhatsAppLink(vendor.whatsapp),
+        };
+        activeVendor = sanitisedVendor;
+        populateForm(activeVendor);
+        renderVendorList();
+      }
+
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        if (!activeVendor) return;
+        const highlights = sanitiseHighlights(document.getElementById('vendorHighlights').value);
+        const whatsapp = sanitisePhone(document.getElementById('vendorWhatsapp').value.trim());
+        const instagram = sanitiseInstagram(document.getElementById('vendorInstagram').value.trim());
+
+        const updated = {
+          id: document.getElementById('vendorId').value,
+          name: document.getElementById('vendorName').value.trim(),
+          owner: document.getElementById('vendorOwner').value.trim(),
+          headline: document.getElementById('vendorHeadline').value.trim(),
+          location: document.getElementById('vendorLocation').value.trim(),
+          summary: document.getElementById('vendorSummary').value.trim(),
+          delivery: document.getElementById('vendorDelivery').value.trim(),
+          highlights,
+          whatsapp,
+          instagram,
+          hero: heroSpotlight.checked,
+          logoUrl: logoDataUrl,
+        };
+        updated.whatsappLink = buildWhatsAppLink(updated.whatsapp);
+
+        if (updated.hero) {
+          marketplace.setHeroVendor(updated.id);
+        }
+        vendors = marketplace.upsertVendor(updated);
+        setActiveVendor(updated.id);
+        const toast = window.SiriusUI?.showToast;
+        if (toast) toast('Marketplace profile updated successfully.', 'success');
+        else alert('✅ Marketplace profile updated successfully!');
+      });
+
+      logoInput.addEventListener('change', event => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          logoDataUrl = typeof reader.result === 'string' ? reader.result : '';
+          updateLogoPreview();
+          if (activeVendor) {
+            const previewVendor = { ...activeVendor, logoUrl: logoDataUrl };
+            updatePreviewCard(previewVendor);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+
+      removeLogoBtn.addEventListener('click', () => {
+        logoDataUrl = '';
+        logoInput.value = '';
+        updateLogoPreview();
+        if (activeVendor) {
+          const previewVendor = { ...activeVendor, logoUrl: '' };
+          updatePreviewCard(previewVendor);
+        }
+      });
+
+      form.addEventListener('input', () => {
+        if (!activeVendor) return;
+        const previewVendor = {
+          ...activeVendor,
+          name: document.getElementById('vendorName').value.trim() || activeVendor.name,
+          owner: document.getElementById('vendorOwner').value.trim(),
+          headline: document.getElementById('vendorHeadline').value.trim(),
+          location: document.getElementById('vendorLocation').value.trim(),
+          summary: document.getElementById('vendorSummary').value.trim(),
+          delivery: document.getElementById('vendorDelivery').value.trim(),
+          highlights: sanitiseHighlights(document.getElementById('vendorHighlights').value),
+          whatsapp: sanitisePhone(document.getElementById('vendorWhatsapp').value.trim()),
+          instagram: sanitiseInstagram(document.getElementById('vendorInstagram').value.trim()),
+          hero: heroSpotlight.checked,
+          logoUrl: logoDataUrl,
+        };
+        previewVendor.whatsappLink = buildWhatsAppLink(previewVendor.whatsapp);
+        updatePreviewCard(previewVendor);
+        if (!logoDataUrl) {
+          logoPreviewFallback.textContent = initials(previewVendor.name);
+        }
+      });
+
+      resetBtn.addEventListener('click', () => {
+        if (!activeVendor) return;
+        if (confirm('Reset this vendor to default content?')) {
+          marketplace.resetVendor(activeVendor.id);
+          vendors = marketplace.loadVendors();
+          setActiveVendor(activeVendor.id);
+          const toast = window.SiriusUI?.showToast;
+          if (toast) toast('Reverted to default marketplace content.', 'info');
+          else alert('✨ Reverted to default marketplace content.');
+        }
+      });
+
+      const params = new URLSearchParams(window.location.search);
+      const requestedVendor = params.get('vendor');
+      const initialId = requestedVendor && vendors.some(v => v.id === requestedVendor) ? requestedVendor : vendors[0]?.id;
+      setActiveVendor(initialId);
+      renderVendorList();
+      feather.replace();
+    })();
+  </script>
+  <script src="assistant.js"></script>
+  <script src="session-timeout.js"></script>
+</body>
+</html>

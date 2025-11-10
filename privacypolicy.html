@@ -10,237 +10,300 @@
     <script>
         tailwind.config = {
             theme: {
-                extend: {
-                    colors: {
-                        primary: '#0056b3',
-                        secondary: '#808080',
-                    }
-                }
+                extend: { colors: { primary: '#0056b3', secondary: '#0f172a' } }
             }
         }
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
-        .policy-content {
-            max-width: 800px;
-            margin: 0 auto;
+
+        .animated-gradient {
+            background-size: 200% 200%;
+            animation: gradient-shift 15s ease infinite;
         }
-        .policy-section {
-            margin-bottom: 2rem;
-        }
-        .policy-title {
+
+        html { scroll-behavior: smooth; }
+
+        .toc-link.active {
+            background-color: rgba(0, 86, 179, 0.1);
             color: #0056b3;
-            margin-bottom: 1rem;
+            font-weight: 700;
         }
-        .transition-all {
-            transition: all 0.3s ease;
-        }
-         /* Sirius Jobs blue login button */
     </style>
 </head>
 <body class="bg-white text-gray-800">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3">
+
+    <!-- NAVIGATION -->
+    <nav class="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="inline-flex items-center gap-3">
                 <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
-                <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
+                <span class="text-xl font-black text-primary uppercase tracking-tight">SIRIUS JOBS</span>
             </a>
-            <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
-                <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
-                <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
-                <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
-                <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
-                <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
-                <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
-                <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">
+            <div class="hidden md:flex items-center gap-6 text-sm font-bold text-gray-700">
+                <a href="index.html" class="hover:text-primary transition-colors">Home</a>
+                <a href="services.html" class="hover:text-primary transition-colors">Services</a>
+                <a href="jobs.html" class="hover:text-primary transition-colors">Jobs</a>
+                <a href="consultations.html" class="hover:text-primary transition-colors">Consultations</a>
+                <a href="marketplace.html" class="hover:text-primary transition-colors">Marketplace</a>
+                <a href="faq.html" class="hover:text-primary transition-colors">FAQs</a>
+                <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold py-2.5 px-5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
                     <i data-feather="log-in" class="w-4 h-4"></i>
                     Login
                 </a>
             </div>
-            <div class="md:hidden">
-                <button id="menu-btn" class="text-gray-600 focus:outline-none">
-                    <i data-feather="menu"></i>
-                </button>
-            </div>
+            <button id="menu-btn" class="md:hidden text-gray-700">
+                <i data-feather="menu" class="w-6 h-6"></i>
+            </button>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
-            <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
-            <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
-            <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
-            <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
-            <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
-            <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
-            <a href="login.html" class="flex items-center gap-2 text-gray-600 hover:text-primary transition-all">
-                <i data-feather="log-in" class="w-4 h-4"></i>
-                Login
-            </a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 py-3 space-y-2 text-sm font-bold">
+            <a href="index.html" class="block py-2 hover:text-primary transition-colors">Home</a>
+            <a href="services.html" class="block py-2 hover:text-primary transition-colors">Services</a>
+            <a href="jobs.html" class="block py-2 hover:text-primary transition-colors">Jobs</a>
+            <a href="consultations.html" class="block py-2 hover:text-primary transition-colors">Consultations</a>
+            <a href="marketplace.html" class="block py-2 hover:text-primary transition-colors">Marketplace</a>
+            <a href="faq.html" class="block py-2 hover:text-primary transition-colors">FAQs</a>
+            <a href="login.html" class="block py-2 hover:text-primary transition-colors">Login</a>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="bg-primary text-white py-20 md:py-32">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6">Privacy Policy</h1>
-            <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto">Last updated: October 2025</p>
+    <!-- HERO -->
+    <section class="bg-gradient-to-br from-black via-primary to-blue-900 animated-gradient text-white py-20 px-4">
+        <div class="container mx-auto text-center max-w-4xl">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-5 py-2.5 mb-8">
+                <i data-feather="shield" class="w-5 h-5"></i>
+                <span class="text-sm font-bold uppercase tracking-wide">Your Privacy Matters</span>
+            </div>
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">Privacy Policy</h1>
+            <p class="text-xl text-white/90 font-medium">Last updated: October 2025</p>
         </div>
     </section>
 
-    <!-- Policy Content -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="policy-content">
-                <div class="policy-section">
-                    <p>At Sirius Jobs, your privacy and trust are our top priorities. This policy explains how we collect, use, and protect your information when you use our website and services.</p>
+    <!-- MAIN CONTENT -->
+    <section class="container mx-auto px-4 py-16 max-w-7xl">
+        <div class="grid lg:grid-cols-[280px,1fr] gap-12">
+            <!-- TABLE OF CONTENTS -->
+            <aside class="lg:sticky lg:top-24 self-start">
+                <div class="bg-gray-50 rounded-3xl border-2 border-gray-100 p-6">
+                    <h3 class="text-lg font-black text-gray-900 mb-4">Quick Navigation</h3>
+                    <nav class="space-y-2 text-sm">
+                        <a href="#section-1" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">1. Information We Collect</a>
+                        <a href="#section-2" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">2. How We Use Your Info</a>
+                        <a href="#section-3" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">3. Data Protection</a>
+                        <a href="#section-4" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">4. Third-Party Services</a>
+                        <a href="#section-5" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">5. User Rights</a>
+                        <a href="#section-6" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">6. NDPR Compliance</a>
+                        <a href="#section-7" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">7. Policy Updates</a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- CONTENT -->
+            <main class="space-y-12">
+                <div class="bg-white rounded-3xl border-2 border-gray-100 p-8 md:p-12 shadow-xl">
+                    <p class="text-lg text-gray-700 leading-relaxed mb-8">At Sirius Jobs, your privacy and trust are our top priorities. This policy explains how we collect, use, and protect your information when you use our website and services.</p>
+
+                    <div id="section-1" class="space-y-4 mb-12 scroll-mt-24">
+                        <h2 class="text-3xl font-black text-gray-900">1. Information We Collect</h2>
+                        <p class="text-base text-gray-700 leading-relaxed">We collect:</p>
+                        <ul class="list-disc pl-6 space-y-3 text-base text-gray-700">
+                            <li>Personal information you provide when registering (name, email, phone, ID details).</li>
+                            <li>Employment data (job history, applications, employer feedback).</li>
+                            <li>Payment information through secure payment gateways (we never store card numbers).</li>
+                            <li>Verification data such as NIN, Driver's License, or Passport numbers and related documents.</li>
+                        </ul>
+                    </div>
+
+                    <div id="section-2" class="space-y-4 mb-12 scroll-mt-24">
+                        <h2 class="text-3xl font-black text-gray-900">2. How We Use Your Information</h2>
+                        <p class="text-base text-gray-700 leading-relaxed">We use your information to:</p>
+                        <ul class="list-disc pl-6 space-y-3 text-base text-gray-700">
+                            <li>Verify your identity and eligibility for employment.</li>
+                            <li>Match job seekers with employers.</li>
+                            <li>Process payments and manage subscriptions.</li>
+                            <li>Improve and personalize user experience.</li>
+                            <li>Communicate updates, offers, and system notifications.</li>
+                        </ul>
+                    </div>
+
+                    <div id="section-3" class="space-y-4 mb-12 scroll-mt-24">
+                        <h2 class="text-3xl font-black text-gray-900">3. Data Protection</h2>
+                        <ul class="list-disc pl-6 space-y-3 text-base text-gray-700">
+                            <li>We store all sensitive data in encrypted form.</li>
+                            <li>Access to verification documents is restricted to authorized administrators only.</li>
+                            <li>We do not sell or share your information with unauthorized third parties.</li>
+                            <li>Data is retained only as long as necessary to fulfill verification and legal requirements.</li>
+                        </ul>
+                    </div>
+
+                    <div id="section-4" class="space-y-4 mb-12 scroll-mt-24">
+                        <h2 class="text-3xl font-black text-gray-900">4. Third-Party Services</h2>
+                        <p class="text-base text-gray-700 leading-relaxed">We use trusted partners such as Paystack, Flutterwave, and KYC verification providers. These partners follow strict data protection and compliance policies.</p>
+                    </div>
+
+                    <div id="section-5" class="space-y-4 mb-12 scroll-mt-24">
+                        <h2 class="text-3xl font-black text-gray-900">5. User Rights</h2>
+                        <p class="text-base text-gray-700 leading-relaxed">You have the right to:</p>
+                        <ul class="list-disc pl-6 space-y-3 text-base text-gray-700">
+                            <li>Access or update your information.</li>
+                            <li>Request deletion of your account.</li>
+                            <li>Withdraw consent for marketing communication.</li>
+                            <li>Contact us for data-related questions at siriusoddjobs@gmail.com.</li>
+                        </ul>
+                    </div>
+
+                    <div id="section-6" class="space-y-4 mb-12 scroll-mt-24">
+                        <h2 class="text-3xl font-black text-gray-900">6. NDPR Compliance</h2>
+                        <p class="text-base text-gray-700 leading-relaxed">Sirius Jobs adheres to the Nigeria Data Protection Regulation (NDPR). We ensure lawful processing, transparency, and security in all personal data handling.</p>
+                    </div>
+
+                    <div id="section-7" class="space-y-4 scroll-mt-24">
+                        <h2 class="text-3xl font-black text-gray-900">7. Updates to This Policy</h2>
+                        <p class="text-base text-gray-700 leading-relaxed">We may update this policy from time to time. Changes will be posted on this page with the updated date.</p>
+                    </div>
                 </div>
 
-                <div class="policy-section">
-                    <h2 class="text-2xl font-bold policy-title">1. Information We Collect</h2>
-                    <p>We collect:</p>
-                    <ul class="list-disc pl-5 space-y-2 mt-2">
-                        <li>Personal information you provide when registering (name, email, phone, ID details).</li>
-                        <li>Employment data (job history, applications, employer feedback).</li>
-                        <li>Payment information through secure payment gateways (we never store card numbers).</li>
-                        <li>Verification data such as NIN, Driver's License, or Passport numbers and related documents.</li>
-                    </ul>
+                <!-- CONTACT CARD -->
+                <div class="bg-gradient-to-br from-black via-primary to-blue-900 rounded-3xl p-12 text-center text-white">
+                    <div class="max-w-2xl mx-auto">
+                        <div class="w-16 h-16 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <i data-feather="mail" class="w-8 h-8"></i>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-black mb-4">Questions about your data?</h2>
+                        <p class="text-lg text-white/90 mb-8">Contact our privacy team for any data-related inquiries.</p>
+                        <a href="mailto:siriusoddjobs@gmail.com" class="inline-flex items-center gap-2 bg-white text-primary font-bold py-3.5 px-6 rounded-xl hover:bg-white/90 transition-all shadow-lg">
+                            <i data-feather="send" class="w-5 h-5"></i>
+                            Email Privacy Team
+                        </a>
+                    </div>
                 </div>
 
-                <div class="policy-section">
-                    <h2 class="text-2xl font-bold policy-title">2. How We Use Your Information</h2>
-                    <p>We use your information to:</p>
-                    <ul class="list-disc pl-5 space-y-2 mt-2">
-                        <li>Verify your identity and eligibility for employment.</li>
-                        <li>Match job seekers with employers.</li>
-                        <li>Process payments and manage subscriptions.</li>
-                        <li>Improve and personalize user experience.</li>
-                        <li>Communicate updates, offers, and system notifications.</li>
-                    </ul>
-                </div>
+                <!-- RELATED LINKS -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <a href="terms.html" class="bg-white border-2 border-gray-100 rounded-3xl p-8 hover:border-primary hover:shadow-xl transition-all group">
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
+                                <i data-feather="file-text" class="w-7 h-7 text-primary group-hover:text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-black text-gray-900 mb-2">Terms of Service</h3>
+                                <p class="text-sm text-gray-600">Review our platform terms and agreements</p>
+                            </div>
+                        </div>
+                    </a>
 
-                <div class="policy-section">
-                    <h2 class="text-2xl font-bold policy-title">3. Data Protection</h2>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li>We store all sensitive data in encrypted form.</li>
-                        <li>Access to verification documents is restricted to authorized administrators only.</li>
-                        <li>We do not sell or share your information with unauthorized third parties.</li>
-                        <li>Data is retained only as long as necessary to fulfill verification and legal requirements.</li>
-                    </ul>
+                    <a href="verify.html" class="bg-white border-2 border-gray-100 rounded-3xl p-8 hover:border-primary hover:shadow-xl transition-all group">
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
+                                <i data-feather="check-circle" class="w-7 h-7 text-primary group-hover:text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-black text-gray-900 mb-2">Verify Credentials</h3>
+                                <p class="text-sm text-gray-600">Check professional certifications securely</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-
-                <div class="policy-section">
-                    <h2 class="text-2xl font-bold policy-title">4. Third-Party Services</h2>
-                    <p>We use trusted partners such as Paystack, Flutterwave, and KYC verification providers. These partners follow strict data protection and compliance policies.</p>
-                </div>
-
-                <div class="policy-section">
-                    <h2 class="text-2xl font-bold policy-title">5. User Rights</h2>
-                    <p>You have the right to:</p>
-                    <ul class="list-disc pl-5 space-y-2 mt-2">
-                        <li>Access or update your information.</li>
-                        <li>Request deletion of your account.</li>
-                        <li>Withdraw consent for marketing communication.</li>
-                        <li>Contact us for data-related questions at siriusoddjobs@gmail.com.</li>
-                    </ul>
-                </div>
-
-                <div class="policy-section">
-                    <h2 class="text-2xl font-bold policy-title">6. NDPR Compliance</h2>
-                    <p>Sirius Jobs adheres to the Nigeria Data Protection Regulation (NDPR). We ensure lawful processing, transparency, and security in all personal data handling.</p>
-                </div>
-
-                <div class="policy-section">
-                    <h2 class="text-2xl font-bold policy-title">7. Updates to This Policy</h2>
-                    <p>We may update this policy from time to time. Changes will be posted on this page with the updated date.</p>
-                </div>
-            </div>
+            </main>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
-                        <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
+    <!-- FOOTER -->
+    <footer class="bg-[#0f172a] text-gray-300 mt-16">
+        <div class="border-t border-white/10">
+            <div class="container mx-auto px-4 py-12 lg:py-14">
+                <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+                    <div class="space-y-4">
+                        <a href="index.html" class="inline-flex items-center gap-2">
+                            <img src="assets/sirius-logo.svg" alt="Sirius Jobs logo" class="w-10 h-10">
+                            <span class="text-lg font-black text-white uppercase tracking-tight">SIRIUS JOBS</span>
+                        </a>
+                        <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+                        <div class="flex items-center gap-3 text-gray-400">
+                            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+                            <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+                            <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+                            <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+                        </div>
                     </div>
-                    <p class="text-gray-400 mb-4">Connecting Talent With Trust across Nigeria since 2022.</p>
-                    <div class="flex space-x-4">
-                        <a href="https://web.facebook.com/profile.php?id=61582342397507" class="text-gray-400 hover:text-white transition-all"><i data-feather="facebook"></i></a>
-                        <a href="https://twitter.com/SiriusOddJobs" class="text-gray-400 hover:text-white transition-all"><i data-feather="twitter"></i></a>
-                        <a href="https://www.instagram.com/siriusjobss" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
-                        <a href="https://www.linkedin.com/company/siriusjobsng/" class="text-gray-400 hover:text-white transition-all"><i data-feather="linkedin"></i></a>
+                    <div>
+                        <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Company</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="about.html" class="hover:text-white transition">About</a></li>
+                            <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+                            <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+                            <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Support</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+                            <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+                            <li><span>WhatsApp: 0704 447 0559</span></li>
+                            <li><span>Email: support@siriusjobsng.com</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Office</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li>Port Harcourt, Rivers State</li>
+                            <li>Nigeria</li>
+                        </ul>
                     </div>
                 </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-all">Home</a></li>
-                        <li><a href="about.html" class="text-gray-400 hover:text-white transition-all">About Us</a></li>
-                        <li><a href="jobs.html" class="text-gray-400 hover:text-white transition-all">Jobs</a></li>
-                        <li><a href="verify.html" class="text-gray-400 hover:text-white transition-all">Verify Worker</a></li>
-                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-all">Contact</a></li>
-                        <li><a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Services</h4>
-                    <ul class="space-y-2">
-                        <li><span class="text-gray-400">Artisans</span></li>
-                        <li><span class="text-gray-400">Plumbers</span></li>
-                        <li><span class="text-gray-400">Electricians</span></li>
-                        <li><span class="text-gray-400">Cleaners</span></li>
-                        <li><a href="services.html" class="text-gray-400">More Services</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
-                    <ul class="space-y-2">
-                        <li class="flex items-start space-x-2">
-                            <i data-feather="phone" class="text-gray-400 mt-1 w-4 h-4"></i>
-                            <span class="text-gray-400">07044470559</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <i data-feather="mail" class="text-gray-400 mt-1 w-4 h-4"></i>
-                            <span class="text-gray-400">siriusoddjobs@gmail.com</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <i data-feather="map-pin" class="text-gray-400 mt-1 w-4 h-4"></i>
-                            <span class="text-gray-400">Port Harcourt, Nigeria</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
-                <div class="flex space-x-6">
-                    <a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
-                    <a href="terms.html" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>
+                <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+                        <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+                        <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+                        <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
+        feather.replace();
+
         // Mobile menu toggle
-        document.getElementById('menu-btn').addEventListener('click', function() {
+        document.getElementById('menu-btn').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
 
-        // Feather icons
-        feather.replace();
+        // Table of contents active state on scroll
+        const sections = document.querySelectorAll('[id^="section-"]');
+        const tocLinks = document.querySelectorAll('.toc-link');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '-100px 0px -80% 0px',
+            threshold: 0
+        };
+
+        const observerCallback = (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    tocLinks.forEach(link => link.classList.remove('active'));
+                    const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+                    if (activeLink) {
+                        activeLink.classList.add('active');
+                    }
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        sections.forEach(section => observer.observe(section));
     </script>
-  <script src="assistant.js"></script>
+    <script src="assistant.js"></script>
 </body>
 </html>

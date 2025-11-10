@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Professional Profile - Sirius Jobs</title>
+    <meta name="description" content="Edit your professional profile and consultation settings">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0056b3',
+                        secondary: '#808080',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #0056b3;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .animated-gradient {
+            background-size: 200% 200%;
+            animation: gradient-shift 15s ease infinite;
+        }
+
+        /* Toggle switch styles */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #0056b3;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm transition-transform group-hover:scale-105" />
+                    <span class="sr-only">SiriusJobs home</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="consultation-dashboard.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">
+                        <i data-feather="arrow-left" class="w-4 h-4 inline"></i>
+                        Back to Dashboard
+                    </a>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <button id="logout-btn" class="text-sm font-semibold text-gray-600 hover:text-primary transition-colors">
+                        <i data-feather="log-out" class="w-4 h-4 inline"></i>
+                        Logout
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden text-gray-600">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="pt-20 bg-gradient-to-br from-black via-primary to-blue-900 animated-gradient text-white py-16 px-4">
+        <div class="container mx-auto text-center max-w-3xl">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-5 py-2.5 mb-6">
+                <i data-feather="edit-3" class="w-5 h-5"></i>
+                <span class="text-sm font-bold uppercase tracking-wide">Edit Profile</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black mb-4 leading-tight">Edit Your Professional Profile</h1>
+            <p class="text-lg text-white/90 font-medium">Update your consultation details and availability</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-16 max-w-3xl">
+        <div class="bg-white rounded-3xl border-2 border-gray-100 shadow-2xl p-8 md:p-12">
+            <!-- Success/Error Messages -->
+            <div id="message-container" class="hidden mb-6 p-4 rounded-xl"></div>
+
+            <form id="profileForm" class="space-y-6">
+                <!-- Specialization -->
+                <div>
+                    <label for="specialization" class="block text-sm font-bold text-gray-900 mb-2">
+                        Specialization
+                    </label>
+                    <input
+                        type="text"
+                        id="specialization"
+                        class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                        placeholder="e.g., Corporate Law, Family Medicine"
+                        required
+                    >
+                </div>
+
+                <!-- Years of Experience -->
+                <div>
+                    <label for="yearsOfExperience" class="block text-sm font-bold text-gray-900 mb-2">
+                        Years of Experience
+                    </label>
+                    <input
+                        type="number"
+                        id="yearsOfExperience"
+                        min="0"
+                        max="99"
+                        class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                        placeholder="0"
+                        required
+                    >
+                </div>
+
+                <!-- Bio -->
+                <div>
+                    <label for="bio" class="block text-sm font-bold text-gray-900 mb-2">
+                        Bio / Description
+                        <span class="text-gray-500 font-normal text-xs ml-2">
+                            (<span id="charCount">0</span>/500 characters)
+                        </span>
+                    </label>
+                    <textarea
+                        id="bio"
+                        rows="6"
+                        maxlength="500"
+                        class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                        placeholder="Tell clients about your expertise, approach, and what makes you unique..."
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- License Number (Read-only) -->
+                <div>
+                    <label for="licenseNumber" class="block text-sm font-bold text-gray-900 mb-2">
+                        License Number
+                        <span class="text-gray-500 font-normal text-xs ml-2">(Cannot be changed)</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="licenseNumber"
+                        class="w-full rounded-xl border-2 border-gray-200 bg-gray-50 py-3 px-4 text-gray-500 font-medium cursor-not-allowed"
+                        readonly
+                        disabled
+                        placeholder="Loading..."
+                    >
+                </div>
+
+                <!-- Availability Status Toggle -->
+                <div class="p-6 bg-gray-50 rounded-2xl border-2 border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label for="availabilityToggle" class="block text-sm font-bold text-gray-900 mb-1">
+                                Availability Status
+                            </label>
+                            <p class="text-xs text-gray-600">
+                                Make yourself visible to clients seeking consultations
+                            </p>
+                        </div>
+                        <div class="relative">
+                            <input
+                                type="checkbox"
+                                id="availabilityToggle"
+                                class="sr-only toggle-checkbox"
+                            >
+                            <label
+                                for="availabilityToggle"
+                                class="toggle-label block w-14 h-8 rounded-full bg-gray-400 cursor-pointer transition-colors"
+                            >
+                                <span class="absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform toggle-checkbox:translate-x-6"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span id="availabilityText" class="inline-flex items-center gap-2 text-sm font-semibold text-gray-600">
+                            <i data-feather="circle" class="w-3 h-3"></i>
+                            Inactive
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                    type="submit"
+                    id="submitBtn"
+                    class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-bold py-4 px-6 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-primary/25"
+                >
+                    <i data-feather="save" class="w-5 h-5"></i>
+                    Save Changes
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#0f172a] text-gray-300 mt-16">
+        <div class="border-t border-white/10">
+            <div class="container mx-auto px-4 py-12 lg:py-14">
+                <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+                    <div class="space-y-4">
+                        <a href="index.html" class="inline-flex items-center gap-2">
+
+                          <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm" />
+
+                          <span class="sr-only">SiriusJobs home</span>
+
+                        </a>
+                        <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+                        <div class="flex items-center gap-3 text-gray-400">
+                            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+                            <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+                            <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+                            <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="about.html" class="hover:text-white transition">About</a></li>
+                            <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+                            <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+                            <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+                            <li><a href="marketplace.html" class="hover:text-white transition">Marketplace</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+                            <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+                            <li><span>WhatsApp: 0704 447 0559</span></li>
+                            <li><span>Email: support@siriusjobsng.com</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li>Port Harcourt, Rivers State</li>
+                            <li>Nigeria</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+                        <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+                        <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+                        <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = 'http://localhost:4000/api';
+
+        // Initialize feather icons
+        feather.replace();
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                alert('Mobile menu toggle');
+            });
+        }
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            sessionStorage.removeItem('siriusProAuth');
+            window.location.href = 'login.html';
+        });
+
+        // Character counter for bio
+        const bioTextarea = document.getElementById('bio');
+        const charCount = document.getElementById('charCount');
+        bioTextarea.addEventListener('input', () => {
+            charCount.textContent = bioTextarea.value.length;
+        });
+
+        // Availability toggle
+        const availabilityToggle = document.getElementById('availabilityToggle');
+        const availabilityText = document.getElementById('availabilityText');
+
+        availabilityToggle.addEventListener('change', () => {
+            if (availabilityToggle.checked) {
+                availabilityText.innerHTML = '<i data-feather="circle" class="w-3 h-3 text-green-500 fill-green-500"></i> Active';
+                availabilityText.className = 'inline-flex items-center gap-2 text-sm font-semibold text-green-600';
+            } else {
+                availabilityText.innerHTML = '<i data-feather="circle" class="w-3 h-3"></i> Inactive';
+                availabilityText.className = 'inline-flex items-center gap-2 text-sm font-semibold text-gray-600';
+            }
+            feather.replace();
+        });
+
+        // Load current profile data
+        async function loadProfile() {
+            const authData = sessionStorage.getItem('siriusProAuth');
+            if (!authData) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            let token;
+            try {
+                const session = JSON.parse(authData);
+                token = session.token;
+                if (!token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+            } catch (e) {
+                console.error('Failed to parse session:', e);
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/consultation/professionals/profile`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load profile');
+                }
+
+                const result = await response.json();
+                const profile = result.data;
+
+                // Populate form fields
+                document.getElementById('specialization').value = profile.specialization || '';
+                document.getElementById('yearsOfExperience').value = profile.yearsOfExperience || 0;
+                document.getElementById('bio').value = profile.bio || '';
+                document.getElementById('licenseNumber').value = profile.licenseNumber || '';
+                document.getElementById('availabilityToggle').checked = profile.isAvailable || false;
+
+                // Update character count
+                charCount.textContent = (profile.bio || '').length;
+
+                // Update availability text
+                if (profile.isAvailable) {
+                    availabilityText.innerHTML = '<i data-feather="circle" class="w-3 h-3 text-green-500 fill-green-500"></i> Active';
+                    availabilityText.className = 'inline-flex items-center gap-2 text-sm font-semibold text-green-600';
+                } else {
+                    availabilityText.innerHTML = '<i data-feather="circle" class="w-3 h-3"></i> Inactive';
+                    availabilityText.className = 'inline-flex items-center gap-2 text-sm font-semibold text-gray-600';
+                }
+
+                feather.replace();
+
+            } catch (error) {
+                console.error('Load profile error:', error);
+                showMessage('Failed to load profile data', 'error');
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const authData = sessionStorage.getItem('siriusProAuth');
+            if (!authData) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            let token;
+            try {
+                const session = JSON.parse(authData);
+                token = session.token;
+            } catch (e) {
+                console.error('Failed to parse session:', e);
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i data-feather="loader" class="w-5 h-5 animate-spin"></i> Saving...';
+            feather.replace();
+
+            try {
+                const formData = {
+                    specialization: document.getElementById('specialization').value.trim(),
+                    yearsOfExperience: parseInt(document.getElementById('yearsOfExperience').value),
+                    bio: document.getElementById('bio').value.trim(),
+                    isAvailable: document.getElementById('availabilityToggle').checked
+                };
+
+                const response = await fetch(`${API_URL}/consultation/professionals/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to update profile');
+                }
+
+                showMessage('Profile updated successfully!', 'success');
+
+                // Redirect to dashboard after 1.5 seconds
+                setTimeout(() => {
+                    window.location.href = 'consultation-dashboard.html';
+                }, 1500);
+
+            } catch (error) {
+                console.error('Update profile error:', error);
+                showMessage(error.message || 'Failed to update profile', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i data-feather="save" class="w-5 h-5"></i> Save Changes';
+                feather.replace();
+            }
+        });
+
+        // Show message function
+        function showMessage(message, type) {
+            const container = document.getElementById('message-container');
+            container.className = type === 'success'
+                ? 'mb-6 p-4 rounded-xl bg-green-50 border-2 border-green-200 text-green-800 font-semibold'
+                : 'mb-6 p-4 rounded-xl bg-red-50 border-2 border-red-200 text-red-800 font-semibold';
+            container.textContent = message;
+            container.classList.remove('hidden');
+
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                container.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Load profile on page load
+        loadProfile();
+    </script>
+    <script src="assistant.js"></script>
+</body>
+</html>

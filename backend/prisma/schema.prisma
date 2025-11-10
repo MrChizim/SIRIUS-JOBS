@@ -73,6 +73,11 @@ model User {
   emailVerificationTokenExpires DateTime?
   passwordResetToken     String?
   passwordResetTokenExpires DateTime?
+  failedLoginAttempts    Int                       @default(0)
+  accountLockedUntil     DateTime?
+  lastFailedLoginAt      DateTime?
+  lastSuccessfulLoginAt  DateTime?
+  lastLoginIp            String?
   createdAt               DateTime                  @default(now())
   updatedAt               DateTime                  @updatedAt
 
@@ -350,4 +355,23 @@ model PayoutRequest {
   externalRef    String?
 
   user           User        @relation(fields: [userId], references: [id])
+}
+
+model Merchant {
+  id                 String    @id @default(cuid())
+  email              String    @unique
+  passwordHash       String
+  businessName       String
+  contactName        String?
+  phone              String?
+  instagram          String?
+  whatsapp           String?
+  plan               String    @default("3-month")
+  isActive           Boolean   @default(true)
+  failedLoginAttempts Int      @default(0)
+  accountLockedUntil DateTime?
+  lastLoginAt        DateTime?
+  lastLoginIp        String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 }

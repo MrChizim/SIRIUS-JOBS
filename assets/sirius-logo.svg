@@ -1,42 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" role="img" aria-labelledby="title">
-  <title id="title">Sirius Jobs Orbital Logo</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 120" role="img" aria-labelledby="title">
+  <title id="title">SiriusJobs Logo</title>
   <defs>
-    <linearGradient id="siriusGlow" x1="20%" y1="15%" x2="85%" y2="90%">
-      <stop offset="0%" stop-color="#0a3d91"/>
-      <stop offset="100%" stop-color="#2f9bff"/>
+    <linearGradient id="sphereGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#59b5ff" />
+      <stop offset="100%" stop-color="#0a64ff" />
     </linearGradient>
-    <linearGradient id="siriusOrbit" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#7ec3ff" stop-opacity="0.8"/>
-      <stop offset="100%" stop-color="#0a3d91" stop-opacity="0.2"/>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#44a7ff" />
+      <stop offset="100%" stop-color="#1c78ff" />
     </linearGradient>
   </defs>
-  <g transform="translate(10 6)">
-    <circle cx="60" cy="60" r="58" fill="#001a3a" opacity="0.12"/>
-    <circle cx="60" cy="60" r="52" fill="url(#siriusGlow)"/>
-    <g fill="none" stroke="url(#siriusOrbit)" stroke-width="2">
-      <path d="M22 48c11-19 38-34 58-26 20 7 36 33 28 49-8 16-34 23-48 20-14-3-43-16-38-43z"/>
-      <path d="M34 82c15 10 40 16 58 8 18-8 24-30 16-44-8-14-28-22-48-20-20 2-38 18-40 33"/>
+  <g transform="translate(12 14)">
+    <circle cx="44" cy="46" r="40" fill="url(#sphereGradient)" opacity="0.25" />
+    <circle cx="44" cy="46" r="34" fill="url(#sphereGradient)" />
+    <g fill="none" stroke="#e0f0ff" stroke-width="4" stroke-linecap="round">
+      <path d="M14 42c9-15 32-25 46-19s26 26 20 38c-6 12-27 17-37 15s-32-12-29-34" opacity="0.9" />
+      <path d="M20 60c12 8 32 13 46 7s19-24 12-35S56 18 40 20 12 34 10 46" opacity="0.7" />
+      <path d="M25 28c8-6 22-10 30-7s16 15 11 21-19 6-25 5-18-4-16-19" opacity="0.5" />
     </g>
-    <g stroke="#0f4fbe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M38 42l20-14 24 8 16 22-8 26-28 10-24-14-4-24z" fill="none"/>
-      <path d="M38 42l16 22 16-26"/>
-      <path d="M74 36l32 42"/>
-      <path d="M54 98l16-24 26 12"/>
-      <path d="M42 72l28 38"/>
-    </g>
-    <g fill="#ffffff" stroke="#0f4fbe" stroke-width="2">
-      <circle cx="38" cy="42" r="4"/>
-      <circle cx="58" cy="28" r="4"/>
-      <circle cx="82" cy="36" r="4"/>
-      <circle cx="104" cy="64" r="4"/>
-      <circle cx="96" cy="90" r="4"/>
-      <circle cx="70" cy="110" r="4"/>
-      <circle cx="44" cy="86" r="4"/>
-      <circle cx="74" cy="60" r="4"/>
-      <circle cx="54" cy="64" r="4"/>
-    </g>
+    <circle cx="24" cy="32" r="4" fill="#fff" />
+    <circle cx="54" cy="22" r="4" fill="#fff" />
+    <circle cx="70" cy="42" r="4" fill="#fff" />
+    <circle cx="40" cy="70" r="4" fill="#fff" />
   </g>
-  <text x="70" y="128" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" fill="#0a3d91" font-weight="600" letter-spacing="0.12em">
-    SIRIUS JOBS
+  <text x="120" y="70" font-family="'Inter', 'Segoe UI', sans-serif" font-size="44" font-weight="700" fill="url(#textGradient)">
+    Sirius<tspan fill="#5cc0ff">Jobs</tspan>
   </text>
 </svg>

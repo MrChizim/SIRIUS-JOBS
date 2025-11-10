@@ -20,171 +20,179 @@
         }
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         body {
             font-family: 'Inter', sans-serif;
         }
-        .contact-hero {
-            background: linear-gradient(rgba(0, 86, 179, 0.88), rgba(0, 86, 179, 0.88)), url('assets/hero-nigeria.svg');
-            background-size: cover;
-            background-position: center;
-        }
-        .transition-all {
-            transition: all 0.3s ease;
-        }
-      
 
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .animated-gradient {
+            background-size: 200% 200%;
+            animation: gradient-shift 15s ease infinite;
+        }
     </style>
 </head>
-<body class="bg-white text-gray-800">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3">
-                <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
-                <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
-            </a>
-            <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
-                <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
-                <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
-                <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
-                <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
-                <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
-                <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
-                <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">
-                    <i data-feather="log-in" class="w-4 h-4"></i>
-                    Login
+<body class="bg-gradient-to-br from-gray-50 to-blue-50/30 text-gray-900">
+    <!-- NAVIGATION -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-200/50 z-50">
+        <div class="container mx-auto px-4 lg:px-6">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-9 h-9">
+                    <span class="text-xl font-black text-primary uppercase tracking-tight">SIRIUS JOBS</span>
                 </a>
-            </div>
-            <div class="md:hidden">
-                <button id="menu-btn" class="text-gray-600 focus:outline-none">
-                    <i data-feather="menu"></i>
-                </button>
+
+                <div class="hidden lg:flex items-center gap-8 text-sm font-semibold">
+                    <a href="index.html" class="text-gray-600 hover:text-primary transition-colors">Home</a>
+                    <a href="services.html" class="text-gray-600 hover:text-primary transition-colors">Services</a>
+                    <a href="jobs.html" class="text-gray-600 hover:text-primary transition-colors">Jobs</a>
+                    <a href="consultations.html" class="text-gray-600 hover:text-primary transition-colors">Consultations</a>
+                    <a href="marketplace.html" class="text-gray-600 hover:text-primary transition-colors">Marketplace</a>
+                    <a href="findworker.html" class="text-gray-600 hover:text-primary transition-colors">Find Workers</a>
+                    <a href="faq.html" class="text-gray-600 hover:text-primary transition-colors">FAQs</a>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-2.5 rounded-full hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+                        <i data-feather="log-in" class="w-4 h-4"></i>
+                        Login
+                    </a>
+                    <button id="menu-btn" class="lg:hidden text-gray-700 hover:text-primary transition-colors">
+                        <i data-feather="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
             </div>
         </div>
+
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
-            <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
-            <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
-            <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
-            <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
-            <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
-            <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
-            <a href="login.html" class="flex items-center gap-2 text-gray-600 hover:text-primary transition-all">
-                <i data-feather="log-in" class="w-4 h-4"></i>
-                Login
-            </a>
+        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-gray-200/50">
+            <div class="container mx-auto px-4 py-4 space-y-1">
+                <a href="index.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Home</a>
+                <a href="services.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Services</a>
+                <a href="jobs.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Jobs</a>
+                <a href="consultations.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Consultations</a>
+                <a href="marketplace.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Marketplace</a>
+                <a href="findworker.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Find Workers</a>
+                <a href="faq.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">FAQs</a>
+            </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="contact-hero text-white py-20 md:py-32">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
-            <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto">We're here to help and answer any questions you might have</p>
+    <!-- HERO -->
+    <section class="pt-24 pb-16 bg-gradient-to-br from-black via-primary to-blue-900 animated-gradient text-white">
+        <div class="container mx-auto px-4 lg:px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight">Contact Us</h1>
+                <p class="text-xl md:text-2xl text-white/90">We're here to help and answer any questions you might have</p>
+            </div>
         </div>
     </section>
 
-    <!-- Contact Content -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
+    <!-- CONTACT CONTENT -->
+    <section class="py-16 md:py-20 bg-white">
+        <div class="container mx-auto px-4 lg:px-6">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <!-- Contact Info -->
                 <div>
-                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Get In Touch</h2>
-                    <p class="text-gray-600 mb-8">Have questions about our services, verification process, or want to partner with us? Fill out the form and our team will get back to you as soon as possible.</p>
-                    
+                    <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-4">Get In Touch</h2>
+                    <p class="text-base text-gray-600 mb-10">Have questions about our services, verification process, or want to partner with us? Fill out the form and our team will get back to you as soon as possible.</p>
+
                     <div class="space-y-6">
-                        <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0">
                                 <i data-feather="phone" class="text-primary w-6 h-6"></i>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-800 mb-1">Phone</h3>
-                                <p class="text-gray-600">07044470559</p>
+                                <h3 class="text-lg font-black text-gray-900 mb-1">Phone</h3>
+                                <p class="text-gray-600 font-medium">07044470559</p>
                             </div>
                         </div>
-                        
-                        <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0">
                                 <i data-feather="mail" class="text-primary w-6 h-6"></i>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-800 mb-1">Email</h3>
-                                <p class="text-gray-600">siriusoddjobs@gmail.com</p>
+                                <h3 class="text-lg font-black text-gray-900 mb-1">Email</h3>
+                                <p class="text-gray-600 font-medium">siriusoddjobs@gmail.com</p>
                             </div>
                         </div>
-                        
-                        <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0">
                                 <i data-feather="map-pin" class="text-primary w-6 h-6"></i>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-800 mb-1">Location</h3>
-                                <p class="text-gray-600">Port Harcourt, Nigeria</p>
+                                <h3 class="text-lg font-black text-gray-900 mb-1">Location</h3>
+                                <p class="text-gray-600 font-medium">Port Harcourt, Nigeria</p>
                             </div>
                         </div>
-                        
-                        <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0">
                                 <i data-feather="clock" class="text-primary w-6 h-6"></i>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-800 mb-1">Working Hours</h3>
-                                <p class="text-gray-600">Monday - Friday: 8am - 5pm</p>
-                                <p class="text-gray-600">Saturday: 9am - 2pm</p>
+                                <h3 class="text-lg font-black text-gray-900 mb-1">Working Hours</h3>
+                                <p class="text-gray-600 font-medium">Monday - Friday: 8am - 5pm</p>
+                                <p class="text-gray-600 font-medium">Saturday: 9am - 2pm</p>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="mt-10">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Follow Us</h3>
-                        <div class="flex space-x-4">
-                            <a href="#" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-all">
-                                <i data-feather="facebook" class="text-primary"></i>
+                        <h3 class="text-xl font-black text-gray-900 mb-4">Follow Us</h3>
+                        <div class="flex gap-3">
+                            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center hover:bg-primary hover:text-white text-primary transition-all">
+                                <i data-feather="facebook" class="w-5 h-5"></i>
                             </a>
-                            <a href="#" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-all">
-                                <i data-feather="twitter" class="text-primary"></i>
+                            <a href="https://twitter.com/SiriusOddJobs" class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center hover:bg-primary hover:text-white text-primary transition-all">
+                                <i data-feather="twitter" class="w-5 h-5"></i>
                             </a>
-                            <a href="#" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-all">
-                                <i data-feather="instagram" class="text-primary"></i>
+                            <a href="https://www.instagram.com/siriusjobss" class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center hover:bg-primary hover:text-white text-primary transition-all">
+                                <i data-feather="instagram" class="w-5 h-5"></i>
                             </a>
-                            <a href="#" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-all">
-                                <i data-feather="linkedin" class="text-primary"></i>
+                            <a href="https://www.linkedin.com/company/siriusjobsng/" class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center hover:bg-primary hover:text-white text-primary transition-all">
+                                <i data-feather="linkedin" class="w-5 h-5"></i>
                             </a>
                         </div>
                     </div>
                 </div>
-                
-                <div class="bg-gray-50 rounded-lg shadow-md p-8">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Send Us a Message</h2>
+
+                <!-- Contact Form -->
+                <div class="bg-gradient-to-br from-primary/5 to-blue-50 border-2 border-primary/10 rounded-3xl shadow-xl p-8 md:p-10">
+                    <h2 class="text-3xl font-black text-gray-900 mb-6">Send Us a Message</h2>
                     <form>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                             <div>
-                                <label for="first-name" class="block text-sm font-medium text-gray-700 mb-1">First Name*</label>
-                                <input type="text" id="first-name" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" required>
+                                <label for="first-name" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">First Name*</label>
+                                <input type="text" id="first-name" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
                             </div>
-                            
+
                             <div>
-                                <label for="last-name" class="block text-sm font-medium text-gray-700 mb-1">Last Name*</label>
-                                <input type="text" id="last-name" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" required>
+                                <label for="last-name" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Last Name*</label>
+                                <input type="text" id="last-name" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
                             </div>
-                            
+
                             <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email*</label>
-                                <input type="email" id="email" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" required>
+                                <label for="email" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Email*</label>
+                                <input type="email" id="email" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
                             </div>
-                            
+
                             <div>
-                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                                <input type="tel" id="phone" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border">
+                                <label for="phone" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Phone Number</label>
+                                <input type="tel" id="phone" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
                             </div>
                         </div>
-                        
+
                         <div class="mb-6">
-                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject*</label>
-                            <select id="subject" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" required>
+                            <label for="subject" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Subject*</label>
+                            <select id="subject" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
                                 <option value="">Select a subject</option>
                                 <option>General Inquiry</option>
                                 <option>Worker Verification</option>
@@ -194,14 +202,17 @@
                                 <option>Other</option>
                             </select>
                         </div>
-                        
+
                         <div class="mb-6">
-                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message*</label>
-                            <textarea id="message" rows="5" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" required></textarea>
+                            <label for="message" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Message*</label>
+                            <textarea id="message" rows="5" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" required></textarea>
                         </div>
-                        
+
                         <div class="flex justify-end">
-                            <button type="submit" class="bg-primary text-white font-bold py-2 px-6 rounded hover:bg-opacity-90 transition-all">Send Message</button>
+                            <button type="submit" class="inline-flex items-center gap-2 bg-primary text-white font-bold py-3.5 px-8 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+                                <i data-feather="send" class="w-4 h-4"></i>
+                                Send Message
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -209,79 +220,66 @@
         </div>
     </section>
 
-    <!-- Map Section -->
-    <section class="py-0 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="rounded-lg overflow-hidden shadow-md">
+    <!-- MAP -->
+    <section class="py-0 bg-gradient-to-br from-gray-50 to-blue-50/30">
+        <div class="container mx-auto px-4 lg:px-6 pb-16">
+            <div class="rounded-3xl overflow-hidden shadow-2xl border-2 border-gray-100">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3975.933072425432!2d6.9978099147612905!3d4.815837896521073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1069ce7eb8c1c8a9%3A0x8a1b5b8c5c8a1b5d!2sPort%20Harcourt%2C%20Nigeria!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
-                        <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
+    <!-- FOOTER -->
+    <footer class="bg-[#0f172a] text-gray-300">
+        <div class="border-t border-white/10">
+            <div class="container mx-auto px-4 py-12 lg:py-14">
+                <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+                    <div class="space-y-4">
+                        <a href="index.html" class="inline-flex items-center gap-2">
+                            <img src="assets/sirius-logo.svg" alt="Sirius Jobs logo" class="w-10 h-10">
+                            <span class="text-lg font-semibold text-white tracking-wide uppercase">Sirius Jobs</span>
+                        </a>
+                        <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+                        <div class="flex items-center gap-3 text-gray-400">
+                            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+                            <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+                            <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+                            <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+                        </div>
                     </div>
-                    <p class="text-gray-400 mb-4">Connecting Talent With Trust across Nigeria since 2022.</p>
-                    <div class="flex space-x-4">
-                        <a href="https://web.facebook.com/profile.php?id=61582342397507" class="text-gray-400 hover:text-white transition-all"><i data-feather="facebook"></i></a>
-                        <a href="https://twitter.com/SiriusOddJobs" class="text-gray-400 hover:text-white transition-all"><i data-feather="twitter"></i></a>
-                        <a href="https://www.instagram.com/siriusjobss" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
-                        <a href="https://www.linkedin.com/company/siriusjobsng/" class="text-gray-400 hover:text-white transition-all"><i data-feather="linkedin"></i></a>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="about.html" class="hover:text-white transition">About</a></li>
+                            <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+                            <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+                            <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+                            <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+                            <li><span>WhatsApp: 0704 447 0559</span></li>
+                            <li><span>Email: support@siriusjobsng.com</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li>Port Harcourt, Rivers State</li>
+                            <li>Nigeria</li>
+                        </ul>
                     </div>
                 </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-all">Home</a></li>
-                        <li><a href="about.html" class="text-gray-400 hover:text-white transition-all">About Us</a></li>
-                        <li><a href="jobs.html" class="text-gray-400 hover:text-white transition-all">Jobs</a></li>
-                        <li><a href="verify.html" class="text-gray-400 hover:text-white transition-all">Verify Worker</a></li>
-                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-all">Contact</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Services</h4>
-                    <ul class="space-y-2">
-                        <li><span class="text-gray-400">Artisans</span></li>
-                        <li><span class="text-gray-400">Plumbers</span></li>
-                        <li><span class="text-gray-400">Electricians</span></li>
-                        <li><span class="text-gray-400">Cleaners</span></li>
-                        <li><a href="services.html" class="text-gray-400 hover:text-white transition-all">More Services</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
-                    <ul class="space-y-2">
-                        <li class="flex items-start space-x-2">
-                            <i data-feather="phone" class="text-gray-400 mt-1 w-4 h-4"></i>
-                            <span class="text-gray-400">07044470559</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <i data-feather="mail" class="text-gray-400 mt-1 w-4 h-4"></i>
-                            <span class="text-gray-400">siriusoddjobs@gmail.com</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <i data-feather="map-pin" class="text-gray-400 mt-1 w-4 h-4"></i>
-                            <span class="text-gray-400">Port Harcourt, Nigeria</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
-                <div class="flex space-x-6">
-                    <a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
-                    <a href="terms.html" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>
+                <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+                        <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+                        <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+                        <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -296,6 +294,6 @@
         // Feather icons
         feather.replace();
     </script>
-  <script src="assistant.js"></script>
+    <script src="assistant.js"></script>
 </body>
 </html>

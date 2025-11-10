@@ -20,77 +20,114 @@
         }
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="api.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         body {
             font-family: 'Inter', sans-serif;
         }
-        .jobs-hero {
-            background: linear-gradient(rgba(0, 86, 179, 0.88), rgba(0, 86, 179, 0.88)), url('assets/hero-nigeria.svg');
-            background-size: cover;
-            background-position: center;
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
+
+        .animated-gradient {
+            background-size: 200% 200%;
+            animation: gradient-shift 15s ease infinite;
+        }
+
+        .job-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         .job-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        .transition-all {
-            transition: all 0.3s ease;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 86, 179, 0.15);
         }
     </style>
-
 </head>
+
 <body class="bg-white text-gray-800">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3">
-                <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
-                <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
-            </a>
-            <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
-                <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
-                <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
-                <a href="jobs.html" class="text-primary font-semibold transition-all">Jobs</a>
-                <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
-                <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
-                <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
-                <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">
+    <!-- Modern Fixed Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+        <div class="container mx-auto px-4 lg:px-6">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS" class="w-9 h-9 transition-transform group-hover:scale-110">
+                    <span class="text-xl font-black text-gray-900 tracking-tight uppercase">SIRIUS JOBS</span>
+                </a>
+
+                <div class="hidden lg:flex items-center gap-8">
+                    <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Home</a>
+                    <a href="services.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Services</a>
+                    <a href="jobs.html" class="text-sm font-bold text-primary">Jobs</a>
+                    <a href="consultations.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Consultations</a>
+                    <a href="marketplace.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Marketplace</a>
+                    <a href="findworker.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Find Workers</a>
+                    <a href="faq.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">FAQs</a>
+                    <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition">
+                        <i data-feather="log-in" class="w-4 h-4"></i>
+                        Login
+                    </a>
+                </div>
+
+                <button id="menu-btn" class="lg:hidden p-2 text-gray-600 hover:text-primary transition">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-md">
+            <div class="container mx-auto px-4 py-4 space-y-1">
+                <a href="index.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Home</a>
+                <a href="services.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Services</a>
+                <a href="jobs.html" class="block px-4 py-2.5 text-sm font-bold text-primary bg-primary/5 rounded-lg">Jobs</a>
+                <a href="consultations.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Consultations</a>
+                <a href="marketplace.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Marketplace</a>
+                <a href="findworker.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Find Workers</a>
+                <a href="faq.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">FAQs</a>
+                <a href="login.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-primary hover:bg-primary/90 rounded-lg transition">
                     <i data-feather="log-in" class="w-4 h-4"></i>
                     Login
                 </a>
             </div>
-            <div class="md:hidden">
-                <button id="menu-btn" class="text-gray-600 focus:outline-none">
-                    <i data-feather="menu"></i>
-                </button>
-            </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
-            <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
-            <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
-            <a href="jobs.html" class="block py-2 text-primary font-semibold transition-all">Jobs</a>
-            <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
-            <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
-            <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
-            <a href="login.html" class="flex items-center gap-2 text-gray-600 hover:text-primary transition-all">
-                <i data-feather="log-in" class="w-4 h-4"></i>
-                Login
-            </a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="jobs-hero text-white py-20 md:py-32">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6">Are you a skilled worker or employer?</h1>
-            <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto">Browse jobs or post your job opportunity</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#job-listings" class="bg-white text-primary font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition-all">Browse Jobs</a>
-                <a href="#post-job" class="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-primary transition-all">Post a Job</a>
+    <section class="pt-32 pb-20 lg:pb-32 bg-gradient-to-br from-black via-primary to-blue-900 text-white animated-gradient relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 mb-8">
+                    <i data-feather="briefcase" class="w-4 h-4"></i>
+                    <span class="text-sm font-semibold">Job Marketplace</span>
+                </div>
+
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
+                    Find Your Next<br/>Opportunity
+                </h1>
+
+                <p class="text-xl md:text-2xl text-gray-100 font-light leading-relaxed mb-10">
+                    Browse jobs or post your job opportunity — connecting skilled workers with employers across Nigeria
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#job-listings" class="inline-flex items-center justify-center gap-2 bg-white text-primary font-bold px-8 py-4 rounded-xl hover:bg-gray-100 transition-all shadow-xl">
+                        <i data-feather="search" class="w-5 h-5"></i>
+                        Browse Jobs
+                    </a>
+                    <a href="#post-job" class="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md border-2 border-white/20 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/20 transition-all">
+                        <i data-feather="plus-circle" class="w-5 h-5"></i>
+                        Post a Job
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -98,12 +135,24 @@
     <!-- Job Filters -->
     <section class="py-12 bg-gray-50">
         <div class="container mx-auto px-4">
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">Filter Jobs</h2>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="max-w-6xl mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 p-6 md:p-8">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-black text-gray-900 mb-2">Filter Jobs</h2>
+                    <p class="text-sm text-gray-600">Find the perfect opportunity for your skills</p>
+                </div>
+
+                <form id="jobFilterForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="lg:col-span-2">
+                        <label for="jobSearch" class="block text-sm font-bold text-gray-900 mb-2">Search</label>
+                        <div class="relative">
+                            <i data-feather="search" class="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                            <input id="jobSearch" type="search" placeholder="Job title, keyword, or company" class="w-full pl-11 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none" autocomplete="off">
+                        </div>
+                    </div>
+
                     <div>
-                        <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                        <select id="category" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border">
+                        <label for="category" class="block text-sm font-bold text-gray-900 mb-2">Category</label>
+                        <select id="category" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none">
                             <option>All Categories</option>
                             <option>Electrician</option>
                             <option>Plumber</option>
@@ -112,7 +161,7 @@
                             <option>Driver</option>
                             <option>Carpenter</option>
                             <option>Painter</option>
-                            <option>HVAC Technician</option>
+                            <option>AC Technician</option>
                             <option>Solar Installer</option>
                             <option>Personal Assistant (Day Hire)</option>
                             <option>Doctor Consultation (Affordable)</option>
@@ -125,11 +174,16 @@
                             <option>Other</option>
                         </select>
                     </div>
-                    
+
                     <div>
-                        <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                        <select id="location" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border">
+                        <label for="location" class="block text-sm font-bold text-gray-900 mb-2">Location</label>
+                        <select id="location" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none">
                             <option>All Locations</option>
+                            <option>Lagos – Ikeja</option>
+                            <option>Federal Capital Territory – Abuja</option>
+                            <option>Rivers – Port Harcourt</option>
+                            <option>Kano – Kano</option>
+                            <option>Oyo – Ibadan</option>
                             <option>Abia – Umuahia</option>
                             <option>Adamawa – Yola</option>
                             <option>Akwa Ibom – Uyo</option>
@@ -146,33 +200,12 @@
                             <option>Enugu – Enugu</option>
                             <option>Gombe – Gombe</option>
                             <option>Imo – Owerri</option>
-                            <option>Jigawa – Dutse</option>
-                            <option>Kaduna – Kaduna</option>
-                            <option>Kano – Kano</option>
-                            <option>Katsina – Katsina</option>
-                            <option>Kebbi – Birnin Kebbi</option>
-                            <option>Kogi – Lokoja</option>
-                            <option>Kwara – Ilorin</option>
-                            <option>Lagos – Ikeja</option>
-                            <option>Nasarawa – Lafia</option>
-                            <option>Niger – Minna</option>
-                            <option>Ogun – Abeokuta</option>
-                            <option>Ondo – Akure</option>
-                            <option>Osun – Osogbo</option>
-                            <option>Oyo – Ibadan</option>
-                            <option>Plateau – Jos</option>
-                            <option>Rivers – Port Harcourt</option>
-                            <option>Sokoto – Sokoto</option>
-                            <option>Taraba – Jalingo</option>
-                            <option>Yobe – Damaturu</option>
-                            <option>Zamfara – Gusau</option>
-                            <option>Federal Capital Territory – Abuja</option>
                         </select>
                     </div>
-                    
+
                     <div>
-                        <label for="experience" class="block text-sm font-medium text-gray-700 mb-1">Experience</label>
-                        <select id="experience" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border">
+                        <label for="experience" class="block text-sm font-bold text-gray-900 mb-2">Experience</label>
+                        <select id="experience" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none">
                             <option>Any Experience</option>
                             <option>Entry Level</option>
                             <option>1-3 Years</option>
@@ -180,395 +213,499 @@
                             <option>5+ Years</option>
                         </select>
                     </div>
-                    
+
                     <div class="flex items-end">
-                        <button class="w-full bg-primary text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition-all">Search Jobs</button>
+                        <button type="submit" class="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+                            Search Jobs
+                        </button>
                     </div>
+                </form>
+
+                <div class="mt-6 pt-6 border-t border-gray-100">
+                    <p class="text-sm text-gray-600 text-center">
+                        Can't find the exact role you need?
+                        <a href="contact.html" class="font-bold text-primary hover:text-primary/80">Contact us</a>
+                        and we'll match you manually.
+                    </p>
                 </div>
-                <p class="mt-4 text-sm text-gray-500">Can’t find the exact role you need? <a href="contact.html" class="text-primary hover:underline">Contact us</a> and we’ll match you manually.</p>
             </div>
         </div>
     </section>
 
     <!-- Job Listings -->
-    <section id="job-listings" class="py-12 bg-white">
+    <section id="job-listings" class="py-20 lg:py-32 bg-white">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8">Available Jobs</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Job Card 1 -->
-                <div class="job-card bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all" data-job-id="sample-job-1" data-job-title="Skilled Electrician Needed">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center">
-                            <i data-feather="tool" class="text-primary w-6 h-6"></i>
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-12 text-center">
+                    <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">Available Jobs</h2>
+                    <p class="text-xl text-gray-600">Discover opportunities from verified employers</p>
+                </div>
+
+                <div id="jobCardGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Job Card 1 -->
+                    <div class="job-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-3xl p-6 transition-all" data-job-id="sample-job-1" data-job-title="Skilled Electrician Needed">
+                        <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                            <i data-feather="zap" class="text-primary w-7 h-7"></i>
+                        </div>
+
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Skilled Electrician Needed</h3>
+                        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+                            Looking for a certified electrician for residential wiring in Port Harcourt. Must have 3+ years experience.
+                        </p>
+
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="tag" class="w-3 h-3"></i>
+                                Electrician
+                            </span>
+                            <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="map-pin" class="w-3 h-3"></i>
+                                Port Harcourt
+                            </span>
+                            <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="clock" class="w-3 h-3"></i>
+                                Full-time
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                            <span class="text-2xl font-black text-primary">₦25,000<span class="text-sm font-medium text-gray-500">/day</span></span>
+                            <a href="#" class="applyJobLink inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition" data-apply="true">
+                                Apply
+                                <i data-feather="arrow-right" class="w-4 h-4"></i>
+                            </a>
                         </div>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Skilled Electrician Needed</h3>
-                    <p class="text-gray-600 mb-4">Looking for a certified electrician for residential wiring in Port Harcourt. Must have 3+ years experience.</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Electrician</span>
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Port Harcourt</span>
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Full-time</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-medium text-primary">₦25,000/day</span>
-                        <a href="#" class="applyJobLink text-primary hover:text-opacity-80 transition-all font-medium" data-apply="true">Apply Now</a>
-                    </div>
-                </div>
-                
-                <!-- Job Card 2 -->
-                <div class="job-card bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all" data-job-id="sample-job-2" data-job-title="Plumbing Services">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center">
-                            <i data-feather="droplet" class="text-primary w-6 h-6"></i>
+
+                    <!-- Job Card 2 -->
+                    <div class="job-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-3xl p-6 transition-all" data-job-id="sample-job-2" data-job-title="Plumbing Services">
+                        <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                            <i data-feather="droplet" class="text-primary w-7 h-7"></i>
+                        </div>
+
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Plumbing Services</h3>
+                        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+                            Urgent need for a plumber to fix broken pipes in a commercial building in Lagos. Immediate start.
+                        </p>
+
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="tag" class="w-3 h-3"></i>
+                                Plumber
+                            </span>
+                            <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="map-pin" class="w-3 h-3"></i>
+                                Lagos
+                            </span>
+                            <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="clock" class="w-3 h-3"></i>
+                                Contract
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                            <span class="text-2xl font-black text-primary">₦18,000<span class="text-sm font-medium text-gray-500">/day</span></span>
+                            <a href="#" class="applyJobLink inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition" data-apply="true">
+                                Apply
+                                <i data-feather="arrow-right" class="w-4 h-4"></i>
+                            </a>
                         </div>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Plumbing Services</h3>
-                    <p class="text-gray-600 mb-4">Urgent need for a plumber to fix broken pipes in a commercial building in Lagos. Immediate start.</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Plumber</span>
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Lagos</span>
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Contract</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-medium text-primary">₦18,000/day</span>
-                        <a href="#" class="applyJobLink text-primary hover:text-opacity-80 transition-all font-medium" data-apply="true">Apply Now</a>
-                    </div>
-                </div>
-                
-                <!-- Job Card 3 -->
-                <div class="job-card bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all" data-job-id="sample-job-3" data-job-title="Office Cleaner Needed">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center">
-                            <i data-feather="home" class="text-primary w-6 h-6"></i>
+
+                    <!-- Job Card 3 -->
+                    <div class="job-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-3xl p-6 transition-all" data-job-id="sample-job-3" data-job-title="Office Cleaner Needed">
+                        <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                            <i data-feather="home" class="text-primary w-7 h-7"></i>
+                        </div>
+
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Office Cleaner Needed</h3>
+                        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+                            Looking for a reliable cleaner for daily office maintenance in Abuja. Monday-Friday, 8am-4pm.
+                        </p>
+
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="tag" class="w-3 h-3"></i>
+                                Cleaner
+                            </span>
+                            <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="map-pin" class="w-3 h-3"></i>
+                                Abuja
+                            </span>
+                            <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="clock" class="w-3 h-3"></i>
+                                Part-time
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                            <span class="text-2xl font-black text-primary">₦15,000<span class="text-sm font-medium text-gray-500">/day</span></span>
+                            <a href="#" class="applyJobLink inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition" data-apply="true">
+                                Apply
+                                <i data-feather="arrow-right" class="w-4 h-4"></i>
+                            </a>
                         </div>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Office Cleaner Needed</h3>
-                    <p class="text-gray-600 mb-4">Looking for a reliable cleaner for daily office maintenance in Abuja. Monday-Friday, 8am-4pm.</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Cleaner</span>
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Abuja</span>
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Part-time</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-medium text-primary">₦15,000/day</span>
-                        <a href="#" class="applyJobLink text-primary hover:text-opacity-80 transition-all font-medium" data-apply="true">Apply Now</a>
-                    </div>
-                </div>
-                
-                <!-- Job Card 4 -->
-                <div class="job-card bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all" data-job-id="sample-job-4" data-job-title="Carpentry Work">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center">
-                            <i data-feather="tool" class="text-primary w-6 h-6"></i>
+
+                    <!-- Job Card 4 -->
+                    <div class="job-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-3xl p-6 transition-all" data-job-id="sample-job-4" data-job-title="Carpentry Work">
+                        <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                            <i data-feather="tool" class="text-primary w-7 h-7"></i>
+                        </div>
+
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Carpentry Work</h3>
+                        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+                            Need an experienced carpenter for furniture making and installation in Enugu. Must provide samples of previous work.
+                        </p>
+
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="tag" class="w-3 h-3"></i>
+                                Artisan
+                            </span>
+                            <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="map-pin" class="w-3 h-3"></i>
+                                Enugu
+                            </span>
+                            <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="clock" class="w-3 h-3"></i>
+                                Project
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                            <span class="text-2xl font-black text-primary">₦30,000<span class="text-sm font-medium text-gray-500">/project</span></span>
+                            <a href="#" class="applyJobLink inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition" data-apply="true">
+                                Apply
+                                <i data-feather="arrow-right" class="w-4 h-4"></i>
+                            </a>
                         </div>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Carpentry Work</h3>
-                    <p class="text-gray-600 mb-4">Need an experienced carpenter for furniture making and installation in Enugu. Must provide samples of previous work.</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Artisan</span>
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Enugu</span>
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Project-based</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-medium text-primary">₦30,000/project</span>
-                        <a href="#" class="applyJobLink text-primary hover:text-opacity-80 transition-all font-medium" data-apply="true">Apply Now</a>
-                    </div>
-                </div>
-                
-                <!-- Job Card 5 -->
-                <div class="job-card bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all" data-job-id="sample-job-5" data-job-title="AC Technician">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center">
-                            <i data-feather="tool" class="text-primary w-6 h-6"></i>
+
+                    <!-- Job Card 5 -->
+                    <div class="job-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-3xl p-6 transition-all" data-job-id="sample-job-5" data-job-title="AC Technician">
+                        <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                            <i data-feather="wind" class="text-primary w-7 h-7"></i>
+                        </div>
+
+                        <h3 class="text-xl font-black text-gray-900 mb-2">AC Technician</h3>
+                        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+                            Looking for a certified AC technician for installation and maintenance in Kano. Must have own tools.
+                        </p>
+
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="tag" class="w-3 h-3"></i>
+                                Technician
+                            </span>
+                            <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="map-pin" class="w-3 h-3"></i>
+                                Kano
+                            </span>
+                            <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="clock" class="w-3 h-3"></i>
+                                Contract
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                            <span class="text-2xl font-black text-primary">₦22,000<span class="text-sm font-medium text-gray-500">/day</span></span>
+                            <a href="#" class="applyJobLink inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition" data-apply="true">
+                                Apply
+                                <i data-feather="arrow-right" class="w-4 h-4"></i>
+                            </a>
                         </div>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">AC Technician</h3>
-                    <p class="text-gray-600 mb-4">Looking for a certified AC technician for installation and maintenance in Kano. Must have own tools.</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Technician</span>
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Kano</span>
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Contract</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-medium text-primary">₦22,000/day</span>
-                        <a href="#" class="applyJobLink text-primary hover:text-opacity-80 transition-all font-medium" data-apply="true">Apply Now</a>
-                    </div>
-                </div>
-                
-                <!-- Job Card 6 -->
-                <div class="job-card bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all" data-job-id="sample-job-6" data-job-title="Housekeeper Needed">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center">
-                            <i data-feather="home" class="text-primary w-6 h-6"></i>
+
+                    <!-- Job Card 6 -->
+                    <div class="job-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-3xl p-6 transition-all" data-job-id="sample-job-6" data-job-title="Housekeeper Needed">
+                        <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                            <i data-feather="home" class="text-primary w-7 h-7"></i>
+                        </div>
+
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Housekeeper Needed</h3>
+                        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+                            Seeking a reliable housekeeper for a residential home in Port Harcourt. Live-in position with private quarters.
+                        </p>
+
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="tag" class="w-3 h-3"></i>
+                                Housekeeper
+                            </span>
+                            <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="map-pin" class="w-3 h-3"></i>
+                                Port Harcourt
+                            </span>
+                            <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                                <i data-feather="clock" class="w-3 h-3"></i>
+                                Full-time
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                            <span class="text-2xl font-black text-primary">₦80,000<span class="text-sm font-medium text-gray-500">/month</span></span>
+                            <a href="#" class="applyJobLink inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition" data-apply="true">
+                                Apply
+                                <i data-feather="arrow-right" class="w-4 h-4"></i>
+                            </a>
                         </div>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Housekeeper Needed</h3>
-                    <p class="text-gray-600 mb-4">Seeking a reliable housekeeper for a residential home in Port Harcourt. Live-in position with private quarters.</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Housekeeper</span>
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Port Harcourt</span>
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2.5 py-0.5 rounded">Full-time</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-medium text-primary">₦80,000/month</span>
-                        <a href="#" class="applyJobLink text-primary hover:text-opacity-80 transition-all font-medium" data-apply="true">Apply Now</a>
-                    </div>
                 </div>
-            </div>
-            
-            <div class="mt-10 flex justify-center">
-                <button class="bg-primary text-white font-bold py-2 px-6 rounded hover:bg-opacity-90 transition-all">Load More Jobs</button>
+
+                <p id="jobsEmptyState" class="hidden text-center text-gray-500 border-2 border-dashed border-gray-200 rounded-3xl py-12 mt-10 text-sm font-semibold">
+                    No jobs match this search yet. Try adjusting the filters or check back later.
+                </p>
+
+                <div class="mt-12 text-center">
+                    <button id="loadMoreJobs" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 disabled:opacity-40 disabled:cursor-not-allowed">
+                        Load More Jobs
+                        <i data-feather="refresh-cw" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Post Job Section -->
-    <section id="post-job" class="py-16 bg-gray-50">
+    <section id="post-job" class="py-20 lg:py-32 bg-gray-50">
         <div class="container mx-auto px-4">
-            <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-8">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6">Post a Job</h2>
-                <div class="mb-6 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-primary">
-                    <strong class="font-semibold uppercase tracking-wide">Heads up:</strong>
-                    You need a verified employer account to publish jobs. <a href="register.html?account=employer" class="font-medium underline hover:text-primary/80">Create an account</a> or <a href="login.html?account=employer" class="font-medium underline hover:text-primary/80">sign in</a> before submitting this form.
+            <div class="max-w-4xl mx-auto">
+                <div class="mb-12 text-center">
+                    <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">Post a Job</h2>
+                    <p class="text-xl text-gray-600">Connect with skilled professionals across Nigeria</p>
                 </div>
-                <form>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label for="job-title" class="block text-sm font-medium text-gray-700 mb-1">Job Title*</label>
-                            <input type="text" id="job-title" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" placeholder="e.g. Electrician Needed" required>
-                        </div>
-                        
-                        <div>
-                            <label for="job-category" class="block text-sm font-medium text-gray-700 mb-1">Category*</label>
-                            <select id="job-category" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" required>
-                                <option value="">Select Category</option>
-                                <option>Electrician</option>
-                                <option>Plumber</option>
-                                <option>Cleaner</option>
-                                <option>Carpenter</option>
-                                <option>Painter</option>
-                                <option>HVAC Technician</option>
-                                <option>Generator Technician</option>
-                                <option>Personal Assistant (Day Hire)</option>
-                                <option>Chef / Caterer</option>
-                                <option>Security Guard</option>
-                                <option>Driver</option>
-                                <option>Event Planner</option>
-                                <option>IT Support Specialist</option>
-                                <option>Solar Installer</option>
-                                <option>Healthcare Professional</option>
-                                <option>Legal Consultant</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label for="job-location" class="block text-sm font-medium text-gray-700 mb-1">Location*</label>
-                            <select id="job-location" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" required>
-                                <option value="">Select Location</option>
-                                <option>Abia – Umuahia</option>
-                                <option>Adamawa – Yola</option>
-                                <option>Akwa Ibom – Uyo</option>
-                                <option>Anambra – Awka</option>
-                                <option>Bauchi – Bauchi</option>
-                                <option>Bayelsa – Yenagoa</option>
-                                <option>Benue – Makurdi</option>
-                                <option>Borno – Maiduguri</option>
-                                <option>Cross River – Calabar</option>
-                                <option>Delta – Asaba</option>
-                                <option>Ebonyi – Abakaliki</option>
-                                <option>Edo – Benin City</option>
-                                <option>Ekiti – Ado-Ekiti</option>
-                                <option>Enugu – Enugu</option>
-                                <option>Gombe – Gombe</option>
-                                <option>Imo – Owerri</option>
-                                <option>Jigawa – Dutse</option>
-                                <option>Kaduna – Kaduna</option>
-                                <option>Kano – Kano</option>
-                                <option>Katsina – Katsina</option>
-                                <option>Kebbi – Birnin Kebbi</option>
-                                <option>Kogi – Lokoja</option>
-                                <option>Kwara – Ilorin</option>
-                                <option>Lagos – Ikeja</option>
-                                <option>Nasarawa – Lafia</option>
-                                <option>Niger – Minna</option>
-                                <option>Ogun – Abeokuta</option>
-                                <option>Ondo – Akure</option>
-                                <option>Osun – Osogbo</option>
-                                <option>Oyo – Ibadan</option>
-                                <option>Plateau – Jos</option>
-                                <option>Rivers – Port Harcourt</option>
-                                <option>Sokoto – Sokoto</option>
-                                <option>Taraba – Jalingo</option>
-                                <option>Yobe – Damaturu</option>
-                                <option>Zamfara – Gusau</option>
-                                <option>Federal Capital Territory – Abuja</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label for="job-type" class="block text-sm font-medium text-gray-700 mb-1">Job Type*</label>
-                            <select id="job-type" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" required>
-                                <option value="">Select Type</option>
-                                <option>Full-time</option>
-                                <option>Part-time</option>
-                                <option>Contract</option>
-                                <option>Project-based</option>
-                                <option>Temporary</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label for="job-salary" class="block text-sm font-medium text-gray-700 mb-1">Salary/Rate*</label>
-                            <input type="text" id="job-salary" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" placeholder="e.g. ₦25,000/day" required>
-                        </div>
-                        
-                        <div>
-                            <label for="job-experience" class="block text-sm font-medium text-gray-700 mb-1">Experience Level*</label>
-                            <select id="job-experience" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" required>
-                                <option value="">Select Experience</option>
-                                <option>Entry Level</option>
-                                <option>1-3 Years</option>
-                                <option>3-5 Years</option>
-                                <option>5+ Years</option>
-                            </select>
+
+                <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 md:p-10">
+                    <div class="mb-8 rounded-2xl border-2 border-primary/20 bg-primary/5 px-6 py-4">
+                        <div class="flex items-start gap-3">
+                            <i data-feather="info" class="w-5 h-5 text-primary flex-shrink-0 mt-0.5"></i>
+                            <div>
+                                <p class="text-sm text-primary font-semibold mb-1">Need a verified employer account</p>
+                                <p class="text-sm text-gray-700">
+                                    Only logged-in employers with government ID verification <strong>and</strong> a paid ₦1,000 post credit can publish roles.
+                                    <a href="register.html?account=employer" class="font-bold underline hover:text-primary">Create an account</a> or
+                                    <a href="login.html?account=employer" class="font-bold underline hover:text-primary">sign in</a> to get verified, then pay inside the dashboard.
+                                </p>
+                                <p id="postJobGateMessage" class="text-xs text-gray-500 mt-2">
+                                    Button stays locked until those requirements are met.
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="mb-6">
-                        <label for="job-description" class="block text-sm font-medium text-gray-700 mb-1">Job Description*</label>
-                        <textarea id="job-description" rows="5" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" placeholder="Describe the job responsibilities and requirements..." required></textarea>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <label for="contact-info" class="block text-sm font-medium text-gray-700 mb-1">Your Contact Information*</label>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <input type="text" id="contact-name" class="rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" placeholder="Your Name" required>
-                            <input type="email" id="contact-email" class="rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" placeholder="Your Email" required>
-                            <input type="tel" id="contact-phone" class="rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" placeholder="Your Phone Number" required>
+
+                    <form id="jobPostForm" class="space-y-6" novalidate>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="job-title" class="block text-sm font-bold text-gray-900 mb-2">Job Title*</label>
+                                <input type="text" id="job-title" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none" placeholder="e.g. Electrician Needed" required>
+                            </div>
+
+                            <div>
+                                <label for="job-category" class="block text-sm font-bold text-gray-900 mb-2">Category*</label>
+                                <select id="job-category" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none" required>
+                                    <option value="">Select Category</option>
+                                    <option>Electrician</option>
+                                    <option>Plumber</option>
+                                    <option>Cleaner</option>
+                                    <option>Carpenter</option>
+                                    <option>Painter</option>
+                                    <option>AC Technician</option>
+                                    <option>Generator Technician</option>
+                                    <option>Personal Assistant (Day Hire)</option>
+                                    <option>Chef / Caterer</option>
+                                    <option>Security Guard</option>
+                                    <option>Driver</option>
+                                    <option>Event Planner</option>
+                                    <option>IT Support Specialist</option>
+                                    <option>Solar Installer</option>
+                                    <option>Healthcare Professional</option>
+                                    <option>Legal Consultant</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="job-location" class="block text-sm font-bold text-gray-900 mb-2">Location*</label>
+                                <select id="job-location" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none" required>
+                                    <option value="">Select Location</option>
+                                    <option>Lagos – Ikeja</option>
+                                    <option>Federal Capital Territory – Abuja</option>
+                                    <option>Rivers – Port Harcourt</option>
+                                    <option>Kano – Kano</option>
+                                    <option>Oyo – Ibadan</option>
+                                    <option>Enugu – Enugu</option>
+                                    <option>Kaduna – Kaduna</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="job-type" class="block text-sm font-bold text-gray-900 mb-2">Job Type*</label>
+                                <select id="job-type" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none" required>
+                                    <option value="">Select Type</option>
+                                    <option>Full-time</option>
+                                    <option>Part-time</option>
+                                    <option>Contract</option>
+                                    <option>Project-based</option>
+                                    <option>Temporary</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="job-salary" class="block text-sm font-bold text-gray-900 mb-2">Salary/Rate*</label>
+                                <input type="text" id="job-salary" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none" placeholder="e.g. ₦25,000/day" required>
+                            </div>
+
+                            <div>
+                                <label for="job-experience" class="block text-sm font-bold text-gray-900 mb-2">Experience Level*</label>
+                                <select id="job-experience" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none" required>
+                                    <option value="">Select Experience</option>
+                                    <option>Entry Level</option>
+                                    <option>1-3 Years</option>
+                                    <option>3-5 Years</option>
+                                    <option>5+ Years</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="flex justify-end">
-                        <button type="submit" class="bg-primary text-white font-bold py-2 px-6 rounded hover:bg-opacity-90 transition-all">Post Job</button>
-                    </div>
-                </form>
+
+                        <div>
+                            <label for="job-description" class="block text-sm font-bold text-gray-900 mb-2">Job Description*</label>
+                            <textarea id="job-description" rows="5" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none" placeholder="Describe the job responsibilities and requirements..." required></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-900 mb-4">Your Contact Information*</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <input type="text" id="contact-name" class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none" placeholder="Your Name" required>
+                                <input type="email" id="contact-email" class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none" placeholder="Your Email" required>
+                                <input type="tel" id="contact-phone" class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none md:col-span-2" placeholder="Your Phone Number" required>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end pt-4">
+                            <button type="button" id="submitJobPosting" disabled class="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-primary/25 opacity-60 cursor-not-allowed">
+                                Post Job
+                                <i data-feather="send" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
-                        <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
+    <footer class="bg-[#0f172a] text-gray-300">
+        <div class="border-t border-white/10">
+            <div class="container mx-auto px-4 py-12 lg:py-14">
+                <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+                    <div class="space-y-4">
+                        <a href="index.html" class="inline-flex items-center gap-2">
+                            <img src="assets/sirius-logo.svg" alt="Sirius Jobs logo" class="w-10 h-10">
+                            <span class="text-lg font-semibold text-white tracking-wide uppercase">Sirius Jobs</span>
+                        </a>
+                        <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+                        <div class="flex items-center gap-3 text-gray-400">
+                            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+                            <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+                            <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+                            <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+                        </div>
                     </div>
-                    <p class="text-gray-400 mb-4">Connecting Talent With Trust across Nigeria since 2022.</p>
-                    <div class="flex space-x-4">
-                        <a href="https://web.facebook.com/profile.php?id=61582342397507" class="text-gray-400 hover:text-white transition-all"><i data-feather="facebook"></i></a>
-                        <a href="https://twitter.com/SiriusOddJobs" class="text-gray-400 hover:text-white transition-all"><i data-feather="twitter"></i></a>
-                        <a href="https://www.instagram.com/siriusjobss" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
-                        <a href="https://www.linkedin.com/company/siriusjobsng/" class="text-gray-400 hover:text-white transition-all"><i data-feather="linkedin"></i></a>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="about.html" class="hover:text-white transition">About</a></li>
+                            <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+                            <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+                            <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+                            <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+                            <li><span>WhatsApp: 0704 447 0559</span></li>
+                            <li><span>Email: support@siriusjobsng.com</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li>Port Harcourt, Rivers State</li>
+                            <li>Nigeria</li>
+                        </ul>
                     </div>
                 </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-all">Home</a></li>
-                        <li><a href="about.html" class="text-gray-400 hover:text-white transition-all">About Us</a></li>
-                        <li><a href="jobs.html" class="text-gray-400 hover:text-white transition-all">Jobs</a></li>
-                        <li><a href="verify.html" class="text-gray-400 hover:text-white transition-all">Verify Worker</a></li>
-                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-all">Contact</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Services</h4>
-                    <ul class="space-y-2">
-                        <li><span class="text-gray-400">Artisans</span></li>
-                        <li><span class="text-gray-400">Plumbers</span></li>
-                        <li><span class="text-gray-400">Electricians</span></li>
-                        <li><span class="text-gray-400">Cleaners</span></li>
-                        <li><a href="services.html" class="text-gray-400">More Services</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
-                    <ul class="space-y-2">
-                        <li class="flex items-start space-x-2">
-                            <i data-feather="phone" class="text-gray-400 mt-1 w-4 h-4"></i>
-                            <span class="text-gray-400">07044470559</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <i data-feather="mail" class="text-gray-400 mt-1 w-4 h-4"></i>
-                            <span class="text-gray-400">siriusoddjobs@gmail.com</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <i data-feather="map-pin" class="text-gray-400 mt-1 w-4 h-4"></i>
-                            <span class="text-gray-400">Port Harcourt, Nigeria</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
-                <div class="flex space-x-6">
-                    <a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
-                    <a href="terms.html" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>
+                <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+                        <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+                        <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+                        <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Apply modal -->
-    <div id="applyModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center px-4 hidden">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
-            <div class="px-6 py-5 border-b flex items-center justify-between">
+    <!-- Apply Modal -->
+    <div id="applyModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center px-4 hidden z-50">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
                 <div>
-                    <h3 class="text-xl font-semibold text-gray-800">Apply for this job</h3>
+                    <h3 class="text-xl font-black text-gray-900">Apply for this job</h3>
                     <p id="applyModalJob" class="text-sm text-gray-500"></p>
                 </div>
-                <button id="applyModalClose" class="text-gray-500 hover:text-primary transition">
-                    <i data-feather="x"></i>
+                <button id="applyModalClose" class="text-gray-500 hover:text-primary transition p-2">
+                    <i data-feather="x" class="w-6 h-6"></i>
                 </button>
             </div>
-            <form id="applyForm" class="p-6 space-y-4">
+
+            <form id="applyForm" class="p-6 space-y-5">
                 <input type="hidden" id="applyJobId">
+
                 <div>
-                    <label for="expectedPay" class="block text-sm font-medium text-gray-700 mb-1">Expected pay (optional)</label>
-                    <input type="number" id="expectedPay" class="w-full rounded-lg border border-gray-200 focus:ring-primary focus:border-primary px-3 py-2" placeholder="e.g. 25000">
+                    <label for="expectedPay" class="block text-sm font-bold text-gray-900 mb-2">Expected pay (optional)</label>
+                    <input type="number" id="expectedPay" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none" placeholder="e.g. 25000">
                 </div>
+
                 <div>
-                    <label for="supportingDocs" class="block text-sm font-medium text-gray-700 mb-1">Upload CV &amp; supporting documents</label>
-                    <input type="file" id="supportingDocs" class="w-full text-sm text-gray-600 border border-dashed border-gray-300 rounded-lg px-3 py-3 focus:outline-none focus:ring-2 focus:ring-primary/30" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple>
-                    <p class="text-xs text-gray-400 mt-2">Attach your CV, certifications, or reference letters (PDF, Word or image files, max 10MB each).</p>
+                    <label for="supportingDocs" class="block text-sm font-bold text-gray-900 mb-2">Upload CV & supporting documents</label>
+                    <input type="file" id="supportingDocs" class="w-full text-sm text-gray-600 border-2 border-dashed border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple>
+                    <p class="text-xs text-gray-500 mt-2">Attach your CV, certifications, or reference letters (PDF, Word or image files, max 10MB each).</p>
                 </div>
+
                 <div>
-                    <label for="coverLetter" class="block text-sm font-medium text-gray-700 mb-1">Cover letter</label>
-                    <textarea id="coverLetter" rows="4" class="w-full rounded-lg border border-gray-200 focus:ring-primary focus:border-primary px-3 py-2" placeholder="Tell the employer why you’re a great fit" required></textarea>
+                    <label for="coverLetter" class="block text-sm font-bold text-gray-900 mb-2">Cover letter*</label>
+                    <textarea id="coverLetter" rows="4" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none" placeholder="Tell the employer why you're a great fit" required></textarea>
                 </div>
-                <p class="text-xs text-gray-500">Submitting this application shares your verified profile with the employer.</p>
-                <div class="flex items-center justify-end gap-3">
-                    <button type="button" id="applyModalCancel" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700">Cancel</button>
-                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition">Submit application</button>
+
+                <p class="text-xs text-gray-500 bg-gray-50 rounded-xl px-4 py-3">
+                    Submitting this application shares your verified profile with the employer.
+                </p>
+
+                <div class="flex items-center justify-end gap-3 pt-4">
+                    <button type="button" id="applyModalCancel" class="px-5 py-2.5 text-sm font-bold text-gray-600 hover:text-gray-900 transition">Cancel</button>
+                    <button type="submit" class="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-primary rounded-xl hover:bg-primary/90 transition shadow-lg shadow-primary/25">
+                        Submit application
+                        <i data-feather="send" class="w-4 h-4"></i>
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Apply success toast -->
-    <div id="applyToast" class="fixed bottom-6 right-6 bg-white border border-green-200 shadow-lg rounded-xl px-5 py-4 flex items-center gap-3 text-sm text-green-700 hidden">
-        <i data-feather="check-circle" class="w-5 h-5"></i>
-        <span>Application submitted! We’ll notify you when the employer responds.</span>
+    <!-- Apply Success Toast -->
+    <div id="applyToast" class="fixed bottom-6 right-6 bg-white border-2 border-green-200 shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-3 text-sm text-green-700 hidden z-50">
+        <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <i data-feather="check-circle" class="w-5 h-5 text-green-600"></i>
+        </div>
+        <span class="font-medium">Application submitted! We'll notify you when the employer responds.</span>
     </div>
 
+    <script src="session-utils.js"></script>
     <script>
         // Mobile menu toggle
         document.getElementById('menu-btn').addEventListener('click', function() {
@@ -600,13 +737,16 @@
             }
         }
 
-        document.querySelectorAll('.applyJobLink').forEach(btn => {
-            btn.addEventListener('click', (event) => {
-                event.preventDefault();
-                const card = event.currentTarget.closest('.job-card');
-                openApplyModal(card.dataset.jobId, card.dataset.jobTitle);
+        function attachApplyHandlers() {
+            document.querySelectorAll('.applyJobLink').forEach(btn => {
+                btn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const card = event.currentTarget.closest('.job-card');
+                    if (!card) return;
+                    openApplyModal(card.dataset.jobId, card.dataset.jobTitle);
+                });
             });
-        });
+        }
 
         applyModalClose.addEventListener('click', closeApplyModal);
         applyModalCancel.addEventListener('click', closeApplyModal);
@@ -668,9 +808,306 @@
             }
         });
 
-        // Feather icons
+        // Dynamic job board logic
+        const jobGrid = document.getElementById('jobCardGrid');
+        const jobsEmptyState = document.getElementById('jobsEmptyState');
+        const loadMoreBtn = document.getElementById('loadMoreJobs');
+        const jobFilterForm = document.getElementById('jobFilterForm');
+        const jobSearchInput = document.getElementById('jobSearch');
+        const categorySelect = document.getElementById('category');
+        const locationSelect = document.getElementById('location');
+        const experienceSelect = document.getElementById('experience');
+        const JOB_BATCH = 6;
+        const currency = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 });
+
+        const fallbackJobs = [
+            {
+                id: 'sample-job-1',
+                title: 'Skilled Electrician Needed',
+                description: 'Looking for a certified electrician for residential wiring in Port Harcourt. Must have 3+ years experience.',
+                category: 'Electrician',
+                location: 'Port Harcourt',
+                jobType: 'Full-time',
+                rateLabel: '₦25,000',
+                rateUnit: 'day',
+                company: 'Delta Homes',
+                experienceLabel: '3-5 Years',
+                icon: 'zap'
+            },
+            {
+                id: 'sample-job-2',
+                title: 'Plumbing Services',
+                description: 'Urgent need for a plumber to fix broken pipes in a commercial building in Lagos. Immediate start.',
+                category: 'Plumber',
+                location: 'Lagos',
+                jobType: 'Contract',
+                rateLabel: '₦18,000',
+                rateUnit: 'day',
+                company: 'Urban Suites',
+                experienceLabel: '1-3 Years',
+                icon: 'droplet'
+            },
+            {
+                id: 'sample-job-3',
+                title: 'Office Cleaner Needed',
+                description: 'Daily office cleaning for a tech hub in Abuja. Must be punctual and detail-oriented.',
+                category: 'Cleaner',
+                location: 'Abuja',
+                jobType: 'Full-time',
+                rateLabel: '₦65,000',
+                rateUnit: 'month',
+                company: 'Tech District',
+                experienceLabel: 'Entry Level',
+                icon: 'feather'
+            },
+            {
+                id: 'sample-job-4',
+                title: 'Carpentry Work',
+                description: 'Experienced carpenter needed to install custom wardrobes in Lekki. Tools will be provided.',
+                category: 'Carpenter',
+                location: 'Lagos',
+                jobType: 'Project-based',
+                rateLabel: '₦320,000',
+                rateUnit: 'project',
+                company: 'Oak & Co.',
+                experienceLabel: '5+ Years',
+                icon: 'tool'
+            },
+            {
+                id: 'sample-job-5',
+                title: 'AC Technician',
+                description: 'Diagnose and service split unit AC systems for facility management clients in Abuja.',
+                category: 'AC Technician',
+                location: 'Abuja',
+                jobType: 'Contract',
+                rateLabel: '₦22,000',
+                rateUnit: 'day',
+                company: 'CoolBreeze',
+                experienceLabel: '3-5 Years',
+                icon: 'wind'
+            },
+            {
+                id: 'sample-job-6',
+                title: 'Housekeeper Needed',
+                description: 'Live-in housekeeper for a residential home in Port Harcourt. Includes accommodation.',
+                category: 'Housekeeper',
+                location: 'Port Harcourt',
+                jobType: 'Full-time',
+                rateLabel: '₦80,000',
+                rateUnit: 'month',
+                company: 'Private Client',
+                experienceLabel: 'Any Experience',
+                icon: 'home'
+            },
+        ];
+
+        let allJobs = [...fallbackJobs];
+        let filteredJobs = [...fallbackJobs];
+        let jobsVisible = JOB_BATCH;
+
+        const toPlainText = value => (value || '').replace(/<[^>]+>/g, '');
+
+        function mapApiJob(job) {
+            const description = toPlainText(job.description ?? 'Full duties shared after you apply.');
+            const budgetLabel = typeof job.budget === 'number' ? currency.format(job.budget) : 'Budget shared privately';
+            return {
+                id: job.id,
+                title: job.title,
+                description,
+                category: job.serviceCategory?.label ?? 'General Service',
+                location: job.city ?? job.location ?? 'Nigeria',
+                jobType: job.remoteFriendly ? 'Remote friendly' : 'On-site',
+                rateLabel: budgetLabel,
+                rateUnit: job.rateUnit ?? 'project',
+                company: job.postedBy?.employerProfile?.companyName ?? 'Verified Employer',
+                experienceLabel: job.experience ?? 'Any Experience',
+                icon: 'briefcase',
+            };
+        }
+
+        function buildJobCard(job) {
+            const shortDescription =
+                job.description.length > 160 ? `${job.description.slice(0, 157)}…` : job.description;
+            const experienceChip =
+                job.experienceLabel && job.experienceLabel !== 'Any Experience'
+                    ? `<span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                            <i data-feather="award" class="w-3 h-3"></i>
+                            ${job.experienceLabel}
+                        </span>`
+                    : '';
+            const rateUnitLabel = job.rateUnit ? `<span class="text-sm font-medium text-gray-500">/${job.rateUnit}</span>` : '';
+            return `
+                <div class="job-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-3xl p-6 transition-all" data-job-id="${job.id}" data-job-title="${job.title}">
+                    <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                        <i data-feather="${job.icon || 'briefcase'}" class="text-primary w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-black text-gray-900 mb-2">${job.title}</h3>
+                    <p class="text-gray-600 mb-4 text-sm leading-relaxed">${shortDescription}</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full">
+                            <i data-feather="tag" class="w-3 h-3"></i>
+                            ${job.category}
+                        </span>
+                        <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                            <i data-feather="map-pin" class="w-3 h-3"></i>
+                            ${job.location}
+                        </span>
+                        <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                            <i data-feather="clock" class="w-3 h-3"></i>
+                            ${job.jobType}
+                        </span>
+                        ${experienceChip}
+                    </div>
+                    <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                        <span class="text-2xl font-black text-primary">
+                            ${job.rateLabel}${rateUnitLabel}
+                        </span>
+                        <a href="#" class="applyJobLink inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition" data-apply="true">
+                            Apply
+                            <i data-feather="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderJobCards(reset = false) {
+            if (!jobGrid) return;
+            if (reset) {
+                jobsVisible = JOB_BATCH;
+            }
+            if (!filteredJobs.length) {
+                jobGrid.innerHTML = '';
+                jobsEmptyState?.classList.remove('hidden');
+                loadMoreBtn?.setAttribute('disabled', 'disabled');
+                return;
+            }
+            jobsEmptyState?.classList.add('hidden');
+            const jobsToRender = filteredJobs.slice(0, jobsVisible);
+            jobGrid.innerHTML = jobsToRender.map(buildJobCard).join('');
+            attachApplyHandlers();
+            feather.replace();
+            if (loadMoreBtn) {
+                if (jobsVisible >= filteredJobs.length) {
+                    loadMoreBtn.setAttribute('disabled', 'disabled');
+                } else {
+                    loadMoreBtn.removeAttribute('disabled');
+                }
+            }
+        }
+
+        function applyFilters(event) {
+            event?.preventDefault();
+            const categoryValue = categorySelect?.value?.toLowerCase();
+            const locationValue = locationSelect?.value?.toLowerCase();
+            const experienceValue = experienceSelect?.value;
+            const searchValue = jobSearchInput?.value?.trim().toLowerCase();
+
+            filteredJobs = allJobs.filter(job => {
+                const matchesCategory =
+                    !categoryValue ||
+                    categoryValue === 'all categories' ||
+                    job.category.toLowerCase().includes(categoryValue);
+                const matchesLocation =
+                    !locationValue ||
+                    locationValue === 'all locations' ||
+                    job.location.toLowerCase().includes(locationValue);
+                const matchesExperience =
+                    !experienceValue ||
+                    experienceValue === 'Any Experience' ||
+                    job.experienceLabel === experienceValue ||
+                    job.experienceLabel === 'Any Experience';
+                const matchesSearch =
+                    !searchValue ||
+                    job.title.toLowerCase().includes(searchValue) ||
+                    job.description.toLowerCase().includes(searchValue) ||
+                    job.company.toLowerCase().includes(searchValue);
+                return matchesCategory && matchesLocation && matchesExperience && matchesSearch;
+            });
+            renderJobCards(true);
+        }
+
+        let searchDebounce;
+        jobFilterForm?.addEventListener('submit', applyFilters);
+        document.querySelectorAll('#jobFilterForm select').forEach(select => {
+            select.addEventListener('change', () => applyFilters());
+        });
+        jobSearchInput?.addEventListener('input', () => {
+            clearTimeout(searchDebounce);
+            searchDebounce = setTimeout(() => applyFilters(), 200);
+        });
+
+        loadMoreBtn?.addEventListener('click', () => {
+            jobsVisible = Math.min(jobsVisible + JOB_BATCH, filteredJobs.length);
+            renderJobCards();
+        });
+
+        async function fetchJobs() {
+            try {
+                const params = new URLSearchParams({ status: 'OPEN' });
+                const response = await fetch(`/api/jobs?${params.toString()}`);
+                if (!response.ok) {
+                    throw new Error('Unable to load jobs');
+                }
+                const data = await response.json();
+                if (!Array.isArray(data) || !data.length) {
+                    throw new Error('No jobs returned');
+                }
+                allJobs = data.map(mapApiJob);
+            } catch (error) {
+                console.warn('Falling back to sample job listings', error);
+                allJobs = [...fallbackJobs];
+            }
+            filteredJobs = [...allJobs];
+            renderJobCards(true);
+        }
+
+        // Post job gating
+        const postJobBtn = document.getElementById('submitJobPosting');
+        const postJobMessage = document.getElementById('postJobGateMessage');
+
+        function evaluatePostGate() {
+            if (!postJobBtn) return;
+            const employerPayload = window.SiriusSession?.parse('siriusEmployerAuth');
+            const loggedIn = Boolean(employerPayload?.token);
+            const govVerified = Boolean(employerPayload?.employerProfile?.verified);
+            const hasCredit =
+                sessionStorage.getItem('siriusPaidJobCredit') === 'true' ||
+                sessionStorage.getItem('siriusPremiumEmployer') === 'true';
+
+            if (loggedIn && govVerified && hasCredit) {
+                postJobBtn.disabled = false;
+                postJobBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+                postJobBtn.innerHTML = 'Go to Employer Dashboard <i data-feather="external-link" class="w-5 h-5"></i>';
+                postJobBtn.addEventListener('click', () => {
+                    window.location.href = 'employer-dashboard.html#post-job';
+                }, { once: true });
+                if (postJobMessage) {
+                    postJobMessage.textContent = 'Credit detected. Continue in your employer dashboard to publish this role.';
+                }
+            } else {
+                postJobBtn.disabled = true;
+                postJobBtn.classList.add('opacity-60', 'cursor-not-allowed');
+                postJobBtn.innerHTML = 'Locked – verify & pay ₦1,000 <i data-feather="lock" class="w-5 h-5"></i>';
+                if (postJobMessage) {
+                    postJobMessage.textContent = 'Log in as a verified employer and settle the ₦1,000 post fee in the employer dashboard to unlock this button.';
+                }
+            }
+            feather.replace();
+        }
+
+        // Bootstrap UI
+        attachApplyHandlers();
+        fetchJobs();
+        evaluatePostGate();
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'siriusPaidJobCredit' || event.key === 'siriusPremiumEmployer') {
+                evaluatePostGate();
+            }
+        });
+
         feather.replace();
     </script>
-  <script src="assistant.js"></script>
+    <script src="assistant.js"></script>
 </body>
 </html>

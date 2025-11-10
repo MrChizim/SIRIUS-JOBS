@@ -1,1861 +1,430 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Affordable Consultations - Sirius Jobs</title>
-  <meta name="description" content="Book affordable consultations with trusted doctors and lawyers across Nigeria." />
-  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="platform.js"></script>
-  <script>
-    tailwind.config = { theme: { extend: { colors: { primary:'#0056b3', secondary:'#808080' } } } }
-  </script>
-  <script src="https://unpkg.com/feather-icons"></script>
-  <script src="api.js"></script>
-  <script src="session-utils.js"></script>
-  <script src="ui-utils.js"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    body { font-family: 'Inter', sans-serif; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Consultations – Sirius Jobs</title>
+    <meta name="description" content="Get expert consultations from verified doctors and lawyers. ₦3,000 for 24-hour secure consultation sessions.">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0056b3',
+                        secondary: '#808080',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #0056b3;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .professional-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .professional-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 86, 179, 0.15);
+        }
+
+        .filter-tab {
+            transition: all 0.3s;
+        }
+
+        .filter-tab.active {
+            background: #0056b3;
+            color: white;
+        }
+
+        .star-rating {
+            color: #fbbf24;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
-  <!-- NAV -->
-  <nav class="bg-white shadow-md sticky top-0 z-50">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <a href="index.html" class="flex items-center space-x-3">
-        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
-        <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
-      </a>
-      <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
-        <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
-        <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
-        <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
-        <a href="consultations.html" class="text-primary font-semibold">Consultations</a>
-        <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
-        <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
-        <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">
-          <i data-feather="log-in" class="w-4 h-4"></i>
-          Login
-        </a>
-      </div>
-      <div class="md:hidden">
-        <button id="menu-btn" class="text-gray-600 focus:outline-none">
-          <i data-feather="menu"></i>
-        </button>
-      </div>
-    </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
-      <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
-      <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
-      <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
-      <a href="consultations.html" class="block py-2 text-primary font-semibold transition-all">Consultations</a>
-      <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
-      <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
-      <a href="login.html" class="flex items-center gap-2 text-gray-600 hover:text-primary transition-all">
-        <i data-feather="log-in" class="w-4 h-4"></i>
-        Login
-      </a>
-    </div>
-  </nav>
+<body class="bg-gray-50 text-gray-900 antialiased">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm transition-transform group-hover:scale-105" />
+                    <span class="sr-only">SiriusJobs home</span>
+                </a>
 
-  <!-- HERO -->
-  <header class="bg-primary text-white py-16 md:py-20">
-    <div class="container mx-auto px-4 text-center md:text-left md:flex md:items-center md:justify-between">
-      <div class="max-w-2xl">
-        <h1 class="text-3xl md:text-4xl font-semibold mb-4">Affordable Consultations With Trusted Professionals</h1>
-        <p class="text-base md:text-lg text-primary/10 md:text-white/90">Book quick sessions with licensed doctors and experienced lawyers across Nigeria for just ₦3000.</p>
-        <div class="flex flex-col sm:flex-row gap-3 mt-6">
-          <a href="#doctors" class="inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-5 py-3 rounded-lg hover:bg-primary/10 transition">
-            <i data-feather="heart"></i>
-            Consult Doctors
-          </a>
-          <a href="#lawyers" class="inline-flex items-center justify-center gap-2 border border-white text-white font-semibold px-5 py-3 rounded-lg hover:bg-white hover:text-primary transition">
-            <i data-feather="briefcase"></i>
-            Consult Lawyers
-          </a>
-          <a href="login.html" class="inline-flex items-center justify-center gap-2 bg-primary/20 text-white font-semibold px-5 py-3 rounded-lg hover:bg-white hover:text-primary transition">
-            <i data-feather="log-in"></i>
-            Login
-          </a>
-        </div>
-      </div>
-    
-    </div>
-  </header>
-
-  <main class="py-16">
-    <div class="container mx-auto px-4 space-y-16">
-      <section id="unlockSigninNotice" class="hidden bg-primary/5 border border-primary/20 rounded-2xl p-5 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-primary/70">Unlock faster</p>
-          <h2 class="text-lg font-semibold text-gray-900">Sign in to skip the registration step next time</h2>
-          <p class="text-sm text-gray-600">Already verified? Log in so every unlock goes straight to payment.</p>
-        </div>
-        <div class="flex items-center gap-3">
-          <a href="pro-client-register.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-primary text-primary text-sm font-medium hover:bg-primary hover:text-white transition">Create account</a>
-          <button id="unlockSigninBtn" type="button" class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary/90 transition">
-            <i data-feather="log-in" class="w-4 h-4"></i>
-            Sign in
-          </button>
-        </div>
-      </section>
-      <!-- DOCTORS -->
-      <section id="doctors">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-          <div>
-            <h2 class="text-2xl font-semibold text-gray-900">Doctors Available Today</h2>
-            <p class="text-gray-600 mt-1">General practice, telehealth and specialist referrals with flexible schedules.</p>
-          </div>
-        </div>
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <article class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-            <div class="flex items-center gap-4">
-              <img src="https://via.placeholder.com/96x96?text=Dr" alt="Dr. Adaobi Nwankwo" class="w-20 h-20 rounded-xl object-cover">
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Dr. Adaobi Nwankwo</h3>
-                <p class="text-sm text-gray-500">Family Medicine • Lagos – Ikeja</p>
-              </div>
-            </div>
-            <p class="text-sm text-gray-600 mt-4">15 years experience. Offers home visits, telehealth and chronic illness management plans.</p>
-            <ul class="mt-4 space-y-2 text-sm text-gray-600">
-              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Hypertension &amp; diabetes reviews</li>
-              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Women’s health &amp; pediatrics</li>
-            </ul>
-            <div class="mt-4 flex items-center gap-2 text-sm text-amber-500" data-review-summary data-pro-id="pro-adaobi-nwankwo">
-              <i data-feather="star" class="w-4 h-4"></i>
-              <span class="font-semibold" data-review-average>New</span>
-              <span class="text-gray-500" data-review-count>Awaiting reviews</span>
-            </div>
-            <div class="mt-5 flex items-center justify-between">
-              <button data-pro="Dr. Adaobi Nwankwo" data-type="Doctor" data-pro-email="adaobi.nwankwo@siriuspro.ng" class="unlockContactBtn inline-flex items-center gap-1.5 bg-primary text-white font-medium py-1.5 px-3 rounded-md text-sm hover:bg-primary/90 transition">
-                <i data-feather="lock" class="w-3 h-3"></i>
-                Unlock (₦3,000)
-              </button>
-              <span class="text-sm text-gray-500">From ₦3,000 / session</span>
-            </div>
-          </article>
-          <article class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-            <div class="flex items-center gap-4">
-              <img src="https://via.placeholder.com/96x96?text=Dr" alt="Dr. Ibrahim Sani" class="w-20 h-20 rounded-xl object-cover">
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Dr. Ibrahim Sani</h3>
-                <p class="text-sm text-gray-500">General Practitioner • Kano – Kano</p>
-              </div>
-            </div>
-            <p class="text-sm text-gray-600 mt-4">Telehealth-first doctor specialized in quick checkups, lab reviews and remote monitoring for families.</p>
-            <ul class="mt-4 space-y-2 text-sm text-gray-600">
-              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Telemedicine follow-ups</li>
-              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Prescription renewals</li>
-            </ul>
-            <div class="mt-4 flex items-center gap-2 text-sm text-amber-500" data-review-summary data-pro-id="pro-ibrahim-sani">
-              <i data-feather="star" class="w-4 h-4"></i>
-              <span class="font-semibold" data-review-average>New</span>
-              <span class="text-gray-500" data-review-count>Awaiting reviews</span>
-            </div>
-            <div class="mt-5 flex items-center justify-between">
-              <button data-pro="Dr. Ibrahim Sani" data-type="Doctor" data-pro-email="ibrahim.sani@siriuspro.ng" class="unlockContactBtn inline-flex items-center gap-1.5 bg-primary text-white font-medium py-1.5 px-3 rounded-md text-sm hover:bg-primary/90 transition">
-                <i data-feather="lock" class="w-3 h-3"></i>
-                Unlock (₦3,000)
-              </button>
-              <span class="text-sm text-gray-500">From ₦3,000 / session</span>
-            </div>
-          </article>
-          <article class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-            <div class="flex items-center gap-4">
-              <img src="https://via.placeholder.com/96x96?text=Dr" alt="Dr. Kemi Ajayi" class="w-20 h-20 rounded-xl object-cover">
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Dr. Kemi Ajayi</h3>
-                <p class="text-sm text-gray-500">Telehealth • Oyo – Ibadan</p>
-              </div>
-            </div>
-            <p class="text-sm text-gray-600 mt-4">Tech-enabled doctor offering same-day video consultations and lab interpretation for students and remote workers.</p>
-            <ul class="mt-4 space-y-2 text-sm text-gray-600">
-              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Affordable second opinions</li>
-              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Nutrition &amp; wellness plans</li>
-            </ul>
-            <div class="mt-4 flex items-center gap-2 text-sm text-amber-500" data-review-summary data-pro-id="pro-kemi-ajayi">
-              <i data-feather="star" class="w-4 h-4"></i>
-              <span class="font-semibold" data-review-average>New</span>
-              <span class="text-gray-500" data-review-count>Awaiting reviews</span>
-            </div>
-            <div class="mt-5 flex items-center justify-between">
-              <button data-pro="Dr. Kemi Ajayi" data-type="Doctor" data-pro-email="kemi.ajayi@siriuspro.ng" class="unlockContactBtn inline-flex items-center gap-1.5 bg-primary text-white font-medium py-1.5 px-3 rounded-md text-sm hover:bg-primary/90 transition">
-                <i data-feather="lock" class="w-3 h-3"></i>
-                Unlock (₦3,000)
-              </button>
-              <span class="text-sm text-gray-500">From ₦3,000 / session</span>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- LAWYERS -->
-      <section id="lawyers">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-          <div>
-            <h2 class="text-2xl font-semibold text-gray-900">Lawyers Ready to Advise</h2>
-            <p class="text-gray-600 mt-1">Affordable legal counsel for business, property, employment and family matters.</p>
-          </div>
-    
-        </div>
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <article class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-            <div class="flex items-center gap-4">
-              <img src="https://via.placeholder.com/96x96?text=Law" alt="Barr. Ifeoma Nwachukwu" class="w-20 h-20 rounded-xl object-cover">
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Barr. Ifeoma Nwachukwu</h3>
-                <p class="text-sm text-gray-500">Corporate &amp; Commercial • Lagos – Ikeja</p>
-              </div>
-            </div>
-            <p class="text-sm text-gray-600 mt-4">Helps SMEs with contracts, IP registration and debt recovery. Provides clear roadmaps and affordable retainers.</p>
-            <ul class="mt-4 space-y-2 text-sm text-gray-600">
-              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>SME contract reviews</li>
-              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Company compliance packs</li>
-            </ul>
-            <div class="mt-4 flex items-center gap-2 text-sm text-amber-500" data-review-summary data-pro-id="pro-ifeoma-nwachukwu">
-              <i data-feather="star" class="w-4 h-4"></i>
-              <span class="font-semibold" data-review-average>New</span>
-              <span class="text-gray-500" data-review-count>Awaiting reviews</span>
-            </div>
-            <div class="mt-5 flex items-center justify-between">
-              <button data-pro="Barr. Ifeoma Nwachukwu" data-type="Lawyer" data-pro-email="ifeoma.nwachukwu@siriuspro.ng" class="unlockContactBtn inline-flex items-center gap-1.5 bg-primary text-white font-medium py-1.5 px-3 rounded-md text-sm hover:bg-primary/90 transition">
-                <i data-feather="lock" class="w-3 h-3"></i>
-                Unlock (₦3,000)
-              </button>
-              <span class="text-sm text-gray-500">From ₦3,000 / session</span>
-            </div>
-          </article>
-          <article class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-            <div class="flex items-center gap-4">
-              <img src="https://via.placeholder.com/96x96?text=Law" alt="Barr. Farouk Adamu" class="w-20 h-20 rounded-xl object-cover">
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Barr. Farouk Adamu</h3>
-                <p class="text-sm text-gray-500">Property &amp; Tenancy • Kano – Kano</p>
-              </div>
-            </div>
-            <p class="text-sm text-gray-600 mt-4">Specialist in property transactions, tenancy disputes and land documentation across northern Nigeria.</p>
-            <ul class="mt-4 space-y-2 text-sm text-gray-600">
-              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Property verification &amp; searches</li>
-              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Tenancy agreement drafting</li>
-            </ul>
-            <div class="mt-4 flex items-center gap-2 text-sm text-amber-500" data-review-summary data-pro-id="pro-farouk-adamu">
-              <i data-feather="star" class="w-4 h-4"></i>
-              <span class="font-semibold" data-review-average>New</span>
-              <span class="text-gray-500" data-review-count>Awaiting reviews</span>
-            </div>
-            <div class="mt-5 flex items-center justify-between">
-              <button data-pro="Barr. Farouk Adamu" data-type="Lawyer" data-pro-email="farouk.adamu@siriuspro.ng" class="unlockContactBtn inline-flex items-center gap-1.5 bg-primary text-white font-medium py-1.5 px-3 rounded-md text-sm hover:bg-primary/90 transition">
-                <i data-feather="lock" class="w-3 h-3"></i>
-                Unlock (₦3,000)
-              </button>
-              <span all="text-sm text-gray-500">From ₦3,000 / session</span>
-            </div>
-          </article>
-          <article class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-            <div class="flex items-center gap-4">
-              <img src="https://via.placeholder.com/96x96?text=Law" alt="Barr. Lydia Etuk" class="w-20 h-20 rounded-xl object-cover">
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Barr. Lydia Etuk</h3>
-                <p class="text-sm text-gray-500">Employment &amp; Family • Akwa Ibom – Uyo</p>
-              </div>
-            </div>
-            <p class="text-sm text-gray-600 mt-4">Offers calm guidance on workplace disputes, severance packages and family agreements with focus on mediation.</p>
-            <ul class="mt-4 space-y-2 text-sm text-gray-600">
-              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Employment contract audits</li>
-              <li class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>Family settlement agreements</li>
-            </ul>
-            <div class="mt-4 flex items-center gap-2 text-sm text-amber-500" data-review-summary data-pro-id="pro-lydia-etuk">
-              <i data-feather="star" class="w-4 h-4"></i>
-              <span class="font-semibold" data-review-average>New</span>
-              <span class="text-gray-500" data-review-count>Awaiting reviews</span>
-            </div>
-            <div class="mt-5 flex items-center justify-between">
-              <button data-pro="Barr. Lydia Etuk" data-type="Lawyer" data-pro-email="lydia.etuk@siriuspro.ng" class="unlockContactBtn inline-flex items-center gap-1.5 bg-primary text-white font-medium py-1.5 px-3 rounded-md text-sm hover:bg-primary/90 transition">
-                <i data-feather="lock" class="w-3 h-3"></i>
-                Unlock (₦3,000)
-              </button>
-              <span class="text-sm text-gray-500">From ₦3,000 / session</span>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- HOW IT WORKS -->
-      <section class="bg-white border border-gray-100 rounded-2xl p-6 md:p-8 shadow-sm">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">How It Works</h2>
-        <div class="grid gap-6 md:grid-cols-3">
-          <div>
-            <h3 class="font-semibold text-primary mb-2">1. Choose a Professional</h3>
-            <p class="text-sm text-gray-600">Browse the lists above and select a professional to consult with.</p>
-          </div>
-          <div>
-            <h3 class="font-semibold text-primary mb-2">2. Confirm a Cheap Session</h3>
-            <p class="text-sm text-gray-600">Pay ₦3,000 securely via card or transfer to unlock the professional’s contact instantly.</p>
-          </div>
-          <div>
-            <h3 class="font-semibold text-primary mb-2">3. Get Support</h3>
-            <p class="text-sm text-gray-600">Call or send a message to the unlocked professional for assistance.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- JOIN NETWORK -->
-      <section id="join" class="bg-primary/5 border border-primary/10 rounded-2xl p-6 md:p-8">
-        <div class="md:flex md:items-center md:justify-between gap-6">
-          <div class="md:w-2/3">
-            <h2 class="text-2xl font-semibold text-gray-900 mb-2">Are you a doctor or lawyer?</h2>
-            <p class="text-sm text-gray-600">Apply to join our affordable consultation network. We verify every professional and charge a flat ₦3,000 monthly partnership fee that unlocks featured visibility and inbound leads.</p>
-          </div>
-          <div class="md:w-1/3 mt-4 md:mt-0 space-y-3">
-            <a href="pro-client-register.html?account=professional&profession=DOCTOR" class="applyProBtn w-full inline-flex items-center justify-center gap-2 border border-primary text-primary px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition text-sm font-medium" data-profession="DOCTOR">
-              Apply as Doctor
-            </a>
-            <a href="pro-client-register.html?account=professional&profession=LAWYER" class="applyProBtn w-full inline-flex items-center justify-center gap-2 border border-primary text-primary px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition text-sm font-medium" data-profession="LAWYER">
-              Apply as Lawyer
-            </a>
-          </div>
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <section class="container mx-auto px-4 py-12" id="client-consultations">
-    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-8 space-y-6">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h2 class="text-2xl font-semibold text-gray-900">Your unlocked consultations</h2>
-          <p class="text-sm text-gray-600">Revisit contact details and confirm sessions so payouts reach the professionals quickly.</p>
-        </div>
-        <div class="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-          <span class="inline-flex items-center gap-2 text-xs text-primary bg-primary/10 px-3 py-1 rounded-full">
-            <i data-feather="clock" class="w-4 h-4"></i>
-            We track every session you unlock
-          </span>
-          <a href="client-dashboard.html" class="mt-2 sm:mt-0 inline-flex items-center gap-2 text-xs font-semibold text-primary hover:text-primary/80 transition">
-            <i data-feather="arrow-up-right" class="w-4 h-4"></i>
-            Open client dashboard
-          </a>
-        </div>
-      </div>
-      <div id="clientConsultationsList" class="space-y-4"></div>
-      <p id="noClientConsultations" class="text-sm text-gray-500 hidden">Unlock a doctor or lawyer to see your sessions here.</p>
-    </div>
-  </section>
-
-  <section class="container mx-auto px-4 pb-16" id="recent-reviews">
-    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-8 space-y-6">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h2 class="text-2xl font-semibold text-gray-900">Latest reviews from clients</h2>
-          <p class="text-sm text-gray-600">Real feedback helps the best professionals stand out.</p>
-        </div>
-        <span class="inline-flex items-center gap-2 text-xs text-primary bg-primary/10 px-3 py-1 rounded-full">
-          <i data-feather="star" class="w-4 h-4"></i>
-          Updated after every consultation
-        </span>
-      </div>
-      <div id="recentReviewsList" class="space-y-4"></div>
-      <p id="recentReviewsEmpty" class="text-sm text-gray-500">Reviews will appear here once clients start sharing feedback.</p>
-    </div>
-  </section>
-
-  <div id="consultPaymentModal" class="fixed inset-0 hidden items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6 z-50">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl relative overflow-hidden">
-      <button id="closeConsultPaymentModal" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow text-gray-500 hover:text-gray-900 transition">
-        <i data-feather="x" class="w-5 h-5"></i>
-      </button>
-      <div class="p-6 md:p-8 space-y-6">
-        <div>
-          <h3 class="text-2xl font-semibold text-gray-900">Unlock contact for <span id="selectedProName">Selected Professional</span></h3>
-          <p class="text-sm text-gray-600 mt-1">Consultation fee is ₦3,000. We collect payment first, then release the contact details immediately.</p>
-        </div>
-        <div class="space-y-4">
-          <div class="bg-primary/5 border border-primary/10 rounded-xl p-4">
-            <h4 class="text-sm font-semibold text-primary uppercase tracking-wide mb-2">Pay with Card (Instant Access)</h4>
-            <p class="text-sm text-gray-600 mb-3">Use our secure checkout to pay ₦3,000 with card or bank transfer.</p>
-            <a href="https://paystack.com/pay/siriusconsult" target="_blank" class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition">Go to Payment Page</a>
-          </div>
-          <div class="bg-white border border-gray-200 rounded-xl p-4">
-            <h4 class="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-2">Prefer direct transfer?</h4>
-            <p class="text-sm text-gray-600">Send ₦3,000 to <span class="font-semibold">Sirius Jobs NG • 0123456789 • GTBank</span>. Use your phone number as narration.</p>
-          </div>
-          <div class="bg-white border border-gray-200 rounded-xl p-4">
-            <h4 class="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-2">Confirm payment &amp; get contact</h4>
-            <p class="text-sm text-gray-600 mb-3">After payment, complete our quick confirmation form so we can send you the phone number and introduce you to the professional on WhatsApp.</p>
-            <a href="https://forms.gle/consult-confirm" target="_blank" class="inline-flex items-center gap-2 border border-primary text-primary px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary hover:text-white transition">Submit Payment Confirmation</a>
-          </div>
-          <div class="bg-white border border-gray-200 rounded-xl p-4">
-            <h4 class="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-2">Help us pay your professional</h4>
-            <p class="text-sm text-gray-600">After the session, let us know which doctor or lawyer attended using the same form. We remit ₦2,500 to them (₦500 service fee retained by Sirius Jobs).</p>
-          </div>
-        </div>
-        <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-gray-200 pt-4">
-          <p class="text-sm text-gray-600">Already paid? Click below so we can unlock the contact instantly.</p>
-          <button id="recordConsultPaymentBtn" type="button" class="inline-flex items-center justify-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition">
-            <i data-feather="unlock" class="w-4 h-4"></i>
-            Unlock contact now
-          </button>
-        </div>
-        <p id="consultPaymentStatus" class="text-xs text-gray-500 mt-2"></p>
-        <div class="text-xs text-gray-500">Need help? <a href="https://wa.me/2347012345678" target="_blank" class="text-primary hover:underline">Chat with our concierge team</a>.</div>
-      </div>
-    </div>
-  </div>
-
-  <div id="contactDetailModal" class="fixed inset-0 hidden items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6 z-[60]">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl relative overflow-hidden">
-      <button id="closeContactDetailModal" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow text-gray-500 hover:text-gray-900 transition">
-        <i data-feather="x" class="w-5 h-5"></i>
-      </button>
-      <div class="p-6 md:p-10 space-y-8 overflow-y-auto max-h-[90vh]">
-        <header class="space-y-2">
-          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-primary/70">Contact unlocked</p>
-          <h3 class="text-2xl font-semibold text-gray-900">Reach out to <span id="contactProName"></span></h3>
-          <p class="text-sm text-gray-600">Use the details below to schedule your session. Afterwards, drop a review so other clients know what to expect.</p>
-        </header>
-        <div class="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-          <section class="space-y-4">
-            <div class="border border-gray-200 rounded-2xl p-4">
-              <h4 class="text-sm font-semibold uppercase tracking-wide text-gray-700 mb-3">Contact information</h4>
-              <ul class="space-y-3 text-sm text-gray-700">
-                <li class="flex items-center gap-3">
-                  <i data-feather="phone" class="w-4 h-4 text-primary"></i>
-                  <a id="contactProPhone" href="#" class="hover:underline">Loading...</a>
-                </li>
-                <li class="flex items-center gap-3">
-                  <i data-feather="mail" class="w-4 h-4 text-primary"></i>
-                  <a id="contactProEmail" href="#" class="hover:underline">Loading...</a>
-                </li>
-                <li class="flex items-center gap-3">
-                  <i data-feather="map-pin" class="w-4 h-4 text-primary"></i>
-                  <span id="contactProLocation">Lagos, Nigeria</span>
-                </li>
-                <li class="flex items-center gap-3" id="contactProWhatsappRow">
-                  <i data-feather="message-circle" class="w-4 h-4 text-primary"></i>
-                  <a id="contactProWhatsapp" href="#" target="_blank" rel="noopener" class="hover:underline">Open WhatsApp chat</a>
-                </li>
-              </ul>
-            </div>
-            <div class="border border-gray-200 rounded-2xl p-4 space-y-3">
-              <div class="flex items-center justify-between">
-                <h4 class="text-sm font-semibold uppercase tracking-wide text-gray-700">Wrap up session</h4>
-                <span id="contactSessionCountdown" class="text-xs text-gray-500">Auto-ends in 24h</span>
-              </div>
-              <p class="text-xs text-gray-500">Tap done when you finish so we can release the professional’s payout faster. Sessions also close automatically after 24 hours.</p>
-              <button id="markConsultationDoneBtn" class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition disabled:opacity-60 disabled:cursor-not-allowed">
-                <i data-feather="check-circle" class="w-4 h-4"></i>
-                Mark consultation as done
-              </button>
-            </div>
-            <div class="border border-primary/20 bg-primary/5 rounded-2xl p-4 space-y-3">
-              <h4 class="text-sm font-semibold uppercase tracking-wide text-primary mb-1">Quick tips</h4>
-              <p class="text-xs text-gray-600">Confirm your session window, share any files over WhatsApp or email, and let us know when the consultation is done so payouts can be released.</p>
-              <div class="text-xs text-gray-500">Need concierge help? <a href="https://wa.me/2347012345678" target="_blank" class="text-primary hover:underline">Chat with Sirius support</a>.</div>
-            </div>
-          </section>
-          <section id="contactReviewSection" class="space-y-4">
-            <div class="border border-gray-200 rounded-2xl p-4 space-y-4">
-              <div>
-                <h4 class="text-sm font-semibold uppercase tracking-wide text-gray-700">Leave a quick review</h4>
-                <p class="text-xs text-gray-500">Your feedback helps us reward great professionals and improve future matches.</p>
-              </div>
-              <form id="contactReviewForm" class="space-y-3">
-                <input type="hidden" id="contactConsultationId" />
-                <div>
-                  <label for="contactReviewRating" class="text-xs font-medium text-gray-600 uppercase tracking-wide">Rating</label>
-                  <select id="contactReviewRating" class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20">
-                    <option value="">Select rating</option>
-                    <option value="5">5 - Excellent</option>
-                    <option value="4">4 - Good</option>
-                    <option value="3">3 - Fair</option>
-                    <option value="2">2 - Poor</option>
-                    <option value="1">1 - Terrible</option>
-                  </select>
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="services.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Services</a>
+                    <a href="jobs.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Jobs</a>
+                    <a href="consultations.html" class="nav-link text-sm font-semibold text-primary transition-colors">Consultations</a>
+                    <a href="marketplace.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Marketplace</a>
+                    <a href="about.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">About</a>
                 </div>
-                <div>
-                  <label for="contactReviewComment" class="text-xs font-medium text-gray-600 uppercase tracking-wide">Comment (optional)</label>
-                  <textarea id="contactReviewComment" rows="3" class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:border-primary focus:ring-primary/20" placeholder="Share how the consultation went"></textarea>
+
+                <!-- CTA Buttons -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <a href="login.html" class="text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Sign in</a>
+                    <a href="consultation-pro-register.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-6 py-3 rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl">
+                        Register as Professional
+                        <i data-feather="arrow-right" class="w-4 h-4"></i>
+                    </a>
                 </div>
-                <p id="contactReviewNotice" class="text-xs text-gray-500">Reviews help other clients pick the right professional.</p>
-                <button type="submit" class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition disabled:opacity-60 disabled:cursor-not-allowed">Submit review</button>
-              </form>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden text-gray-600">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
             </div>
-            <div class="border border-gray-200 rounded-2xl p-4 space-y-3">
-              <div class="flex items-center justify-between">
-                <h4 class="text-sm font-semibold uppercase tracking-wide text-gray-700">Recent reviews</h4>
-                <span id="contactReviewSummary" class="text-xs text-gray-500">No reviews yet</span>
-              </div>
-              <div id="contactReviewsList" class="space-y-3"></div>
-              <p id="contactReviewsEmpty" class="text-xs text-gray-500">Be the first to share feedback after your consultation.</p>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-200">
+            <div class="container mx-auto px-4 py-6 space-y-4">
+                <a href="services.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Services</a>
+                <a href="jobs.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Jobs</a>
+                <a href="consultations.html" class="block text-sm font-semibold text-primary">Consultations</a>
+                <a href="marketplace.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Marketplace</a>
+                <a href="about.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">About</a>
+                <div class="pt-4 space-y-3">
+                    <a href="login.html" class="block text-center text-sm font-semibold text-gray-600">Sign in</a>
+                    <a href="consultation-pro-register.html" class="block text-center bg-primary text-white font-semibold px-6 py-3 rounded-full">Register as Professional</a>
+                </div>
             </div>
-          </section>
         </div>
-      </div>
-    </div>
-  </div>
+    </nav>
 
-  <!-- QUICK ACCOUNT MODAL -->
-  <div id="clientAccountModal" class="fixed inset-0 hidden items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-6 z-50">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden">
-      <button id="closeClientAccountModal" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow text-gray-500 hover:text-gray-900 transition">
-        <i data-feather="x" class="w-5 h-5"></i>
-      </button>
-      <div class="p-6 md:p-8 space-y-5">
-        <header class="space-y-2">
-          <h3 class="text-2xl font-semibold text-gray-900">Create a quick account</h3>
-          <p class="text-sm text-gray-600">We’ll save your progress so you can unlock consultations, leave reviews, and get follow-up summaries.</p>
-        </header>
-        <form id="clientAccountForm" class="space-y-4">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label for="clientFirstName" class="text-sm font-medium text-gray-700">First name</label>
-              <input id="clientFirstName" type="text" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Ada">
+    <!-- Hero Section -->
+    <section class="pt-32 pb-12 bg-gradient-to-br from-blue-50 to-white">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center space-y-6">
+                <div class="inline-flex items-center gap-2 bg-blue-100 text-primary px-4 py-2 rounded-full text-sm font-semibold">
+                    <i data-feather="shield-check" class="w-4 h-4"></i>
+                    <span>Verified Professionals Only</span>
+                </div>
+
+                <h1 class="text-4xl lg:text-6xl font-black leading-tight">
+                    Get Expert <span class="text-primary">Consultations</span> Anytime
+                </h1>
+
+                <p class="text-xl text-gray-600 leading-relaxed">
+                    Connect with verified doctors and lawyers for secure 24-hour consultation sessions. Only ₦3,000 per consultation.
+                </p>
+
+                <div class="flex items-center justify-center gap-8 pt-4">
+                    <div class="text-center">
+                        <div class="text-3xl font-black text-gray-900">₦3,000</div>
+                        <div class="text-sm text-gray-600">Per Session</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-black text-gray-900">24 Hours</div>
+                        <div class="text-sm text-gray-600">Access Duration</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-black text-gray-900">100%</div>
+                        <div class="text-sm text-gray-600">Anonymous</div>
+                    </div>
+                </div>
             </div>
-            <div>
-              <label for="clientLastName" class="text-sm font-medium text-gray-700">Last name</label>
-              <input id="clientLastName" type="text" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Grace">
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-16">
+        <div class="container mx-auto px-4 lg:px-8">
+            <!-- Filter Tabs -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="filter-tab active px-8 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300" data-filter="all">
+                    All Professionals
+                </button>
+                <button class="filter-tab px-8 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300" data-filter="DOCTOR">
+                    Doctors
+                </button>
+                <button class="filter-tab px-8 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300" data-filter="LAWYER">
+                    Lawyers
+                </button>
             </div>
-          </div>
-          <div>
-            <label for="clientEmail" class="text-sm font-medium text-gray-700">Email</label>
-            <input id="clientEmail" type="email" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="you@example.com">
-          </div>
-          <div>
-            <label for="clientPassword" class="text-sm font-medium text-gray-700">Create password</label>
-            <input id="clientPassword" type="password" required class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Minimum 8 characters">
-          </div>
-          <button type="submit" class="w-full bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition">Register &amp; send verification email</button>
-        </form>
-        <p id="clientAccountMessage" class="text-xs text-gray-500 hidden"></p>
-        <form id="clientVerificationForm" class="space-y-3 hidden">
-          <div>
-            <label for="clientVerificationToken" class="text-sm font-medium text-gray-700">Enter verification code</label>
-            <input id="clientVerificationToken" type="text" class="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Paste the code sent to your email" required>
-          </div>
-          <button type="submit" class="w-full border border-primary text-primary py-2.5 rounded-lg font-medium hover:bg-primary hover:text-white transition">Verify email</button>
-        </form>
-        <p class="text-xs text-gray-500">Already verified? Jump straight to payment after signing in.</p>
-      </div>
-    </div>
-  </div>
 
-  <!-- FOOTER -->
-  <footer class="bg-gray-900 text-white py-12">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div>
-          <div class="flex items-center space-x-2 mb-4">
-            <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
-            <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
-          </div>
-          <p class="text-gray-400 mb-4">Connecting talent, trusted professionals and fast support across Nigeria.</p>
-          <div class="flex space-x-4">
-            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="text-gray-400 hover:text-white transition-all"><i data-feather="facebook"></i></a>
-            <a href="https://twitter.com/SiriusOddJobs" class="text-gray-400 hover:text-white transition-all"><i data-feather="twitter"></i></a>
-            <a href="https://www.instagram.com/siriusjobss" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
-            <a href="https://www.linkedin.com/company/siriusjobsng/" class="text-gray-400 hover:text-white transition-all"><i data-feather="linkedin"></i></a>
-          </div>
+            <!-- Loading State -->
+            <div id="loading" class="text-center py-20">
+                <div class="inline-block w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <p class="mt-4 text-gray-600">Loading professionals...</p>
+            </div>
+
+            <!-- Professionals Grid -->
+            <div id="professionals-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
+                <!-- Professional cards will be inserted here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="text-center py-20 hidden">
+                <i data-feather="user-x" class="w-16 h-16 mx-auto text-gray-400 mb-4"></i>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">No Professionals Found</h3>
+                <p class="text-gray-600">Try adjusting your filters or check back later.</p>
+            </div>
         </div>
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-          <ul class="space-y-2 text-gray-400">
-            <li><a href="index.html" class="hover:text-white transition-all">Home</a></li>
-            <li><a href="jobs.html" class="hover:text-white transition-all">Jobs</a></li>
-            <li><a href="findworker.html" class="hover:text-white transition-all">Find Workers</a></li>
-            <li><a href="consultations.html" class="hover:text-white transition-all">Consultations</a></li>
-            <li><a href="contact.html" class="hover:text-white transition-all">Contact</a></li>
-          </ul>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-primary to-blue-700">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="max-w-3xl mx-auto text-center space-y-6">
+                <h2 class="text-4xl font-black text-white">
+                    Are You a Professional?
+                </h2>
+                <p class="text-xl text-blue-100">
+                    Join our platform and start earning ₦2,500 per consultation session.
+                </p>
+                <a href="consultation-pro-register.html" class="inline-flex items-center gap-3 bg-white text-primary font-bold px-10 py-5 rounded-full hover:bg-blue-50 transition-all shadow-xl text-lg">
+                    <i data-feather="user-plus" class="w-6 h-6"></i>
+                    Register as Professional
+                </a>
+            </div>
         </div>
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Support</h4>
-          <ul class="space-y-2 text-gray-400">
-            <li><span>Email: hello@siriusjobsng.com</span></li>
-            <li><span>WhatsApp: 0704 447 0559</span></li>
-            <li><span>Hours: 8am – 8pm (Mon-Sat)</span></li>
-          </ul>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300">
+        <div class="container mx-auto px-4 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
+                <!-- Brand Column -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="flex items-center space-x-3">
+
+                      <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-12 w-auto drop-shadow-sm" />
+
+                      <span class="sr-only">SiriusJobs</span>
+
+                    </div>
+                    <p class="text-gray-400 leading-relaxed">
+                        One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <a href="https://web.facebook.com/profile.php?id=61582342397507" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                            <i data-feather="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="https://twitter.com/SiriusOddJobs" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                            <i data-feather="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="https://www.instagram.com/siriusjobss" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                            <i data-feather="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/company/siriusjobsng/" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                            <i data-feather="linkedin" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Services Column -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Services</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="findworker.html" class="hover:text-primary transition-colors">Find Workers</a></li>
+                        <li><a href="jobs.html" class="hover:text-primary transition-colors">Job Listings</a></li>
+                        <li><a href="consultations.html" class="hover:text-primary transition-colors">Consultations</a></li>
+                        <li><a href="marketplace.html" class="hover:text-primary transition-colors">Marketplace</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company Column -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Company</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="about.html" class="hover:text-primary transition-colors">About Us</a></li>
+                        <li><a href="services.html" class="hover:text-primary transition-colors">Our Services</a></li>
+                        <li><a href="contact.html" class="hover:text-primary transition-colors">Contact</a></li>
+                        <li><a href="faq.html" class="hover:text-primary transition-colors">FAQs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support Column -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Support</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><span>WhatsApp: 0704 447 0559</span></li>
+                        <li><span>support@siriusjobsng.com</span></li>
+                        <li><a href="privacypolicy.html" class="hover:text-primary transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="hover:text-primary transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+                <p class="text-sm text-gray-400">Port Harcourt, Rivers State, Nigeria</p>
+            </div>
         </div>
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Head Office</h4>
-          <ul class="space-y-2 text-gray-400">
-            <li><span>Port Harcourt, Rivers State</span></li>
-            <li><span>Nigeria</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
-        <div class="flex space-x-6 text-gray-400">
-          <a href="privacypolicy.html" class="hover:text-white transition-all text-sm">Privacy Policy</a>
-          <a href="terms.html" class="hover:text-white transition-all text-sm">Terms of Service</a>
-        </div>
-      </div>
-    </div>
-  </footer>
+    </footer>
 
-  <script>
-    feather.replace();
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    if(menuBtn && mobileMenu){
-      menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-      });
-    }
+    <script>
+        const API_URL = 'http://localhost:4000/api';
+        let allProfessionals = [];
+        let currentFilter = 'all';
 
-    const paymentModal = document.getElementById('consultPaymentModal');
-    const closePaymentModalBtn = document.getElementById('closeConsultPaymentModal');
-    const showToast = window.SiriusUI?.showToast ?? ((message, tone) => {
-      const logger = tone === 'error' ? console.error : console.log;
-      logger(message);
-    });
-
-    const professionalDirectory = {
-      'adaobi.nwankwo@siriuspro.ng': {
-        id: 'pro-adaobi-nwankwo',
-        name: 'Dr. Adaobi Nwankwo',
-        profession: 'Doctor',
-        phone: '+234 803 555 0123',
-        whatsapp: 'https://wa.me/2348035550123',
-        location: 'Lagos, Ikeja',
-      },
-      'ibrahim.sani@siriuspro.ng': {
-        id: 'pro-ibrahim-sani',
-        name: 'Dr. Ibrahim Sani',
-        profession: 'Doctor',
-        phone: '+234 802 880 4411',
-        whatsapp: 'https://wa.me/2348028804411',
-        location: 'Kano, Kano',
-      },
-      'kemi.ajayi@siriuspro.ng': {
-        id: 'pro-kemi-ajayi',
-        name: 'Dr. Kemi Ajayi',
-        profession: 'Doctor',
-        phone: '+234 805 998 2211',
-        whatsapp: 'https://wa.me/2348059982211',
-        location: 'Ibadan, Oyo',
-      },
-      'ifeoma.nwachukwu@siriuspro.ng': {
-        id: 'pro-ifeoma-nwachukwu',
-        name: 'Barr. Ifeoma Nwachukwu',
-        profession: 'Lawyer',
-        phone: '+234 701 334 7788',
-        whatsapp: 'https://wa.me/2347013347788',
-        location: 'Ikeja, Lagos',
-      },
-      'farouk.adamu@siriuspro.ng': {
-        id: 'pro-farouk-adamu',
-        name: 'Barr. Farouk Adamu',
-        profession: 'Lawyer',
-        phone: '+234 806 552 1199',
-        whatsapp: 'https://wa.me/2348065521199',
-        location: 'Kano, Kano',
-      },
-      'lydia.etuk@siriuspro.ng': {
-        id: 'pro-lydia-etuk',
-        name: 'Barr. Lydia Etuk',
-        profession: 'Lawyer',
-        phone: '+234 807 441 8822',
-        whatsapp: 'https://wa.me/2348074418822',
-        location: 'Uyo, Akwa Ibom',
-      },
-    };
-
-    const directoryEntries = Object.values(professionalDirectory);
-    const findDirectoryEntryById = (id) => directoryEntries.find(entry => entry.id === id);
-
-    const selectedProNameEl = document.getElementById('selectedProName');
-    const unlockButtons = document.querySelectorAll('.unlockContactBtn');
-    const clientAccountModal = document.getElementById('clientAccountModal');
-    const closeClientAccountModalBtn = document.getElementById('closeClientAccountModal');
-    const clientAccountForm = document.getElementById('clientAccountForm');
-    const clientVerificationForm = document.getElementById('clientVerificationForm');
-    const clientVerificationTokenInput = document.getElementById('clientVerificationToken');
-    const clientAccountMessage = document.getElementById('clientAccountMessage');
-    const clientConsultationsList = document.getElementById('clientConsultationsList');
-    const noClientConsultations = document.getElementById('noClientConsultations');
-    const clientFirstNameInput = document.getElementById('clientFirstName');
-    const clientLastNameInput = document.getElementById('clientLastName');
-    const clientEmailInput = document.getElementById('clientEmail');
-    const clientPasswordInput = document.getElementById('clientPassword');
-    const recordConsultPaymentBtn = document.getElementById('recordConsultPaymentBtn');
-    const consultPaymentStatus = document.getElementById('consultPaymentStatus');
-    const contactDetailModal = document.getElementById('contactDetailModal');
-    const closeContactDetailModalBtn = document.getElementById('closeContactDetailModal');
-    const contactProNameEl = document.getElementById('contactProName');
-    const contactProPhoneLink = document.getElementById('contactProPhone');
-    const contactProEmailLink = document.getElementById('contactProEmail');
-    const contactProLocationEl = document.getElementById('contactProLocation');
-    const contactProWhatsappRow = document.getElementById('contactProWhatsappRow');
-    const contactProWhatsappLink = document.getElementById('contactProWhatsapp');
-    const contactReviewForm = document.getElementById('contactReviewForm');
-    const contactConsultationIdInput = document.getElementById('contactConsultationId');
-    const contactReviewRatingSelect = document.getElementById('contactReviewRating');
-    const contactReviewCommentInput = document.getElementById('contactReviewComment');
-    const contactReviewNotice = document.getElementById('contactReviewNotice');
-    const contactReviewSubmitBtn = contactReviewForm?.querySelector('button[type="submit"]');
-    const contactReviewsList = document.getElementById('contactReviewsList');
-    const contactReviewsEmpty = document.getElementById('contactReviewsEmpty');
-    const contactReviewSummary = document.getElementById('contactReviewSummary');
-    const contactSessionCountdown = document.getElementById('contactSessionCountdown');
-    const markConsultationDoneBtn = document.getElementById('markConsultationDoneBtn');
-    const unlockSigninNotice = document.getElementById('unlockSigninNotice');
-    const unlockSigninBtn = document.getElementById('unlockSigninBtn');
-    const recentReviewsList = document.getElementById('recentReviewsList');
-    const recentReviewsEmpty = document.getElementById('recentReviewsEmpty');
-    const platformAvailable = typeof window.SiriusPlatform !== 'undefined';
-    const CONSULTATION_FEE = platformAvailable ? window.SiriusPlatform.constants.CONSULTATION_FEE : 3000;
-    const PROFESSIONAL_SHARE = platformAvailable ? window.SiriusPlatform.constants.PROFESSIONAL_SHARE : 2500;
-    const reviewSummaryElements = new Map();
-    document.querySelectorAll('[data-review-summary]').forEach(summary => {
-      const proId = summary.dataset.proId;
-      if (proId) {
-        reviewSummaryElements.set(proId, summary);
-      }
-    });
-    const professionalReviewsCache = new Map();
-    let activeConsultationId = null;
-    let activeProfessionalDetails = null;
-    let activeConsultationExpiresAt = null;
-    let contactCountdownInterval = null;
-    let clientCountdownInterval = null;
-    let storedClientAccount = null;
-    try {
-      storedClientAccount = JSON.parse(sessionStorage.getItem('siriusClientAuth') ?? 'null');
-    } catch (error) {
-      storedClientAccount = null;
-    }
-    let clientSessionToken = storedClientAccount?.token ?? null;
-    const getClientAuthHeaders = () => {
-      if (!clientSessionToken) {
-        return { 'Content-Type': 'application/json' };
-      }
-      return {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${clientSessionToken}`,
-      };
-    };
-    let clientAuthenticated = Boolean(clientSessionToken || storedClientAccount?.verified);
-    if (unlockSigninNotice) {
-      if (clientAuthenticated) {
-        unlockSigninNotice.classList.add('hidden');
-      } else {
-        unlockSigninNotice.classList.remove('hidden');
-      }
-    }
-    unlockSigninBtn?.addEventListener('click', () => {
-      const redirectUrl = encodeURIComponent('consultations.html');
-      window.location.href = `login.html?redirect=${redirectUrl}`;
-    });
-    let pendingUnlockStored = null;
-    try {
-      pendingUnlockStored = JSON.parse(sessionStorage.getItem('pendingUnlock') ?? 'null');
-    } catch (error) {
-      pendingUnlockStored = null;
-    }
-    let pendingClientAction = null;
-    let pendingUnlockContext = null;
-    if (pendingUnlockStored && clientSessionToken) {
-      pendingUnlockContext = pendingUnlockStored;
-      sessionStorage.removeItem('pendingUnlock');
-      openPaymentModal(pendingUnlockStored);
-    }
-    let clientSessions = [];
-
-    function openPaymentModal(context){
-      pendingUnlockContext = { ...context };
-      try {
-        sessionStorage.setItem('pendingUnlock', JSON.stringify(pendingUnlockContext));
-      } catch (error) {
-        console.warn('Unable to persist pending unlock context', error);
-      }
-      if (selectedProNameEl) {
-        selectedProNameEl.textContent = pendingUnlockContext.name || 'Selected Professional';
-      }
-      if (consultPaymentStatus) {
-        consultPaymentStatus.textContent = '';
-        consultPaymentStatus.className = 'text-xs text-gray-500 mt-2';
-      }
-      if(paymentModal){
-        paymentModal.classList.remove('hidden');
-        paymentModal.classList.add('flex');
-        document.body.classList.add('overflow-hidden');
-      }
-    }
-
-    function closePaymentModal(){
-      if(paymentModal){
-        paymentModal.classList.remove('flex');
-        paymentModal.classList.add('hidden');
-        document.body.classList.remove('overflow-hidden');
-      }
-      pendingUnlockContext = null;
-      sessionStorage.removeItem('pendingUnlock');
-    }
-
-    function applyReviewSummary(proId, summary){
-      const element = reviewSummaryElements.get(proId);
-      if (!element) return;
-      const averageEl = element.querySelector('[data-review-average]');
-      const countEl = element.querySelector('[data-review-count]');
-      const count = summary?.reviews?.length ?? 0;
-      if (!count) {
-        if (averageEl) averageEl.textContent = 'New';
-        if (countEl) countEl.textContent = 'Awaiting reviews';
-        return;
-      }
-      const average = summary?.averageRating ?? (summary.reviews.reduce((sum, item) => sum + (item.rating || 0), 0) / count);
-      if (averageEl) {
-        averageEl.textContent = `${average.toFixed(1)} / 5`;
-      }
-      if (countEl) {
-        countEl.textContent = `${count} review${count === 1 ? '' : 's'}`;
-      }
-    }
-
-    async function ensureProfessionalReviews(proId, { force } = {}){
-      if (!proId) return null;
-      if (!force && professionalReviewsCache.has(proId)) {
-        return professionalReviewsCache.get(proId);
-      }
-      try {
-        const res = await fetch(`/api/consultations/professionals/${proId}/reviews`);
-        if (!res.ok) {
-          throw new Error('Unable to load reviews');
-        }
-        const data = await res.json();
-        professionalReviewsCache.set(proId, {
-          averageRating: typeof data?.averageRating === 'number' ? data.averageRating : null,
-          reviews: Array.isArray(data?.reviews) ? data.reviews : [],
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
         });
-        applyReviewSummary(proId, professionalReviewsCache.get(proId));
-        refreshRecentReviews();
-        return professionalReviewsCache.get(proId);
-      } catch (error) {
-        console.warn('Unable to load reviews', error);
-        return null;
-      }
-    }
 
-    function renderContactReviews(proId){
-      const cache = professionalReviewsCache.get(proId);
-      const reviews = cache?.reviews ?? [];
-      if (!contactReviewsList || !contactReviewsEmpty || !contactReviewSummary) return;
-      if (!reviews.length) {
-        contactReviewsList.innerHTML = '';
-        contactReviewsEmpty.classList.remove('hidden');
-        contactReviewSummary.textContent = 'No reviews yet';
-        return;
-      }
-      const average = cache?.averageRating ?? (reviews.reduce((sum, item) => sum + (item.rating || 0), 0) / reviews.length);
-      contactReviewSummary.textContent = `${average.toFixed(1)} from ${reviews.length} review${reviews.length === 1 ? '' : 's'}`;
-      contactReviewsEmpty.classList.add('hidden');
-      contactReviewsList.innerHTML = reviews.slice(0, 6).map(review => {
-        const clientName = review.client
-          ? `${review.client.firstName ?? ''} ${review.client.lastName ?? ''}`.trim() || 'Client'
-          : 'Client';
-        const createdAt = review.createdAt ? new Date(review.createdAt).toLocaleDateString() : 'Recently';
-        const comment = review.comment?.trim() || 'No comment provided.';
-        return `
-          <article class="border border-gray-200 rounded-xl p-4">
-            <div class="flex items-center justify-between gap-4">
-              <div>
-                <p class="text-sm font-semibold text-gray-800">${clientName}</p>
-                <p class="text-xs text-gray-500">${createdAt}</p>
-              </div>
-              <div class="text-sm text-gray-600 flex items-center gap-2">
-                ${renderRatingStars(review.rating)}
-              </div>
-            </div>
-            <p class="text-sm text-gray-600 mt-3">${comment}</p>
-          </article>
-        `;
-      }).join('');
-      try { feather.replace(); } catch (error) {}
-    }
+        // Filter tabs
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active state
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
 
-    function refreshRecentReviews(){
-      if (!recentReviewsList || !recentReviewsEmpty) return;
-      const collected = [];
-      professionalReviewsCache.forEach((cache, proId) => {
-        if (!cache?.reviews?.length) return;
-        const directoryEntry = findDirectoryEntryById(proId);
-        cache.reviews.forEach(review => {
-          collected.push({
-            proId,
-            professional: directoryEntry,
-            review,
-          });
-        });
-      });
-      if (!collected.length) {
-        recentReviewsList.innerHTML = '';
-        recentReviewsEmpty?.classList.remove('hidden');
-        return;
-      }
-      recentReviewsEmpty?.classList.add('hidden');
-      collected.sort((a, b) => {
-        const dateA = a.review?.createdAt ? new Date(a.review.createdAt).getTime() : 0;
-        const dateB = b.review?.createdAt ? new Date(b.review.createdAt).getTime() : 0;
-        return dateB - dateA;
-      });
-      recentReviewsList.innerHTML = collected.slice(0, 6).map(item => {
-        const clientName = item.review?.client
-          ? `${item.review.client.firstName ?? ''} ${item.review.client.lastName ?? ''}`.trim() || 'Client'
-          : 'Client';
-        const createdAt = item.review?.createdAt ? new Date(item.review.createdAt).toLocaleDateString() : 'Recently';
-        const comment = item.review?.comment?.trim() || 'No comment provided.';
-        const professionalName = item.professional?.name ?? 'Professional';
-        const professionalRole = item.professional?.profession ?? '';
-        return `
-          <article class="border border-gray-200 rounded-xl p-4">
-            <div class="flex items-center justify-between gap-4">
-              <div>
-                <p class="text-sm font-semibold text-gray-800">${clientName}</p>
-                <p class="text-xs text-gray-500">${createdAt}</p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm font-semibold text-gray-800">${professionalName}</p>
-                <p class="text-xs text-gray-500">${professionalRole}</p>
-              </div>
-            </div>
-            <div class="mt-3 flex items-center gap-2 text-sm text-gray-600">
-              ${renderRatingStars(item.review?.rating)}
-            </div>
-            <p class="text-sm text-gray-600 mt-3">${comment}</p>
-          </article>
-        `;
-      }).join('');
-      try { feather.replace(); } catch (error) {}
-    }
-
-    function updateContactCountdownLabel(){
-      if (!contactSessionCountdown) return;
-      if (!activeConsultationExpiresAt) {
-        contactSessionCountdown.textContent = 'Auto-ends in 24h';
-        return;
-      }
-      const expiresTime = new Date(activeConsultationExpiresAt).getTime();
-      const diff = expiresTime - Date.now();
-      if (diff <= 0) {
-        contactSessionCountdown.textContent = 'Session expired';
-        if (markConsultationDoneBtn) {
-          markConsultationDoneBtn.disabled = true;
-          markConsultationDoneBtn.classList.add('opacity-60', 'cursor-not-allowed');
-        }
-        return;
-      }
-      const hours = Math.floor(diff / 3_600_000);
-      const minutes = Math.floor((diff % 3_600_000) / 60_000);
-      contactSessionCountdown.textContent = `Auto-ends in ${hours}h ${minutes}m`;
-    }
-
-    function startContactCountdown(expiresAt, status){
-      if (contactCountdownInterval) {
-        clearInterval(contactCountdownInterval);
-        contactCountdownInterval = null;
-      }
-      if (markConsultationDoneBtn) {
-        markConsultationDoneBtn.disabled = false;
-        markConsultationDoneBtn.classList.remove('opacity-60', 'cursor-not-allowed');
-      }
-      if (!markConsultationDoneBtn) {
-        return;
-      }
-      if (status && status.toUpperCase() === 'COMPLETED') {
-        markConsultationDoneBtn.disabled = true;
-        markConsultationDoneBtn.classList.add('opacity-60', 'cursor-not-allowed');
-        if (contactSessionCountdown) {
-          contactSessionCountdown.textContent = 'Session completed';
-        }
-        return;
-      }
-      activeConsultationExpiresAt = expiresAt || null;
-      updateContactCountdownLabel();
-      if (expiresAt) {
-        contactCountdownInterval = window.setInterval(updateContactCountdownLabel, 60_000);
-      }
-    }
-
-    async function markSessionDone(sessionId){
-      if (!sessionId) {
-        showToast('We could not confirm this consultation yet.', 'error');
-        return;
-      }
-      if (!clientSessionToken) {
-        showToast('Sign in first to manage your consultations.', 'error');
-        window.location.href = 'login.html?account=client&redirect=consultations.html';
-        return;
-      }
-      try {
-        const res = await fetch(`/api/consultations/${sessionId}/done`, {
-          method: 'POST',
-          headers: getClientAuthHeaders(),
-        });
-        if (res.status === 401) {
-          sessionStorage.removeItem('siriusClientAuth');
-          clientSessionToken = null;
-          clientAuthenticated = false;
-          showToast('Your session expired. Please sign in again.', 'error');
-          return;
-        }
-        if (!res.ok) {
-          const body = await res.json().catch(() => ({ message: 'Unable to mark session as done.' }));
-          throw new Error(body.message || 'Unable to mark session as done.');
-        }
-        showToast('Session marked as completed. Thank you!', 'success');
-        await loadClientSessions();
-      } catch (error) {
-        showToast(error.message || 'Unable to mark session as done right now.', 'error');
-      }
-    }
-
-    function openContactModal(details){
-      activeProfessionalDetails = details;
-      activeConsultationId = details?.consultationId ?? null;
-      if (contactProNameEl) contactProNameEl.textContent = details?.name || 'Selected Professional';
-      if (contactProPhoneLink) {
-        if (details?.phone) {
-          contactProPhoneLink.href = `tel:${details.phone.replace(/\s+/g, '')}`;
-          contactProPhoneLink.textContent = details.phone;
-        } else {
-          contactProPhoneLink.removeAttribute('href');
-          contactProPhoneLink.textContent = 'Provided after confirmation';
-        }
-      }
-      if (contactProEmailLink) {
-        if (details?.email) {
-          contactProEmailLink.href = `mailto:${details.email}`;
-          contactProEmailLink.textContent = details.email;
-        } else {
-          contactProEmailLink.removeAttribute('href');
-          contactProEmailLink.textContent = 'Email shared on request';
-        }
-      }
-      if (contactProLocationEl) {
-        contactProLocationEl.textContent = details?.location || 'Nigeria';
-      }
-      if (contactProWhatsappRow) {
-        if (details?.whatsapp) {
-          contactProWhatsappRow.classList.remove('hidden');
-          contactProWhatsappLink.href = details.whatsapp;
-          contactProWhatsappLink.textContent = 'Open WhatsApp chat';
-        } else {
-          contactProWhatsappRow.classList.add('hidden');
-        }
-      }
-      if (contactConsultationIdInput) {
-        contactConsultationIdInput.value = activeConsultationId ?? '';
-      }
-      if (contactReviewRatingSelect) contactReviewRatingSelect.value = '';
-      if (contactReviewCommentInput) contactReviewCommentInput.value = '';
-      if (contactReviewSubmitBtn) {
-        if (activeConsultationId) {
-          contactReviewSubmitBtn.disabled = false;
-          if (contactReviewNotice) {
-            contactReviewNotice.classList.remove('text-red-600');
-            contactReviewNotice.textContent = 'Reviews help other clients pick the right professional.';
-          }
-        } else {
-          contactReviewSubmitBtn.disabled = true;
-          if (contactReviewNotice) {
-            contactReviewNotice.classList.add('text-red-600');
-            contactReviewNotice.textContent = 'We could not confirm this unlock automatically. Contact support to add a review.';
-          }
-        }
-      }
-      contactReviewsList.innerHTML = '';
-      contactReviewsEmpty.classList.remove('hidden');
-      contactReviewSummary.textContent = 'Loading reviews...';
-
-      startContactCountdown(details?.expiresAt ?? null, details?.status ?? null);
-
-      if (contactDetailModal) {
-        contactDetailModal.classList.remove('hidden');
-        contactDetailModal.classList.add('flex');
-        document.body.classList.add('overflow-hidden');
-      }
-      try { feather.replace(); } catch (error) {}
-
-      if (details?.id) {
-        ensureProfessionalReviews(details.id).then(data => {
-          if (data) {
-            renderContactReviews(details.id);
-          } else {
-            contactReviewSummary.textContent = 'No reviews yet';
-          }
-        });
-      } else {
-        contactReviewSummary.textContent = 'No reviews yet';
-      }
-    }
-
-    function closeContactModal(){
-      if (contactDetailModal) {
-        contactDetailModal.classList.remove('flex');
-        contactDetailModal.classList.add('hidden');
-      }
-      document.body.classList.remove('overflow-hidden');
-      activeProfessionalDetails = null;
-      activeConsultationId = null;
-      activeConsultationExpiresAt = null;
-      if (contactCountdownInterval) {
-        clearInterval(contactCountdownInterval);
-        contactCountdownInterval = null;
-      }
-      if (contactSessionCountdown) {
-        contactSessionCountdown.textContent = 'Auto-ends in 24h';
-      }
-      if (markConsultationDoneBtn) {
-        markConsultationDoneBtn.disabled = false;
-        markConsultationDoneBtn.classList.remove('opacity-60', 'cursor-not-allowed');
-      }
-    }
-
-    function openClientAccountModal(){
-      clientAccountModal.classList.remove('hidden');
-      clientAccountModal.classList.add('flex');
-      document.body.classList.add('overflow-hidden');
-      if (storedClientAccount?.email) {
-        clientEmailInput.value = storedClientAccount.email;
-      }
-      clientAccountMessage.classList.add('hidden');
-      clientAccountMessage.classList.remove('text-red-600', 'text-green-600');
-      clientAccountMessage.textContent = '';
-      if (!storedClientAccount?.verified) {
-        clientVerificationForm.classList.add('hidden');
-      }
-    }
-
-    function closeClientAccountModal(){
-      clientAccountModal.classList.add('hidden');
-      clientAccountModal.classList.remove('flex');
-      document.body.classList.remove('overflow-hidden');
-    }
-
-    function redirectToClientRegistration(unlockContext){
-      if (unlockContext) {
-        try {
-          sessionStorage.setItem('pendingUnlock', JSON.stringify(unlockContext));
-        } catch (error) {
-          console.warn('Unable to persist pending unlock before redirect', error);
-        }
-      }
-      window.location.href = 'pro-client-register.html?account=client&intent=unlock';
-    }
-
-    function ensureClientAccount(callback){
-      try {
-        storedClientAccount = JSON.parse(sessionStorage.getItem('siriusClientAuth') ?? 'null');
-      } catch (error) {
-        storedClientAccount = null;
-      }
-      clientSessionToken = storedClientAccount?.token ?? clientSessionToken ?? null;
-      clientAuthenticated = Boolean(clientSessionToken || storedClientAccount?.verified);
-      if(clientAuthenticated){
-        callback();
-        return;
-      }
-      pendingClientAction = callback;
-      openClientAccountModal();
-      if (storedClientAccount?.email && !storedClientAccount.verified) {
-        clientAccountMessage.classList.remove('hidden');
-        clientAccountMessage.textContent = 'We have already created an account for ' + storedClientAccount.email + '. Please enter the verification code sent to your inbox to continue.';
-        clientVerificationForm.classList.remove('hidden');
-        if (clientVerificationTokenInput) clientVerificationTokenInput.focus();
-      }
-    }
-
-    unlockButtons.forEach(btn => {
-      const email = (btn.getAttribute('data-pro-email') || '').toLowerCase();
-      const directoryEntry = professionalDirectory[email];
-      if (directoryEntry) {
-        btn.dataset.proId = directoryEntry.id;
-        btn.dataset.proPhone = directoryEntry.phone;
-        btn.dataset.proWhatsapp = directoryEntry.whatsapp ?? '';
-        btn.dataset.proLocation = directoryEntry.location ?? 'Nigeria';
-      }
-      btn.addEventListener('click', (event) => {
-        const name = event.currentTarget.getAttribute('data-pro') || 'Selected Professional';
-        const proEmail = event.currentTarget.getAttribute('data-pro-email') || '';
-        const proId = event.currentTarget.getAttribute('data-pro-id') || professionalDirectory[proEmail.toLowerCase()]?.id || null;
-        const proPhone = event.currentTarget.getAttribute('data-pro-phone') || professionalDirectory[proEmail.toLowerCase()]?.phone || '';
-        const proWhatsapp = event.currentTarget.getAttribute('data-pro-whatsapp') || professionalDirectory[proEmail.toLowerCase()]?.whatsapp || '';
-        const proLocation = event.currentTarget.getAttribute('data-pro-location') || professionalDirectory[proEmail.toLowerCase()]?.location || '';
-        const unlockContext = { name, email: proEmail, id: proId, phone: proPhone, whatsapp: proWhatsapp, location: proLocation };
-        if (platformAvailable && !proEmail) {
-          showToast('This professional is not yet available for online unlocks. Please contact support.', 'error');
-          return;
-        }
-        if (!storedClientAccount?.verified) {
-          redirectToClientRegistration(unlockContext);
-          return;
-        }
-        if (!clientSessionToken && !platformAvailable) {
-          const redirectUrl = encodeURIComponent('consultations.html');
-          window.location.href = `login.html?account=client&redirect=${redirectUrl}`;
-          return;
-        }
-        openPaymentModal(unlockContext);
-      });
-    });
-
-    if(closePaymentModalBtn){
-      closePaymentModalBtn.addEventListener('click', closePaymentModal);
-    }
-
-    if(paymentModal){
-      paymentModal.addEventListener('click', (event) => {
-        if(event.target === paymentModal){
-          closePaymentModal();
-        }
-      });
-    }
-
-    if (closeContactDetailModalBtn) {
-      closeContactDetailModalBtn.addEventListener('click', closeContactModal);
-    }
-
-    if (contactDetailModal) {
-      contactDetailModal.addEventListener('click', (event) => {
-        if (event.target === contactDetailModal) {
-          closeContactModal();
-        }
-      });
-    }
-
-    if (markConsultationDoneBtn) {
-      markConsultationDoneBtn.addEventListener('click', async () => {
-        if (!activeConsultationId) {
-          showToast('We could not confirm this consultation yet. Contact our team if this persists.', 'error');
-          return;
-        }
-        await markSessionDone(activeConsultationId);
-        closeContactModal();
-      });
-    }
-
-    if (recordConsultPaymentBtn) {
-      recordConsultPaymentBtn.addEventListener('click', async () => {
-        if (!pendingUnlockContext) {
-          showToast('Select a professional to unlock first.', 'error');
-          return;
-        }
-        if (!storedClientAccount?.email) {
-          showToast('Please create or verify your client account before unlocking a professional.', 'error');
-          return;
-        }
-        if (!clientSessionToken && !platformAvailable) {
-          showToast('Sign in to unlock consultations securely.', 'error');
-          window.location.href = 'login.html?account=client&redirect=consultations.html';
-          return;
-        }
-        consultPaymentStatus.textContent = 'Processing your unlock…';
-        consultPaymentStatus.className = 'text-xs text-blue-600 mt-2';
-        const proEmail = (pendingUnlockContext.email || '').toLowerCase();
-        const directoryEntry = professionalDirectory[proEmail] ?? {};
-        const payload = {
-          professionalEmail: proEmail,
-          contactEmail: proEmail,
-          contactPhone: pendingUnlockContext.phone || directoryEntry.phone || null,
-          contactWhatsapp: pendingUnlockContext.whatsapp || directoryEntry.whatsapp || null,
-        };
-        try {
-          const usingPlatformOnly = platformAvailable && !clientSessionToken;
-          let platformConsultation = null;
-          if (platformAvailable) {
-            try {
-              platformConsultation = window.SiriusPlatform.recordConsultationUnlock({
-                professionalEmail: pendingUnlockContext.email,
-                professionalName: pendingUnlockContext.name,
-                clientEmail: storedClientAccount.email,
-              });
-            } catch (error) {
-              if (usingPlatformOnly) {
-                throw error;
-              }
-              console.warn('Platform unlock failed, falling back to API only.', error);
-            }
-          }
-
-          let consultation = platformConsultation;
-          if (!usingPlatformOnly) {
-            const res = await fetch('/api/consultations/unlock', {
-              method: 'POST',
-              headers: getClientAuthHeaders(),
-              body: JSON.stringify(payload),
+                // Filter professionals
+                currentFilter = tab.dataset.filter;
+                renderProfessionals();
             });
-            if (!res.ok) {
-              const body = await res.json().catch(() => ({ message: 'Unable to unlock contact right now.' }));
-              throw new Error(body.message || 'Unable to unlock contact right now.');
-            }
-            const data = await res.json();
-            consultation = data?.consultation ?? consultation;
-          }
-
-          if (!consultation) {
-            throw new Error('Unexpected response from unlock service.');
-          }
-
-          const professionalEmailRaw =
-            consultation.professional?.user?.email ||
-            consultation.professionalEmail ||
-            consultation.email ||
-            pendingUnlockContext.email ||
-            '';
-          const normalizedProEmail = professionalEmailRaw?.toLowerCase?.() ?? '';
-          const directoryFallback = professionalDirectory[normalizedProEmail] || {};
-          const baseName =
-            consultation.professional?.name ||
-            consultation.professionalName ||
-            pendingUnlockContext.name ||
-            directoryFallback.name ||
-            'Professional';
-          const [fallbackFirst, ...fallbackRest] = baseName.split(' ');
-          const fallbackLast = fallbackRest.join(' ');
-          const derivedFirst =
-            consultation.professional?.user?.firstName ||
-            consultation.professional?.firstName ||
-            fallbackFirst ||
-            'Professional';
-          const derivedLast =
-            consultation.professional?.user?.lastName ||
-            consultation.professional?.lastName ||
-            fallbackLast ||
-            '';
-          const professionalName = `${derivedFirst} ${derivedLast}`.trim();
-          const proDetails = {
-            name: professionalName || baseName,
-            email:
-              consultation.contactEmail ||
-              consultation.professional?.user?.email ||
-              consultation.professionalEmail ||
-              pendingUnlockContext.email ||
-              directoryFallback.email ||
-              '',
-            id:
-              consultation.professional?.id ||
-              consultation.professionalId ||
-              directoryFallback.id ||
-              pendingUnlockContext.id ||
-              null,
-            consultationId: consultation.id,
-            phone: consultation.contactPhone || payload.contactPhone || directoryFallback.phone || '',
-            whatsapp: consultation.contactWhatsapp || payload.contactWhatsapp || directoryFallback.whatsapp || '',
-            location: pendingUnlockContext.location || directoryFallback.location || '',
-            status: consultation.status || 'PAID_HOLD',
-            expiresAt:
-              consultation.expiresAt ||
-              (consultation.createdAt
-                ? new Date(new Date(consultation.createdAt).getTime() + 24 * 60 * 60 * 1000).toISOString()
-                : null),
-          };
-          consultPaymentStatus.textContent = `Contact unlocked! We’ve held ₦${CONSULTATION_FEE.toLocaleString()} securely. Check your email for an introduction to ${proDetails.name}.`;
-          consultPaymentStatus.className = 'text-xs text-emerald-600 mt-2';
-          sessionStorage.removeItem('pendingUnlock');
-          closePaymentModal();
-          await loadClientSessions();
-          openContactModal(proDetails);
-          if (proDetails.id) {
-            ensureProfessionalReviews(proDetails.id, { force: true });
-          }
-          showToast(`Payment recorded. ₦${PROFESSIONAL_SHARE.toLocaleString()} will be remitted after you confirm the consultation.`, 'success');
-        } catch (error) {
-          console.error(error);
-          consultPaymentStatus.textContent = error.message || 'Unable to unlock contact right now. Please try again shortly.';
-          consultPaymentStatus.className = 'text-xs text-red-600 mt-2';
-          showToast(error.message || 'Unable to unlock contact right now. Please try again shortly.', 'error');
-        }
-      });
-    }
-
-    if(closeClientAccountModalBtn){
-      closeClientAccountModalBtn.addEventListener('click', () => {
-        pendingClientAction = null;
-        closeClientAccountModal();
-      });
-    }
-
-    if(clientAccountForm){
-      clientAccountForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const firstName = clientFirstNameInput.value.trim();
-        const lastName = clientLastNameInput.value.trim();
-        const email = clientEmailInput.value.trim();
-        const password = clientPasswordInput.value;
-
-      clientAccountMessage.classList.remove('hidden');
-      clientAccountMessage.classList.remove('text-red-600', 'text-green-600');
-      clientAccountMessage.textContent = 'Creating your account...';
-
-        try {
-          if (platformAvailable) {
-            const { record, verificationToken } = window.SiriusPlatform.registerClient({ firstName, lastName, email, password });
-            window.SiriusPlatform.verifyClient({ email: record.email, token: verificationToken });
-            storedClientAccount = { ...record, verified: true };
-            sessionStorage.setItem('siriusClientAuth', JSON.stringify(storedClientAccount));
-            clientSessionToken = storedClientAccount?.token ?? clientSessionToken;
-            clientAuthenticated = Boolean(clientSessionToken || storedClientAccount?.verified);
-            if (clientAuthenticated) {
-              unlockSigninNotice?.classList.add('hidden');
-            }
-            clientAccountMessage.textContent = `Success! ${record.email} is verified and ready to unlock consultations.`;
-            clientAccountMessage.classList.add('text-green-600');
-            clientVerificationForm.classList.add('hidden');
-            setTimeout(() => {
-              closeClientAccountModal();
-              if(pendingClientAction){
-                pendingClientAction();
-                pendingClientAction = null;
-              }
-            }, 600);
-            return;
-          }
-          const res = await fetch('/api/auth/register-client', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ firstName, lastName, email, password }),
-          });
-          if(!res.ok){
-            const body = await res.json().catch(()=>({ message:'Unable to create account' }));
-            throw new Error(body.message || 'Unable to create account');
-          }
-          const data = await res.json();
-          storedClientAccount = { firstName, lastName, email, verified: false };
-          sessionStorage.setItem('siriusClientAuth', JSON.stringify(storedClientAccount));
-          clientSessionToken = storedClientAccount?.token ?? clientSessionToken;
-          clientAuthenticated = Boolean(clientSessionToken || storedClientAccount?.verified);
-          if (clientAuthenticated) {
-            unlockSigninNotice?.classList.add('hidden');
-          }
-          clientAccountMessage.textContent = `We emailed a verification link to ${email}. Use this one-time code if needed: ${data.verificationToken}`;
-          clientAccountMessage.classList.add('text-green-600');
-          clientVerificationForm.classList.remove('hidden');
-          if (clientVerificationTokenInput) clientVerificationTokenInput.focus();
-        } catch(error){
-          clientAccountMessage.textContent = error.message || 'Could not create account. Please try again.';
-          clientAccountMessage.classList.add('text-red-600');
-          clientVerificationForm.classList.add('hidden');
-        }
-      });
-    }
-
-    if(clientVerificationForm){
-      clientVerificationForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const token = clientVerificationTokenInput.value.trim();
-        if(!token){
-          clientAccountMessage.classList.remove('hidden');
-          clientAccountMessage.textContent = 'Enter the verification code from your email.';
-          return;
-        }
-        clientAccountMessage.classList.remove('hidden');
-        clientAccountMessage.classList.remove('text-red-600', 'text-green-600');
-        clientAccountMessage.textContent = 'Verifying your email...';
-        try {
-          if (platformAvailable) {
-            window.SiriusPlatform.verifyClient({ email: storedClientAccount?.email, token });
-            storedClientAccount = {
-              ...(storedClientAccount ?? {}),
-              verified: true,
-            };
-            sessionStorage.setItem('siriusClientAuth', JSON.stringify(storedClientAccount));
-            clientSessionToken = storedClientAccount?.token ?? clientSessionToken;
-            clientAuthenticated = Boolean(clientSessionToken || storedClientAccount?.verified);
-            if (clientAuthenticated) {
-              unlockSigninNotice?.classList.add('hidden');
-            }
-            clientAccountMessage.textContent = 'Email verified! You can now continue to payment.';
-            clientAccountMessage.classList.add('text-green-600');
-            clientVerificationForm.classList.add('hidden');
-            if (clientVerificationTokenInput) clientVerificationTokenInput.value = '';
-            setTimeout(() => {
-              closeClientAccountModal();
-              if(pendingClientAction){
-                pendingClientAction();
-                pendingClientAction = null;
-              }
-            }, 600);
-            return;
-          }
-          const res = await fetch('/api/auth/verify-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token }),
-          });
-          if(!res.ok){
-            const body = await res.json().catch(()=>({ message:'Unable to verify email' }));
-            throw new Error(body.message || 'Unable to verify email');
-          }
-          storedClientAccount = {
-            ...(storedClientAccount ?? {}),
-            verified: true,
-          };
-          sessionStorage.setItem('siriusClientAuth', JSON.stringify(storedClientAccount));
-          clientSessionToken = storedClientAccount?.token ?? clientSessionToken;
-          clientAuthenticated = Boolean(clientSessionToken || storedClientAccount?.verified);
-          clientAccountMessage.textContent = 'Email verified! You can now continue to payment.';
-          clientAccountMessage.classList.add('text-green-600');
-          clientVerificationForm.classList.add('hidden');
-          if (clientVerificationTokenInput) clientVerificationTokenInput.value = '';
-          setTimeout(() => {
-            closeClientAccountModal();
-            if(pendingClientAction){
-              pendingClientAction();
-              pendingClientAction = null;
-            }
-          }, 600);
-        } catch(error){
-          clientAccountMessage.textContent = error.message || 'Unable to verify email. Please confirm the code and try again.';
-          clientAccountMessage.classList.add('text-red-600');
-        }
-      });
-    }
-
-    if (contactReviewForm) {
-      contactReviewForm.addEventListener('submit', async event => {
-        event.preventDefault();
-        if (!activeConsultationId) {
-          showToast('We could not confirm this unlock automatically. Contact support to submit a review.', 'error');
-          return;
-        }
-        if (!clientSessionToken) {
-          showToast('Sign in to leave a review.', 'error');
-          return;
-        }
-        const rating = Number(contactReviewRatingSelect?.value || 0);
-        const comment = (contactReviewCommentInput?.value || '').trim();
-        if (!rating) {
-          showToast('Select a rating before submitting.', 'error');
-          return;
-        }
-        if (contactReviewSubmitBtn) {
-          contactReviewSubmitBtn.disabled = true;
-          contactReviewSubmitBtn.classList.add('opacity-60', 'cursor-not-allowed');
-        }
-        try {
-          const res = await fetch(`/api/consultations/${activeConsultationId}/reviews`, {
-            method: 'POST',
-            headers: getClientAuthHeaders(),
-            body: JSON.stringify({ rating, comment }),
-          });
-          if (res.status === 401) {
-            sessionStorage.removeItem('siriusClientAuth');
-            clientSessionToken = null;
-            clientAuthenticated = false;
-            showToast('Your session expired. Please sign in again.', 'error');
-            return;
-          }
-          if (!res.ok) {
-            const body = await res.json().catch(() => ({ message: 'Unable to submit review' }));
-            throw new Error(body.message || 'Unable to submit review');
-          }
-          const review = await res.json();
-          if (activeProfessionalDetails?.id) {
-            const cache = professionalReviewsCache.get(activeProfessionalDetails.id) || { averageRating: null, reviews: [] };
-            const enrichedReview = {
-              ...review,
-              client: {
-                firstName: storedClientAccount?.firstName ?? 'Client',
-                lastName: storedClientAccount?.lastName ?? '',
-              },
-            };
-            cache.reviews = [enrichedReview, ...cache.reviews];
-            cache.averageRating = cache.reviews.reduce((sum, item) => sum + (item.rating || 0), 0) / cache.reviews.length;
-            professionalReviewsCache.set(activeProfessionalDetails.id, cache);
-            applyReviewSummary(activeProfessionalDetails.id, cache);
-            renderContactReviews(activeProfessionalDetails.id);
-            refreshRecentReviews();
-          }
-          showToast('Thank you! Your review has been submitted.', 'success');
-          if (contactReviewForm) contactReviewForm.reset();
-          await loadClientSessions();
-        } catch (error) {
-          showToast(error.message || 'Unable to submit review right now.', 'error');
-        } finally {
-          if (contactReviewSubmitBtn) {
-            contactReviewSubmitBtn.disabled = false;
-            contactReviewSubmitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
-          }
-        }
-      });
-    }
-
-    if(clientAccountModal){
-      clientAccountModal.addEventListener('click', (event) => {
-        if(event.target === clientAccountModal){
-          pendingClientAction = null;
-          closeClientAccountModal();
-        }
-      });
-    }
-
-    document.addEventListener('keydown', (event) => {
-      if(event.key === 'Escape'){
-        if(paymentModal && paymentModal.classList.contains('flex')){
-          closePaymentModal();
-        }
-        if(clientAccountModal && clientAccountModal.classList.contains('flex')){
-          pendingClientAction = null;
-          closeClientAccountModal();
-        }
-      }
-    });
-
-    const demoClientSessions = [
-      {
-        id: 'CONS-301',
-        professionalEmail: 'adaobi.nwankwo@siriuspro.ng',
-        professionalName: 'Dr. Adaobi Nwankwo',
-        status: 'PAID_HOLD',
-        createdAt: '2025-02-08T09:30:00Z',
-        expiresAt: '2025-02-09T09:30:00Z',
-        contactPhone: professionalDirectory['adaobi.nwankwo@siriuspro.ng'].phone,
-        contactWhatsapp: professionalDirectory['adaobi.nwankwo@siriuspro.ng'].whatsapp,
-        location: professionalDirectory['adaobi.nwankwo@siriuspro.ng'].location,
-        professionalId: professionalDirectory['adaobi.nwankwo@siriuspro.ng'].id,
-      },
-      {
-        id: 'CONS-302',
-        professionalEmail: 'ifeoma.nwachukwu@siriuspro.ng',
-        professionalName: 'Barr. Ifeoma Nwachukwu',
-        status: 'COMPLETED',
-        completedAt: '2025-02-03T14:00:00Z',
-        expiresAt: '2025-02-04T14:00:00Z',
-        rating: 5,
-        comment: 'Resolved my issue quickly.',
-        contactPhone: professionalDirectory['ifeoma.nwachukwu@siriuspro.ng'].phone,
-        contactWhatsapp: professionalDirectory['ifeoma.nwachukwu@siriuspro.ng'].whatsapp,
-        location: professionalDirectory['ifeoma.nwachukwu@siriuspro.ng'].location,
-        professionalId: professionalDirectory['ifeoma.nwachukwu@siriuspro.ng'].id,
-      }
-    ];
-
-    function formatDateLabel(value){
-      const date = value ? new Date(value) : new Date();
-      return date.toLocaleString();
-    }
-    function renderRatingStars(value){
-      if (!value) {
-        return '<span class="text-xs text-gray-500">No rating yet</span>';
-      }
-      const rounded = Math.round(value);
-      const stars = Array.from({ length: 5 }, (_, index) => {
-        const filled = index + 1 <= rounded;
-        return `<i data-feather="star" class="w-4 h-4 ${filled ? 'text-amber-500' : 'text-gray-300'}"></i>`;
-      }).join('');
-      return `<span class="inline-flex items-center gap-1">${stars}<span class="text-sm font-semibold text-gray-700">${Number(value).toFixed(1)}</span></span>`;
-    }
-
-    function refreshClientCountdowns(){
-      if (!Array.isArray(clientSessions) || !clientSessions.length) return;
-      const now = Date.now();
-      clientSessions.forEach(session => {
-        if (!session?.id || !session?.expiresAt) return;
-        const statusUpper = (session.status || '').toUpperCase();
-        if (statusUpper === 'COMPLETED' || statusUpper === 'EXPIRED') return;
-        const element = document.querySelector(`[data-session-countdown="${session.id}"]`);
-        if (!element) return;
-        const diff = new Date(session.expiresAt).getTime() - now;
-        if (diff <= 0) {
-          element.textContent = 'Session expired';
-          return;
-        }
-        const hours = Math.floor(diff / 3_600_000);
-        const minutes = Math.floor((diff % 3_600_000) / 60_000);
-        element.textContent = `Ends in ${hours}h ${minutes}m`;
-      });
-    }
-
-    function renderClientConsultations(){
-      if (!clientConsultationsList) return;
-      if (!Array.isArray(clientSessions) || !clientSessions.length) {
-        clientConsultationsList.innerHTML = '';
-        noClientConsultations?.classList.remove('hidden');
-        return;
-      }
-      noClientConsultations?.classList.add('hidden');
-      clientConsultationsList.innerHTML = clientSessions.map(session => {
-        const status = (session.status || (session.rating ? 'COMPLETED' : 'ACTIVE')).toUpperCase();
-        const sessionCompleted = status === 'COMPLETED' || status === 'EXPIRED';
-        const statusBadge =
-          status === 'COMPLETED'
-            ? '<span class="inline-flex items-center gap-1 text-xs text-emerald-600"><i data-feather="check-circle" class="w-4 h-4"></i>Completed</span>'
-            : status === 'EXPIRED'
-            ? '<span class="inline-flex items-center gap-1 text-xs text-red-500"><i data-feather="alert-triangle" class="w-4 h-4"></i>Expired</span>'
-            : '<span class="inline-flex items-center gap-1 text-xs text-amber-600"><i data-feather="clock" class="w-4 h-4"></i>Awaiting confirmation</span>';
-        const sessionDate = session.completedAt ?? session.updatedAt ?? session.createdAt ?? Date.now();
-        const countdownSnippet = sessionCompleted
-          ? ''
-          : `<p class="text-xs text-gray-500" data-session-countdown="${session.id}">Auto-ends soon</p>`;
-        const ratingValue = session.review?.rating ?? session.rating ?? null;
-        const ratingBlock = ratingValue
-          ? `<div class="text-sm text-gray-600 space-y-2">
-                ${renderRatingStars(ratingValue)}
-                ${session.review?.comment ? `<p class="text-xs text-gray-500">${session.review.comment}</p>` : ''}
-             </div>`
-          : `<p class="text-sm text-gray-600">We are holding ₦${CONSULTATION_FEE.toLocaleString()} until you confirm the consultation. ₦${PROFESSIONAL_SHARE.toLocaleString()} will be paid once you do.</p>`;
-        const doneButton = sessionCompleted
-          ? ''
-          : `<button class="markSessionDoneBtn inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition" data-session="${session.id}">
-                <i data-feather="check-circle" class="w-4 h-4"></i>
-                Mark done
-             </button>`;
-        return `
-          <article class="border border-gray-200 rounded-xl p-4">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <h3 class="text-sm font-semibold text-gray-800">${session.professionalName || 'Selected Professional'}</h3>
-                <p class="text-xs text-gray-500">${sessionCompleted ? 'Confirmed' : 'Unlocked'} on ${formatDateLabel(sessionDate)}</p>
-                ${session.professionalEmail ? `<p class="text-xs text-gray-500 mt-1">Email: ${session.professionalEmail}</p>` : ''}
-              </div>
-              <div class="text-right space-y-1">
-                ${statusBadge}
-                ${countdownSnippet}
-              </div>
-            </div>
-            <div class="mt-3 space-y-2">
-              ${ratingBlock}
-            </div>
-            <div class="mt-4 flex flex-wrap gap-3">
-              <button class="clientContactBtn inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition" data-session="${session.id}">
-                <i data-feather="phone" class="w-4 h-4"></i>
-                Contact details &amp; review
-              </button>
-              ${doneButton}
-            </div>
-            ${sessionCompleted ? '' : '<p class="mt-2 text-xs text-gray-500">Tap “Mark done” after your consultation so we can release payouts promptly.</p>'}
-          </article>
-        `;
-      }).join('');
-
-      clientConsultationsList.querySelectorAll('.clientContactBtn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const sessionId = btn.dataset.session;
-          const session = clientSessions.find(item => item.id === sessionId);
-          if (!session) return;
-          const directoryEntry = professionalDirectory[(session.professionalEmail || '').toLowerCase()];
-          openContactModal({
-            name: session.professionalName || directoryEntry?.name,
-            email: session.professionalEmail,
-            phone: session.contactPhone || directoryEntry?.phone || '',
-            whatsapp: session.contactWhatsapp || directoryEntry?.whatsapp || '',
-            location: session.location || directoryEntry?.location || '',
-            consultationId: session.id,
-            id: session.professionalId || directoryEntry?.id || null,
-            status: session.status,
-            expiresAt: session.expiresAt,
-          });
         });
-      });
 
-      clientConsultationsList.querySelectorAll('.markSessionDoneBtn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const sessionId = btn.dataset.session;
-          markSessionDone(sessionId);
-        });
-      });
-
-      try { feather.replace(); } catch (error) {}
-      refreshClientCountdowns();
-    }
-
-    async function loadClientSessions(){
-      let sessions = [];
-      if (clientSessionToken) {
-        try {
-          const res = await fetch('/api/consultations/client/me', {
-            headers: getClientAuthHeaders(),
-            cache: 'no-store',
-          });
-          if (res.status === 401) {
-            sessionStorage.removeItem('siriusClientAuth');
-            clientSessionToken = null;
-            clientAuthenticated = false;
-            showToast('Your session expired. Please sign in again.', 'error');
-            storedClientAccount = null;
-            sessions = [];
-          } else if (!res.ok) {
-            const body = await res.json().catch(() => ({ message: 'Unable to load consultations.' }));
-            throw new Error(body.message || 'Unable to load consultations.');
-          } else {
-            const data = await res.json();
-            sessions = Array.isArray(data?.consultations) ? data.consultations : [];
-          }
-        } catch (error) {
-          console.error('Unable to load consultations via API', error);
-          showToast(error.message || 'Unable to load your consultations right now.', 'error');
+        // Fetch professionals
+        async function fetchProfessionals() {
+            try {
+                const response = await fetch(`${API_URL}/consultation/professionals`);
+                if (!response.ok) throw new Error('Failed to fetch professionals');
+                allProfessionals = await response.json();
+                renderProfessionals();
+            } catch (error) {
+                console.error('Error fetching professionals:', error);
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('empty-state').classList.remove('hidden');
+            }
         }
-      }
 
-      if (!clientSessionToken) {
-        if (platformAvailable && storedClientAccount?.email) {
-          try {
-            sessions = window.SiriusPlatform.getClientConsultations(storedClientAccount.email) ?? [];
-          } catch (error) {
-            console.warn('Unable to load consultations from platform store', error);
-          }
-        } else if (!sessions.length) {
-          sessions = demoClientSessions;
+        // Render professionals
+        function renderProfessionals() {
+            const grid = document.getElementById('professionals-grid');
+            const loading = document.getElementById('loading');
+            const emptyState = document.getElementById('empty-state');
+
+            // Filter professionals
+            let filtered = allProfessionals;
+            if (currentFilter !== 'all') {
+                filtered = allProfessionals.filter(p => p.profession === currentFilter);
+            }
+
+            // Hide loading
+            loading.classList.add('hidden');
+
+            // Show empty state if no results
+            if (filtered.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            // Show grid
+            emptyState.classList.add('hidden');
+            grid.classList.remove('hidden');
+
+            // Render cards
+            grid.innerHTML = filtered.map(pro => `
+                <div class="professional-card bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                    <!-- Header -->
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900">${pro.firstName} ${pro.lastName}</h3>
+                            <span class="inline-block mt-2 px-3 py-1 bg-blue-50 text-primary text-sm font-semibold rounded-full">
+                                ${pro.profession}
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-1 star-rating">
+                            ${renderStars(pro.averageRating)}
+                            <span class="ml-1 text-sm text-gray-600">${pro.averageRating.toFixed(1)}</span>
+                        </div>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-feather="briefcase" class="w-4 h-4"></i>
+                            <span>${pro.specialization}</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-feather="award" class="w-4 h-4"></i>
+                            <span>${pro.yearsOfExperience} years experience</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-feather="message-circle" class="w-4 h-4"></i>
+                            <span>${pro.totalSessions} sessions completed</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-feather="star" class="w-4 h-4"></i>
+                            <span>${pro.totalReviews} reviews</span>
+                        </div>
+                    </div>
+
+                    <!-- Bio Preview -->
+                    <p class="text-sm text-gray-600 mb-6 line-clamp-2">
+                        ${pro.bio}
+                    </p>
+
+                    <!-- Action Button -->
+                    <a href="consultation-profile.html?id=${pro._id}" class="block w-full text-center bg-primary text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition-colors">
+                        View Profile & Book
+                    </a>
+                </div>
+            `).join('');
+
+            // Reinitialize feather icons
+            feather.replace();
         }
-      }
 
-      clientSessions = (Array.isArray(sessions) ? sessions : []).map(session => {
-        const email = (session.professional?.user?.email || session.professionalEmail || session.email || '').toLowerCase();
-        const directoryEntry = professionalDirectory[email];
-        const createdAt = session.createdAt || session.created_at || new Date().toISOString();
-        const expiresAt = session.expiresAt || (session.createdAt ? new Date(new Date(createdAt).getTime() + 24 * 60 * 60 * 1000).toISOString() : null);
-        return {
-          id: session.id || session.consultationId || session.consultation_id,
-          professionalEmail: email || session.professionalEmail || '',
-          professionalName:
-            session.professional?.name ||
-            (session.professional?.user
-              ? `${session.professional.user.firstName} ${session.professional.user.lastName}`.trim()
-              : null) ||
-            directoryEntry?.name ||
-            session.name ||
-            'Selected Professional',
-          status: session.status || 'ACTIVE',
-          createdAt,
-          updatedAt: session.updatedAt || session.updated_at || createdAt,
-          completedAt: session.endedAt || session.completedAt || null,
-          expiresAt,
-          contactPhone: session.contact?.phone || session.contactPhone || directoryEntry?.phone || '',
-          contactWhatsapp: session.contact?.whatsapp || session.contactWhatsapp || directoryEntry?.whatsapp || '',
-          location: session.location || directoryEntry?.location || '',
-          professionalId: session.professional?.id || session.professionalId || directoryEntry?.id || null,
-          review: session.review ?? null,
-          rating: session.rating ?? session.review?.rating ?? null,
-        };
-      });
+        // Render star rating
+        function renderStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
-      clientAuthenticated = Boolean(clientSessionToken || storedClientAccount?.verified);
-      if (clientAuthenticated) {
-        unlockSigninNotice?.classList.add('hidden');
-      } else {
-        unlockSigninNotice?.classList.remove('hidden');
-      }
+            let stars = '';
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i data-feather="star" class="w-4 h-4 fill-current"></i>';
+            }
+            if (hasHalfStar) {
+                stars += '<i data-feather="star" class="w-4 h-4"></i>';
+            }
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i data-feather="star" class="w-4 h-4 text-gray-300"></i>';
+            }
+            return stars;
+        }
 
-      renderClientConsultations();
-      if (clientCountdownInterval) {
-        clearInterval(clientCountdownInterval);
-      }
-      clientCountdownInterval = window.setInterval(refreshClientCountdowns, 60_000);
-      refreshClientCountdowns();
-    }
-
-    loadClientSessions();
-
-    Object.values(professionalDirectory).forEach(entry => {
-      if (entry?.id && reviewSummaryElements.has(entry.id)) {
-        ensureProfessionalReviews(entry.id);
-      }
-    });
-
-    refreshRecentReviews();
-  </script>
-  <script src="assistant.js"></script>
+        // Initialize
+        feather.replace();
+        fetchProfessionals();
+    </script>
+    <script src="assistant.js"></script>
 </body>
 </html>

@@ -5,6 +5,8 @@ import crypto from 'node:crypto';
 import jwt from 'jsonwebtoken';
 import type { Prisma, UserRole } from '@prisma/client';
 import { prisma } from '../lib/prisma.js';
+import { authLimiter, registrationLimiter, passwordResetLimiter } from '../middleware/rateLimiter.js';
+import { sanitizeEmail, sanitizeName, sanitizePhone, validatePassword } from '../utils/sanitization.js';
 
 const router = express.Router();
 
@@ -80,13 +82,28 @@ const registerClientSchema = z.object({
   password: z.string().min(8),
 });
 
-router.post('/register-client', async (req, res) => {
+router.post('/register-client', registrationLimiter, async (req, res) => {
   const payload = registerClientSchema.safeParse(req.body);
   if (!payload.success) {
     return res.status(400).json({ errors: payload.error.flatten() });
   }
 
-  const email = normalizeEmail(payload.data.email);
+  // Sanitize inputs
+  const email = sanitizeEmail(payload.data.email);
+  if (!email) {
+    return res.status(400).json({ message: 'Invalid email address' });
+  }
+
+  const firstName = sanitizeName(payload.data.firstName);
+  const lastName = sanitizeName(payload.data.lastName);
+  if (!firstName || !lastName) {
+    return res.status(400).json({ message: 'Invalid name format' });
+  }
+
+  const passwordValidation = validatePassword(payload.data.password);
+  if (!passwordValidation.valid) {
+    return res.status(400).json({ message: passwordValidation.error });
+  }
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
@@ -99,8 +116,8 @@ router.post('/register-client', async (req, res) => {
 
   const user = await prisma.user.create({
     data: {
-      firstName: payload.data.firstName,
-      lastName: payload.data.lastName,
+      firstName,
+      lastName,
       email,
       passwordHash,
       role: 'CLIENT',
@@ -128,13 +145,28 @@ const registerProfessionalSchema = z.object({
   licenseDocument: z.string().min(10),
 });
 
-router.post('/register-professional', async (req, res) => {
+router.post('/register-professional', registrationLimiter, async (req, res) => {
   const payload = registerProfessionalSchema.safeParse(req.body);
   if (!payload.success) {
     return res.status(400).json({ errors: payload.error.flatten() });
   }
 
-  const email = normalizeEmail(payload.data.email);
+  // Sanitize inputs
+  const email = sanitizeEmail(payload.data.email);
+  if (!email) {
+    return res.status(400).json({ message: 'Invalid email address' });
+  }
+
+  const firstName = sanitizeName(payload.data.firstName);
+  const lastName = sanitizeName(payload.data.lastName);
+  if (!firstName || !lastName) {
+    return res.status(400).json({ message: 'Invalid name format' });
+  }
+
+  const passwordValidation = validatePassword(payload.data.password);
+  if (!passwordValidation.valid) {
+    return res.status(400).json({ message: passwordValidation.error });
+  }
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
@@ -147,8 +179,8 @@ router.post('/register-professional', async (req, res) => {
 
   const user = await prisma.user.create({
     data: {
-      firstName: payload.data.firstName,
-      lastName: payload.data.lastName,
+      firstName,
+      lastName,
       email,
       passwordHash,
       role: payload.data.profession,
@@ -180,7 +212,7 @@ const loginSchema = z.object({
   password: z.string().min(1),
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', authLimiter, async (req, res) => {
   const payload = loginSchema.safeParse(req.body);
   if (!payload.success) {
     return res.status(400).json({ errors: payload.error.flatten() });
@@ -316,13 +348,33 @@ const registerWorkerSchema = z.object({
 
 const registerEmployerSchema = registerWorkerSchema;
 
-router.post('/register-worker', async (req, res) => {
+router.post('/register-worker', registrationLimiter, async (req, res) => {
   const payload = registerWorkerSchema.safeParse(req.body);
   if (!payload.success) {
     return res.status(400).json({ errors: payload.error.flatten() });
   }
 
-  const email = normalizeEmail(payload.data.email);
+  // Sanitize inputs
+  const email = sanitizeEmail(payload.data.email);
+  if (!email) {
+    return res.status(400).json({ message: 'Invalid email address' });
+  }
+
+  const firstName = sanitizeName(payload.data.firstName);
+  const lastName = sanitizeName(payload.data.lastName);
+  if (!firstName || !lastName) {
+    return res.status(400).json({ message: 'Invalid name format' });
+  }
+
+  const phone = sanitizePhone(payload.data.phone);
+  if (!phone) {
+    return res.status(400).json({ message: 'Invalid phone number format' });
+  }
+
+  const passwordValidation = validatePassword(payload.data.password);
+  if (!passwordValidation.valid) {
+    return res.status(400).json({ message: passwordValidation.error });
+  }
 
   const existing = await prisma.user.findUnique({
     where: { email },
@@ -338,8 +390,8 @@ router.post('/register-worker', async (req, res) => {
       return res.status(409).json({ message: 'This account already has worker access.' });
     }
 
-    if (payload.data.phone && payload.data.phone !== existing.phone) {
-      const phoneOwner = await prisma.user.findUnique({ where: { phone: payload.data.phone } });
+    if (phone && phone !== existing.phone) {
+      const phoneOwner = await prisma.user.findUnique({ where: { phone } });
       if (phoneOwner && phoneOwner.id !== existing.id) {
         return res.status(409).json({ message: 'Phone number already registered' });
       }
@@ -349,9 +401,9 @@ router.post('/register-worker', async (req, res) => {
     const user = await prisma.user.update({
       where: { id: existing.id },
       data: {
-        firstName: existing.firstName || payload.data.firstName,
-        lastName: existing.lastName || payload.data.lastName,
-        phone: payload.data.phone || existing.phone,
+        firstName: existing.firstName || firstName,
+        lastName: existing.lastName || lastName,
+        phone: phone || existing.phone,
         roles: updatedRoles,
         role: existing.role === 'EMPLOYER' ? existing.role : 'ARTISAN',
         isVerified: true,
@@ -366,22 +418,20 @@ router.post('/register-worker', async (req, res) => {
     });
   }
 
-  if (payload.data.phone) {
-    const existingPhone = await prisma.user.findUnique({
-      where: { phone: payload.data.phone },
-    });
-    if (existingPhone) {
-      return res.status(409).json({ message: 'Phone number already registered' });
-    }
+  const existingPhone = await prisma.user.findUnique({
+    where: { phone },
+  });
+  if (existingPhone) {
+    return res.status(409).json({ message: 'Phone number already registered' });
   }
 
   const passwordHash = await bcrypt.hash(payload.data.password, 10);
   const user = await prisma.user.create({
     data: {
-      firstName: payload.data.firstName,
-      lastName: payload.data.lastName,
+      firstName,
+      lastName,
       email,
-      phone: payload.data.phone,
+      phone,
       passwordHash,
       role: 'ARTISAN',
        roles: ['ARTISAN'],
@@ -397,13 +447,33 @@ router.post('/register-worker', async (req, res) => {
   });
 });
 
-router.post('/register-employer', async (req, res) => {
+router.post('/register-employer', registrationLimiter, async (req, res) => {
   const payload = registerEmployerSchema.safeParse(req.body);
   if (!payload.success) {
     return res.status(400).json({ errors: payload.error.flatten() });
   }
 
-  const email = normalizeEmail(payload.data.email);
+  // Sanitize inputs
+  const email = sanitizeEmail(payload.data.email);
+  if (!email) {
+    return res.status(400).json({ message: 'Invalid email address' });
+  }
+
+  const firstName = sanitizeName(payload.data.firstName);
+  const lastName = sanitizeName(payload.data.lastName);
+  if (!firstName || !lastName) {
+    return res.status(400).json({ message: 'Invalid name format' });
+  }
+
+  const phone = sanitizePhone(payload.data.phone);
+  if (!phone) {
+    return res.status(400).json({ message: 'Invalid phone number format' });
+  }
+
+  const passwordValidation = validatePassword(payload.data.password);
+  if (!passwordValidation.valid) {
+    return res.status(400).json({ message: passwordValidation.error });
+  }
 
   const existing = await prisma.user.findUnique({
     where: { email },
@@ -420,8 +490,8 @@ router.post('/register-employer', async (req, res) => {
       return res.status(409).json({ message: 'This account already has employer access.' });
     }
 
-    if (payload.data.phone && payload.data.phone !== existing.phone) {
-      const phoneOwner = await prisma.user.findUnique({ where: { phone: payload.data.phone } });
+    if (phone && phone !== existing.phone) {
+      const phoneOwner = await prisma.user.findUnique({ where: { phone } });
       if (phoneOwner && phoneOwner.id !== existing.id) {
         return res.status(409).json({ message: 'Phone number already registered' });
       }
@@ -431,9 +501,9 @@ router.post('/register-employer', async (req, res) => {
     const user = await prisma.user.update({
       where: { id: existing.id },
       data: {
-        firstName: existing.firstName || payload.data.firstName,
-        lastName: existing.lastName || payload.data.lastName,
-        phone: payload.data.phone || existing.phone,
+        firstName: existing.firstName || firstName,
+        lastName: existing.lastName || lastName,
+        phone: phone || existing.phone,
         roles: updatedRoles,
         role: existing.role === 'ARTISAN' ? existing.role : 'EMPLOYER',
         isVerified: true,
@@ -453,22 +523,20 @@ router.post('/register-employer', async (req, res) => {
     });
   }
 
-  if (payload.data.phone) {
-    const existingPhone = await prisma.user.findUnique({
-      where: { phone: payload.data.phone },
-    });
-    if (existingPhone) {
-      return res.status(409).json({ message: 'Phone number already registered' });
-    }
+  const existingPhone = await prisma.user.findUnique({
+    where: { phone },
+  });
+  if (existingPhone) {
+    return res.status(409).json({ message: 'Phone number already registered' });
   }
 
   const passwordHash = await bcrypt.hash(payload.data.password, 10);
   const user = await prisma.user.create({
     data: {
-      firstName: payload.data.firstName,
-      lastName: payload.data.lastName,
+      firstName,
+      lastName,
       email,
-      phone: payload.data.phone,
+      phone,
       passwordHash,
       role: 'EMPLOYER',
       roles: ['EMPLOYER'],

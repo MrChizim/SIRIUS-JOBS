@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Registration – Sirius Jobs Consultations</title>
+    <meta name="description" content="Register as a professional to offer consultations">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0056b3',
+                        secondary: '#808080',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #0056b3;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm transition-transform group-hover:scale-105" />
+                    <span class="sr-only">SiriusJobs home</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="services.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Services</a>
+                    <a href="jobs.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Jobs</a>
+                    <a href="consultations.html" class="nav-link text-sm font-semibold text-primary transition-colors">Consultations</a>
+                    <a href="marketplace.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Marketplace</a>
+                    <a href="about.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">About</a>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <a href="login.html" class="text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Sign in</a>
+                    <a href="consultations.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-6 py-3 rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl">
+                        Browse Professionals
+                        <i data-feather="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden text-gray-600">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="pt-32 pb-20">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="max-w-3xl mx-auto">
+                <!-- Header -->
+                <div class="text-center mb-12">
+                    <div class="inline-flex items-center gap-2 bg-blue-100 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                        <i data-feather="award" class="w-4 h-4"></i>
+                        <span>Professional Registration</span>
+                    </div>
+                    <h1 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
+                        Start Offering Consultations
+                    </h1>
+                    <p class="text-xl text-gray-600">
+                        Earn ₦2,500 per consultation. Help clients while building your reputation.
+                    </p>
+                </div>
+
+                <!-- Benefits Cards -->
+                <div class="grid md:grid-cols-3 gap-6 mb-12">
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 text-center">
+                        <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <i data-feather="dollar-sign" class="w-6 h-6 text-primary"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Earn ₦2,500</h3>
+                        <p class="text-sm text-gray-600">Per 24-hour consultation</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 text-center">
+                        <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <i data-feather="shield" class="w-6 h-6 text-primary"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Stay Anonymous</h3>
+                        <p class="text-sm text-gray-600">No photos or personal contact</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 text-center">
+                        <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <i data-feather="clock" class="w-6 h-6 text-primary"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Flexible</h3>
+                        <p class="text-sm text-gray-600">Work on your own schedule</p>
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <div class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                    <form id="registration-form" class="space-y-6">
+                        <!-- Profession -->
+                        <div>
+                            <label for="profession" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Profession <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="profession"
+                                name="profession"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                            >
+                                <option value="">Select your profession</option>
+                                <option value="DOCTOR">Doctor</option>
+                                <option value="LAWYER">Lawyer</option>
+                            </select>
+                        </div>
+
+                        <!-- Specialization -->
+                        <div>
+                            <label for="specialization" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Specialization <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="specialization"
+                                name="specialization"
+                                required
+                                maxlength="100"
+                                placeholder="e.g., General Practice, Corporate Law"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                            />
+                        </div>
+
+                        <!-- License Number -->
+                        <div>
+                            <label for="licenseNumber" class="block text-sm font-semibold text-gray-700 mb-2">
+                                License Number <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="licenseNumber"
+                                name="licenseNumber"
+                                required
+                                maxlength="50"
+                                placeholder="Your professional license number"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                            />
+                            <p class="text-sm text-gray-500 mt-1">
+                                <i data-feather="lock" class="w-3 h-3 inline"></i>
+                                This will be verified before activation
+                            </p>
+                        </div>
+
+                        <!-- Years of Experience -->
+                        <div>
+                            <label for="yearsOfExperience" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Years of Experience <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="number"
+                                id="yearsOfExperience"
+                                name="yearsOfExperience"
+                                required
+                                min="0"
+                                max="50"
+                                placeholder="Years of professional experience"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                            />
+                        </div>
+
+                        <!-- Bio -->
+                        <div>
+                            <label for="bio" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Professional Bio <span class="text-red-500">*</span>
+                            </label>
+                            <textarea
+                                id="bio"
+                                name="bio"
+                                required
+                                rows="5"
+                                maxlength="500"
+                                placeholder="Tell potential clients about yourself, your expertise, and what you can help with..."
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none"
+                            ></textarea>
+                            <p class="text-sm text-gray-500 mt-1">
+                                <span id="bio-char-count">0</span>/500 characters
+                            </p>
+                        </div>
+
+                        <!-- Terms -->
+                        <div class="flex items-start gap-3">
+                            <input
+                                type="checkbox"
+                                id="terms"
+                                required
+                                class="mt-1 w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary"
+                            />
+                            <label for="terms" class="text-sm text-gray-600">
+                                I agree to the <a href="terms.html" class="text-primary hover:underline">Terms of Service</a> and confirm that all information provided is accurate and truthful.
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button
+                            type="submit"
+                            id="submit-btn"
+                            class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl text-lg"
+                        >
+                            <span id="btn-text">
+                                <i data-feather="check-circle" class="w-5 h-5 inline"></i>
+                                Complete Registration
+                            </span>
+                            <span id="btn-loading" class="hidden">
+                                <div class="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                Processing...
+                            </span>
+                        </button>
+                    </form>
+
+                    <!-- Info Notice -->
+                    <div class="mt-6 bg-blue-50 rounded-xl p-4">
+                        <p class="text-sm text-gray-700">
+                            <i data-feather="info" class="w-4 h-4 inline text-primary"></i>
+                            <strong>Next steps:</strong> After registration, your profile will be reviewed and verified within 24-48 hours. You'll receive an email notification once approved.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#0f172a] text-gray-300">
+        <div class="border-t border-white/10">
+            <div class="container mx-auto px-4 py-12 lg:py-14">
+                <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+                    <div class="space-y-4">
+                        <a href="index.html" class="inline-flex items-center gap-2">
+
+                          <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm" />
+
+                          <span class="sr-only">SiriusJobs home</span>
+
+                        </a>
+                        <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+                        <div class="flex items-center gap-3 text-gray-400">
+                            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+                            <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+                            <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+                            <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="about.html" class="hover:text-white transition">About</a></li>
+                            <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+                            <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+                            <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+                            <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+                            <li><span>WhatsApp: 0704 447 0559</span></li>
+                            <li><span>Email: support@siriusjobsng.com</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li>Port Harcourt, Rivers State</li>
+                            <li>Nigeria</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+                        <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+                        <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+                        <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = 'http://localhost:4000/api';
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Bio character count
+        document.getElementById('bio').addEventListener('input', (e) => {
+            document.getElementById('bio-char-count').textContent = e.target.value.length;
+        });
+
+        // Form submission
+        document.getElementById('registration-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Get form data
+            const formData = {
+                profession: document.getElementById('profession').value,
+                specialization: document.getElementById('specialization').value.trim(),
+                licenseNumber: document.getElementById('licenseNumber').value.trim(),
+                yearsOfExperience: parseInt(document.getElementById('yearsOfExperience').value),
+                bio: document.getElementById('bio').value.trim()
+            };
+
+            // Get auth token
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please login first');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Show loading
+            const btnText = document.getElementById('btn-text');
+            const btnLoading = document.getElementById('btn-loading');
+            const submitBtn = document.getElementById('submit-btn');
+
+            btnText.classList.add('hidden');
+            btnLoading.classList.remove('hidden');
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch(`${API_URL}/consultation/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || result.message || 'Registration failed');
+                }
+
+                alert('Registration successful! Your profile will be reviewed within 24-48 hours.');
+                window.location.href = 'consultation-dashboard.html';
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert(error.message || 'Failed to complete registration. Please try again.');
+
+                // Reset button
+                btnText.classList.remove('hidden');
+                btnLoading.classList.add('hidden');
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Initialize
+        feather.replace();
+    </script>
+    <script src="assistant.js"></script>
+</body>
+</html>

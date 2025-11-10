@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register as Merchant – Sirius Marketplace</title>
+  <meta name="description" content="Create a Sirius Marketplace merchant account to advertise your business to verified Sirius Jobs clients.">
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0056b3',
+            secondary: '#0f172a',
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="error-handler.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .animated-gradient {
+      background-size: 200% 200%;
+      animation: gradient-shift 15s ease infinite;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50/30 text-gray-900">
+  <!-- HEADER -->
+  <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-200/50 z-50">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-3">
+          <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-9 h-9">
+          <span class="text-xl font-black text-primary uppercase tracking-tight">SIRIUS JOBS</span>
+        </a>
+
+        <div class="flex items-center gap-3">
+          <a href="marketplace-login.html" class="text-sm font-bold text-gray-600 hover:text-primary transition-colors">
+            Already a merchant? Login
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="pt-24 pb-12 bg-gradient-to-br from-black via-primary to-blue-900 animated-gradient text-white">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="max-w-3xl space-y-4">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs font-bold uppercase tracking-wider">
+          <i data-feather="user-plus" class="w-4 h-4"></i>
+          Merchant signup
+        </span>
+        <h1 class="text-4xl md:text-5xl font-black leading-tight">Join the Sirius Marketplace merchant network</h1>
+        <p class="text-white/90 text-lg md:text-xl">Create your account in under five minutes. You'll choose an advertising plan and complete payment securely inside the merchant dashboard.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN FORM -->
+  <main class="py-16">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,430px)]">
+        <!-- Form -->
+        <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-10 space-y-6 border-2 border-gray-100">
+          <div>
+            <h2 class="text-3xl font-black text-gray-900 mb-2">Create merchant account</h2>
+            <p class="text-base text-gray-600">Tell us about your business. We'll email onboarding resources and unlock the marketplace dashboard instantly.</p>
+          </div>
+
+          <form id="merchantRegisterForm" class="space-y-6">
+            <div>
+              <label for="businessName" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Business name</label>
+              <input id="businessName" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="e.g. Dewiss Gadget Hub" required>
+            </div>
+
+            <div>
+              <label for="contactName" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Contact person</label>
+              <input id="contactName" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Full name of the primary contact" required>
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <label for="merchantEmail" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Work email</label>
+                <input id="merchantEmail" type="email" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="name@business.com" required>
+              </div>
+              <div>
+                <label for="merchantPhone" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Phone number</label>
+                <input id="merchantPhone" type="tel" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="080..." required>
+              </div>
+            </div>
+
+            
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <label for="merchantWhatsapp" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">WhatsApp contact (optional)</label>
+                <input id="merchantWhatsapp" type="tel" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="080...">
+              </div>
+              <div>
+                <label for="merchantInstagram" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Instagram handle (optional)</label>
+                <input id="merchantInstagram" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="@yourbusiness">
+              </div>
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <label for="merchantPassword" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Password</label>
+                <input id="merchantPassword" type="password" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" minlength="6" required>
+              </div>
+              <div>
+                <label for="merchantPlan" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Preferred campaign</label>
+                <select id="merchantPlan" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                  <option value="3-month">3 months • ₦30,000</option>
+                  <option value="6-month">6 months • ₦57,000 (save 5%)</option>
+                  <option value="12-month">12 months • ₦108,000 (save 10%)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 text-sm text-gray-700 bg-primary/5 border-2 border-primary/10 px-4 py-4 rounded-xl">
+              <i data-feather="info" class="w-5 h-5 flex-shrink-0 text-primary mt-0.5"></i>
+              <p>Payment happens inside the merchant dashboard after you log in. We'll hold your slot for 48 hours pending payment.</p>
+            </div>
+
+            <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+              <i data-feather="arrow-right-circle" class="w-4 h-4"></i>
+              Create account & continue
+            </button>
+
+            <p class="text-sm text-gray-600 text-center">Already registered? <a href="marketplace-login.html" class="text-primary font-bold hover:underline">Log in to your dashboard</a>.</p>
+            <p id="registerFeedback" class="text-sm text-center font-bold"></p>
+          </form>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="space-y-6">
+          <div class="bg-gradient-to-br from-primary to-blue-900 text-white rounded-3xl p-8 shadow-2xl">
+            <h3 class="text-xl font-black mb-5">What happens next?</h3>
+            <ul class="space-y-4 text-sm text-white/90">
+              <li class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <i data-feather="mail" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <p class="font-bold mb-1">Welcome email sent</p>
+                  <p class="text-white/80">Asset checklist and onboarding call link delivered instantly</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <i data-feather="layout" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <p class="font-bold mb-1">Upload your details</p>
+                  <p class="text-white/80">Product highlights, logo, and fulfilment notes via dashboard</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <i data-feather="credit-card" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <p class="font-bold mb-1">Select plan & launch</p>
+                  <p class="text-white/80">Pay securely and pick your campaign launch date</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-white border-2 border-gray-100 rounded-3xl p-8 shadow-xl">
+            <h3 class="text-xl font-black text-gray-900 mb-3">Need help before joining?</h3>
+            <p class="text-sm text-gray-700 mb-5">Call <strong>0704 447 0559</strong> or email <a href="mailto:sales@siriusjobsng.com" class="text-primary font-bold hover:underline">sales@siriusjobsng.com</a> and we'll walk you through the process.</p>
+            <a href="mailto:sales@siriusjobsng.com?subject=Marketplace%20Merchant%20Questions" class="inline-flex items-center gap-2 text-primary font-bold hover:underline text-sm">
+              <i data-feather="send" class="w-4 h-4"></i>
+              Contact the marketplace team
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#0f172a] text-gray-300 mt-16">
+    <div class="border-t border-white/10">
+      <div class="container mx-auto px-4 py-12 lg:py-14">
+        <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+          <div class="space-y-4">
+            <a href="index.html" class="inline-flex items-center gap-2">
+              <img src="assets/sirius-logo.svg" alt="Sirius Jobs logo" class="w-10 h-10">
+              <span class="text-lg font-semibold text-white tracking-wide uppercase">Sirius Jobs</span>
+            </a>
+            <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+            <div class="flex items-center gap-3 text-gray-400">
+              <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+              <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+              <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+              <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="about.html" class="hover:text-white transition">About</a></li>
+              <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+              <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+              <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+              <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+              <li><span>WhatsApp: 0704 447 0559</span></li>
+              <li><span>Email: support@siriusjobsng.com</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li>Port Harcourt, Rivers State</li>
+              <li>Nigeria</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+            <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+            <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+            <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="marketplace-auth.js"></script>
+  <script>
+    (function () {
+      const form = document.getElementById('merchantRegisterForm');
+      const feedback = document.getElementById('registerFeedback');
+
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        if (!window.SiriusMarketplaceAuth) return;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+        feedback.textContent = '';
+        feedback.className = 'text-sm text-center font-bold';
+
+        const payload = {
+          businessName: form.businessName.value,
+          contactName: form.contactName.value,
+          email: form.merchantEmail.value,
+          phone: form.merchantPhone.value,
+          whatsapp: form.merchantWhatsapp.value,
+          instagram: form.merchantInstagram.value,
+          password: form.merchantPassword.value,
+          plan: form.merchantPlan.value,
+        };
+
+        try {
+          const merchant = window.SiriusMarketplaceAuth.register(payload);
+          feedback.textContent = `Welcome ${merchant.businessName}! Redirecting to your dashboard...`;
+          feedback.classList.add('text-emerald-500');
+          setTimeout(() => {
+            window.location.href = 'marketplace-dashboard.html';
+          }, 900);
+        } catch (error) {
+          feedback.textContent = error.message || 'Unable to create merchant account right now.';
+          feedback.classList.add('text-red-500');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+        }
+      });
+
+      feather.replace();
+    })();
+  </script>
+  <script src="assistant.js"></script>
+
+  <!-- Footer -->
+  <footer class="bg-[#0f172a] text-gray-300 mt-16">
+    <div class="border-t border-white/10">
+      <div class="container mx-auto px-4 py-12 lg:py-14">
+        <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+          <div class="space-y-4">
+            <a href="index.html" class="inline-flex items-center gap-2">
+
+              <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm" />
+
+              <span class="sr-only">SiriusJobs home</span>
+
+            </a>
+            <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+            <div class="flex items-center gap-3 text-gray-400">
+              <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+              <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+              <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+              <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="about.html" class="hover:text-white transition">About</a></li>
+              <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+              <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+              <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+              <li><a href="marketplace.html" class="hover:text-white transition">Marketplace</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+              <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+              <li><span>WhatsApp: 0704 447 0559</span></li>
+              <li><span>Email: support@siriusjobsng.com</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li>Port Harcourt, Rivers State</li>
+              <li>Nigeria</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+            <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+            <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+            <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

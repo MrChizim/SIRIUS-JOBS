@@ -22,279 +22,653 @@
   <script src="https://unpkg.com/feather-icons"></script>
   <script src="api.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
     body { font-family: 'Inter', sans-serif; }
-    .service-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
-    .transition-all { transition: all 0.3s ease; }
+
+    @keyframes gradient-shift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    .animated-gradient {
+        background-size: 200% 200%;
+        animation: gradient-shift 15s ease infinite;
+    }
+
+    .service-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: default;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 86, 179, 0.15);
+    }
   </style>
 </head>
 <body class="bg-white text-gray-800">
 
-  <!-- ====================== HEADER ====================== -->
-  <nav class="bg-white shadow-md sticky top-0 z-50">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <a href="index.html" class="flex items-center space-x-3">
-        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
-        <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
-      </a>
-
-      <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
-        <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
-        <a href="services.html" class="text-primary font-semibold">Services</a>
-        <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
-        <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
-        <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
-        <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
-        <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">
-          <i data-feather="log-in" class="w-4 h-4"></i>
-          Login
+  <!-- Modern Fixed Navigation -->
+  <nav class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-3 group">
+          <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS" class="w-9 h-9 transition-transform group-hover:scale-110">
+          <span class="text-xl font-black text-gray-900 tracking-tight uppercase">SIRIUS JOBS</span>
         </a>
-      </div>
 
-      <div class="md:hidden">
-        <button id="menu-btn" class="text-gray-600 focus:outline-none">
-          <i data-feather="menu"></i>
+        <div class="hidden lg:flex items-center gap-8">
+          <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Home</a>
+          <a href="services.html" class="text-sm font-bold text-primary">Services</a>
+          <a href="jobs.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Jobs</a>
+          <a href="consultations.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Consultations</a>
+          <a href="marketplace.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Marketplace</a>
+          <a href="findworker.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Find Workers</a>
+          <a href="faq.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">FAQs</a>
+          <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition">
+            <i data-feather="log-in" class="w-4 h-4"></i>
+            Login
+          </a>
+        </div>
+
+        <button id="menu-btn" class="lg:hidden p-2 text-gray-600 hover:text-primary transition">
+          <i data-feather="menu" class="w-6 h-6"></i>
         </button>
       </div>
     </div>
 
-    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
-      <a href="index.html" class="block py-2 text-gray-600 hover:text-primary">Home</a>
-      <a href="services.html" class="block py-2 text-primary font-semibold">Services</a>
-      <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary">Jobs</a>
-      <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary">Consultations</a>
-      <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary">Find Workers</a>
-      <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary">FAQs</a>
-      <a href="login.html" class="flex items-center gap-2 text-gray-600 hover:text-primary transition">
-        <i data-feather="log-in" class="w-4 h-4"></i>
-        Login
-      </a>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-md">
+      <div class="container mx-auto px-4 py-4 space-y-1">
+        <a href="index.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Home</a>
+        <a href="services.html" class="block px-4 py-2.5 text-sm font-bold text-primary bg-primary/5 rounded-lg">Services</a>
+        <a href="jobs.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Jobs</a>
+        <a href="consultations.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Consultations</a>
+        <a href="marketplace.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Marketplace</a>
+        <a href="findworker.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Find Workers</a>
+        <a href="faq.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">FAQs</a>
+        <a href="login.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-primary hover:bg-primary/90 rounded-lg transition">
+          <i data-feather="log-in" class="w-4 h-4"></i>
+          Login
+        </a>
+      </div>
     </div>
   </nav>
 
-  <!-- ====================== HERO ====================== -->
-  <section class="hero-bg text-white py-20 text-center" 
-    style="background:linear-gradient(rgba(0,86,179,0.9),rgba(0,86,179,0.9)),url('https://images.unsplash.com/photo-1600181953446-c77e3c5b6c2b?auto=format&fit=crop&w=1950&q=80');background-size:cover;background-position:center;">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4">Our Services</h1>
-    <p class="text-lg md:text-xl max-w-2xl mx-auto">Verified professionals for every job — from home repairs to legal, health, and business services.</p>
-    <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3">
-      <a href="findworker.html" class="inline-flex items-center justify-center bg-white text-primary font-semibold px-6 py-3 rounded-lg hover:bg-primary/10 transition">Hire an Artisan</a>
-      <a href="consultations.html" class="inline-flex items-center justify-center border border-white text-white font-semibold px-6 py-3 rounded-lg hover:bg-white hover:text-primary transition">Book Consultations</a>
+  <!-- Hero Section -->
+  <section class="pt-32 pb-20 lg:pb-32 bg-gradient-to-br from-black via-primary to-blue-900 text-white animated-gradient relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-4xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 mb-8">
+          <i data-feather="briefcase" class="w-4 h-4"></i>
+          <span class="text-sm font-semibold">Professional Services</span>
+        </div>
+
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
+          Every Service,<br/>Every Skill
+        </h1>
+
+        <p class="text-xl md:text-2xl text-gray-100 font-light leading-relaxed mb-10">
+          Verified professionals for every job — from home repairs to legal, health, and business services across Nigeria
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="findworker.html" class="inline-flex items-center justify-center gap-2 bg-white text-primary font-bold px-8 py-4 rounded-xl hover:bg-gray-100 transition-all shadow-xl">
+            <i data-feather="search" class="w-5 h-5"></i>
+            Hire an Artisan
+          </a>
+          <a href="consultations.html" class="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md border-2 border-white/20 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/20 transition-all">
+            <i data-feather="calendar" class="w-5 h-5"></i>
+            Book Consultations
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- ====================== SERVICES ====================== -->
-  <section class="py-16 bg-gray-50">
-    <div class="container mx-auto px-4 space-y-12">
-
-      <!-- CATEGORY 1: Home & Property Repairs -->
-      <div class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Home & Property Repairs</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="droplet" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Plumbers</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="zap" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Electricians</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="tool" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Carpenters</h3></div>
-          <!-- custom welder mask icon -->
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 3h12a2 2 0 012 2v9a6 6 0 11-12 0V5a2 2 0 012-2z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8 9h8M9 13h6" />
-            </svg>
-            <h3>Welders</h3>
-          </div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="home" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Masons / Bricklayers</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="grid" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Tilers</h3></div>
-          <!-- Painters with palette icon -->
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a10 10 0 00-9.995 9.777A7 7 0 1012 22a10 10 0 000-20z" />
-            </svg>
-            <h3>Paint&nbsp;and&nbsp;Decoration</h3>
-          </div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="layers" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>POP & Ceiling Installers</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="square" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Aluminum Window/Door Installers</h3></div>
-        </div>
-      </div>
-
-      <!-- CATEGORY 2: Appliances & Tech -->
-      <div class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Appliances & Tech</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="wind" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>AC/Fridge Technicians</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="cpu" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Generator Repair</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="sun" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Solar/Inverter Technicians</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="smartphone" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Phone & Laptop Repair</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="tv" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Satellite/DSTV Installers</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="video" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>CCTV & Security Camera Installers</h3></div>
-        </div>
-      </div>
-
-      <!-- CATEGORY 3: Auto & Transport -->
-      <div class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Auto & Transport</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="truck" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Mechanics</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="cpu" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Auto Electricians</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="package" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Panel Beaters / Spray Painters</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="truck" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Truck/Van Drivers</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="navigation" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Bike Dispatch Riders</h3></div>
-        </div>
-      </div>
-
-
-      <!-- CATEGORY 4: Legal & Medical -->
-      <div class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Legal & Medical Services</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="file-text" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Business & Company Registration</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="user-check" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Legal Consultation</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="hash" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Tax Identification (TIN)</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="heart" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Adoption / Family Law</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="activity" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Medical Consultation</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="smile" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Dental Consultation</h3></div>
-        </div>
-      </div>
-
-
-      <!-- CATEGORY 5: Cleaning & Domestic -->
-      <div class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Cleaning & Domestic Services</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="home" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>House Cleaners</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="briefcase" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Office Cleaners</h3></div>
-          <!-- Laundry icon -->
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4zM8 4v2m8-2v2M9 14a3 3 0 106 0 3 3 0 00-6 0z" />
-            </svg>
-            <h3>Laundry</h3>
-          </div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="trash-2" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Waste Disposal</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="shopping-bag" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Shoe Repair (Cobblers)</h3></div>
-        </div>
-      </div>
-
-      
-      <!-- CATEGORY 6: Event & Lifestyle -->
-      <div class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Event & Lifestyle</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="coffee" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Caterers</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="gift" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Event Decorators</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="camera" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Photographers / Videographers</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="scissors" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Barbers</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="tag" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Tailors</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="smile" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Makeup Artists</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="users" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Event Ushers</h3></div>
-        </div>
-      </div>
-
-      <!-- CATEGORY 7: Construction & Heavy Duty -->
-      <div class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-primary pl-3">Construction & Heavy Duty</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="archive" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Bricklayers</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="triangle" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Roofers</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="grid" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Scaffolding Workers</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="truck" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Heavy Equipment Operators</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="truck" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Truck Drivers</h3></div>
-          <div class="service-card bg-white p-6 rounded-lg text-center transition-all"><i data-feather="thumbs-up" class="w-8 h-8 text-primary mx-auto mb-4"></i><h3>Industrial Cleaning</h3></div>
-        </div>
-      </div>
-
-
-      <!-- Contact -->
-      <div class="text-center pt-10">
-        <p class="text-gray-600">Didn’t find your service? <a href="contact.html" class="text-primary font-semibold hover:underline">Contact us</a> — we’ll help you get it done.</p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ====================== FOOTER ====================== -->
-  <footer class="bg-gray-900 text-white py-12">
+  <!-- Marketplace CTA -->
+  <section class="py-20 bg-gray-50">
     <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div>
-          <div class="flex items-center space-x-2 mb-4">
-            <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
-            <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
+      <div class="max-w-6xl mx-auto bg-gradient-to-br from-primary/5 to-blue-900/5 rounded-3xl border-2 border-primary/10 p-8 md:p-12 shadow-xl relative overflow-hidden">
+        <div class="absolute -top-20 -right-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+
+        <div class="relative z-10 grid lg:grid-cols-2 gap-8 items-center">
+          <div class="space-y-4">
+            <div class="inline-flex items-center gap-2 bg-primary text-white rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider">
+              <i data-feather="shopping-bag" class="w-4 h-4"></i>
+              Marketplace
+            </div>
+            <h2 class="text-3xl md:text-4xl font-black text-gray-900">
+              Need supplies as well as services?
+            </h2>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Sirius Marketplace is a public board where vetted merchants advertise what they have in stock. Clients browse the shelves, compare what they like, and buy directly from the businesses that suit their needs—no concierge required.
+            </p>
           </div>
-          <p class="text-gray-400 mb-4">Connecting Talent With Trust across Nigeria since 2022.</p>
-          <div class="flex space-x-4">
-            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="text-gray-400 hover:text-white"><i data-feather="facebook"></i></a>
-            <a href="https://twitter.com/SiriusOddJobs" class="text-gray-400 hover:text-white"><i data-feather="twitter"></i></a>
-            <a href="https://www.instagram.com/siriusjobss" class="text-gray-400 hover:text-white"><i data-feather="instagram"></i></a>
-            <a href="https://www.linkedin.com/company/siriusjobsng/" class="text-gray-400 hover:text-white"><i data-feather="linkedin"></i></a>
+          <div class="flex justify-end">
+            <a href="marketplace.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl">
+              <span>Visit Marketplace</span>
+              <i data-feather="arrow-right" class="w-5 h-5"></i>
+            </a>
           </div>
-        </div>
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-          <ul class="space-y-2">
-            <li><a href="index.html" class="text-gray-400 hover:text-white">Home</a></li>
-            <li><a href="about.html" class="text-gray-400 hover:text-white">About Us</a></li>
-            <li><a href="jobs.html" class="text-gray-400 hover:text-white">Jobs</a></li>
-            <li><a href="verify.html" class="text-gray-400 hover:text-white">Verify Worker</a></li>
-            <li><a href="contact.html" class="text-gray-400 hover:text-white">Contact</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Services</h4>
-          <ul class="space-y-2">
-            <li><span class="text-gray-400">Artisans</span></li>
-            <li><span class="text-gray-400">Plumbers</span></li>
-            <li><span class="text-gray-400">Electricians</span></li>
-            <li><span class="text-gray-400">Cleaners</span></li>
-            <li><span class="text-gray-400">More Services</span></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
-          <ul class="space-y-2">
-            <li class="flex items-start space-x-2"><i data-feather="phone" class="text-gray-400 mt-1 w-4 h-4"></i><span class="text-gray-400">07044470559</span></li>
-            <li class="flex items-start space-x-2"><i data-feather="mail" class="text-gray-400 mt-1 w-4 h-4"></i><span class="text-gray-400">siriusoddjobs@gmail.com</span></li>
-            <li class="flex items-start space-x-2"><i data-feather="map-pin" class="text-gray-400 mt-1 w-4 h-4"></i><span class="text-gray-400">Port Harcourt, Nigeria</span></li>
-          </ul>
         </div>
       </div>
-      <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
-        <div class="flex space-x-6">
-          <a href="privacypolicy.html" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
-          <a href="terms.html" class="text-gray-400 hover:text-white text-sm">Terms of Service</a>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="py-20 lg:py-32 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-7xl mx-auto space-y-16">
+
+        <!-- Home & Property Repairs -->
+        <div>
+          <div class="mb-8">
+            <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-2 mb-4">
+              <i data-feather="home" class="w-4 h-4"></i>
+              <span class="text-sm font-bold">Category</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-black text-gray-900">Home & Property Repairs</h2>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="droplet" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Plumbers</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="zap" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Electricians</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="tool" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Carpenters</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-primary group-hover:text-white transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 3h12a2 2 0 012 2v9a6 6 0 11-12 0V5a2 2 0 012-2z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 9h8M9 13h6" />
+                </svg>
+              </div>
+              <h3 class="font-bold text-gray-900">Welders</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="home" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Masons / Bricklayers</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="grid" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Tilers</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-primary group-hover:text-white transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a10 10 0 00-9.995 9.777A7 7 0 1012 22a10 10 0 000-20z" />
+                </svg>
+              </div>
+              <h3 class="font-bold text-gray-900">Paint and Decoration</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="layers" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">POP & Ceiling Installers</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="square" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Aluminum Window/Door Installers</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Appliances & Tech -->
+        <div>
+          <div class="mb-8">
+            <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-2 mb-4">
+              <i data-feather="cpu" class="w-4 h-4"></i>
+              <span class="text-sm font-bold">Category</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-black text-gray-900">Appliances & Tech</h2>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="wind" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">AC/Fridge Technicians</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="cpu" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Generator Repair</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="sun" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Solar/Inverter Technicians</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="smartphone" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Phone & Laptop Repair</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="tv" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Satellite/DSTV Installers</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="video" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">CCTV & Security Camera Installers</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auto & Transport -->
+        <div>
+          <div class="mb-8">
+            <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-2 mb-4">
+              <i data-feather="truck" class="w-4 h-4"></i>
+              <span class="text-sm font-bold">Category</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-black text-gray-900">Auto & Transport</h2>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="truck" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Mechanics</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="cpu" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Auto Electricians</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="package" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Panel Beaters / Spray Painters</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="truck" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Truck/Van Drivers</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="navigation" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Bike Dispatch Riders</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Legal & Medical -->
+        <div>
+          <div class="mb-8">
+            <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-2 mb-4">
+              <i data-feather="file-text" class="w-4 h-4"></i>
+              <span class="text-sm font-bold">Category</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-black text-gray-900">Legal & Medical Services</h2>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="file-text" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Business & Company Registration</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="user-check" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Legal Consultation</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="hash" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Tax Identification (TIN)</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="heart" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Adoption / Family Law</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="activity" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Medical Consultation</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="smile" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Dental Consultation</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cleaning & Domestic -->
+        <div>
+          <div class="mb-8">
+            <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-2 mb-4">
+              <i data-feather="home" class="w-4 h-4"></i>
+              <span class="text-sm font-bold">Category</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-black text-gray-900">Cleaning & Domestic Services</h2>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="home" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">House Cleaners</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="briefcase" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Office Cleaners</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-primary group-hover:text-white transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4zM8 4v2m8-2v2M9 14a3 3 0 106 0 3 3 0 00-6 0z" />
+                </svg>
+              </div>
+              <h3 class="font-bold text-gray-900">Laundry</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="trash-2" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Waste Disposal</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="shopping-bag" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Shoe Repair (Cobblers)</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event & Lifestyle -->
+        <div>
+          <div class="mb-8">
+            <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-2 mb-4">
+              <i data-feather="gift" class="w-4 h-4"></i>
+              <span class="text-sm font-bold">Category</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-black text-gray-900">Event & Lifestyle</h2>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="coffee" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Caterers</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="gift" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Event Decorators</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="camera" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Photographers / Videographers</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="scissors" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Barbers</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="tag" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Tailors</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="smile" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Makeup Artists</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="users" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Event Ushers</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Construction & Heavy Duty -->
+        <div>
+          <div class="mb-8">
+            <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-2 mb-4">
+              <i data-feather="archive" class="w-4 h-4"></i>
+              <span class="text-sm font-bold">Category</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-black text-gray-900">Construction & Heavy Duty</h2>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="archive" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Bricklayers</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="triangle" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Roofers</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="grid" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Scaffolding Workers</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="truck" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Heavy Equipment Operators</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="truck" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Truck Drivers</h3>
+            </div>
+
+            <div class="service-card bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 hover:border-primary rounded-2xl p-6 text-center cursor-default group">
+              <div class="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all">
+                <i data-feather="thumbs-up" class="w-7 h-7 text-primary group-hover:text-white transition-all"></i>
+              </div>
+              <h3 class="font-bold text-gray-900">Industrial Cleaning</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact CTA -->
+        <div class="text-center py-12 bg-gradient-to-br from-gray-50 to-white rounded-3xl border-2 border-gray-100">
+          <p class="text-xl text-gray-600 mb-4">
+            Didn't find your service?
+          </p>
+          <a href="contact.html" class="inline-flex items-center gap-2 text-primary font-bold text-lg hover:gap-3 transition-all">
+            Contact us — we'll help you get it done
+            <i data-feather="arrow-right" class="w-5 h-5"></i>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#0f172a] text-gray-300">
+    <div class="border-t border-white/10">
+      <div class="container mx-auto px-4 py-12 lg:py-14">
+        <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+          <div class="space-y-4">
+            <a href="index.html" class="inline-flex items-center gap-2">
+              <img src="assets/sirius-logo.svg" alt="Sirius Jobs logo" class="w-10 h-10">
+              <span class="text-lg font-semibold text-white tracking-wide uppercase">Sirius Jobs</span>
+            </a>
+            <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+            <div class="flex items-center gap-3 text-gray-400">
+              <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+              <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+              <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+              <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="about.html" class="hover:text-white transition">About</a></li>
+              <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+              <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+              <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+              <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+              <li><span>WhatsApp: 0704 447 0559</span></li>
+              <li><span>Email: support@siriusjobsng.com</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li>Port Harcourt, Rivers State</li>
+              <li>Nigeria</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+            <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+            <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+            <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+          </div>
         </div>
       </div>
     </div>
   </footer>
 
+  <!-- Results Section (Hidden by Default) -->
   <section id="service-provider-results" class="container mx-auto px-4 py-12 hidden">
-    <div class="bg-white rounded-2xl shadow-lg border border-primary/10 p-6 md:p-8">
+    <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 md:p-8">
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <div>
-          <h3 id="results-heading" class="text-2xl font-semibold text-gray-800">Available Providers</h3>
+          <h3 id="results-heading" class="text-2xl font-black text-gray-900">Available Providers</h3>
           <p class="text-sm text-gray-500">Tap any card to open a detailed profile or hire flow.</p>
         </div>
-        <button id="clear-results" class="text-sm text-primary font-medium hover:underline">Clear selection</button>
+        <button id="clear-results" class="text-sm text-primary font-bold hover:underline">Clear selection</button>
       </div>
       <div id="results-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
     </div>
   </section>
 
-  <!-- Provider modal -->
-  <div id="provider-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center px-4 hidden">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[80vh] overflow-hidden">
-      <div class="flex items-center justify-between px-6 py-4 border-b">
+  <!-- Provider Modal -->
+  <div id="provider-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center px-4 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[80vh] overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
         <div>
-          <h3 id="provider-modal-title" class="text-xl font-semibold text-gray-800">Service Providers</h3>
+          <h3 id="provider-modal-title" class="text-xl font-black text-gray-900">Service Providers</h3>
           <p class="text-sm text-gray-500">Showing verified artisans currently subscribed.</p>
         </div>
-        <button id="provider-modal-close" class="text-gray-500 hover:text-primary transition">
-          <i data-feather="x"></i>
+        <button id="provider-modal-close" class="text-gray-500 hover:text-primary transition p-2">
+          <i data-feather="x" class="w-6 h-6"></i>
         </button>
       </div>
-      <div id="provider-modal-content" class="p-6 overflow-y-auto space-y-4">
+      <div id="provider-modal-content" class="p-6 overflow-y-auto space-y-4 max-h-[calc(80vh-100px)]">
         <div class="flex items-center justify-center py-12 text-gray-400">
-          <i data-feather="loader" class="animate-spin mr-2"></i>
+          <svg class="animate-spin h-5 w-5 mr-2 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
           Loading providers...
         </div>
       </div>
@@ -412,7 +786,6 @@
     const fallbackCategoryLookup = new Map(
       fallbackCategories.map(category => [category.label.toLowerCase(), category]),
     );
-    let serviceCategoryLookup = new Map();
 
     const mobileMenuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -439,44 +812,25 @@
         providerModal.classList.add('hidden');
       }
     });
+
     clearResultsBtn.addEventListener('click', () => {
       resultsGrid.innerHTML = '';
       resultsSection.classList.add('hidden');
     });
 
-    async function bootstrapServices() {
-      let categories = [];
-      try {
-        const response = await fetch('/api/services/categories');
-        if (!response.ok) throw new Error('Unable to load service categories');
-        categories = await response.json();
-      } catch (error) {
-        console.warn('Using fallback service categories', error);
-      }
-
-      if (!Array.isArray(categories) || !categories.length) {
-        categories = fallbackCategories.map(category => ({
-          id: category.id,
-          label: category.label,
-        }));
-      }
-
-      serviceCategoryLookup = new Map(
-        categories.map(category => [category.label.trim().toLowerCase(), category]),
-      );
-
+    function bootstrapServices() {
       document.querySelectorAll('.service-card').forEach(card => {
-        const label = card.querySelector('h3')?.textContent?.trim().toLowerCase();
-        if (!label) return;
-        const categoryFromApi = serviceCategoryLookup.get(label);
-        const categoryId = categoryFromApi?.id ?? fallbackCategoryLookup.get(label)?.id;
-        if (!categoryId) return;
-
-        card.classList.add('cursor-pointer');
-        card.addEventListener('click', () =>
-          showProviders(categoryId, card.querySelector('h3').textContent.trim()),
+        card.classList.add('cursor-default');
+        card.setAttribute('aria-disabled', 'true');
+        card.setAttribute(
+          'title',
+          'Browse services here, then head to Find Workers to book a professional.',
         );
+        card.setAttribute('tabindex', '-1');
       });
+
+      resultsGrid.innerHTML = '';
+      resultsSection.classList.add('hidden');
     }
 
     async function showProviders(categoryId, label) {
@@ -509,7 +863,7 @@
       if (!providers.length) {
         providerModalContent.innerHTML = `
           <div class="text-center py-12">
-            <i data-feather="search" class="mx-auto mb-3 text-primary"></i>
+            <i data-feather="search" class="mx-auto mb-3 text-primary w-12 h-12"></i>
             <p class="text-gray-500">No verified providers available right now. Encourage artisans to subscribe.</p>
           </div>
         `;
@@ -521,23 +875,23 @@
       providerModalContent.innerHTML = providers
         .map(
           provider => `
-            <article class="border border-gray-100 rounded-xl p-4 hover:border-primary/40 transition">
-              <div class="flex justify-between items-center">
-                <div>
-                  <h4 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            <article class="border-2 border-gray-100 hover:border-primary rounded-2xl p-6 transition-all">
+              <div class="flex justify-between items-start gap-4">
+                <div class="flex-1">
+                  <h4 class="text-lg font-bold text-gray-900 flex items-center gap-2 mb-2">
                     ${(provider.user?.firstName ?? provider.firstName) ?? 'Experienced'}
                     ${(provider.user?.lastName ?? provider.lastName) ?? 'Provider'}
-                    ${provider.verifiedBadge ? '<span class="inline-flex items-center text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">Verified</span>' : ''}
+                    ${provider.verifiedBadge ? '<span class="inline-flex items-center text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-bold">Verified</span>' : ''}
                   </h4>
-                  <p class="text-sm text-gray-500">${provider.bio ?? 'No description provided yet.'}</p>
-                  <div class="mt-3 flex flex-wrap gap-3 text-sm text-gray-500">
-                    <span class="inline-flex items-center gap-1"><i data-feather="award" class="w-4 h-4"></i> ${provider.yearsExperience ?? 0} yrs experience</span>
+                  <p class="text-sm text-gray-600 mb-4">${provider.bio ?? 'No description provided yet.'}</p>
+                  <div class="flex flex-wrap gap-4 text-sm text-gray-500">
+                    <span class="inline-flex items-center gap-1"><i data-feather="award" class="w-4 h-4"></i> ${provider.yearsExperience ?? 0} yrs</span>
                     <span class="inline-flex items-center gap-1"><i data-feather="users" class="w-4 h-4"></i> ${provider.hireCount ?? 0} hires</span>
-                    <span class="inline-flex items-center gap-1"><i data-feather="star" class="w-4 h-4"></i> ${provider.averageRating ? Number(provider.averageRating).toFixed(1) : 'N/A'} rating</span>
+                    <span class="inline-flex items-center gap-1"><i data-feather="star" class="w-4 h-4"></i> ${provider.averageRating ? Number(provider.averageRating).toFixed(1) : 'N/A'}</span>
                   </div>
                 </div>
-                <button class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition" data-hire="${provider.userId ?? provider.user?.id ?? ''}">
-                  <i data-feather="handshake"></i>
+                <button class="inline-flex items-center gap-2 bg-primary text-white px-5 py-3 rounded-xl hover:bg-primary/90 transition font-bold whitespace-nowrap" data-hire="${provider.userId ?? provider.user?.id ?? ''}">
+                  <i data-feather="briefcase" class="w-4 h-4"></i>
                   Hire
                 </button>
               </div>
@@ -566,36 +920,36 @@
       resultsGrid.innerHTML = providers
         .map(
           (provider, index) => `
-            <article class="border border-gray-100 hover:border-primary/40 transition rounded-2xl p-5 flex flex-col justify-between">
+            <article class="border-2 border-gray-100 hover:border-primary transition rounded-2xl p-6 flex flex-col justify-between">
               <div class="space-y-3">
-                <h4 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                <h4 class="text-lg font-bold text-gray-900 flex items-center gap-2">
                   ${(provider.user?.firstName ?? provider.firstName) ?? 'Provider'}
                   ${(provider.user?.lastName ?? provider.lastName) ?? ''}
-                  ${provider.verifiedBadge ? '<span class="inline-flex items-center text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">Verified</span>' : ''}
+                  ${provider.verifiedBadge ? '<span class="inline-flex items-center text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-bold">Verified</span>' : ''}
                 </h4>
-                <p class="text-sm text-gray-500">${provider.bio ?? 'No description provided yet.'}</p>
+                <p class="text-sm text-gray-600">${provider.bio ?? 'No description provided yet.'}</p>
                 <dl class="grid grid-cols-2 gap-3 text-xs text-gray-500">
                   <div>
-                    <dt class="font-medium text-gray-600">Experience</dt>
+                    <dt class="font-bold text-gray-700">Experience</dt>
                     <dd>${provider.yearsExperience ?? 0} years</dd>
                   </div>
                   <div>
-                    <dt class="font-medium text-gray-600">Hires</dt>
+                    <dt class="font-bold text-gray-700">Hires</dt>
                     <dd>${provider.hireCount ?? 0}</dd>
                   </div>
                   <div>
-                    <dt class="font-medium text-gray-600">Rating</dt>
+                    <dt class="font-bold text-gray-700">Rating</dt>
                     <dd>${provider.averageRating ? Number(provider.averageRating).toFixed(1) : 'N/A'}</dd>
                   </div>
                   <div>
-                    <dt class="font-medium text-gray-600">Profile completion</dt>
+                    <dt class="font-bold text-gray-700">Profile</dt>
                     <dd>${provider.user?.profileCompletion ?? '—'}%</dd>
                   </div>
                 </dl>
               </div>
-              <div class="mt-4 flex items-center justify-between">
-                <button class="text-sm text-primary font-medium hover:underline" data-hire="${provider.userId ?? provider.user?.id ?? ''}">Hire</button>
-                <button class="text-sm text-gray-500 hover:text-primary" data-open-profile="${index}">View profile</button>
+              <div class="mt-4 flex items-center justify-between pt-4 border-t border-gray-100">
+                <button class="text-sm text-primary font-bold hover:underline" data-hire="${provider.userId ?? provider.user?.id ?? ''}">Hire Now</button>
+                <button class="text-sm text-gray-500 hover:text-primary font-medium" data-open-profile="${index}">View profile</button>
               </div>
             </article>
           `,
@@ -627,23 +981,23 @@
       providerModal.classList.remove('hidden');
       providerModalTitle.textContent = `${label} – ${provider.user?.firstName ?? provider.firstName ?? 'Provider'} ${provider.user?.lastName ?? provider.lastName ?? ''}`;
       providerModalContent.innerHTML = `
-        <article class="space-y-4">
+        <article class="space-y-6">
           <header class="flex items-start justify-between gap-4">
             <div>
-              <h4 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+              <h4 class="text-2xl font-black text-gray-900 flex items-center gap-2 mb-2">
                 ${(provider.user?.firstName ?? provider.firstName) ?? 'Provider'}
                 ${(provider.user?.lastName ?? provider.lastName) ?? ''}
-                ${provider.verifiedBadge ? '<span class="inline-flex items-center text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">Verified</span>' : ''}
+                ${provider.verifiedBadge ? '<span class="inline-flex items-center text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-bold">Verified</span>' : ''}
               </h4>
-              <p class="text-sm text-gray-500 mt-1">Experience: ${provider.yearsExperience ?? 0} years • Hires: ${provider.hireCount ?? 0}</p>
+              <p class="text-sm text-gray-500">Experience: ${provider.yearsExperience ?? 0} years • Hires: ${provider.hireCount ?? 0}</p>
               <p class="text-sm text-gray-500">Average rating: ${provider.averageRating ? Number(provider.averageRating).toFixed(1) : 'N/A'}</p>
             </div>
-            <button class="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition" data-hire="${provider.userId ?? provider.user?.id ?? ''}">
-              <i data-feather="handshake"></i>
+            <button class="inline-flex items-center gap-2 bg-primary text-white px-5 py-3 rounded-xl hover:bg-primary/90 transition font-bold" data-hire="${provider.userId ?? provider.user?.id ?? ''}">
+              <i data-feather="briefcase" class="w-4 h-4"></i>
               Hire
             </button>
           </header>
-          <p class="text-sm text-gray-600">${provider.bio ?? 'No description provided yet.'}</p>
+          <p class="text-gray-600 leading-relaxed">${provider.bio ?? 'No description provided yet.'}</p>
           ${
             provider.user?.profileCompletion
               ? `<p class="text-xs text-gray-500">Profile completion: ${provider.user.profileCompletion}%</p>`

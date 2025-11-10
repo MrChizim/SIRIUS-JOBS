@@ -21,294 +21,332 @@
   </script>
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
     body { font-family: 'Inter', sans-serif; }
-    .hero-bg {
-      background: linear-gradient(rgba(0,86,179,0.85), rgba(0,86,179,0.85)), url('/images/hero.jpg');
-      background-size: cover;
-      background-position: center;
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .animated-gradient {
+      background-size: 200% 200%;
+      animation: gradient-shift 15s ease infinite;
+    }
+
+    .worker-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .worker-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 86, 179, 0.15);
     }
   </style>
 </head>
-<body class="bg-white text-gray-800">
+<body class="bg-gradient-to-br from-gray-50 to-blue-50/30 text-gray-900">
 
-  <!-- NAV -->
-  <nav class="bg-white shadow-md sticky top-0 z-50">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <a href="index.html" class="flex items-center space-x-3">
-        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
-        <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
-      </a>
-
-      <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
-        <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
-        <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
-        <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
-        <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
-        <a href="findworker.html" class="text-primary font-semibold">Find Workers</a>
-        <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
-      </div>
-
-      <a href="index.html" class="flex items-center space-x-3">
-        <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition">
-          <i data-feather="log-in" class="w-4 h-4"></i>
-          Login
+  <!-- NAVIGATION -->
+  <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-200/50 z-50">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-3">
+          <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-9 h-9">
+          <span class="text-xl font-black text-primary uppercase tracking-tight">SIRIUS JOBS</span>
         </a>
-        <div class="md:hidden">
-          <button id="menu-btn" class="text-gray-600 focus:outline-none">
-            <i data-feather="menu"></i>
+
+        <div class="hidden lg:flex items-center gap-8 text-sm font-semibold">
+          <a href="index.html" class="text-gray-600 hover:text-primary transition-colors">Home</a>
+          <a href="services.html" class="text-gray-600 hover:text-primary transition-colors">Services</a>
+          <a href="jobs.html" class="text-gray-600 hover:text-primary transition-colors">Jobs</a>
+          <a href="consultations.html" class="text-gray-600 hover:text-primary transition-colors">Consultations</a>
+          <a href="marketplace.html" class="text-gray-600 hover:text-primary transition-colors">Marketplace</a>
+          <a href="findworker.html" class="text-primary">Find Workers</a>
+          <a href="faq.html" class="text-gray-600 hover:text-primary transition-colors">FAQs</a>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-2.5 rounded-full hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+            <i data-feather="log-in" class="w-4 h-4"></i>
+            Login
+          </a>
+          <button id="menu-btn" class="lg:hidden text-gray-700 hover:text-primary transition-colors">
+            <i data-feather="menu" class="w-6 h-6"></i>
           </button>
-        </a>
+        </div>
       </div>
     </div>
 
     <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
-      <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
-      <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
-      <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
-      <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
-      <a href="findworker.html" class="block py-2 text-primary font-medium transition-all">Find Workers</a>
-      <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
-      <a href="login.html" class="flex items-center gap-2 text-gray-600 hover:text-primary transition-all">
-        <i data-feather="log-in" class="w-4 h-4"></i>
-        Login
-      </a>
+    <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-gray-200/50">
+      <div class="container mx-auto px-4 py-4 space-y-1">
+        <a href="index.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Home</a>
+        <a href="services.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Services</a>
+        <a href="jobs.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Jobs</a>
+        <a href="consultations.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Consultations</a>
+        <a href="marketplace.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Marketplace</a>
+        <a href="findworker.html" class="block py-2.5 px-3 text-primary bg-primary/5 rounded-lg font-bold">Find Workers</a>
+        <a href="faq.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">FAQs</a>
+      </div>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <header class="hero-bg text-white py-20 md:py-28">
-    <div class="container mx-auto px-4 text-center">
-      <h1 class="text-3xl md:text-5xl font-bold mb-3">Find Trusted, Verified Artisans</h1>
-      <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">Browse top-rated plumbers, electricians, carpenters and more — filtered by skill and location. Only verified artisans are shown.</p>
-      <div class="max-w-4xl mx-auto">
-        <div class="bg-white/95 text-gray-700 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-2xl">
-          <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+  <!-- HERO WITH SEARCH -->
+  <header class="pt-24 pb-16 bg-gradient-to-br from-black via-primary to-blue-900 animated-gradient text-white">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="text-center max-w-4xl mx-auto mb-10">
+        <h1 class="text-4xl md:text-6xl font-black mb-4 leading-tight">Find Trusted, Verified Artisans</h1>
+        <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">Browse top-rated plumbers, electricians, carpenters and more — filtered by skill and location. Only verified artisans are shown.</p>
+      </div>
+
+      <!-- Advanced Search Card -->
+      <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-8 border border-gray-100">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <!-- Search -->
-            <input id="searchInput" 
-                   type="search" 
-                   placeholder="Search artisan" 
-                   class="w-full rounded-2xl bg-gray-50/80 border border-transparent py-3 px-4 text-gray-700 placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/30 transition" />
+            <div class="lg:col-span-1">
+              <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Search</label>
+              <div class="relative">
+                <i data-feather="search" class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input
+                  id="searchInput"
+                  type="search"
+                  placeholder="Search artisan"
+                  class="w-full rounded-2xl bg-gray-50 border-2 border-transparent py-3 pl-11 pr-4 text-gray-700 font-medium placeholder:text-gray-400 focus:border-primary focus:bg-white transition-all"
+                />
+              </div>
+            </div>
 
             <!-- Category -->
-            <select id="categoryFilter" class="w-full rounded-2xl bg-gray-50/80 border border-transparent py-3 px-4 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
-              <option value="">All Categories</option>
-            </select>
+            <div class="lg:col-span-1">
+              <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Category</label>
+              <select id="categoryFilter" class="w-full rounded-2xl bg-gray-50 border-2 border-transparent py-3 px-4 text-gray-700 font-medium focus:border-primary focus:bg-white transition-all">
+                <option value="">All Categories</option>
+              </select>
+            </div>
 
             <!-- Services -->
-            <select id="skillFilter" class="w-full rounded-2xl bg-gray-50/80 border border-transparent py-3 px-4 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
-              <option value="">All Services</option>
-            </select>
+            <div class="lg:col-span-1">
+              <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Services</label>
+              <select id="skillFilter" class="w-full rounded-2xl bg-gray-50 border-2 border-transparent py-3 px-4 text-gray-700 font-medium focus:border-primary focus:bg-white transition-all">
+                <option value="">All Services</option>
+              </select>
+            </div>
 
             <!-- Location -->
-            <select id="locationFilter" class="w-full rounded-2xl bg-gray-50/80 border border-transparent py-3 px-4 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
-              <option value="">All Locations</option>
-            </select>
+            <div class="lg:col-span-1">
+              <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Location</label>
+              <select id="locationFilter" class="w-full rounded-2xl bg-gray-50 border-2 border-transparent py-3 px-4 text-gray-700 font-medium focus:border-primary focus:bg-white transition-all">
+                <option value="">All Locations</option>
+              </select>
+            </div>
 
             <!-- Sort -->
-            <select id="sortBy" class="w-full rounded-2xl bg-gray-50/80 border border-transparent py-3 px-4 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
-              <option value="relevance">Sort</option>
-              <option value="rating_desc">Highest Rated</option>
-              <option value="reviews_desc">Most Reviews</option>
-            </select>
+            <div class="lg:col-span-1">
+              <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Sort</label>
+              <select id="sortBy" class="w-full rounded-2xl bg-gray-50 border-2 border-transparent py-3 px-4 text-gray-700 font-medium focus:border-primary focus:bg-white transition-all">
+                <option value="relevance">Relevance</option>
+                <option value="rating_desc">Highest Rated</option>
+                <option value="reviews_desc">Most Reviews</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        <p class="mt-4 text-sm text-gray-200">Can’t find the specialist you need? <a href="contact.html" class="text-white underline hover:text-primary/90">Contact us</a> and we’ll match you manually.</p>
+        <p class="mt-5 text-sm text-center text-white/80">Can't find the specialist you need? <a href="contact.html" class="text-white font-bold underline hover:no-underline">Contact us</a> and we'll match you manually.</p>
       </div>
     </div>
   </header>
 
   <!-- PA Application Modal -->
   <div id="paApplicationModal" class="fixed inset-0 hidden items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-6 z-50">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl relative overflow-hidden">
-      <button id="closePaModal" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow text-gray-600 hover:text-gray-900 transition">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative overflow-hidden">
+      <button id="closePaModal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-900 transition-all z-10">
         <i data-feather="x" class="w-5 h-5"></i>
       </button>
       <div class="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-100">
-        <div class="p-6 md:p-8">
-          <h3 class="text-xl font-semibold text-gray-800 mb-2">Request a day PA</h3>
-          <p class="text-sm text-gray-600 mb-4">Tell us what you need and we’ll match you within hours.</p>
+        <div class="p-8 md:p-10">
+          <h3 class="text-2xl font-black text-gray-900 mb-2">Request a day PA</h3>
+          <p class="text-sm text-gray-600 mb-6">Tell us what you need and we'll match you within hours.</p>
           <form id="paRequestForm" class="space-y-4">
             <div>
-              <label for="paRequestName" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Full Name</label>
-              <input id="paRequestName" type="text" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+              <label for="paRequestName" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Full Name</label>
+              <input id="paRequestName" type="text" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
             </div>
             <div>
-              <label for="paRequestPhone" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Phone / WhatsApp</label>
-              <input id="paRequestPhone" type="tel" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+              <label for="paRequestPhone" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Phone / WhatsApp</label>
+              <input id="paRequestPhone" type="tel" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
             </div>
             <div>
-              <label for="paRequestLocation" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Location</label>
-              <input id="paRequestLocation" type="text" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+              <label for="paRequestLocation" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Location</label>
+              <input id="paRequestLocation" type="text" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
             </div>
             <div>
-              <label for="paRequestDate" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Date Needed</label>
-              <input id="paRequestDate" type="date" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+              <label for="paRequestDate" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Date Needed</label>
+              <input id="paRequestDate" type="date" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
             </div>
             <div>
-              <label for="paRequestTasks" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Key Tasks</label>
-              <textarea id="paRequestTasks" rows="3" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition" placeholder="Errands, schedule coordination, event support..."></textarea>
+              <label for="paRequestTasks" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Key Tasks</label>
+              <textarea id="paRequestTasks" rows="3" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" placeholder="Errands, schedule coordination, event support..."></textarea>
             </div>
-            <button type="submit" class="w-full bg-primary text-white font-medium py-2.5 rounded-lg hover:bg-primary/90 transition">Submit Request</button>
+            <button type="submit" class="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Submit Request</button>
           </form>
         </div>
-        <div class="p-6 md:p-8">
-          <h3 class="text-xl font-semibold text-gray-800 mb-2">Apply to be a day PA</h3>
-          <p class="text-sm text-gray-600 mb-4">Share your details and availability to join our PA roster.</p>
+        <div class="p-8 md:p-10">
+          <h3 class="text-2xl font-black text-gray-900 mb-2">Apply to be a day PA</h3>
+          <p class="text-sm text-gray-600 mb-6">Share your details and availability to join our PA roster.</p>
           <form id="paApplyForm" class="space-y-4">
             <div>
-              <label for="paApplyName" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Full Name</label>
-              <input id="paApplyName" type="text" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+              <label for="paApplyName" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Full Name</label>
+              <input id="paApplyName" type="text" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
             </div>
             <div>
-              <label for="paApplyPhone" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Phone / WhatsApp</label>
-              <input id="paApplyPhone" type="tel" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+              <label for="paApplyPhone" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Phone / WhatsApp</label>
+              <input id="paApplyPhone" type="tel" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
             </div>
             <div>
-              <label for="paApplyLocation" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">City / State</label>
-              <input id="paApplyLocation" type="text" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+              <label for="paApplyLocation" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">City / State</label>
+              <input id="paApplyLocation" type="text" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
             </div>
             <div>
-              <label for="paApplyExperience" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Experience Summary</label>
-              <textarea id="paApplyExperience" rows="3" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition" placeholder="Tell us about previous PA or admin roles..."></textarea>
+              <label for="paApplyExperience" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Experience Summary</label>
+              <textarea id="paApplyExperience" rows="3" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" placeholder="Tell us about previous PA or admin roles..."></textarea>
             </div>
             <div>
-              <label for="paApplyAvailability" class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Availability</label>
-              <select id="paApplyAvailability" required class="w-full rounded-lg border border-gray-200 py-2.5 px-3 text-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/30 transition">
+              <label for="paApplyAvailability" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Availability</label>
+              <select id="paApplyAvailability" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
                 <option value="">Select an option</option>
                 <option value="Weekdays">Weekdays</option>
                 <option value="Weekends">Weekends</option>
                 <option value="Flexible">Flexible / on call</option>
               </select>
             </div>
-            <button type="submit" class="w-full bg-primary text-white font-medium py-2.5 rounded-lg hover:bg-primary/90 transition">Send Application</button>
+            <button type="submit" class="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Send Application</button>
           </form>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ARTISANS GRID -->
-  <main class="py-12">
-    <div class="container mx-auto px-4">
-      <div id="resultsInfo" class="text-sm text-gray-600 mb-4 flex items-center justify-between flex-wrap gap-3">
-        <span id="resultsCountText">&nbsp;</span>
-        <span class="text-xs text-gray-500">👩‍⚕️ Want your medical or legal practice listed? <a href="consultations.html#join" class="text-primary hover:underline">Apply via our partner program</a>.</span>
+  <!-- MAIN CONTENT -->
+  <main class="py-12 md:py-16">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div id="resultsInfo" class="mb-6 flex items-center justify-between flex-wrap gap-3">
+        <span id="resultsCountText" class="text-sm font-bold text-gray-700">&nbsp;</span>
+        <span class="text-xs text-gray-600">👩‍⚕️ Want your medical or legal practice listed? <a href="consultations.html#join" class="text-primary font-bold hover:underline">Apply via our partner program</a>.</span>
       </div>
-      <div class="bg-primary/5 border border-primary/10 rounded-2xl p-6 md:p-8 mb-8">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Need Something Extra Fast?</h2>
-        <div class="grid gap-4 md:grid-cols-3">
-          <div class="bg-white border border-gray-100 rounded-xl p-5 shadow-sm flex flex-col justify-between">
-            <div>
-              <h3 class="text-lg font-semibold text-gray-800 mb-2">Hire a Personal Assistant for a Day</h3>
-              <p class="text-sm text-gray-600">Get a dependable PA to handle errands, scheduling and event support for just the hours you need.</p>
+
+      <!-- Featured Services -->
+      <div class="bg-gradient-to-br from-primary/5 to-blue-50 border border-primary/10 rounded-3xl p-8 md:p-10 mb-10 shadow-xl">
+        <h2 class="text-3xl font-black text-gray-900 mb-6">Need Something Extra Fast?</h2>
+        <div class="grid gap-6 md:grid-cols-3">
+          <div class="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div class="mb-6">
+              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                <i data-feather="briefcase" class="w-6 h-6 text-primary"></i>
+              </div>
+              <h3 class="text-xl font-black text-gray-900 mb-2">Hire a Personal Assistant for a Day</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">Get a dependable PA to handle errands, scheduling and event support for just the hours you need.</p>
             </div>
-            <div class="mt-4 flex flex-col items-center gap-2">
-              <button id="paModalTrigger" type="button" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-white py-2.5 px-4 text-sm font-medium hover:bg-primary/90 transition">Request or Apply</button>
+            <div class="space-y-2">
+              <button id="paModalTrigger" type="button" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-white py-3 px-4 font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">Request or Apply</button>
               <p class="text-xs text-gray-500 text-center">Prefer to work as a day PA? Apply inside the form.</p>
             </div>
           </div>
-          <div class="bg-white border border-gray-100 rounded-xl p-5 shadow-sm flex flex-col justify-between">
-            <div>
-              <h3 class="text-lg font-semibold text-gray-800 mb-2">Consult a Doctor (Affordable)</h3>
-              <p class="text-sm text-gray-600">Speak with licensed doctors for budget-friendly telehealth or clinic visits tailored to your schedule. Contacts unlock after a ₦3,000 payment.</p>
+          <div class="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div class="mb-6">
+              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                <i data-feather="heart" class="w-6 h-6 text-primary"></i>
+              </div>
+              <h3 class="text-xl font-black text-gray-900 mb-2">Consult a Doctor (Affordable)</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">Speak with licensed doctors for budget-friendly telehealth or clinic visits tailored to your schedule. Contacts unlock after a ₦3,000 payment.</p>
             </div>
-            <a href="consultations.html#doctors" class="mt-4 inline-flex items-center justify-center gap-2 rounded-lg border border-primary text-primary py-2.5 text-sm font-medium hover:bg-primary hover:text-white transition">Meet Doctors</a>
+            <a href="consultations.html#doctors" class="block w-full text-center rounded-xl border-2 border-primary text-primary py-3 font-bold hover:bg-primary hover:text-white transition-all">Meet Doctors</a>
           </div>
-          <div class="bg-white border border-gray-100 rounded-xl p-5 shadow-sm flex flex-col justify-between">
-            <div>
-              <h3 class="text-lg font-semibold text-gray-800 mb-2">Consult a Lawyer (Affordable)</h3>
-              <p class="text-sm text-gray-600">Trusted legal guidance for contracts, property, employment issues and more without breaking the bank. Contacts unlock after a ₦3,000 payment.</p>
+          <div class="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div class="mb-6">
+              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                <i data-feather="shield" class="w-6 h-6 text-primary"></i>
+              </div>
+              <h3 class="text-xl font-black text-gray-900 mb-2">Consult a Lawyer (Affordable)</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">Trusted legal guidance for contracts, property, employment issues and more without breaking the bank. Contacts unlock after a ₦3,000 payment.</p>
             </div>
-            <a href="consultations.html#lawyers" class="mt-4 inline-flex items-center justify-center gap-2 rounded-lg border border-primary text-primary py-2.5 text-sm font-medium hover:bg-primary hover:text-white transition">Meet Lawyers</a>
+            <a href="consultations.html#lawyers" class="block w-full text-center rounded-xl border-2 border-primary text-primary py-3 font-bold hover:bg-primary hover:text-white transition-all">Meet Lawyers</a>
           </div>
         </div>
       </div>
 
+      <!-- Artisans Grid -->
       <div id="artisanGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- JS will render artisan cards here -->
       </div>
 
-      <!-- Pagination placeholder (if needed later) -->
-      <div id="pagination" class="mt-8 flex justify-center"></div>
+      <!-- Pagination placeholder -->
+      <div id="pagination" class="mt-10 flex justify-center"></div>
     </div>
   </main>
 
   <!-- ARTISAN MODAL -->
-  <div id="artisanModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-lg w-11/12 md:w-3/4 lg:w-1/2 p-6 relative">
-      <button id="modalClose" class="absolute right-4 top-4 text-gray-500 hover:text-gray-800">
-        <i data-feather="x"></i>
+  <div id="artisanModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-3xl relative max-h-[90vh] overflow-y-auto">
+      <button id="modalClose" class="sticky top-4 float-right mr-4 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-900 transition-all z-10">
+        <i data-feather="x" class="w-5 h-5"></i>
       </button>
-      <div id="modalContent"></div>
+      <div id="modalContent" class="p-8 md:p-10"></div>
     </div>
   </div>
 
   <!-- FOOTER -->
-  <footer class="bg-gray-900 text-white py-12">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div>
-          <div class="flex items-center space-x-2 mb-4">
-            <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
-            <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
+  <footer class="bg-[#0f172a] text-gray-300 mt-16">
+    <div class="border-t border-white/10">
+      <div class="container mx-auto px-4 py-12 lg:py-14">
+        <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+          <div class="space-y-4">
+            <a href="index.html" class="inline-flex items-center gap-2">
+              <img src="assets/sirius-logo.svg" alt="Sirius Jobs logo" class="w-10 h-10">
+              <span class="text-lg font-semibold text-white tracking-wide uppercase">Sirius Jobs</span>
+            </a>
+            <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+            <div class="flex items-center gap-3 text-gray-400">
+              <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+              <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+              <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+              <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+            </div>
           </div>
-          <p class="text-gray-400 mb-4">Bridging Talent and Opportunity with Trust</p>
-          <div class="flex space-x-4">
-            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="text-gray-400 hover:text-white transition-all"><i data-feather="facebook"></i></a>
-            <a href="https://twitter.com/SiriusOddJobs" class="text-gray-400 hover:text-white transition-all"><i data-feather="twitter"></i></a>
-            <a href="https://www.instagram.com/siriusjobss?igsh=MXQwcXNzZGVrdHM5MQ%3D%3D&utm_source=qr" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
-            <a href="https://www.linkedin.com/company/siriusjobsng/" class="text-gray-400 hover:text-white transition-all"><i data-feather="linkedin"></i></a>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="about.html" class="hover:text-white transition">About</a></li>
+              <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+              <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+              <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+              <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+              <li><span>WhatsApp: 0704 447 0559</span></li>
+              <li><span>Email: support@siriusjobsng.com</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li>Port Harcourt, Rivers State</li>
+              <li>Nigeria</li>
+            </ul>
           </div>
         </div>
-
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-          <ul class="space-y-2">
-            <li><a href="index.html" class="text-gray-400 hover:text-white transition-all">Home</a></li>
-            <li><a href="about.html" class="text-gray-400 hover:text-white transition-all">About Us</a></li>
-            <li><a href="services.html" class="text-gray-400 hover:text-white transition-all">Services</a></li>
-            <li><a href="find-artisans.html" class="text-gray-400 hover:text-white transition-all">Find Artisans</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Services </h4>
-          <ul class="space-y-2">
-                        <li><span class="text-gray-400">Artisans</span></li>
-                        <li><span class="text-gray-400">Plumbers</span></li>
-                        <li><span class="text-gray-400">Electricians</span></li>
-                        <li><span class="text-gray-400">Cleaners</span></li>
-                        <li><a href="services.html" class="text-gray-400 hover:text-white transition-all">More Services</a></li>
-                    </ul>
-        </div>
-
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
-          <ul class="space-y-2">
-            <li class="flex items-start space-x-2">
-              <i data-feather="phone" class="text-gray-400 mt-1 w-4 h-4"></i>
-              <span class="text-gray-400">07044470559</span>
-            </li>
-            <li class="flex items-start space-x-2">
-              <i data-feather="mail" class="text-gray-400 mt-1 w-4 h-4"></i>
-              <span class="text-gray-400">siriusoddjobs@gmail.com</span>
-            </li>
-            <li class="flex items-start space-x-2">
-              <i data-feather="map-pin" class="text-gray-400 mt-1 w-4 h-4"></i>
-              <span class="text-gray-400">Port Harcourt, Nigeria</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
-        <div class="flex space-x-6">
-          <a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
-          <a href="terms.html" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>
+        <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+            <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+            <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+            <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+          </div>
         </div>
       </div>
     </div>
@@ -327,155 +365,123 @@
 
   <script>
     // ======= SAMPLE DATA =======
-    // Replace artisan photos in /images/artisans/ with your real photos
-    // Example images included as placeholders
     const artisans = [
-      { id:101, name:'Samuel Ade', skill:'Mechanic', category:'Skilled Trades', location:'Abeokuta, Ogun', rating:4.7, reviews:38, photo:'/images/users/sample_worker.jpg', verified:true, subscriptionActive:true, bio:'Diagnostic and engine specialist focused on reliable maintenance for fleets and personal vehicles.' },
-      { id:1, name:'Ifeanyi Okoro', skill:'Electrician', category:'Skilled Trades', location:'Port Harcourt', rating:4.8, reviews:45, photo:'/images/artisans/elec1.jpg', verified:true, subscriptionActive:true, bio:'10 years experience in domestic and industrial electrical systems.' },
-      { id:2, name:'Ngozi Amadi', skill:'Plumber', category:'Skilled Trades', location:'Port Harcourt', rating:4.6, reviews:28, photo:'/images/artisans/plumb1.jpg', verified:true, subscriptionActive:true, bio:'Specialist in piping, bathrooms and leak repairs.' },
-      { id:3, name:'Chinedu Eke', skill:'Carpenter', category:'Skilled Trades', location:'Rivers', rating:4.4, reviews:16, photo:'/images/artisans/carp1.jpg', verified:false, subscriptionActive:true, bio:'Custom furniture and cabinetry.' },
-      { id:4, name:'Aisha Bello', skill:'Tiler', category:'Skilled Trades', location:'Port Harcourt', rating:4.9, reviews:62, photo:'/images/artisans/tile1.jpg', verified:true, subscriptionActive:true, bio:'Perfect finishes for bathrooms and kitchens.' },
-      { id:5, name:'Emeka Uche', skill:'Painter', category:'Home Services', location:'Rivers', rating:4.3, reviews:9, photo:'/images/artisans/paint1.jpg', verified:true, subscriptionActive:false, bio:'Interior and exterior painting with lasting finishes.' },
-      { id:102, name:'Ireti Ola', skill:'Personal Assistant (Day Hire)', category:'Support Staff', location:'Lagos – Ikeja', rating:4.9, reviews:52, photo:'https://via.placeholder.com/320x320?text=PA', verified:true, subscriptionActive:true, bio:'Concierge-style personal assistant available for on-site errands, event coordination and day-of support.' },
-      { id:103, name:'Saidu Gana', skill:'Solar Panel Technician', category:'Professional Services', location:'Kano – Kano', rating:4.5, reviews:22, photo:'https://via.placeholder.com/320x320?text=Solar', verified:true, subscriptionActive:true, bio:'Certified technician for solar installation, maintenance and energy audits for homes and SMEs.' },
+      { id:101, name:'Samuel Ade', skill:'Mechanic', category:'Skilled Trades', location:'Abeokuta, Ogun', rating:4.7, reviews:38, photo:'/images/users/sample_worker.jpg', verified:true, subscriptionActive:true, bio:'Diagnostic and engine specialist focused on reliable maintenance for fleets and personal vehicles.', phone:'+2348030001111', whatsapp:'https://wa.me/2348030001111', email:'samuel.ade@siriusjobs.ng' },
+      { id:1, name:'Ifeanyi Okoro', skill:'Electrician', category:'Skilled Trades', location:'Port Harcourt', rating:4.8, reviews:45, photo:'/images/artisans/elec1.jpg', verified:true, subscriptionActive:true, bio:'10 years experience in domestic and industrial electrical systems.', phone:'+2348061112233', whatsapp:'https://wa.me/2348061112233', email:'ifeanyi.okoro@siriusjobs.ng' },
+      { id:2, name:'Ngozi Amadi', skill:'Plumber', category:'Skilled Trades', location:'Port Harcourt', rating:4.6, reviews:28, photo:'/images/artisans/plumb1.jpg', verified:true, subscriptionActive:true, bio:'Specialist in piping, bathrooms and leak repairs.', phone:'+2348059988776', whatsapp:'https://wa.me/2348059988776', email:'ngozi.amadi@siriusjobs.ng' },
+      { id:3, name:'Chinedu Eke', skill:'Carpenter', category:'Skilled Trades', location:'Rivers', rating:4.4, reviews:16, photo:'/images/artisans/carp1.jpg', verified:false, subscriptionActive:true, bio:'Custom furniture and cabinetry.', phone:'+2348023344556', whatsapp:'https://wa.me/2348023344556', email:'chinedu.eke@siriusjobs.ng' },
+      { id:4, name:'Aisha Bello', skill:'Tiler', category:'Skilled Trades', location:'Port Harcourt', rating:4.9, reviews:62, photo:'/images/artisans/tile1.jpg', verified:true, subscriptionActive:true, bio:'Perfect finishes for bathrooms and kitchens.', phone:'+2348074445566', whatsapp:'https://wa.me/2348074445566', email:'aisha.bello@siriusjobs.ng' },
+      { id:5, name:'Emeka Uche', skill:'Painter', category:'Home Services', location:'Rivers', rating:4.3, reviews:9, photo:'/images/artisans/paint1.jpg', verified:true, subscriptionActive:false, bio:'Interior and exterior painting with lasting finishes.', phone:'+2348091112223', whatsapp:'https://wa.me/2348091112223', email:'emeka.uche@siriusjobs.ng' },
+      { id:102, name:'Ireti Ola', skill:'Personal Assistant (Day Hire)', category:'Support Staff', location:'Lagos – Ikeja', rating:4.9, reviews:52, photo:'https://via.placeholder.com/320x320?text=PA', verified:true, subscriptionActive:true, bio:'Concierge-style personal assistant available for on-site errands, event coordination and day-of support.', phone:'+2347012223344', whatsapp:'https://wa.me/2347012223344', email:'ireti.ola@siriusjobs.ng' },
+      { id:103, name:'Saidu Gana', skill:'Solar Panel Technician', category:'Professional Services', location:'Kano – Kano', rating:4.5, reviews:22, photo:'https://via.placeholder.com/320x320?text=Solar', verified:true, subscriptionActive:true, bio:'Certified technician for solar installation, maintenance and energy audits for homes and SMEs.', phone:'+2347035556677', whatsapp:'https://wa.me/2347035556677', email:'saidu.gana@siriusjobs.ng' },
       { id:201, name:'Dr. Chukwuemeka Obi', skill:'Doctor Consultation (Affordable)', category:'Healthcare', location:'Anambra – Awka', rating:4.8, reviews:64, photo:'https://via.placeholder.com/320x320?text=Doctor', verified:true, subscriptionActive:true, bio:'Family physician providing affordable telehealth and in-clinic reviews for individuals and families.' },
       { id:202, name:'Dr. Zainab Musa', skill:'Doctor Consultation (Affordable)', category:'Healthcare', location:'Kaduna – Kaduna', rating:4.7, reviews:51, photo:'https://via.placeholder.com/320x320?text=Doctor', verified:true, subscriptionActive:true, bio:'General practitioner with focus on preventive care, maternal health and quick diagnostics.' },
       { id:301, name:'Barr. Halima Yusuf', skill:'Lawyer Consultation (Affordable)', category:'Legal', location:'Federal Capital Territory – Abuja', rating:4.7, reviews:41, photo:'https://via.placeholder.com/320x320?text=Lawyer', verified:true, subscriptionActive:true, bio:'Legal practitioner offering affordable sessions on property, contracts and employment matters.' },
       { id:302, name:'Barr. Emeka Nwaneri', skill:'Lawyer Consultation (Affordable)', category:'Legal', location:'Lagos – Ikeja', rating:4.6, reviews:33, photo:'https://via.placeholder.com/320x320?text=Lawyer', verified:true, subscriptionActive:true, bio:'Commercial lawyer helping SMEs with agreements, compliance and dispute resolution.' },
-      { id:401, name:'Chika Eze', skill:'Event Planner', category:'Events & Lifestyle', location:'Enugu – Enugu', rating:4.8, reviews:27, photo:'https://via.placeholder.com/320x320?text=Events', verified:true, subscriptionActive:true, bio:'Creative event planner managing intimate ceremonies, corporate functions and brand activations nationwide.' }
-      // add more sample artisans as needed
+      { id:401, name:'Chika Eze', skill:'Event Planner', category:'Events & Lifestyle', location:'Enugu – Enugu', rating:4.8, reviews:27, photo:'https://via.placeholder.com/320x320?text=Events', verified:true, subscriptionActive:true, bio:'Creative event planner managing intimate ceremonies, corporate functions and brand activations nationwide.', phone:'+2347088889990', whatsapp:'https://wa.me/2347088889990', email:'chika.eze@siriusjobs.ng' }
     ];
 
-    // Populate skill and location filters from data
-const extraSkills = [
-  'Home Cleaning Specialist',
-  'Interior Designer',
-  'IT Support Specialist',
-  'Home Tutor',
-  'Personal Assistant (Day Hire)',
-  'Doctor Consultation (Affordable)',
-  'Lawyer Consultation (Affordable)'
-];
-const skills = Array.from(new Set([...artisans.map(a => a.skill), ...extraSkills])).sort();
+    // Populate skill and location filters
+    const extraSkills = [
+      'Home Cleaning Specialist',
+      'Interior Designer',
+      'IT Support Specialist',
+      'Home Tutor',
+      'Personal Assistant (Day Hire)',
+      'Doctor Consultation (Affordable)',
+      'Lawyer Consultation (Affordable)'
+    ];
+    const skills = Array.from(new Set([...artisans.map(a => a.skill), ...extraSkills])).sort();
 
-// List of all Nigerian states and their capitals
-const locations = [
-  "Abia – Umuahia",
-  "Adamawa – Yola",
-  "Akwa Ibom – Uyo",
-  "Anambra – Awka",
-  "Bauchi – Bauchi",
-  "Bayelsa – Yenagoa",
-  "Benue – Makurdi",
-  "Borno – Maiduguri",
-  "Cross River – Calabar",
-  "Delta – Asaba",
-  "Ebonyi – Abakaliki",
-  "Edo – Benin City",
-  "Ekiti – Ado-Ekiti",
-  "Enugu – Enugu",
-  "Gombe – Gombe",
-  "Imo – Owerri",
-  "Jigawa – Dutse",
-  "Kaduna – Kaduna",
-  "Kano – Kano",
-  "Katsina – Katsina",
-  "Kebbi – Birnin Kebbi",
-  "Kogi – Lokoja",
-  "Kwara – Ilorin",
-  "Lagos – Ikeja",
-  "Nasarawa – Lafia",
-  "Niger – Minna",
-  "Ogun – Abeokuta",
-  "Ondo – Akure",
-  "Osun – Osogbo",
-  "Oyo – Ibadan",
-  "Plateau – Jos",
-  "Rivers – Port Harcourt",
-  "Sokoto – Sokoto",
-  "Taraba – Jalingo",
-  "Yobe – Damaturu",
-  "Zamfara – Gusau",
-  "Federal Capital Territory – Abuja"
-];
+    const locations = [
+      "Abia – Umuahia", "Adamawa – Yola", "Akwa Ibom – Uyo", "Anambra – Awka",
+      "Bauchi – Bauchi", "Bayelsa – Yenagoa", "Benue – Makurdi", "Borno – Maiduguri",
+      "Cross River – Calabar", "Delta – Asaba", "Ebonyi – Abakaliki", "Edo – Benin City",
+      "Ekiti – Ado-Ekiti", "Enugu – Enugu", "Gombe – Gombe", "Imo – Owerri",
+      "Jigawa – Dutse", "Kaduna – Kaduna", "Kano – Kano", "Katsina – Katsina",
+      "Kebbi – Birnin Kebbi", "Kogi – Lokoja", "Kwara – Ilorin", "Lagos – Ikeja",
+      "Nasarawa – Lafia", "Niger – Minna", "Ogun – Abeokuta", "Ondo – Akure",
+      "Osun – Osogbo", "Oyo – Ibadan", "Plateau – Jos", "Rivers – Port Harcourt",
+      "Sokoto – Sokoto", "Taraba – Jalingo", "Yobe – Damaturu", "Zamfara – Gusau",
+      "Federal Capital Territory – Abuja"
+    ];
 
-const categorySelect = document.getElementById('categoryFilter');
-const skillSelect = document.getElementById('skillFilter');
-const locSelect = document.getElementById('locationFilter');
-const paModal = document.getElementById('paApplicationModal');
-const openPaModalBtn = document.getElementById('paModalTrigger');
-const closePaModalBtn = document.getElementById('closePaModal');
-const paRequestForm = document.getElementById('paRequestForm');
-const paApplyForm = document.getElementById('paApplyForm');
+    const categorySelect = document.getElementById('categoryFilter');
+    const skillSelect = document.getElementById('skillFilter');
+    const locSelect = document.getElementById('locationFilter');
+    const paModal = document.getElementById('paApplicationModal');
+    const openPaModalBtn = document.getElementById('paModalTrigger');
+    const closePaModalBtn = document.getElementById('closePaModal');
+    const paRequestForm = document.getElementById('paRequestForm');
+    const paApplyForm = document.getElementById('paApplyForm');
 
-const categories = Array.from(new Set(artisans.map(a => a.category))).filter(Boolean).sort();
+    const categories = Array.from(new Set(artisans.map(a => a.category))).filter(Boolean).sort();
 
-categories.forEach(c => {
-  const opt = document.createElement('option');
-  opt.value = c;
-  opt.textContent = c;
-  categorySelect.appendChild(opt);
-});
+    categories.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c;
+      opt.textContent = c;
+      categorySelect.appendChild(opt);
+    });
 
-skills.forEach(s => {
-  const opt = document.createElement('option');
-  opt.value = s;
-  opt.textContent = s;
-  skillSelect.appendChild(opt);
-});
+    skills.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s;
+      opt.textContent = s;
+      skillSelect.appendChild(opt);
+    });
 
-locations.forEach(l => {
-  const opt = document.createElement('option');
-  opt.value = l;
-  opt.textContent = l;
-  locSelect.appendChild(opt);
-});
+    locations.forEach(l => {
+      const opt = document.createElement('option');
+      opt.value = l;
+      opt.textContent = l;
+      locSelect.appendChild(opt);
+    });
 
-function openPaModal(){
-  paModal.classList.remove('hidden');
-  paModal.classList.add('flex');
-  document.body.classList.add('overflow-hidden');
-}
-
-function closePaModal(){
-  paModal.classList.remove('flex');
-  paModal.classList.add('hidden');
-  document.body.classList.remove('overflow-hidden');
-}
-
-if(openPaModalBtn){
-  openPaModalBtn.addEventListener('click', openPaModal);
-}
-if(closePaModalBtn){
-  closePaModalBtn.addEventListener('click', closePaModal);
-}
-if(paModal){
-  paModal.addEventListener('click', (event) => {
-    if(event.target === paModal){
-      closePaModal();
+    function openPaModal(){
+      paModal.classList.remove('hidden');
+      paModal.classList.add('flex');
+      document.body.classList.add('overflow-hidden');
     }
-  });
-}
 
-if(paRequestForm){
-  paRequestForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    paRequestForm.reset();
-    closePaModal();
-    alert('✅ Thank you! Our concierge team will reach out shortly with a day PA match.');
-  });
-}
-if(paApplyForm){
-  paApplyForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    paApplyForm.reset();
-    closePaModal();
-    alert('🎉 Application received! We will review and contact you for upcoming PA assignments.');
-  });
-}
+    function closePaModal(){
+      paModal.classList.remove('flex');
+      paModal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
 
+    if(openPaModalBtn){
+      openPaModalBtn.addEventListener('click', openPaModal);
+    }
+    if(closePaModalBtn){
+      closePaModalBtn.addEventListener('click', closePaModal);
+    }
+    if(paModal){
+      paModal.addEventListener('click', (event) => {
+        if(event.target === paModal){
+          closePaModal();
+        }
+      });
+    }
 
-    // Rendering logic: show only verified && subscriptionActive
+    if(paRequestForm){
+      paRequestForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        paRequestForm.reset();
+        closePaModal();
+        alert('✅ Thank you! Our concierge team will reach out shortly with a day PA match.');
+      });
+    }
+    if(paApplyForm){
+      paApplyForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        paApplyForm.reset();
+        closePaModal();
+        alert('🎉 Application received! We will review and contact you for upcoming PA assignments.');
+      });
+    }
+
+    // Rendering logic
     function renderArtisans(filter = {}) {
       const grid = document.getElementById('artisanGrid');
       grid.innerHTML = '';
@@ -500,50 +506,53 @@ if(paApplyForm){
       document.getElementById('resultsCountText').textContent = `${list.length} artisan(s) found`;
 
       if (list.length === 0) {
-        grid.innerHTML = `<div class="col-span-full text-center text-gray-500 p-8">No verified artisans found for your filters.</div>`;
+        grid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-16">
+          <i data-feather="search" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
+          <p class="text-lg font-bold">No verified artisans found for your filters.</p>
+        </div>`;
+        feather.replace();
         return;
       }
 
       list.forEach(a => {
         const consultationTag = (a.category === 'Healthcare' || a.category === 'Legal')
-          ? '<span class="text-xs font-medium text-primary/80">Consultation from ₦3,000</span>'
-          : '';
-        const partnershipTag = (a.category === 'Healthcare' || a.category === 'Legal')
-          ? '<span class="text-[11px] text-gray-400">Partner: ₦3,000/month listing</span>'
+          ? '<span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full">From ₦3,000</span>'
           : '';
         const card = document.createElement('div');
-        card.className = 'bg-white rounded-lg shadow p-4 flex flex-col transition-transform hover:-translate-y-1';
+        card.className = 'worker-card bg-white rounded-3xl shadow-xl p-6 border-2 border-gray-100 hover:border-primary';
         card.innerHTML = `
-          <div class="flex items-center space-x-4">
-            <img src="${a.photo}" alt="${a.name}" class="w-20 h-20 rounded-lg object-cover" onerror="this.src='https://via.placeholder.com/140x140?text=Photo'"/>
-            <div class="flex-1">
-              <div class="flex items-center justify-between">
-                <div>
-                  <h3 class="text-lg font-semibold">${a.name}</h3>
-                  <p class="text-sm text-gray-500">${a.skill} • ${a.location}</p>
-                </div>
-                <div class="flex items-center space-x-2">
-                  ${a.verified ? '<span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Verified</span>' : ''}
-                </div>
+          <div class="flex gap-4 mb-4">
+            <img src="${a.photo}" alt="${a.name}" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0" onerror="this.src='https://via.placeholder.com/140x140?text=Photo'"/>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-lg font-black text-gray-900 mb-1 truncate">${a.name}</h3>
+              <p class="text-sm text-gray-600 font-medium mb-2">${a.skill}</p>
+              <div class="flex items-center gap-2 text-xs text-gray-500">
+                <i data-feather="map-pin" class="w-3.5 h-3.5"></i>
+                <span class="truncate">${a.location}</span>
               </div>
-              <div class="mt-3 flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                  <div class="flex items-center text-yellow-400">
-                    ${renderStars(a.rating)}
-                  </div>
-                  <span class="text-sm text-gray-500">(${a.reviews})</span>
-                </div>
-                <div class="flex flex-col items-end gap-1">
-                  ${consultationTag}
-                  <button data-id="${a.id}" class="open-profile bg-primary text-white text-sm py-1 px-3 rounded">View</button>
-                </div>
-              </div>
-              ${partnershipTag}
             </div>
+          </div>
+
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <div class="flex items-center text-yellow-400">
+                ${renderStars(a.rating)}
+              </div>
+              <span class="text-sm font-bold text-gray-700">${a.rating}</span>
+              <span class="text-xs text-gray-500">(${a.reviews})</span>
+            </div>
+            ${a.verified ? '<span class="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full"><i data-feather="check-circle" class="w-3.5 h-3.5"></i>Verified</span>' : ''}
+          </div>
+
+          <div class="flex items-center justify-between gap-3">
+            ${consultationTag}
+            <button data-id="${a.id}" class="open-profile flex-1 bg-primary text-white text-sm font-bold py-2.5 px-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">View Profile</button>
           </div>
         `;
         grid.appendChild(card);
       });
+
+      feather.replace();
 
       // attach click listeners
       document.querySelectorAll('.open-profile').forEach(btn => {
@@ -569,41 +578,52 @@ if(paApplyForm){
       const artisan = artisans.find(a => a.id === id);
       const modal = document.getElementById('artisanModal');
       const content = document.getElementById('modalContent');
-      const contactButton = `<button class="w-full sm:w-auto border border-primary text-primary py-2 px-4 rounded" data-pay="${artisan.id}">Unlock Contact</button>`;
+      const requiresConsultation = artisan.category === 'Healthcare' || artisan.category === 'Legal';
+      const contactButtons = !requiresConsultation && (artisan.phone || artisan.whatsapp || artisan.email)
+        ? `
+          <div class="grid gap-3 sm:grid-cols-3 mt-6">
+            ${artisan.phone ? `<a href="tel:${artisan.phone.replace(/[^+\\d]/g,'')}" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold py-3 px-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"><i data-feather="phone" class="w-4 h-4"></i>${artisan.phone}</a>` : ''}
+            ${artisan.whatsapp ? `<a href="${artisan.whatsapp}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold py-3 px-4 rounded-xl hover:bg-primary hover:text-white transition-all"><i data-feather="message-circle" class="w-4 h-4"></i>WhatsApp</a>` : ''}
+            ${artisan.email ? `<a href="mailto:${artisan.email}" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold py-3 px-4 rounded-xl hover:bg-primary hover:text-white transition-all"><i data-feather="mail" class="w-4 h-4"></i>Email</a>` : ''}
+          </div>
+        ` : '';
+      const consultationCTA = requiresConsultation
+        ? `
+          <div class="flex flex-col sm:flex-row gap-3 mt-6">
+            <a href="consultations.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"><i data-feather="lock" class="w-4 h-4"></i>Book secure consultation</a>
+            <a href="client-dashboard.html" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary hover:text-white transition-all"><i data-feather="layout" class="w-4 h-4"></i>Consultation dashboard</a>
+          </div>
+          <p class="mt-4 text-xs text-gray-500 bg-gray-50 rounded-xl p-4">Doctors and lawyers serve clients through our protected consultations platform.</p>
+        ` : '';
 
       content.innerHTML = `
-        <div class="md:flex gap-6">
-          <div class="md:w-1/3 text-center">
-            <img src="${artisan.photo}" alt="${artisan.name}" class="w-40 h-40 rounded-lg object-cover mx-auto mb-4" onerror="this.src='https://via.placeholder.com/240x240?text=Photo'"/>
-            <div class="flex items-center justify-center space-x-2">
-              ${artisan.verified ? '<span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Verified</span>' : ''}
+        <div class="md:flex gap-8">
+          <div class="md:w-1/3 text-center mb-6 md:mb-0">
+            <img src="${artisan.photo}" alt="${artisan.name}" class="w-48 h-48 rounded-3xl object-cover mx-auto mb-4 shadow-xl" onerror="this.src='https://via.placeholder.com/240x240?text=Photo'"/>
+            <div class="flex items-center justify-center gap-2">
+              ${artisan.verified ? '<span class="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full"><i data-feather="check-circle" class="w-3.5 h-3.5"></i>Verified</span>' : ''}
             </div>
           </div>
           <div class="md:flex-1">
-            <h2 class="text-2xl font-semibold mb-1">${artisan.name}</h2>
-            <p class="text-sm text-gray-500 mb-3">${artisan.skill} • ${artisan.location}</p>
-            <div class="flex items-center space-x-3 mb-3">
-              <div class="flex items-center">${renderStars(artisan.rating)}</div>
+            <h2 class="text-3xl font-black text-gray-900 mb-2">${artisan.name}</h2>
+            <p class="text-base text-gray-600 font-medium mb-4">${artisan.skill} • ${artisan.location}</p>
+            <div class="flex items-center gap-3 mb-6">
+              <div class="flex items-center text-yellow-400">${renderStars(artisan.rating)}</div>
+              <div class="text-base font-bold text-gray-700">${artisan.rating}</div>
               <div class="text-sm text-gray-500">(${artisan.reviews} reviews)</div>
             </div>
-            <p class="text-gray-700 mb-4">${artisan.bio}</p>
+            <p class="text-gray-700 leading-relaxed mb-6">${artisan.bio}</p>
 
-            <div class="flex flex-col sm:flex-row gap-3">
-              ${contactButton}
-            </div>
-
-            <p class="mt-4 text-xs text-gray-500">Contact details unlock after a secure payment. We’ll introduce you to the artisan immediately.</p>
+            ${requiresConsultation
+              ? consultationCTA
+              : `${contactButtons}<p class="mt-6 text-xs text-green-700 bg-green-50 rounded-xl p-4 font-medium">Contact details for regular artisans are free to view. Sirius verifies every professional listed here.</p>`}
           </div>
         </div>
       `;
 
       modal.classList.remove('hidden');
       modal.classList.add('flex');
-
-      const payBtn = content.querySelector('[data-pay]');
-      if (payBtn) {
-        payBtn.addEventListener('click', () => startPayment(payBtn.getAttribute('data-pay')));
-      }
+      feather.replace();
     }
 
     // Close modal
@@ -611,13 +631,6 @@ if(paApplyForm){
       document.getElementById('artisanModal').classList.add('hidden');
       document.getElementById('artisanModal').classList.remove('flex');
     });
-
-    // Payment starter (replace with actual Paystack/Flutterwave logic)
-    function startPayment(artisanId) {
-      // Example: open a checkout page or call backend to init payment.
-      // Replace this with your actual payment flow (Paystack/Flutterwave).
-      alert('Open payment flow for artisan ID: ' + artisanId + '\nReplace this function with Paystack/Flutterwave integration.');
-    }
 
     // Filters
     const searchInput = document.getElementById('searchInput');
@@ -638,6 +651,7 @@ if(paApplyForm){
     skillSelect.addEventListener('change', () => applyFilters());
     locSelect.addEventListener('change', () => applyFilters());
     sortBy.addEventListener('change', () => applyFilters());
+
     document.addEventListener('keydown', (event) => {
       if(event.key === 'Escape' && paModal && paModal.classList.contains('flex')){
         closePaModal();
@@ -646,11 +660,6 @@ if(paApplyForm){
 
     // Initial render
     renderArtisans();
-
-    // Login button example (open login page or modal)
-    document.getElementById('login-btn').addEventListener('click', () => {
-      window.location.href = '/login.html'; // or open a login modal
-    });
   </script>
   <script src="assistant.js"></script>
 </body>

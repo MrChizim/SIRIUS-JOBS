@@ -7,151 +7,327 @@
   <meta name="description" content="Terms of Service for Sirius Jobs Nigeria – rules and user agreements for using our platform." />
   <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config={theme:{extend:{colors:{primary:'#0056b3'}}}}</script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: { colors: { primary: '#0056b3', secondary: '#0f172a' } }
+      }
+    }
+  </script>
   <script src="https://unpkg.com/feather-icons"></script>
-  <style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');body{font-family:'Inter',sans-serif}</style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .animated-gradient {
+      background-size: 200% 200%;
+      animation: gradient-shift 15s ease infinite;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .toc-link.active {
+      background-color: rgba(0, 86, 179, 0.1);
+      color: #0056b3;
+      font-weight: 700;
+    }
+  </style>
 </head>
 <body class="bg-white text-gray-800">
 
-  <!-- NAVBAR identical to index -->
-  <nav class="bg-white shadow-md sticky top-0 z-50">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <a href="index.html" class="flex items-center space-x-3">
+  <!-- NAVIGATION -->
+  <nav class="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="inline-flex items-center gap-3">
         <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
-        <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
+        <span class="text-xl font-black text-primary uppercase tracking-tight">SIRIUS JOBS</span>
       </a>
-      <div class="hidden md:flex space-x-8 items-center">
-        <a href="index.html" class="text-gray-600 hover:text-primary">Home</a>
-        <a href="jobs.html" class="text-gray-600 hover:text-primary">Jobs</a>
-        <a href="contact.html" class="text-gray-600 hover:text-primary">Contact</a>
-        <a href="login.html" class="bg-primary text-white py-2 px-4 rounded font-medium hover:bg-primary/90 transition-all">Login</a>
+      <div class="hidden md:flex items-center gap-6 text-sm font-bold text-gray-700">
+        <a href="index.html" class="hover:text-primary transition-colors">Home</a>
+        <a href="jobs.html" class="hover:text-primary transition-colors">Jobs</a>
+        <a href="contact.html" class="hover:text-primary transition-colors">Contact</a>
+        <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold py-2.5 px-5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+          Login
+        </a>
       </div>
-      <div class="md:hidden"><button id="menu-btn" class="text-gray-600"><i data-feather="menu"></i></button></div>
+      <button id="menu-btn" class="md:hidden text-gray-700">
+        <i data-feather="menu" class="w-6 h-6"></i>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 py-3 space-y-2 text-sm font-bold">
+      <a href="index.html" class="block py-2 hover:text-primary transition-colors">Home</a>
+      <a href="jobs.html" class="block py-2 hover:text-primary transition-colors">Jobs</a>
+      <a href="contact.html" class="block py-2 hover:text-primary transition-colors">Contact</a>
+      <a href="login.html" class="block py-2 hover:text-primary transition-colors">Login</a>
     </div>
   </nav>
 
   <!-- HERO -->
-  <section class="bg-primary text-white py-16 text-center">
-    <div class="container mx-auto px-4">
-      <h1 class="text-4xl font-bold mb-4">Terms of Service</h1>
-      <p class="text-gray-100">Last Updated: October 2025</p>
+  <section class="bg-gradient-to-br from-black via-primary to-blue-900 animated-gradient text-white py-20 px-4">
+    <div class="container mx-auto text-center max-w-4xl">
+      <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-5 py-2.5 mb-8">
+        <i data-feather="file-text" class="w-5 h-5"></i>
+        <span class="text-sm font-bold uppercase tracking-wide">Legal Agreement</span>
+      </div>
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">Terms of Service</h1>
+      <p class="text-xl text-white/90 font-medium">Last Updated: October 2025</p>
     </div>
   </section>
 
-  <!-- CONTENT -->
-  <section class="py-16 container mx-auto px-4 max-w-4xl space-y-8">
-    <p>Welcome to Sirius Jobs. By accessing or using our website and services, you agree to these Terms of Service. Please read them carefully before using the platform.</p>
+  <!-- MAIN CONTENT -->
+  <section class="container mx-auto px-4 py-16 max-w-7xl">
+    <div class="grid lg:grid-cols-[280px,1fr] gap-12">
+      <!-- TABLE OF CONTENTS (Sidebar) -->
+      <aside class="lg:sticky lg:top-24 self-start">
+        <div class="bg-gray-50 rounded-3xl border-2 border-gray-100 p-6">
+          <h3 class="text-lg font-black text-gray-900 mb-4">Table of Contents</h3>
+          <nav class="space-y-2 text-sm">
+            <a href="#section-1" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">1. Acceptance of Terms</a>
+            <a href="#section-2" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">2. Service Description</a>
+            <a href="#section-3" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">3. User Eligibility</a>
+            <a href="#section-4" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">4. Worker Responsibilities</a>
+            <a href="#section-5" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">5. Employer Responsibilities</a>
+            <a href="#section-6" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">6. Payments & Subscriptions</a>
+            <a href="#section-7" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">7. Verification and Disputes</a>
+            <a href="#section-8" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">8. Limitation of Liability</a>
+            <a href="#section-9" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">9. Data Protection</a>
+            <a href="#section-10" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">10. Termination</a>
+            <a href="#section-11" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">11. Governing Law</a>
+            <a href="#section-12" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">12. Changes to These Terms</a>
+            <a href="#section-13" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">13. Contact Us</a>
+          </nav>
+        </div>
+      </aside>
 
-    <h2 class="text-2xl font-bold text-primary">1. Acceptance of Terms</h2>
-    <p>By creating an account or using our site, you acknowledge that you have read, understood, and agree to these Terms and our Privacy Policy. If you do not agree, please do not use Sirius Jobs.</p>
+      <!-- CONTENT -->
+      <main class="space-y-12">
+        <div class="bg-white rounded-3xl border-2 border-gray-100 p-8 md:p-12 shadow-xl">
+          <p class="text-lg text-gray-700 leading-relaxed mb-8">Welcome to Sirius Jobs. By accessing or using our website and services, you agree to these Terms of Service. Please read them carefully before using the platform.</p>
 
-    <h2 class="text-2xl font-bold text-primary">2. Service Description</h2>
-    <p>Sirius Jobs is a digital marketplace connecting independent workers (“Workers”) with clients and employers (“Employers”) for short-term and long-term services. We do not employ workers directly and are not party to agreements between users.</p>
+          <div id="section-1" class="space-y-4 mb-12 scroll-mt-24">
+            <h2 class="text-3xl font-black text-gray-900">1. Acceptance of Terms</h2>
+            <p class="text-base text-gray-700 leading-relaxed">By creating an account or using our site, you acknowledge that you have read, understood, and agree to these Terms and our Privacy Policy. If you do not agree, please do not use Sirius Jobs.</p>
+          </div>
 
-    <h2 class="text-2xl font-bold text-primary">3. User Eligibility</h2>
-    <p>You must be at least 18 years old and provide accurate information during registration. Accounts are non-transferable and may be terminated for violating these terms.</p>
+          <div id="section-2" class="space-y-4 mb-12 scroll-mt-24">
+            <h2 class="text-3xl font-black text-gray-900">2. Service Description</h2>
+            <p class="text-base text-gray-700 leading-relaxed">Sirius Jobs is a digital marketplace connecting independent workers ("Workers") with clients and employers ("Employers") for short-term and long-term services. We do not employ workers directly and are not party to agreements between users.</p>
+          </div>
 
-    <h2 class="text-2xl font-bold text-primary">4. Worker Responsibilities</h2>
-    <ul class="list-disc pl-6 space-y-2">
-      <li>Provide truthful qualifications and identity information.</li>
-      <li>Complete verification as required by Sirius Jobs.</li>
-      <li>Deliver services professionally and on time.</li>
-      <li>Maintain a high standard of customer satisfaction.</li>
-    </ul>
+          <div id="section-3" class="space-y-4 mb-12 scroll-mt-24">
+            <h2 class="text-3xl font-black text-gray-900">3. User Eligibility</h2>
+            <p class="text-base text-gray-700 leading-relaxed">You must be at least 18 years old and provide accurate information during registration. Accounts are non-transferable and may be terminated for violating these terms.</p>
+          </div>
 
-    <h2 class="text-2xl font-bold text-primary">5. Employer Responsibilities</h2>
-    <ul class="list-disc pl-6 space-y-2">
-      <li>Provide clear job descriptions and fair payment terms.</li>
-      <li>Respect worker time and safety.</li>
-      <li>Pay agreed fees promptly through approved gateways.</li>
-    </ul>
+          <div id="section-4" class="space-y-4 mb-12 scroll-mt-24">
+            <h2 class="text-3xl font-black text-gray-900">4. Worker Responsibilities</h2>
+            <ul class="list-disc pl-6 space-y-3 text-base text-gray-700">
+              <li>Provide truthful qualifications and identity information.</li>
+              <li>Complete verification as required by Sirius Jobs.</li>
+              <li>Deliver services professionally and on time.</li>
+              <li>Maintain a high standard of customer satisfaction.</li>
+            </ul>
+          </div>
 
-    <h2 class="text-2xl font-bold text-primary">6. Payments & Subscriptions</h2>
-    <p>Workers pay ₦3,000 for initial registration and ₦1,000 monthly renewal. Employers receive five (5) free job posts and then ₦1,000 monthly subscription to continue posting or hiring. All payments are processed through secure payment providers such as Paystack or Flutterwave.</p>
+          <div id="section-5" class="space-y-4 mb-12 scroll-mt-24">
+            <h2 class="text-3xl font-black text-gray-900">5. Employer Responsibilities</h2>
+            <ul class="list-disc pl-6 space-y-3 text-base text-gray-700">
+              <li>Provide clear job descriptions and fair payment terms.</li>
+              <li>Respect worker time and safety.</li>
+              <li>Pay agreed fees promptly through approved gateways.</li>
+            </ul>
+          </div>
 
-    <h2 class="text-2xl font-bold text-primary">7. Verification and Disputes</h2>
-    <p>We may verify user identity using NIN, driver’s license, or passport data. Sirius Jobs is not liable for disputes between users but may assist in resolving them fairly.</p>
+          <div id="section-6" class="space-y-4 mb-12 scroll-mt-24">
+            <h2 class="text-3xl font-black text-gray-900">6. Payments & Subscriptions</h2>
+            <p class="text-base text-gray-700 leading-relaxed">Workers pay ₦3,000 for initial registration and ₦1,000 monthly renewal. Employers receive five (5) free job posts and then ₦1,000 monthly subscription to continue posting or hiring. All payments are processed through secure payment providers such as Paystack or Flutterwave.</p>
+          </div>
 
-    <h2 class="text-2xl font-bold text-primary">8. Limitation of Liability</h2>
-    <p>Sirius Jobs provides services “as is”. We are not liable for loss of earnings, service delays, or damages arising from user interactions on the platform.</p>
+          <div id="section-7" class="space-y-4 mb-12 scroll-mt-24">
+            <h2 class="text-3xl font-black text-gray-900">7. Verification and Disputes</h2>
+            <p class="text-base text-gray-700 leading-relaxed">We may verify user identity using NIN, driver's license, or passport data. Sirius Jobs is not liable for disputes between users but may assist in resolving them fairly.</p>
+          </div>
 
-    <h2 class="text-2xl font-bold text-primary">9. Data Protection</h2>
-    <p>All user information is handled in accordance with the Nigeria Data Protection Regulation (NDPR). See our <a href="privacypolicy.html" class="text-primary underline">Privacy Policy</a> for details.</p>
+          <div id="section-8" class="space-y-4 mb-12 scroll-mt-24">
+            <h2 class="text-3xl font-black text-gray-900">8. Limitation of Liability</h2>
+            <p class="text-base text-gray-700 leading-relaxed">Sirius Jobs provides services "as is". We are not liable for loss of earnings, service delays, or damages arising from user interactions on the platform.</p>
+          </div>
 
-    <h2 class="text-2xl font-bold text-primary">10. Termination</h2>
-    <p>We may suspend or terminate accounts that violate these terms without prior notice. Users may also close their accounts at any time.</p>
+          <div id="section-9" class="space-y-4 mb-12 scroll-mt-24">
+            <h2 class="text-3xl font-black text-gray-900">9. Data Protection</h2>
+            <p class="text-base text-gray-700 leading-relaxed">All user information is handled in accordance with the Nigeria Data Protection Regulation (NDPR). See our <a href="privacypolicy.html" class="text-primary font-bold underline hover:no-underline">Privacy Policy</a> for details.</p>
+          </div>
 
-    <h2 class="text-2xl font-bold text-primary">11. Governing Law</h2>
-    <p>These Terms are governed by the laws of the Federal Republic of Nigeria. Any disputes shall be subject to the exclusive
-    <h2 class="text-2xl font-bold text-primary">11. Governing Law</h2>
-    <p>These Terms are governed by the laws of the Federal Republic of Nigeria. Any disputes shall be subject to the exclusive jurisdiction of the courts in Port Harcourt, Rivers State, Nigeria.</p>
+          <div id="section-10" class="space-y-4 mb-12 scroll-mt-24">
+            <h2 class="text-3xl font-black text-gray-900">10. Termination</h2>
+            <p class="text-base text-gray-700 leading-relaxed">We may suspend or terminate accounts that violate these terms without prior notice. Users may also close their accounts at any time.</p>
+          </div>
 
-    <h2 class="text-2xl font-bold text-primary">12. Changes to These Terms</h2>
-    <p>Sirius Jobs may update these Terms of Service periodically. Updates will be posted on this page with the date of revision. Continued use of the platform constitutes acceptance of any modified terms.</p>
+          <div id="section-11" class="space-y-4 mb-12 scroll-mt-24">
+            <h2 class="text-3xl font-black text-gray-900">11. Governing Law</h2>
+            <p class="text-base text-gray-700 leading-relaxed">These Terms are governed by the laws of the Federal Republic of Nigeria. Any disputes shall be subject to the exclusive jurisdiction of the courts in Port Harcourt, Rivers State, Nigeria.</p>
+          </div>
 
-    <h2 class="text-2xl font-bold text-primary">13. Contact Us</h2>
-    <p>If you have questions about these Terms, please contact us at:</p>
-    <ul class="list-none mt-2 text-gray-700">
-      <li><strong>Email:</strong> siriusoddjobs@gmail.com</li>
-      <li><strong>Phone:</strong> 07044470559</li>
-      <li><strong>Address:</strong> Port Harcourt, Rivers State, Nigeria</li>
-    </ul>
+          <div id="section-12" class="space-y-4 mb-12 scroll-mt-24">
+            <h2 class="text-3xl font-black text-gray-900">12. Changes to These Terms</h2>
+            <p class="text-base text-gray-700 leading-relaxed">Sirius Jobs may update these Terms of Service periodically. Updates will be posted on this page with the date of revision. Continued use of the platform constitutes acceptance of any modified terms.</p>
+          </div>
+
+          <div id="section-13" class="space-y-4 scroll-mt-24">
+            <h2 class="text-3xl font-black text-gray-900">13. Contact Us</h2>
+            <p class="text-base text-gray-700 leading-relaxed">If you have questions about these Terms, please contact us at:</p>
+            <div class="bg-gray-50 border-2 border-gray-200 rounded-2xl p-6 mt-4 space-y-3">
+              <div class="flex items-center gap-3">
+                <i data-feather="mail" class="w-5 h-5 text-primary"></i>
+                <div>
+                  <p class="text-sm font-bold text-gray-500">Email</p>
+                  <p class="text-base font-bold text-gray-900">siriusoddjobs@gmail.com</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <i data-feather="phone" class="w-5 h-5 text-primary"></i>
+                <div>
+                  <p class="text-sm font-bold text-gray-500">Phone</p>
+                  <p class="text-base font-bold text-gray-900">0704 447 0559</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <i data-feather="map-pin" class="w-5 h-5 text-primary"></i>
+                <div>
+                  <p class="text-sm font-bold text-gray-500">Address</p>
+                  <p class="text-base font-bold text-gray-900">Port Harcourt, Rivers State, Nigeria</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADDITIONAL LINKS -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <a href="privacypolicy.html" class="bg-white border-2 border-gray-100 rounded-3xl p-8 hover:border-primary hover:shadow-xl transition-all group">
+            <div class="flex items-start gap-4">
+              <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
+                <i data-feather="shield" class="w-7 h-7 text-primary group-hover:text-white"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-black text-gray-900 mb-2">Privacy Policy</h3>
+                <p class="text-sm text-gray-600">Learn how we protect and handle your data</p>
+              </div>
+            </div>
+          </a>
+
+          <a href="verify.html" class="bg-white border-2 border-gray-100 rounded-3xl p-8 hover:border-primary hover:shadow-xl transition-all group">
+            <div class="flex items-start gap-4">
+              <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
+                <i data-feather="check-circle" class="w-7 h-7 text-primary group-hover:text-white"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-black text-gray-900 mb-2">Verify Credentials</h3>
+                <p class="text-sm text-gray-600">Check professional certifications and licenses</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </main>
+    </div>
   </section>
 
-  <!-- FOOTER identical to all other pages -->
-  <footer class="bg-gray-900 text-white py-12">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div>
-          <div class="flex items-center space-x-2 mb-4">
-            <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
-            <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
+  <!-- FOOTER -->
+  <footer class="bg-[#0f172a] text-gray-300 mt-16">
+    <div class="border-t border-white/10">
+      <div class="container mx-auto px-4 py-12 lg:py-14">
+        <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+          <div class="space-y-4">
+            <a href="index.html" class="inline-flex items-center gap-2">
+              <img src="assets/sirius-logo.svg" alt="Sirius Jobs logo" class="w-10 h-10">
+              <span class="text-lg font-black text-white uppercase tracking-tight">SIRIUS JOBS</span>
+            </a>
+            <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+            <div class="flex items-center gap-3 text-gray-400">
+              <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+              <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+              <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+              <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+            </div>
           </div>
-          <p class="text-gray-400 mb-4">Connecting Talent With Trust across Nigeria since 2022.</p>
-          <div class="flex space-x-4">
-            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="text-gray-400 hover:text-white"><i data-feather="facebook"></i></a>
-            <a href="https://twitter.com/SiriusOddJobs" class="text-gray-400 hover:text-white"><i data-feather="twitter"></i></a>
-            <a href="https://www.instagram.com/siriusjobss" class="text-gray-400 hover:text-white"><i data-feather="instagram"></i></a>
-            <a href="https://www.linkedin.com/company/siriusjobsng/" class="text-gray-400 hover:text-white"><i data-feather="linkedin"></i></a>
+          <div>
+            <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Company</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="about.html" class="hover:text-white transition">About</a></li>
+              <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+              <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+              <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Support</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+              <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+              <li><span>WhatsApp: 0704 447 0559</span></li>
+              <li><span>Email: support@siriusjobsng.com</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Office</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li>Port Harcourt, Rivers State</li>
+              <li>Nigeria</li>
+            </ul>
           </div>
         </div>
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-          <ul class="space-y-2">
-            <li><a href="index.html" class="text-gray-400 hover:text-white">Home</a></li>
-            <li><a href="about.html" class="text-gray-400 hover:text-white">About Us</a></li>
-            <li><a href="jobs.html" class="text-gray-400 hover:text-white">Jobs</a></li>
-            <li><a href="verify.html" class="text-gray-400 hover:text-white">Verify Worker</a></li>
-            <li><a href="contact.html" class="text-gray-400 hover:text-white">Contact</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Services</h4>
-          <ul class="space-y-2 text-gray-400">
-            <li>Artisans</li><li>Plumbers</li><li>Electricians</li><li>Cleaners</li>
-            <li><a href="services.html" class="text-gray-400 hover:text-white">More Services</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
-          <ul class="space-y-2 text-gray-400">
-            <li class="flex items-center space-x-2"><i data-feather="phone" class="w-4 h-4"></i><span>07044470559</span></li>
-            <li class="flex items-center space-x-2"><i data-feather="mail" class="w-4 h-4"></i><span>siriusoddjobs@gmail.com</span></li>
-            <li class="flex items-center space-x-2"><i data-feather="map-pin" class="w-4 h-4"></i><span>Port Harcourt, Nigeria</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
-        <div class="flex space-x-6">
-          <a href="privacypolicy.html" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
-          <a href="terms.html" class="text-gray-400 hover:text-white text-sm">Terms of Service</a>
+        <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+            <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+            <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+            <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+          </div>
         </div>
       </div>
     </div>
   </footer>
 
-  <script>feather.replace();</script>
+  <script>
+    feather.replace();
+
+    // Mobile menu toggle
+    document.getElementById('menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+
+    // Table of contents active state on scroll
+    const sections = document.querySelectorAll('[id^="section-"]');
+    const tocLinks = document.querySelectorAll('.toc-link');
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-100px 0px -80% 0px',
+      threshold: 0
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+          if (activeLink) {
+            activeLink.classList.add('active');
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    sections.forEach(section => observer.observe(section));
+  </script>
   <script src="assistant.js"></script>
 </body>
 </html>

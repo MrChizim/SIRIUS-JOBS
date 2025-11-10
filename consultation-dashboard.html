@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Dashboard – Sirius Jobs Consultations</title>
+    <meta name="description" content="Manage your consultation sessions">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0056b3',
+                        secondary: '#808080',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #0056b3;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .stat-card {
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 86, 179, 0.1);
+        }
+
+        .session-card {
+            transition: all 0.3s;
+        }
+
+        .session-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 86, 179, 0.1);
+        }
+
+        .filter-btn {
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #0056b3;
+            color: white;
+        }
+
+        .tab-btn {
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            border-color: #0056b3;
+            color: #0056b3;
+        }
+
+        .tab-content {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm transition-transform group-hover:scale-105" />
+                    <span class="sr-only">SiriusJobs home</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="consultation-dashboard.html" class="nav-link text-sm font-semibold text-primary transition-colors">Dashboard</a>
+                    <a href="consultations.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Browse Professionals</a>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <a href="consultation-profile-edit.html" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary hover:text-white transition-all text-sm">
+                        <i data-feather="edit-3" class="w-4 h-4"></i>
+                        Edit Profile
+                    </a>
+                    <button id="logout-btn" class="text-sm font-semibold text-gray-600 hover:text-primary transition-colors">
+                        <i data-feather="log-out" class="w-4 h-4 inline"></i>
+                        Logout
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden text-gray-600">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-12">
+        <div class="container mx-auto px-4 lg:px-8">
+            <!-- Header -->
+            <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h1 class="text-4xl font-black text-gray-900 mb-2">Consultation Dashboard</h1>
+                    <p class="text-gray-600">Manage your sessions and track your earnings</p>
+                </div>
+                <div class="flex gap-3">
+                    <a href="consultation-profile-edit.html" class="inline-flex items-center gap-2 px-5 py-3 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary hover:text-white transition-all text-sm">
+                        <i data-feather="edit-3" class="w-4 h-4"></i>
+                        Edit Profile
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div id="stats-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- Loading skeleton -->
+                <div class="stat-card bg-white rounded-2xl p-6 border border-gray-200 shadow-sm animate-pulse">
+                    <div class="h-4 bg-gray-200 rounded w-24 mb-2"></div>
+                    <div class="h-8 bg-gray-200 rounded w-16"></div>
+                </div>
+                <div class="stat-card bg-white rounded-2xl p-6 border border-gray-200 shadow-sm animate-pulse">
+                    <div class="h-4 bg-gray-200 rounded w-24 mb-2"></div>
+                    <div class="h-8 bg-gray-200 rounded w-16"></div>
+                </div>
+                <div class="stat-card bg-white rounded-2xl p-6 border border-gray-200 shadow-sm animate-pulse">
+                    <div class="h-4 bg-gray-200 rounded w-24 mb-2"></div>
+                    <div class="h-8 bg-gray-200 rounded w-16"></div>
+                </div>
+                <div class="stat-card bg-white rounded-2xl p-6 border border-gray-200 shadow-sm animate-pulse">
+                    <div class="h-4 bg-gray-200 rounded w-24 mb-2"></div>
+                    <div class="h-8 bg-gray-200 rounded w-16"></div>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="flex flex-wrap gap-4 mb-8 border-b border-gray-200">
+                <button class="tab-btn active px-6 py-4 font-bold text-sm border-b-2 border-primary text-primary" data-tab="sessions">
+                    Sessions
+                </button>
+                <button class="tab-btn px-6 py-4 font-bold text-sm border-b-2 border-transparent text-gray-600 hover:text-primary" data-tab="earnings">
+                    Earnings & Payouts
+                </button>
+            </div>
+
+            <!-- Sessions Tab Content -->
+            <div id="sessions-tab" class="tab-content">
+                <!-- Filters -->
+                <div class="flex flex-wrap gap-4 mb-8">
+                    <button class="filter-btn active px-6 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300 text-sm" data-status="all">
+                        All Sessions
+                    </button>
+                    <button class="filter-btn px-6 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300 text-sm" data-status="active">
+                        Active
+                    </button>
+                    <button class="filter-btn px-6 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300 text-sm" data-status="ended">
+                        Completed
+                    </button>
+                    <button class="filter-btn px-6 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300 text-sm" data-status="expired">
+                        Expired
+                    </button>
+                </div>
+
+            <!-- Sessions List -->
+            <div id="sessions-container">
+                <!-- Loading skeleton -->
+                <div class="space-y-4">
+                    <div class="session-card bg-white rounded-2xl p-6 border border-gray-200 shadow-sm animate-pulse">
+                        <div class="h-4 bg-gray-200 rounded w-32 mb-4"></div>
+                        <div class="h-6 bg-gray-200 rounded w-48"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden text-center py-20">
+                <i data-feather="inbox" class="w-16 h-16 mx-auto text-gray-400 mb-4"></i>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">No Sessions Yet</h3>
+                <p class="text-gray-600 mb-6">You haven't received any consultation requests yet.</p>
+                <a href="consultations.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-6 py-3 rounded-full hover:bg-blue-700 transition-all">
+                    <i data-feather="eye" class="w-4 h-4"></i>
+                    View Your Public Profile
+                </a>
+            </div>
+            </div>
+            <!-- End Sessions Tab -->
+
+            <!-- Earnings & Payouts Tab Content -->
+            <div id="earnings-tab" class="tab-content hidden">
+                <!-- Earnings Overview Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-gradient-to-br from-primary to-blue-700 text-white rounded-2xl p-6 shadow-lg">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                                <i data-feather="dollar-sign" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-sm font-semibold opacity-90">Total Earnings</span>
+                        </div>
+                        <div class="text-3xl font-black" id="total-earnings">₦0.00</div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
+                                <i data-feather="check-circle" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 font-semibold">Available to Withdraw</span>
+                        </div>
+                        <div class="text-3xl font-black text-gray-900" id="available-earnings">₦0.00</div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 bg-yellow-50 rounded-xl flex items-center justify-center">
+                                <i data-feather="clock" class="w-5 h-5 text-yellow-600"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 font-semibold">Pending Earnings</span>
+                        </div>
+                        <div class="text-3xl font-black text-gray-900" id="pending-earnings">₦0.00</div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
+                                <i data-feather="list" class="w-5 h-5 text-primary"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 font-semibold">Withdrawals</span>
+                        </div>
+                        <div class="text-3xl font-black text-gray-900" id="withdrawal-count">0</div>
+                    </div>
+                </div>
+
+                <!-- Bank Account Setup Section -->
+                <div class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm mb-8">
+                    <h2 class="text-2xl font-black text-gray-900 mb-6 flex items-center gap-2">
+                        <i data-feather="credit-card" class="w-6 h-6 text-primary"></i>
+                        Bank Account Setup
+                    </h2>
+                    <form id="bank-account-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="bank-name" class="block text-sm font-bold text-gray-900 mb-2">Bank Name</label>
+                                <select id="bank-name" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+                                    <option value="">Select Bank</option>
+                                    <option value="044">Access Bank</option>
+                                    <option value="063">Access Bank (Diamond)</option>
+                                    <option value="050">EcoBank</option>
+                                    <option value="070">Fidelity Bank</option>
+                                    <option value="011">First Bank</option>
+                                    <option value="214">First City Monument Bank</option>
+                                    <option value="058">Guaranty Trust Bank</option>
+                                    <option value="030">Heritage Bank</option>
+                                    <option value="301">Jaiz Bank</option>
+                                    <option value="082">Keystone Bank</option>
+                                    <option value="526">Parallex Bank</option>
+                                    <option value="076">Polaris Bank</option>
+                                    <option value="101">Providus Bank</option>
+                                    <option value="221">Stanbic IBTC Bank</option>
+                                    <option value="068">Standard Chartered Bank</option>
+                                    <option value="232">Sterling Bank</option>
+                                    <option value="100">Suntrust Bank</option>
+                                    <option value="032">Union Bank</option>
+                                    <option value="033">United Bank for Africa</option>
+                                    <option value="215">Unity Bank</option>
+                                    <option value="035">Wema Bank</option>
+                                    <option value="057">Zenith Bank</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="account-number" class="block text-sm font-bold text-gray-900 mb-2">Account Number</label>
+                                <input type="text" id="account-number" maxlength="10" pattern="[0-9]{10}" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="0123456789" required>
+                            </div>
+                        </div>
+                        <div id="account-name-display" class="hidden p-4 bg-green-50 rounded-xl border-2 border-green-200">
+                            <span class="text-sm font-bold text-gray-900">Account Name:</span>
+                            <span id="account-name" class="text-sm text-gray-700 ml-2"></span>
+                        </div>
+                        <div class="flex flex-wrap gap-4">
+                            <button type="button" id="verify-account-btn" class="inline-flex items-center gap-2 bg-gray-200 text-gray-900 font-semibold px-6 py-3 rounded-xl hover:bg-gray-300 transition-all">
+                                <i data-feather="check" class="w-4 h-4"></i>
+                                Verify Account
+                            </button>
+                            <button type="submit" id="save-bank-btn" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-6 py-3 rounded-xl hover:bg-blue-700 transition-all" disabled>
+                                <i data-feather="save" class="w-4 h-4"></i>
+                                Save Bank Details
+                            </button>
+                        </div>
+                        <div id="bank-message" class="hidden text-sm"></div>
+                    </form>
+                </div>
+
+                <!-- Withdrawal Request Section -->
+                <div class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm mb-8">
+                    <h2 class="text-2xl font-black text-gray-900 mb-6 flex items-center gap-2">
+                        <i data-feather="arrow-down-circle" class="w-6 h-6 text-primary"></i>
+                        Request Withdrawal
+                    </h2>
+                    <form id="withdrawal-form" class="space-y-6">
+                        <div>
+                            <label for="withdrawal-amount" class="block text-sm font-bold text-gray-900 mb-2">
+                                Amount to Withdraw (Minimum ₦5,000)
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">₦</span>
+                                <input type="number" id="withdrawal-amount" min="5000" step="100" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 pl-8 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="5,000.00" required>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-blue-50 rounded-xl border-2 border-blue-200">
+                            <p class="text-sm text-gray-700 flex items-start gap-2">
+                                <i data-feather="info" class="w-4 h-4 text-primary mt-0.5 flex-shrink-0"></i>
+                                <span>Withdrawals are processed within 1-3 business days. Funds will be transferred to your saved bank account.</span>
+                            </p>
+                        </div>
+                        <button type="submit" id="withdrawal-submit-btn" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-6 py-3 rounded-xl hover:bg-blue-700 transition-all" disabled>
+                            <i data-feather="send" class="w-4 h-4"></i>
+                            Request Withdrawal
+                        </button>
+                        <div id="withdrawal-message" class="hidden text-sm"></div>
+                    </form>
+                </div>
+
+                <!-- Withdrawal History Table -->
+                <div class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                    <h2 class="text-2xl font-black text-gray-900 mb-6 flex items-center gap-2">
+                        <i data-feather="clock" class="w-6 h-6 text-primary"></i>
+                        Withdrawal History
+                    </h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200">
+                                    <th class="text-left py-3 px-4 text-sm font-bold text-gray-700">Date</th>
+                                    <th class="text-left py-3 px-4 text-sm font-bold text-gray-700">Amount</th>
+                                    <th class="text-left py-3 px-4 text-sm font-bold text-gray-700">Status</th>
+                                    <th class="text-left py-3 px-4 text-sm font-bold text-gray-700">Reference</th>
+                                </tr>
+                            </thead>
+                            <tbody id="withdrawal-history-body">
+                                <tr>
+                                    <td colspan="4" class="text-center py-12 text-gray-500">
+                                        <i data-feather="inbox" class="w-12 h-12 mx-auto mb-3 text-gray-400"></i>
+                                        <p class="font-semibold">No withdrawal history yet</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- End Earnings Tab -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#0f172a] text-gray-300">
+        <div class="border-t border-white/10">
+            <div class="container mx-auto px-4 py-12 lg:py-14">
+                <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+                    <div class="space-y-4">
+                        <a href="index.html" class="inline-flex items-center gap-2">
+
+                          <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm" />
+
+                          <span class="sr-only">SiriusJobs home</span>
+
+                        </a>
+                        <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+                        <div class="flex items-center gap-3 text-gray-400">
+                            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+                            <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+                            <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+                            <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="about.html" class="hover:text-white transition">About</a></li>
+                            <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+                            <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+                            <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+                            <li><a href="marketplace.html" class="hover:text-white transition">Marketplace</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+                            <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+                            <li><span>WhatsApp: 0704 447 0559</span></li>
+                            <li><span>Email: support@siriusjobsng.com</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li>Port Harcourt, Rivers State</li>
+                            <li>Nigeria</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+                        <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+                        <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+                        <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = 'http://localhost:4000/api';
+        const SOCKET_URL = 'http://localhost:4000';
+
+        let currentFilter = 'all';
+        let socket = null;
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            sessionStorage.removeItem('siriusProAuth');
+            window.location.href = 'login.html';
+        });
+
+        // Filter buttons
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.status;
+                loadSessions();
+            });
+        });
+
+        // Load dashboard data
+        async function loadDashboard() {
+            // Get professional session
+            const authData = sessionStorage.getItem('siriusProAuth');
+            if (!authData) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            let token;
+            try {
+                const session = JSON.parse(authData);
+                token = session.token;
+                if (!token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+            } catch (e) {
+                console.error('Failed to parse session:', e);
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const url = currentFilter === 'all'
+                    ? `${API_URL}/consultation/sessions/dashboard/professional`
+                    : `${API_URL}/consultation/sessions/dashboard/professional?status=${currentFilter}`;
+
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        // Professional profile not found
+                        if (confirm('You need to complete professional registration first. Register now?')) {
+                            window.location.href = 'consultation-pro-register.html';
+                        }
+                        return;
+                    }
+                    throw new Error('Failed to load dashboard');
+                }
+
+                const result = await response.json();
+                renderStats(result.data.statistics);
+                renderSessions(result.data.sessions);
+
+                // Connect to Socket.io for real-time updates
+                if (!socket) {
+                    connectSocket(token);
+                }
+
+            } catch (error) {
+                console.error('Dashboard error:', error);
+                alert('Failed to load dashboard');
+            }
+        }
+
+        // Render stats
+        function renderStats(stats) {
+            const statsGrid = document.getElementById('stats-grid');
+            statsGrid.innerHTML = `
+                <div class="stat-card bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
+                            <i data-feather="briefcase" class="w-5 h-5 text-primary"></i>
+                        </div>
+                        <span class="text-sm text-gray-600 font-semibold">Total Sessions</span>
+                    </div>
+                    <div class="text-3xl font-black text-gray-900">${stats.totalSessions}</div>
+                </div>
+                <div class="stat-card bg-gradient-to-br from-primary to-blue-700 text-white rounded-2xl p-6 shadow-lg">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                            <i data-feather="dollar-sign" class="w-5 h-5"></i>
+                        </div>
+                        <span class="text-sm font-semibold opacity-90">Total Earnings</span>
+                    </div>
+                    <div class="text-3xl font-black">₦${formatMoney(stats.totalEarnings / 100)}</div>
+                </div>
+                <div class="stat-card bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 bg-yellow-50 rounded-xl flex items-center justify-center">
+                            <i data-feather="star" class="w-5 h-5 text-yellow-500"></i>
+                        </div>
+                        <span class="text-sm text-gray-600 font-semibold">Average Rating</span>
+                    </div>
+                    <div class="text-3xl font-black text-gray-900">${stats.averageRating.toFixed(1)}</div>
+                </div>
+                <div class="stat-card bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
+                            <i data-feather="message-circle" class="w-5 h-5 text-green-600"></i>
+                        </div>
+                        <span class="text-sm text-gray-600 font-semibold">Total Reviews</span>
+                    </div>
+                    <div class="text-3xl font-black text-gray-900">${stats.totalReviews}</div>
+                </div>
+            `;
+            feather.replace();
+        }
+
+        // Render sessions
+        function renderSessions(sessions) {
+            const container = document.getElementById('sessions-container');
+            const emptyState = document.getElementById('empty-state');
+
+            if (sessions.length === 0) {
+                container.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                feather.replace();
+                return;
+            }
+
+            container.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            container.innerHTML = `
+                <div class="space-y-4">
+                    ${sessions.map(session => `
+                        <div class="session-card bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                <!-- Session Info -->
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <span class="px-3 py-1 text-xs font-bold rounded-full ${getStatusColor(session.status)}">
+                                            ${session.status.toUpperCase()}
+                                        </span>
+                                        ${session.hasUnreadMessages ? '<span class="px-2 py-1 bg-red-100 text-red-600 text-xs font-bold rounded-full">New Messages</span>' : ''}
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-1">
+                                        Consultation with ${session.clientAnonymousId}
+                                    </h3>
+                                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                                        <span>
+                                            <i data-feather="calendar" class="w-4 h-4 inline"></i>
+                                            Started ${formatDate(session.startedAt)}
+                                        </span>
+                                        ${session.status === 'active' ? `
+                                            <span class="text-primary font-semibold">
+                                                <i data-feather="clock" class="w-4 h-4 inline"></i>
+                                                Ends ${formatDate(session.endsAt)}
+                                            </span>
+                                        ` : ''}
+                                        <span>
+                                            <i data-feather="dollar-sign" class="w-4 h-4 inline"></i>
+                                            Earning: ₦${formatMoney(session.professionalEarning / 100)}
+                                        </span>
+                                    </div>
+                                    ${session.review ? `
+                                        <div class="mt-3 p-3 bg-yellow-50 rounded-lg">
+                                            <div class="flex items-center gap-1 text-yellow-500 mb-1">
+                                                ${renderStars(session.review.rating)}
+                                                <span class="text-sm font-bold text-gray-700 ml-2">${session.review.rating}.0</span>
+                                            </div>
+                                            <p class="text-sm text-gray-700">"${session.review.reviewText}"</p>
+                                        </div>
+                                    ` : ''}
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="flex items-center gap-3">
+                                    ${session.status === 'active' ? `
+                                        <a href="consultation-session.html?sessionId=${session.id}" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-6 py-3 rounded-xl hover:bg-blue-700 transition-all">
+                                            <i data-feather="message-circle" class="w-4 h-4"></i>
+                                            Open Session
+                                        </a>
+                                    ` : `
+                                        <button disabled class="inline-flex items-center gap-2 bg-gray-200 text-gray-500 font-semibold px-6 py-3 rounded-xl cursor-not-allowed">
+                                            <i data-feather="check-circle" class="w-4 h-4"></i>
+                                            ${session.status === 'ended' ? 'Completed' : 'Expired'}
+                                        </button>
+                                    `}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            feather.replace();
+        }
+
+        // Load sessions
+        function loadSessions() {
+            loadDashboard();
+        }
+
+        // Connect to Socket.io
+        function connectSocket(token) {
+            socket = io(SOCKET_URL, {
+                auth: {
+                    token: token
+                }
+            });
+
+            socket.on('connect', () => {
+                console.log('Connected to Socket.io');
+            });
+
+            socket.on('consultation:new-session', () => {
+                loadSessions();
+            });
+
+            socket.on('consultation:message', () => {
+                loadSessions();
+            });
+        }
+
+        // Utility functions
+        function getStatusColor(status) {
+            const colors = {
+                active: 'bg-green-100 text-green-700',
+                ended: 'bg-gray-100 text-gray-700',
+                expired: 'bg-red-100 text-red-700',
+                pending: 'bg-yellow-100 text-yellow-700'
+            };
+            return colors[status] || 'bg-gray-100 text-gray-700';
+        }
+
+        function formatMoney(amount) {
+            return new Intl.NumberFormat('en-NG').format(amount);
+        }
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        }
+
+        function renderStars(rating) {
+            let stars = '';
+            for (let i = 0; i < rating; i++) {
+                stars += '★';
+            }
+            return stars;
+        }
+
+        // Tab switching
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.dataset.tab;
+
+                // Update tab buttons
+                tabButtons.forEach(b => {
+                    b.classList.remove('active', 'border-primary', 'text-primary');
+                    b.classList.add('border-transparent', 'text-gray-600');
+                });
+                btn.classList.add('active', 'border-primary', 'text-primary');
+                btn.classList.remove('border-transparent', 'text-gray-600');
+
+                // Update tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                document.getElementById(`${targetTab}-tab`).classList.remove('hidden');
+
+                // Load data for earnings tab
+                if (targetTab === 'earnings') {
+                    loadEarningsData();
+                }
+
+                feather.replace();
+            });
+        });
+
+        // Load earnings data
+        let earningsData = null;
+        async function loadEarningsData() {
+            const authData = sessionStorage.getItem('siriusProAuth');
+            if (!authData) return;
+
+            try {
+                const session = JSON.parse(authData);
+                const token = session.token;
+
+                // For now, use the dashboard data we already have
+                // In production, you'd make a separate API call for earnings/payouts
+                const stats = earningsData || { totalEarnings: 0 };
+
+                // Calculate earnings (mock data for now)
+                const totalEarnings = stats.totalEarnings || 0;
+                const pendingEarnings = 0; // From active sessions
+                const availableEarnings = totalEarnings - pendingEarnings;
+
+                document.getElementById('total-earnings').textContent = `₦${formatMoney(totalEarnings / 100)}`;
+                document.getElementById('available-earnings').textContent = `₦${formatMoney(availableEarnings / 100)}`;
+                document.getElementById('pending-earnings').textContent = `₦${formatMoney(pendingEarnings / 100)}`;
+                document.getElementById('withdrawal-count').textContent = '0';
+
+                feather.replace();
+            } catch (error) {
+                console.error('Failed to load earnings:', error);
+            }
+        }
+
+        // Store earnings data when dashboard loads
+        async function loadDashboardWithEarnings() {
+            const authData = sessionStorage.getItem('siriusProAuth');
+            if (!authData) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            let token;
+            try {
+                const session = JSON.parse(authData);
+                token = session.token;
+                if (!token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+            } catch (e) {
+                console.error('Failed to parse session:', e);
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const url = currentFilter === 'all'
+                    ? `${API_URL}/consultation/sessions/dashboard/professional`
+                    : `${API_URL}/consultation/sessions/dashboard/professional?status=${currentFilter}`;
+
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        if (confirm('You need to complete professional registration first. Register now?')) {
+                            window.location.href = 'consultation-pro-register.html';
+                        }
+                        return;
+                    }
+                    throw new Error('Failed to load dashboard');
+                }
+
+                const result = await response.json();
+                earningsData = result.data.statistics;
+                renderStats(result.data.statistics);
+                renderSessions(result.data.sessions);
+
+                if (!socket) {
+                    connectSocket(token);
+                }
+
+            } catch (error) {
+                console.error('Dashboard error:', error);
+                alert('Failed to load dashboard');
+            }
+        }
+
+        // Bank account verification
+        document.getElementById('verify-account-btn').addEventListener('click', async () => {
+            const bankCode = document.getElementById('bank-name').value;
+            const accountNumber = document.getElementById('account-number').value;
+
+            if (!bankCode || !accountNumber) {
+                showBankMessage('Please select a bank and enter account number', 'error');
+                return;
+            }
+
+            if (accountNumber.length !== 10) {
+                showBankMessage('Account number must be 10 digits', 'error');
+                return;
+            }
+
+            const verifyBtn = document.getElementById('verify-account-btn');
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<i data-feather="loader" class="w-4 h-4 animate-spin"></i> Verifying...';
+            feather.replace();
+
+            // Mock verification - in production, call Paystack API
+            setTimeout(() => {
+                const accountName = 'John Doe'; // Mock name
+                document.getElementById('account-name').textContent = accountName;
+                document.getElementById('account-name-display').classList.remove('hidden');
+                document.getElementById('save-bank-btn').disabled = false;
+                showBankMessage('Account verified successfully!', 'success');
+
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = '<i data-feather="check" class="w-4 h-4"></i> Verify Account';
+                feather.replace();
+            }, 1500);
+        });
+
+        // Save bank details
+        document.getElementById('bank-account-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const saveBtn = document.getElementById('save-bank-btn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i data-feather="loader" class="w-4 h-4 animate-spin"></i> Saving...';
+            feather.replace();
+
+            // Mock save - in production, save to backend
+            setTimeout(() => {
+                showBankMessage('Bank details saved successfully!', 'success');
+                document.getElementById('withdrawal-submit-btn').disabled = false;
+
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i data-feather="save" class="w-4 h-4"></i> Save Bank Details';
+                feather.replace();
+            }, 1000);
+        });
+
+        // Withdrawal request
+        document.getElementById('withdrawal-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const amount = parseInt(document.getElementById('withdrawal-amount').value);
+
+            if (amount < 5000) {
+                showWithdrawalMessage('Minimum withdrawal amount is ₦5,000', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('withdrawal-submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i data-feather="loader" class="w-4 h-4 animate-spin"></i> Processing...';
+            feather.replace();
+
+            // Mock withdrawal request - in production, call backend API
+            setTimeout(() => {
+                showWithdrawalMessage('Withdrawal request submitted successfully! Processing time: 1-3 business days.', 'success');
+                document.getElementById('withdrawal-form').reset();
+
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i data-feather="send" class="w-4 h-4"></i> Request Withdrawal';
+                feather.replace();
+
+                // Reload earnings data
+                loadEarningsData();
+            }, 1500);
+        });
+
+        // Helper functions for messages
+        function showBankMessage(message, type) {
+            const msgDiv = document.getElementById('bank-message');
+            msgDiv.textContent = message;
+            msgDiv.className = type === 'success'
+                ? 'text-sm text-green-600 font-semibold'
+                : 'text-sm text-red-600 font-semibold';
+            msgDiv.classList.remove('hidden');
+
+            setTimeout(() => {
+                msgDiv.classList.add('hidden');
+            }, 5000);
+        }
+
+        function showWithdrawalMessage(message, type) {
+            const msgDiv = document.getElementById('withdrawal-message');
+            msgDiv.textContent = message;
+            msgDiv.className = type === 'success'
+                ? 'text-sm text-green-600 font-semibold'
+                : 'text-sm text-red-600 font-semibold';
+            msgDiv.classList.remove('hidden');
+
+            setTimeout(() => {
+                msgDiv.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Initialize
+        feather.replace();
+        // Replace original loadDashboard call with enhanced version
+        loadDashboardWithEarnings();
+    </script>
+    <script src="assistant.js"></script>
+</body>
+</html>

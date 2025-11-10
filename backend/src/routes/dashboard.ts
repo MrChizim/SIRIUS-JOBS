@@ -179,7 +179,7 @@ router.get('/employer', requireAuth(['EMPLOYER']), async (req: AuthenticatedRequ
   ]);
 
   const jobsPostedThisMonth = jobs.filter(job => job.createdAt >= startOfMonth).length;
-  const freePostAllowance = 1;
+  const freePostAllowance = 0;
   const freeHireAllowance = 1;
 
   const jobsResponse = jobs.map(job => {
@@ -213,6 +213,9 @@ router.get('/employer', requireAuth(['EMPLOYER']), async (req: AuthenticatedRequ
       location: application.job.city ?? application.job.location ?? null,
       status: application.status,
       appliedAt: application.createdAt.toISOString(),
+      coverLetter: application.coverLetter ?? null,
+      expectedPay: application.expectedPay ?? null,
+      attachments: Array.isArray(application.attachments) ? application.attachments : [],
     };
   });
 
@@ -221,13 +224,12 @@ router.get('/employer', requireAuth(['EMPLOYER']), async (req: AuthenticatedRequ
 
   const freePostsLeft = Math.max(freePostAllowance - jobsPostedThisMonth, 0);
   const freeHiresLeft = Math.max(freeHireAllowance - hiresThisMonth, 0);
+  const personalName = `${employer.firstName} ${employer.lastName}`.trim();
+  const fallbackEmployerName = personalName.length > 0 ? personalName : null;
 
   res.json({
     profile: {
-      name:
-        employer.employerProfile?.companyName ??
-        `${employer.firstName} ${employer.lastName}`.trim() ||
-        null,
+      name: employer.employerProfile?.companyName ?? fallbackEmployerName,
       location: null,
       industry: employer.employerProfile?.industry ?? null,
       logoUrl: null,

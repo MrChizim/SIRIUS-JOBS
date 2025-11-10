@@ -11,192 +11,269 @@
     tailwind.config = { theme: { extend: { colors: { primary:'#0056b3', secondary:'#808080' } } } }
   </script>
   <script src="https://unpkg.com/feather-icons"></script>
+  <script src="error-handler.js"></script>
+  <script src="loading-utils.js"></script>
   <script src="api.js"></script>
   <script src="session-utils.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
     body { font-family: 'Inter', sans-serif; }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .animated-gradient {
+      background-size: 200% 200%;
+      animation: gradient-shift 15s ease infinite;
+    }
+
+    .stat-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 86, 179, 0.15);
+    }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
-  <!-- NAV -->
-  <nav class="bg-white shadow-md sticky top-0 z-50">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <a href="index.html" class="flex items-center space-x-3">
-        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
-        <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
-      </a>
-      <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
-        <a href="index.html" class="text-primary font-semibold">Home</a>
-        <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
-        <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
-        <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
-        <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
-        <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
-        <button id="workerLogout" class="text-gray-600 hover:text-primary transition-all">Logout</button>
-      </div>
-      <div class="md:hidden">
-        <button id="menu-btn" class="text-gray-600 focus:outline-none"><i data-feather="menu"></i></button>
-      </div>
-    </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
-      <a href="index.html" class="block py-2 text-primary font-semibold transition-all">Home</a>
-      <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
-      <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
-      <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
-      <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
-      <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
-      <button id="workerLogoutMobile" class="block w-full text-left py-2 text-gray-600 hover:text-primary transition-all">Logout</button>
-    </div>
-  </nav>
+  <!-- Modern Fixed Navigation -->
+  <nav class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-3 group">
+          <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS" class="w-9 h-9 transition-transform group-hover:scale-110">
+          <span class="text-xl font-black text-gray-900 tracking-tight uppercase">SIRIUS JOBS</span>
+        </a>
 
-  <!-- HERO -->
-  <header class="bg-primary text-white py-12 md:py-16">
-    <div class="container mx-auto px-4 text-center">
-      <h1 class="text-3xl md:text-4xl font-bold mb-2">Worker Dashboard</h1>
-      <p class="text-lg text-gray-100">Track your applications, gigs, subscription and profile</p>
-    </div>
-  </header>
-
-  <section id="workerRoleSwitch" class="mt-6">
-    <div class="container mx-auto px-4 mt-6">
-      <div class="bg-white shadow-lg border border-primary/10 rounded-2xl px-6 py-5 md:py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div class="flex items-start gap-3">
-          <div class="rounded-full bg-primary/10 p-2.5">
-            <i data-feather="repeat" class="w-5 h-5 text-primary"></i>
-          </div>
-          <div>
-            <p id="workerSwitchTag" class="text-sm font-semibold text-primary uppercase tracking-wide">Hire Someone</p>
-            <h2 id="workerSwitchTitle" class="text-lg font-semibold text-gray-900">Need an extra pair of hands?</h2>
-            <p id="workerSwitchCopy" class="text-sm text-gray-600">Switch to your employer tools to post a job or track applicants without signing out.</p>
-          </div>
+        <div class="hidden lg:flex items-center gap-8">
+          <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Home</a>
+          <a href="services.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Services</a>
+          <a href="jobs.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Jobs</a>
+          <a href="consultations.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Consultations</a>
+          <a href="marketplace.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Marketplace</a>
+          <a href="findworker.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Find Workers</a>
+          <a href="faq.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">FAQs</a>
+          <button id="workerLogout" class="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary transition">
+            <i data-feather="log-out" class="w-4 h-4"></i>
+            Logout
+          </button>
         </div>
-        <button id="switchToEmployerBtn" type="button" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold px-5 py-2.5 rounded-xl shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40 transition">
-          <i id="workerSwitchIcon" data-feather="briefcase" class="w-4 h-4"></i>
-          <span id="workerSwitchBtnLabel">Go to Hire Mode</span>
+
+        <button id="menu-btn" class="lg:hidden p-2 text-gray-600 hover:text-primary transition">
+          <i data-feather="menu" class="w-6 h-6"></i>
         </button>
       </div>
     </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-md">
+      <div class="container mx-auto px-4 py-4 space-y-1">
+        <a href="index.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Home</a>
+        <a href="services.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Services</a>
+        <a href="jobs.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Jobs</a>
+        <a href="consultations.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Consultations</a>
+        <a href="marketplace.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Marketplace</a>
+        <a href="findworker.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Find Workers</a>
+        <a href="faq.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">FAQs</a>
+        <button id="workerLogoutMobile" class="flex items-center gap-2 w-full px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">
+          <i data-feather="log-out" class="w-4 h-4"></i>
+          Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="pt-32 pb-16 bg-gradient-to-br from-black via-primary to-blue-900 text-white animated-gradient relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-4xl">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 mb-6">
+          <i data-feather="briefcase" class="w-4 h-4"></i>
+          <span class="text-sm font-semibold">Your Dashboard</span>
+        </div>
+
+        <h1 class="text-5xl md:text-6xl font-black mb-4 leading-tight">Worker Dashboard</h1>
+        <p class="text-xl text-gray-100 font-light leading-relaxed">Track your applications, gigs, subscription and profile</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Role Switch Section -->
+  <section id="workerRoleSwitch" class="container mx-auto px-4 -mt-8 relative z-20">
+    <div class="bg-white shadow-xl border border-gray-100 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+          <i data-feather="repeat" class="w-6 h-6 text-primary"></i>
+        </div>
+        <div>
+          <p id="workerSwitchTag" class="text-xs font-bold text-primary uppercase tracking-wide mb-1">Hire Someone</p>
+          <h2 id="workerSwitchTitle" class="text-xl font-black text-gray-900 mb-1">Need an extra pair of hands?</h2>
+          <p id="workerSwitchCopy" class="text-sm text-gray-600">Switch to your employer tools to post a job or track applicants without signing out.</p>
+        </div>
+      </div>
+      <button id="switchToEmployerBtn" type="button" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all whitespace-nowrap">
+        <i id="workerSwitchIcon" data-feather="briefcase" class="w-5 h-5"></i>
+        <span id="workerSwitchBtnLabel">Go to Hire Mode</span>
+      </button>
+    </div>
   </section>
 
-  <!-- MAIN -->
-  <main class="container mx-auto px-4 py-10">
-    <!-- PROFILE COMPLETION -->
-    <section class="bg-white rounded-lg shadow p-6 mb-8">
-      <div class="flex items-start justify-between gap-6 flex-col md:flex-row">
-        <div class="flex-1">
-          <h2 class="text-lg font-semibold mb-3">Profile Completion</h2>
-          <div class="w-full bg-gray-200 h-3 rounded overflow-hidden">
-            <div id="profileBar" class="h-3 bg-primary" style="width:0%"></div>
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-16">
+    <!-- Profile Completion -->
+    <section class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 mb-8">
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <h2 class="text-2xl font-black text-gray-900 mb-4">Profile Completion</h2>
+          <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden mb-3">
+            <div id="profileBar" class="h-4 bg-gradient-to-r from-primary to-blue-600 transition-all duration-500" style="width:0%"></div>
           </div>
-          <p id="profilePct" class="text-xs text-gray-600 mt-2">0% complete</p>
+          <p id="profilePct" class="text-sm text-gray-600 font-medium">0% complete</p>
         </div>
-        <div class="md:w-1/2 w-full">
-          <h3 class="font-medium mb-2">Checklist</h3>
-          <ul id="profileChecklist" class="text-sm text-gray-700 space-y-1"></ul>
+        <div>
+          <h3 class="text-lg font-bold text-gray-900 mb-3">Checklist</h3>
+          <ul id="profileChecklist" class="text-sm text-gray-700 space-y-2"></ul>
         </div>
       </div>
     </section>
 
-    <!-- STATS -->
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <div class="bg-white rounded-lg shadow p-6 text-center">
-        <p class="text-sm text-gray-500">Jobs Applied</p>
-        <h3 class="text-2xl font-bold text-primary">56</h3>
+    <!-- Stats Grid -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <div class="stat-card bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+        <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i data-feather="file-text" class="text-primary w-7 h-7"></i>
+        </div>
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Jobs Applied</p>
+        <h3 class="text-4xl font-black text-primary">56</h3>
       </div>
-      <div class="bg-white rounded-lg shadow p-6 text-center">
-        <p class="text-sm text-gray-500">Jobs Won</p>
-        <h3 class="text-2xl font-bold text-primary">14</h3>
+
+      <div class="stat-card bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+        <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i data-feather="check-circle" class="text-green-600 w-7 h-7"></i>
+        </div>
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Jobs Won</p>
+        <h3 class="text-4xl font-black text-green-600">14</h3>
       </div>
-      <div class="bg-white rounded-lg shadow p-6 text-center">
-        <p class="text-sm text-gray-500">Earnings (NGN)</p>
-        <h3 class="text-2xl font-bold text-primary">₦192,000</h3>
+
+      <div class="stat-card bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+        <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i data-feather="dollar-sign" class="text-blue-600 w-7 h-7"></i>
+        </div>
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Earnings (NGN)</p>
+        <h3 class="text-4xl font-black text-blue-600">₦192k</h3>
       </div>
-      <div class="bg-white rounded-lg shadow p-6 text-center">
-        <p class="text-sm text-gray-500">Verification</p>
-        <h3 class="text-base font-semibold text-green-600 flex items-center justify-center gap-2"><i data-feather="shield"></i> Verified</h3>
+
+      <div class="stat-card bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+        <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i data-feather="shield" class="text-green-600 w-7 h-7"></i>
+        </div>
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Verification</p>
+        <h3 class="text-lg font-black text-green-600">Verified</h3>
       </div>
     </section>
 
+    <!-- Main Content Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <!-- MAIN LISTS -->
-      <div class="lg:col-span-2 space-y-8">
-        <div class="bg-white rounded-lg shadow p-6">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-semibold">Application History</h2>
+      <!-- Application History -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-black text-gray-900">Application History</h2>
           </div>
-          <ul id="appliedList" class="space-y-2"></ul>
+          <ul id="appliedList" class="space-y-4"></ul>
         </div>
       </div>
 
-      <!-- SIDEBAR -->
+      <!-- Sidebar -->
       <aside class="space-y-6">
-        <div class="bg-white rounded-lg shadow p-6 text-center">
-          <img id="workerAvatar" src="/images/users/sample_worker.jpg" alt="Worker profile photo" class="w-24 h-24 rounded-full mx-auto object-cover border border-primary/20" onerror="this.src='https://via.placeholder.com/120x120?text=You'"/>
-          <h3 class="mt-3 font-semibold text-lg" id="wName">Samuel Ade</h3>
-          <p class="text-sm text-gray-500" id="wSkillLoc">Mechanic • Abeokuta</p>
-          <div class="mt-4 space-y-3">
-            <button id="verifyWorkerBtn" class="w-full border border-primary text-primary py-2 rounded hover:bg-primary hover:text-white transition-all">Complete ID Verification</button>
-            <a href="edit-profile.html" class="block w-full border border-primary text-primary py-2 rounded hover:bg-primary hover:text-white transition-all">Edit Profile</a>
+        <!-- Profile Card -->
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+          <img id="workerAvatar" src="/images/users/sample_worker.jpg" alt="Worker profile photo" class="w-28 h-28 rounded-full mx-auto object-cover border-4 border-primary/20 mb-4" onerror="this.src='https://via.placeholder.com/120x120?text=You'"/>
+          <h3 class="text-xl font-black text-gray-900" id="wName">Samuel Ade</h3>
+          <p class="text-sm text-gray-500 font-medium mt-1" id="wSkillLoc">Mechanic • Abeokuta</p>
+          <div class="mt-6 space-y-3">
+            <button id="verifyWorkerBtn" class="w-full border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all">Complete ID Verification</button>
+            <a href="edit-profile.html" class="block w-full border-2 border-gray-300 text-gray-700 font-bold py-3 rounded-xl hover:border-primary hover:text-primary transition-all">Edit Profile</a>
           </div>
         </div>
 
-        <!-- WORKER SUBSCRIPTION -->
-        <div class="bg-white rounded-lg shadow p-6">
-          <h3 class="font-semibold mb-2">Subscription</h3>
-          <p class="text-sm text-gray-600">₦1,000 monthly renewal</p>
-          <p class="text-xs text-gray-400 mt-2">Status: <span id="subStatus" class="font-medium text-green-600">Active • Renews in 24 days</span></p>
-          <button class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mt-3" id="renewBtn">Renew Subscription</button>
+        <!-- Subscription Card -->
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-3xl shadow-xl border border-green-200 p-8">
+          <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center mb-4">
+            <i data-feather="zap" class="w-6 h-6 text-green-600"></i>
+          </div>
+          <h3 class="text-xl font-black text-gray-900 mb-2">Subscription</h3>
+          <p class="text-sm text-gray-600 mb-1">₦1,000 monthly renewal</p>
+          <p class="text-xs text-gray-500 mb-6">Status: <span id="subStatus" class="font-bold text-green-600">Active • Renews in 24 days</span></p>
+          <button class="w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-700 transition-all shadow-lg shadow-green-600/25" id="renewBtn">Renew Subscription</button>
         </div>
-
       </aside>
     </div>
   </main>
 
   <!-- Subscription Modal -->
-  <div id="subscriptionModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full relative overflow-hidden max-h-[90vh] overflow-y-auto">
-      <button id="closeModalBtn" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-lg text-gray-600 hover:text-gray-900 hover:bg-white transition">
+  <div id="subscriptionModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full relative overflow-hidden max-h-[90vh] overflow-y-auto">
+      <button id="closeModalBtn" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition z-10">
         <i data-feather="x" class="w-5 h-5"></i>
       </button>
+
       <div class="grid md:grid-cols-2">
-        <div class="bg-primary/10 p-8 flex flex-col justify-center">
-          <h2 class="text-2xl font-semibold text-primary mb-2">Renew your plan</h2>
-          <p class="text-sm text-gray-600 mb-6">Choose the plan that matches how you work and keep your profile visible to premium employers.</p>
-          <div class="flex items-center space-x-3 text-sm text-gray-500 bg-white/70 border border-primary/10 rounded-lg px-4 py-3">
-            <i data-feather="shield" class="text-primary w-4 h-4"></i>
+        <!-- Left Side - Info -->
+        <div class="bg-gradient-to-br from-primary/10 to-blue-900/10 p-12 flex flex-col justify-center">
+          <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6">
+            <i data-feather="star" class="w-8 h-8 text-white"></i>
+          </div>
+          <h2 class="text-3xl font-black text-gray-900 mb-4">Renew your plan</h2>
+          <p class="text-gray-600 mb-8 leading-relaxed">Choose the plan that matches how you work and keep your profile visible to premium employers.</p>
+          <div class="flex items-center gap-3 text-sm text-gray-600 bg-white/70 border border-primary/20 rounded-xl px-4 py-3">
+            <i data-feather="shield" class="text-primary w-5 h-5 flex-shrink-0"></i>
             <span>Secure checkout powered by Paystack (coming soon)</span>
           </div>
         </div>
-        <div class="p-8 space-y-6">
-          <div class="border border-primary/30 rounded-xl p-6 hover:border-primary transition-colors">
-            <div class="flex items-center justify-between mb-3">
-              <h3 class="text-lg font-semibold text-primary">Premium</h3>
-              <span class="text-xs uppercase tracking-wide text-primary/70 bg-primary/10 px-2 py-1 rounded-full">Popular</span>
+
+        <!-- Right Side - Plans -->
+        <div class="p-12 space-y-6">
+          <!-- Premium Plan -->
+          <div class="border-2 border-primary/30 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-black text-primary">Premium</h3>
+              <span class="text-xs uppercase tracking-wide font-bold text-primary/70 bg-primary/10 px-3 py-1 rounded-full">Popular</span>
             </div>
-            <p class="text-3xl font-bold text-gray-900">₦1,000<span class="text-base font-medium text-gray-500"> / month</span></p>
-            <ul class="mt-4 space-y-2 text-sm text-gray-600">
-              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Listed on the public Sirius worker marketplace</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Priority placement when employers search by skill</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Upload up to 5 photos of past jobs (portfolio)</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i><span>Weekly insight email on trending gigs and rates</span></li>
+            <p class="text-4xl font-black text-gray-900 mb-1">₦1,000<span class="text-base font-medium text-gray-500"> / month</span></p>
+            <ul class="mt-6 space-y-3 text-sm text-gray-600">
+              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Listed on the public Sirius worker marketplace</span></li>
+              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Priority placement when employers search by skill</span></li>
+              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Upload up to 5 photos of past jobs (portfolio)</span></li>
+              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Weekly insight email on trending gigs and rates</span></li>
             </ul>
-            <button data-plan="premium" class="subscribeBtn mt-6 w-full bg-primary text-white py-2.5 rounded-lg hover:bg-primary/90 transition-colors">Choose Premium</button>
+            <button data-plan="premium" class="subscribeBtn mt-6 w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Choose Premium</button>
           </div>
-          <div class="border border-gray-200 rounded-xl p-6 hover:border-primary transition-colors">
-            <div class="flex items-center justify-between mb-3">
-              <h3 class="text-lg font-semibold text-gray-900">Premium Plus</h3>
-              <span class="text-xs uppercase tracking-wide text-primary bg-primary/10 px-2 py-1 rounded-full flex items-center gap-1"><i data-feather="award" class="w-3.5 h-3.5"></i>Recommended</span>
+
+          <!-- Premium Plus Plan -->
+          <div class="border-2 border-gray-200 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-black text-gray-900">Premium Plus</h3>
+              <span class="text-xs uppercase tracking-wide font-bold text-primary bg-primary/10 px-3 py-1 rounded-full flex items-center gap-1"><i data-feather="award" class="w-3.5 h-3.5"></i>Best Value</span>
             </div>
-            <p class="text-3xl font-bold text-gray-900">₦5,000<span class="text-base font-medium text-gray-500"> / month</span></p>
-            <ul class="mt-4 space-y-2 text-sm text-gray-600">
-              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Guaranteed 3 direct employer introductions every month</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Top-of-list placement for Premium Plus recommendation requests</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Dedicated success manager who preps you before each intro</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Access to exclusive concierge-only gigs before the public</span></li>
-              <li class="flex items-start space-x-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5"></i><span>Unlimited applications to premium roles plus priority review</span></li>
+            <p class="text-4xl font-black text-gray-900 mb-1">₦5,000<span class="text-base font-medium text-gray-500"> / month</span></p>
+            <ul class="mt-6 space-y-3 text-sm text-gray-600">
+              <li class="flex items-start gap-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span>Guaranteed 3 direct employer introductions every month</span></li>
+              <li class="flex items-start gap-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span>Top-of-list placement for Premium Plus recommendation requests</span></li>
+              <li class="flex items-start gap-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span>Dedicated success manager who preps you before each intro</span></li>
+              <li class="flex items-start gap-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span>Access to exclusive concierge-only gigs before the public</span></li>
+              <li class="flex items-start gap-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span>Unlimited applications to premium roles plus priority review</span></li>
             </ul>
-            <button data-plan="premium-plus" class="subscribeBtn mt-6 w-full border border-primary text-primary py-2.5 rounded-lg hover:bg-primary hover:text-white transition-colors">Choose Premium Plus</button>
+            <button data-plan="premium-plus" class="subscribeBtn mt-6 w-full border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all">Choose Premium Plus</button>
           </div>
         </div>
       </div>
@@ -206,96 +283,93 @@
   <!-- Extend Hire Mode Modal -->
   <div id="workerExtendModal" class="fixed inset-0 hidden items-center justify-center px-4 py-6 bg-gray-900/60 backdrop-blur-sm z-50">
     <div class="absolute inset-0"></div>
-    <div class="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 sm:p-8 space-y-6">
-      <div class="flex items-start justify-between gap-3">
+    <div class="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8 space-y-6">
+      <div class="flex items-start justify-between gap-4">
         <div>
-          <p class="text-xs uppercase tracking-[0.35em] text-primary/70 font-semibold">Unlock Hire Mode</p>
-          <h3 class="text-2xl font-semibold text-gray-900 mt-1">Add employer tools to this account</h3>
-          <p class="text-sm text-gray-600 mt-2">Confirm your password and phone number so we can enable job posting and hiring features instantly.</p>
+          <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-3 py-1 mb-3">
+            <i data-feather="unlock" class="w-3.5 h-3.5"></i>
+            <span class="text-xs font-bold uppercase tracking-wide">Unlock Feature</span>
+          </div>
+          <h3 class="text-3xl font-black text-gray-900 mb-2">Add employer tools</h3>
+          <p class="text-sm text-gray-600">Confirm your password and phone number so we can enable job posting and hiring features instantly.</p>
         </div>
         <button id="closeWorkerExtendModal" class="text-gray-400 hover:text-gray-700 transition">
-          <i data-feather="x"></i>
+          <i data-feather="x" class="w-5 h-5"></i>
         </button>
       </div>
-      <form id="workerExtendForm" class="space-y-4">
+
+      <form id="workerExtendForm" class="space-y-5">
         <div>
-          <label for="workerExtendPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-          <input type="password" id="workerExtendPassword" required class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="Enter your Sirius Jobs password">
+          <label for="workerExtendPassword" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Password</label>
+          <input type="password" id="workerExtendPassword" required class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Enter your Sirius Jobs password">
         </div>
+
         <div>
-          <label for="workerExtendPhone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-          <input type="tel" id="workerExtendPhone" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary focus:ring-primary/20" placeholder="07012345678">
+          <label for="workerExtendPhone" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Phone Number</label>
+          <input type="tel" id="workerExtendPhone" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="07012345678">
         </div>
-        <p id="workerExtendMessage" class="hidden text-sm"></p>
-        <button type="submit" id="workerExtendSubmit" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold px-4 py-2.5 rounded-xl shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40 transition">
-          <i data-feather="unlock"></i>
+
+        <p id="workerExtendMessage" class="hidden text-sm font-medium"></p>
+
+        <button type="submit" id="workerExtendSubmit" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-4 rounded-xl shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all">
+          <i data-feather="unlock" class="w-5 h-5"></i>
           Enable Hire Mode
         </button>
       </form>
     </div>
   </div>
 
-  <!-- FOOTER (identical style) -->
-  <footer class="bg-gray-900 text-white py-12">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div>
-          <div class="flex items-center space-x-2 mb-4">
-            <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
-            <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
+  <!-- Footer -->
+  <footer class="bg-[#0f172a] text-gray-300">
+    <div class="border-t border-white/10">
+      <div class="container mx-auto px-4 py-12 lg:py-14">
+        <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+          <div class="space-y-4">
+            <a href="index.html" class="inline-flex items-center gap-2">
+              <img src="assets/sirius-logo.svg" alt="Sirius Jobs logo" class="w-10 h-10">
+              <span class="text-lg font-semibold text-white tracking-wide uppercase">Sirius Jobs</span>
+            </a>
+            <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+            <div class="flex items-center gap-3 text-gray-400">
+              <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+              <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+              <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+              <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+            </div>
           </div>
-          <p class="text-gray-400 mb-4">Connecting Talent With Trust across Nigeria since 2022.</p>
-          <div class="flex space-x-4">
-            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="text-gray-400 hover:text-white transition-all"><i data-feather="facebook"></i></a>
-            <a href="https://twitter.com/SiriusOddJobs" class="text-gray-400 hover:text-white transition-all"><i data-feather="twitter"></i></a>
-            <a href="https://www.instagram.com/siriusjobss" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
-            <a href="https://www.linkedin.com/company/siriusjobsng/" class="text-gray-400 hover:text-white transition-all"><i data-feather="linkedin"></i></a>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Company</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="about.html" class="hover:text-white transition">About</a></li>
+              <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+              <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+              <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Support</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+              <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+              <li><span>WhatsApp: 0704 447 0559</span></li>
+              <li><span>Email: support@siriusjobsng.com</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-white uppercase tracking-wide mb-4">Office</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li>Port Harcourt, Rivers State</li>
+              <li>Nigeria</li>
+            </ul>
           </div>
         </div>
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-          <ul class="space-y-2">
-            <li><a href="index.html" class="text-gray-400 hover:text-white transition-all">Home</a></li>
-            <li><a href="about.html" class="text-gray-400 hover:text-white transition-all">About Us</a></li>
-            <li><a href="jobs.html" class="text-gray-400 hover:text-white transition-all">Jobs</a></li>
-            <li><a href="verify.html" class="text-gray-400 hover:text-white transition-all">Verify Worker</a></li>
-            <li><a href="contact.html" class="text-gray-400 hover:text-white transition-all">Contact</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Services</h4>
-          <ul class="space-y-2">
-            <li><span class="text-gray-400">Artisans</span></li>
-            <li><span class="text-gray-400">Plumbers</span></li>
-            <li><span class="text-gray-400">Electricians</span></li>
-            <li><span class="text-gray-400">Cleaners</span></li>
-            <li><a href="services.html" class="text-gray-400">More Services</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
-          <ul class="space-y-2">
-            <li class="flex items-start space-x-2">
-              <i data-feather="phone" class="text-gray-400 mt-1 w-4 h-4"></i>
-              <span class="text-gray-400">07044470559</span>
-            </li>
-            <li class="flex items-start space-x-2">
-              <i data-feather="mail" class="text-gray-400 mt-1 w-4 h-4"></i>
-              <span class="text-gray-400">siriusoddjobs@gmail.com</span>
-            </li>
-            <li class="flex items-start space-x-2">
-              <i data-feather="map-pin" class="text-gray-400 mt-1 w-4 h-4"></i>
-              <span class="text-gray-400">Port Harcourt, Nigeria</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
-        <div class="flex space-x-6">
-          <a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
-          <a href="terms.html" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>
+        <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+            <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+            <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+            <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+          </div>
         </div>
       </div>
     </div>
@@ -346,7 +420,7 @@
       document.getElementById('profilePct').textContent = `${score}% complete`;
       const ul = document.getElementById('profileChecklist'); ul.innerHTML='';
       if(missing.length === 0){
-        const li = document.createElement('li'); li.className='text-green-600'; li.textContent='All set! Your profile is complete.';
+        const li = document.createElement('li'); li.className='text-green-600 font-medium'; li.textContent='✓ All set! Your profile is complete.';
         ul.appendChild(li);
       } else {
         missing.forEach(m => { const li=document.createElement('li'); li.textContent='• ' + m; ul.appendChild(li); });
@@ -356,13 +430,11 @@
         if(worker.verified){
           verifyBtn.textContent = 'ID Verified';
           verifyBtn.disabled = true;
-          verifyBtn.classList.add('bg-green-600','text-white','border-transparent','cursor-not-allowed','opacity-80');
-          verifyBtn.classList.remove('hover:bg-primary','hover:text-white','text-primary','border-primary');
+          verifyBtn.className='w-full bg-green-600 text-white font-bold py-3 rounded-xl cursor-not-allowed opacity-80';
         } else {
           verifyBtn.textContent = 'Complete ID Verification';
           verifyBtn.disabled = false;
-          verifyBtn.classList.remove('bg-green-600','text-white','border-transparent','cursor-not-allowed','opacity-80');
-          verifyBtn.classList.add('text-primary','hover:bg-primary','hover:text-white','border-primary');
+          verifyBtn.className='w-full border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all';
         }
       }
     }
@@ -493,7 +565,7 @@
     if (switchToEmployerSection && switchToEmployerBtn) {
       if (canSwitchToEmployer) {
         switchToEmployerBtn.className =
-          'inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold px-5 py-2.5 rounded-xl shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40 transition';
+          'inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all whitespace-nowrap';
         if (switchToEmployerLabel) {
           switchToEmployerLabel.textContent = 'Go to Hire Mode';
         }
@@ -509,7 +581,7 @@
         switchToEmployerBtn.addEventListener('click', handleSwitchToEmployer);
       } else {
         switchToEmployerBtn.className =
-          'inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-5 py-2.5 rounded-xl border border-primary hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/20 transition';
+          'inline-flex items-center justify-center gap-2 bg-white text-primary font-bold px-6 py-3 rounded-xl border-2 border-primary hover:bg-primary/10 transition-all whitespace-nowrap';
         if (switchToEmployerLabel) {
           switchToEmployerLabel.textContent = 'Unlock Hire Mode';
         }
@@ -566,19 +638,19 @@
     function renderApplied(){
       const statusStyles = {
         Pending: {
-          chip: 'bg-amber-50 border border-amber-200 text-amber-700',
+          chip: 'bg-amber-50 border-2 border-amber-200 text-amber-700',
           label: 'Awaiting review'
         },
         Hired: {
-          chip: 'bg-green-50 border border-green-200 text-green-700',
+          chip: 'bg-green-50 border-2 border-green-200 text-green-700',
           label: 'Hired'
         },
         Withdrawn: {
-          chip: 'bg-gray-100 border border-gray-200 text-gray-600',
+          chip: 'bg-gray-100 border-2 border-gray-200 text-gray-600',
           label: 'Withdrawn'
         },
         Rejected: {
-          chip: 'bg-red-50 border border-red-200 text-red-600',
+          chip: 'bg-red-50 border-2 border-red-200 text-red-600',
           label: 'Not selected'
         }
       };
@@ -589,27 +661,27 @@
       applied.forEach(application => {
         const statusStyle = statusStyles[application.status] ?? statusStyles.Pending;
         const li = document.createElement('li');
-        li.className = 'bg-white border border-gray-200 rounded-xl p-4 shadow-sm space-y-3';
+        li.className = 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-6 space-y-4 hover:border-primary/30 hover:shadow-lg transition-all';
         const withdrawButton = application.status === 'Pending'
-          ? `<button class="withdrawBtn inline-flex items-center gap-1 text-xs text-red-600 hover:underline font-medium" data-application="${application.id}"><i data-feather="slash" class="w-3.5 h-3.5"></i>Withdraw</button>`
+          ? `<button class="withdrawBtn inline-flex items-center gap-1 text-xs text-red-600 hover:text-red-700 font-bold" data-application="${application.id}"><i data-feather="slash" class="w-3.5 h-3.5"></i>Withdraw</button>`
           : '';
 
         li.innerHTML = `
-          <div class="flex items-start justify-between gap-3">
+          <div class="flex items-start justify-between gap-4">
             <div>
-              <h4 class="text-sm font-semibold text-gray-900">${application.job}</h4>
-              <p class="text-xs text-gray-500">${application.company}</p>
+              <h4 class="text-base font-black text-gray-900">${application.job}</h4>
+              <p class="text-xs text-gray-500 font-medium mt-1">${application.company}</p>
               <p class="text-xs text-gray-400 mt-1">${application.location ?? ''}</p>
             </div>
-            <span class="text-xs font-semibold px-3 py-1 rounded-full ${statusStyle.chip}">${statusStyle.label}</span>
+            <span class="text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap ${statusStyle.chip}">${statusStyle.label}</span>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-gray-600">
-            <div class="flex items-center gap-2"><i data-feather="calendar" class="w-3.5 h-3.5 text-gray-400"></i><span>${application.date}</span></div>
-            <div class="flex items-center gap-2"><span class="text-primary font-semibold uppercase tracking-wide text-[11px]">Rate</span><span>${application.rate ?? '—'}</span></div>
-            <div class="flex items-center gap-2"><i data-feather="info" class="w-3.5 h-3.5 text-gray-400"></i><span>${application.nextStep ?? ''}</span></div>
+            <div class="flex items-center gap-2"><i data-feather="calendar" class="w-4 h-4 text-gray-400"></i><span class="font-medium">${application.date}</span></div>
+            <div class="flex items-center gap-2"><span class="text-primary font-bold uppercase tracking-wide">Rate</span><span class="font-medium">${application.rate ?? '—'}</span></div>
+            <div class="flex items-center gap-2"><i data-feather="info" class="w-4 h-4 text-gray-400"></i><span class="font-medium">${application.nextStep ?? ''}</span></div>
           </div>
-          <div class="flex items-center justify-between pt-2 border-t border-gray-100 text-xs">
-            <a href="jobs.html" class="inline-flex items-center gap-1 text-primary hover:underline"><i data-feather="external-link" class="w-3.5 h-3.5"></i>View job</a>
+          <div class="flex items-center justify-between pt-3 border-t-2 border-gray-100 text-xs">
+            <a href="jobs.html" class="inline-flex items-center gap-1 text-primary hover:text-primary/80 font-bold transition"><i data-feather="external-link" class="w-4 h-4"></i>View job</a>
             ${withdrawButton}
           </div>`;
 
@@ -700,5 +772,6 @@
     renderProfile(); renderApplied();
   </script>
   <script src="assistant.js"></script>
+  <script src="session-timeout.js"></script>
 </body>
 </html>

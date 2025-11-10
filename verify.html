@@ -10,229 +10,228 @@
     <script>
         tailwind.config = {
             theme: {
-                extend: {
-                    colors: {
-                        primary: '#0056b3',
-                        secondary: '#808080',
-                    }
-                }
+                extend: { colors: { primary: '#0056b3', secondary: '#0f172a' } }
             }
         }
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="api.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
-        .verify-hero {
-            background: linear-gradient(rgba(0, 86, 179, 0.88), rgba(0, 86, 179, 0.88)), url('assets/hero-nigeria.svg');
-            background-size: cover;
-            background-position: center;
-        }
-        .transition-all {
-            transition: all 0.3s ease;
+
+        .animated-gradient {
+            background-size: 200% 200%;
+            animation: gradient-shift 15s ease infinite;
         }
     </style>
 </head>
 <body class="bg-white text-gray-800">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3">
+    <!-- NAVIGATION -->
+    <nav class="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="inline-flex items-center gap-3">
                 <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-10 h-10">
-                <span class="text-xl font-bold text-primary uppercase tracking-wide">SIRIUS JOBS</span>
+                <span class="text-xl font-black text-primary uppercase tracking-tight">SIRIUS JOBS</span>
             </a>
-            <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
-                <a href="index.html" class="text-gray-600 hover:text-primary transition-all">Home</a>
-                <a href="services.html" class="text-gray-600 hover:text-primary transition-all">Services</a>
-                <a href="jobs.html" class="text-gray-600 hover:text-primary transition-all">Jobs</a>
-                <a href="consultations.html" class="text-gray-600 hover:text-primary transition-all">Consultations</a>
-                <a href="findworker.html" class="text-gray-600 hover:text-primary transition-all">Find Workers</a>
-                <a href="faq.html" class="text-gray-600 hover:text-primary transition-all">FAQs</a>
-                <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">
+            <div class="hidden md:flex items-center gap-6 text-sm font-bold text-gray-700">
+                <a href="index.html" class="hover:text-primary transition-colors">Home</a>
+                <a href="services.html" class="hover:text-primary transition-colors">Services</a>
+                <a href="jobs.html" class="hover:text-primary transition-colors">Jobs</a>
+                <a href="consultations.html" class="hover:text-primary transition-colors">Consultations</a>
+                <a href="marketplace.html" class="hover:text-primary transition-colors">Marketplace</a>
+                <a href="faq.html" class="hover:text-primary transition-colors">FAQs</a>
+                <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold py-2.5 px-5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
                     <i data-feather="log-in" class="w-4 h-4"></i>
                     Login
                 </a>
             </div>
-            <div class="md:hidden">
-                <button id="menu-btn" class="text-gray-600 focus:outline-none">
-                    <i data-feather="menu"></i>
-                </button>
-            </div>
+            <button id="menu-btn" class="md:hidden text-gray-700">
+                <i data-feather="menu" class="w-6 h-6"></i>
+            </button>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2 text-sm font-medium">
-            <a href="index.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Home</a>
-            <a href="services.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Services</a>
-            <a href="jobs.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Jobs</a>
-            <a href="consultations.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Consultations</a>
-            <a href="findworker.html" class="block py-2 text-gray-600 hover:text-primary transition-all">Find Workers</a>
-            <a href="faq.html" class="block py-2 text-gray-600 hover:text-primary transition-all">FAQs</a>
-            <a href="login.html" class="flex items-center gap-2 text-gray-600 hover:text-primary transition-all">
-                <i data-feather="log-in" class="w-4 h-4"></i>
-                Login
-            </a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 py-3 space-y-2 text-sm font-bold">
+            <a href="index.html" class="block py-2 hover:text-primary transition-colors">Home</a>
+            <a href="services.html" class="block py-2 hover:text-primary transition-colors">Services</a>
+            <a href="jobs.html" class="block py-2 hover:text-primary transition-colors">Jobs</a>
+            <a href="consultations.html" class="block py-2 hover:text-primary transition-colors">Consultations</a>
+            <a href="marketplace.html" class="block py-2 hover:text-primary transition-colors">Marketplace</a>
+            <a href="faq.html" class="block py-2 hover:text-primary transition-colors">FAQs</a>
+            <a href="login.html" class="block py-2 hover:text-primary transition-colors">Login</a>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="verify-hero text-white py-20 md:py-32">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6">Worker Verification</h1>
-            <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto">Ensure you're working with verified professionals through our secure system</p>
+    <!-- HERO -->
+    <section class="bg-gradient-to-br from-black via-primary to-blue-900 animated-gradient text-white py-20 px-4">
+        <div class="container mx-auto text-center max-w-4xl">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-5 py-2.5 mb-8">
+                <i data-feather="shield-check" class="w-5 h-5"></i>
+                <span class="text-sm font-bold uppercase tracking-wide">Secure Verification</span>
+            </div>
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">Worker Verification</h1>
+            <p class="text-xl text-white/90 font-medium max-w-2xl mx-auto">Ensure you're working with verified professionals through our secure system</p>
         </div>
     </section>
 
-    <!-- Verification Form -->
-    <section class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">Verify a Worker</h2>
-                <form>
-                    <div class="mb-6">
-                        <label for="full-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name*</label>
-                        <input type="text" id="full-name" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" placeholder="Worker's full name" required>
+    <!-- VERIFICATION FORM -->
+    <section class="container mx-auto px-4 py-16 max-w-4xl">
+        <div class="bg-white rounded-3xl border-2 border-gray-100 shadow-2xl p-8 md:p-12 mb-12">
+            <div class="mb-8">
+                <h2 class="text-3xl font-black text-gray-900 mb-3">Verify a Worker</h2>
+                <p class="text-base text-gray-600">Enter worker details below to verify their identity and credentials through our secure database.</p>
+            </div>
+
+            <form class="space-y-6">
+                <div>
+                    <label for="full-name" class="block text-sm font-bold text-gray-700 mb-2">Full Name*</label>
+                    <input type="text" id="full-name" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Worker's full name" required>
+                </div>
+
+                <div>
+                    <label for="id-type" class="block text-sm font-bold text-gray-700 mb-2">ID Type*</label>
+                    <select id="id-type" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+                        <option value="">Select ID Type</option>
+                        <option>National Identification Number (NIN)</option>
+                        <option>Driver's License</option>
+                        <option>International Passport</option>
+                        <option>Voter's Card</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="id-number" class="block text-sm font-bold text-gray-700 mb-2">ID Number*</label>
+                    <input type="text" id="id-number" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Enter ID number" required>
+                    <p class="text-xs text-gray-500 mt-2">Please enter the complete ID number without spaces or special characters</p>
+                </div>
+
+                <div class="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
+                    <input id="terms" name="terms" type="checkbox" class="mt-1 w-5 h-5 text-primary border-2 border-gray-300 rounded focus:ring-2 focus:ring-primary/20" required>
+                    <label for="terms" class="text-sm font-medium text-gray-700">I agree to the <a href="terms.html" class="text-primary font-bold underline hover:no-underline">Terms of Service</a> and <a href="privacypolicy.html" class="text-primary font-bold underline hover:no-underline">Privacy Policy</a></label>
+                </div>
+
+                <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-bold py-4 px-6 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+                    <i data-feather="shield" class="w-5 h-5"></i>
+                    Verify Now
+                </button>
+            </form>
+        </div>
+
+        <!-- INFO CARD -->
+        <div class="bg-primary/5 border-2 border-primary/20 rounded-3xl p-8 md:p-10 mb-12">
+            <div class="flex items-start gap-4 mb-6">
+                <div class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                    <i data-feather="info" class="w-6 h-6 text-primary"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-3">About Verification</h3>
+                    <p class="text-base text-gray-700 leading-relaxed">Our verification system helps ensure you're working with legitimate, qualified professionals. We cross-check the provided identification with our secure database to confirm the worker's identity and credentials.</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mt-6">
+                <div class="flex items-start gap-3">
+                    <i data-feather="check-circle" class="w-5 h-5 text-primary flex-shrink-0 mt-1"></i>
+                    <div>
+                        <h4 class="font-black text-gray-900 mb-1">Why verify?</h4>
+                        <p class="text-sm text-gray-600">Verification helps protect both clients and workers by ensuring transparency and trust in every transaction.</p>
                     </div>
-                    
-                    <div class="mb-6">
-                        <label for="id-type" class="block text-sm font-medium text-gray-700 mb-1">ID Type*</label>
-                        <select id="id-type" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" required>
-                            <option value="">Select ID Type</option>
-                            <option>National Identification Number (NIN)</option>
-                            <option>Driver's License</option>
-                            <option>International Passport</option>
-                            <option>Voter's Card</option>
-                        </select>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <i data-feather="lock" class="w-5 h-5 text-primary flex-shrink-0 mt-1"></i>
+                    <div>
+                        <h4 class="font-black text-gray-900 mb-1">Security notice</h4>
+                        <p class="text-sm text-gray-600">All information provided is encrypted and handled in accordance with our strict privacy policy. We never share your data without consent.</p>
                     </div>
-                    
-                    <div class="mb-6">
-                        <label for="id-number" class="block text-sm font-medium text-gray-700 mb-1">ID Number*</label>
-                        <input type="text" id="id-number" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary py-2 px-3 border" placeholder="Enter ID number" required>
-                        <p class="text-xs text-gray-500 mt-1">Please enter the complete ID number without spaces or special characters</p>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <div class="flex items-start">
-                            <div class="flex items-center h-5">
-                                <input id="terms" name="terms" type="checkbox" class="focus:ring-primary h-4 w-4 text-primary border-gray-300 rounded" required>
-                            </div>
-                            <div class="ml-3 text-sm">
-                                <label for="terms" class="font-medium text-gray-700">I agree to the <a href="#" class="text-primary hover:text-opacity-80">Terms of Service</a> and <a href="#" class="text-primary hover:text-opacity-80">Privacy Policy</a></label>
-                            </div>
+                </div>
+            </div>
+
+            <p class="text-sm text-gray-600 mt-6">For any questions about the verification process, please <a href="contact.html" class="text-primary font-bold underline hover:no-underline">contact our support team</a>.</p>
+        </div>
+
+        <!-- CTA CARD -->
+        <div class="bg-white border-2 border-gray-100 rounded-3xl p-8 md:p-10 text-center shadow-xl">
+            <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <i data-feather="briefcase" class="w-8 h-8 text-primary"></i>
+            </div>
+            <h3 class="text-2xl font-black text-gray-900 mb-3">Already a verified worker?</h3>
+            <p class="text-base text-gray-600 mb-6 max-w-xl mx-auto">If you're a verified worker looking for job opportunities, browse our available listings.</p>
+            <a href="jobs.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold py-3.5 px-6 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+                <i data-feather="search" class="w-5 h-5"></i>
+                Browse Jobs
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#0f172a] text-gray-300 mt-16">
+        <div class="border-t border-white/10">
+            <div class="container mx-auto px-4 py-12 lg:py-14">
+                <div class="grid gap-10 lg:grid-cols-[1.35fr_repeat(3,minmax(0,1fr))]">
+                    <div class="space-y-4">
+                        <a href="index.html" class="inline-flex items-center gap-2">
+                            <img src="assets/sirius-logo.svg" alt="Sirius Jobs logo" class="w-10 h-10">
+                            <span class="text-lg font-black text-white uppercase tracking-tight">SIRIUS JOBS</span>
+                        </a>
+                        <p class="text-sm leading-relaxed text-gray-400">One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+                        <div class="flex items-center gap-3 text-gray-400">
+                            <a href="https://web.facebook.com/profile.php?id=61582342397507" class="hover:text-white transition"><i data-feather="facebook" class="w-5 h-5"></i></a>
+                            <a href="https://twitter.com/SiriusOddJobs" class="hover:text-white transition"><i data-feather="twitter" class="w-5 h-5"></i></a>
+                            <a href="https://www.instagram.com/siriusjobss" class="hover:text-white transition"><i data-feather="instagram" class="w-5 h-5"></i></a>
+                            <a href="https://www.linkedin.com/company/siriusjobsng/" class="hover:text-white transition"><i data-feather="linkedin" class="w-5 h-5"></i></a>
                         </div>
                     </div>
-                    
-                    <div class="flex justify-end">
-                        <button type="submit" class="bg-primary text-white font-bold py-2 px-6 rounded hover:bg-opacity-90 transition-all flex items-center">
-                            <i data-feather="shield" class="mr-2 w-4 h-4"></i> Verify Now
-                        </button>
+                    <div>
+                        <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Company</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="about.html" class="hover:text-white transition">About</a></li>
+                            <li><a href="services.html" class="hover:text-white transition">Services</a></li>
+                            <li><a href="jobs.html" class="hover:text-white transition">Jobs</a></li>
+                            <li><a href="consultations.html" class="hover:text-white transition">Consultations</a></li>
+                        </ul>
                     </div>
-                </form>
-            </div>
-            
-            <div class="max-w-2xl mx-auto mt-10 bg-primary bg-opacity-10 rounded-lg p-6">
-                <h3 class="text-xl font-bold text-primary mb-4 flex items-center">
-                    <i data-feather="info" class="mr-2 w-5 h-5"></i> About Verification
-                </h3>
-                <div class="prose text-gray-700">
-                    <p class="mb-3">Our verification system helps ensure you're working with legitimate, qualified professionals. We cross-check the provided identification with our secure database to confirm the worker's identity and credentials.</p>
-                    <p class="mb-3"><strong class="text-primary">Why verify?</strong> Verification helps protect both clients and workers by ensuring transparency and trust in every transaction.</p>
-                    <p class="mb-3"><strong class="text-primary">Security notice:</strong> All information provided is encrypted and handled in accordance with our strict privacy policy. We never share your data without consent.</p>
-                    <p>For any questions about the verification process, please <a href="contact.html" class="text-primary hover:text-opacity-80">contact our support team</a>.</p>
-                </div>
-            </div>
-            
-            <div class="max-w-2xl mx-auto mt-10">
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">Already a verified worker?</h3>
-                    <p class="text-gray-600 mb-4">If you're a verified worker looking for job opportunities, browse our available listings.</p>
-                    <a href="jobs.html" class="inline-block bg-primary text-white font-bold py-2 px-6 rounded hover:bg-opacity-90 transition-all">Browse Jobs</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <img src="assets/sirius-logo.svg" alt="SIRIUS JOBS logo" class="w-8 h-8">
-                        <span class="text-lg font-bold uppercase tracking-wide">SIRIUS JOBS</span>
+                    <div>
+                        <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Support</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="contact.html" class="hover:text-white transition">Contact</a></li>
+                            <li><a href="faq.html" class="hover:text-white transition">FAQs</a></li>
+                            <li><span>WhatsApp: 0704 447 0559</span></li>
+                            <li><span>Email: support@siriusjobsng.com</span></li>
+                        </ul>
                     </div>
-                    <p class="text-gray-400 mb-4">Connecting Talent With Trust across Nigeria since 2022.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="facebook"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="twitter"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="instagram"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-all"><i data-feather="linkedin"></i></a>
+                    <div>
+                        <h4 class="text-sm font-black text-white uppercase tracking-wide mb-4">Office</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li>Port Harcourt, Rivers State</li>
+                            <li>Nigeria</li>
+                        </ul>
                     </div>
                 </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="index.html" class="text-gray-400 hover:text-white transition-all">Home</a></li>
-                        <li><a href="about.html" class="text-gray-400 hover:text-white transition-all">About Us</a></li>
-                        <li><a href="jobs.html" class="text-gray-400 hover:text-white transition-all">Jobs</a></li>
-                        <li><a href="verify.html" class="text-gray-400 hover:text-white transition-all">Verify Worker</a></li>
-                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-all">Contact</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Services</h4>
-                    <ul class="space-y-2">
-                        <li><span class="text-gray-400">Artisans</span></li>
-                        <li><span class="text-gray-400">Plumbers</span></li>
-                        <li><span class="text-gray-400">Electricians</span></li>
-                        <li><span class="text-gray-400">Cleaners</span></li>
-                        <li><a href="services.html" class="text-gray-400">More Services</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
-                    <ul class="space-y-2">
-                        <li class="flex items-start space-x-2">
-                            <i data-feather="phone" class="text-gray-400 mt-1 w-4 h-4"></i>
-                            <span class="text-gray-400">07044470559</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <i data-feather="mail" class="text-gray-400 mt-1 w-4 h-4"></i>
-                            <span class="text-gray-400">siriusoddjobs@gmail.com</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <i data-feather="map-pin" class="text-gray-400 mt-1 w-4 h-4"></i>
-                            <span class="text-gray-400">Port Harcourt, Nigeria</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 mb-4 md:mb-0">© 2022 SIRIUS JOBS. All rights reserved.</p>
-                <div class="flex space-x-6">
-                    <a href="privacypolicy.html" class="text-gray-400 hover:text-white transition-all text-sm">Privacy Policy</a>
-                    <a href="terms.html" class="text-gray-400 hover:text-white transition-all text-sm">Terms of Service</a>
+                <div class="mt-12 pt-6 border-t border-white/10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <p class="text-sm text-gray-400">© 2025 Sirius Jobs. All rights reserved.</p>
+                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+                        <a href="privacypolicy.html" class="hover:text-white transition">Privacy Policy</a>
+                        <a href="terms.html" class="hover:text-white transition">Terms of Service</a>
+                        <a href="verify.html" class="hover:text-white transition">Verify Credentials</a>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
+        feather.replace();
+
         // Mobile menu toggle
-        document.getElementById('menu-btn').addEventListener('click', function() {
+        document.getElementById('menu-btn').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
-
-        // Feather icons
-        feather.replace();
     </script>
-  <script src="assistant.js"></script>
+    <script src="assistant.js"></script>
 </body>
 </html>

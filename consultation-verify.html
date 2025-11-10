@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifying Payment – Sirius Jobs</title>
+    <meta name="description" content="Verifying your consultation payment">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0056b3',
+                        secondary: '#808080',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes check {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .check-animation {
+            animation: check 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-10 w-auto drop-shadow-sm transition-transform group-hover:scale-105" />
+                    <span class="sr-only">SiriusJobs home</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Verification Section -->
+    <section class="pt-32 pb-20 min-h-screen flex items-center justify-center">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="max-w-2xl mx-auto">
+                <!-- Verifying State -->
+                <div id="verifying-state" class="text-center bg-white rounded-2xl p-12 shadow-xl">
+                    <div class="mb-6">
+                        <div class="w-24 h-24 mx-auto bg-blue-50 rounded-full flex items-center justify-center">
+                            <div class="spinner w-12 h-12 border-4 border-primary border-t-transparent rounded-full"></div>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl font-black text-gray-900 mb-3">Verifying Your Payment</h1>
+                    <p class="text-gray-600 mb-8">Please wait while we confirm your payment and set up your consultation session...</p>
+                    <div class="text-sm text-gray-500">
+                        <i data-feather="lock" class="w-4 h-4 inline"></i>
+                        This should only take a few seconds
+                    </div>
+                </div>
+
+                <!-- Success State -->
+                <div id="success-state" class="hidden text-center bg-white rounded-2xl p-12 shadow-xl">
+                    <div class="mb-6">
+                        <div class="check-animation w-24 h-24 mx-auto bg-green-100 rounded-full flex items-center justify-center">
+                            <i data-feather="check-circle" class="w-16 h-16 text-green-600"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl font-black text-gray-900 mb-3">Payment Successful!</h1>
+                    <p class="text-gray-600 mb-8">Your consultation session has been created. You will be redirected to your session page in a moment...</p>
+                    <div class="bg-blue-50 rounded-xl p-6 mb-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-sm font-semibold text-gray-700">Your Anonymous ID:</span>
+                            <code id="anonymous-id" class="text-lg font-bold text-primary"></code>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-semibold text-gray-700">Session Expires:</span>
+                            <span id="expires-at" class="text-sm text-gray-900"></span>
+                        </div>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <i data-feather="info" class="w-4 h-4 inline"></i>
+                        Redirecting in <span id="countdown">3</span> seconds...
+                    </div>
+                </div>
+
+                <!-- Error State -->
+                <div id="error-state" class="hidden text-center bg-white rounded-2xl p-12 shadow-xl">
+                    <div class="mb-6">
+                        <div class="w-24 h-24 mx-auto bg-red-100 rounded-full flex items-center justify-center">
+                            <i data-feather="alert-circle" class="w-16 h-16 text-red-600"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl font-black text-gray-900 mb-3">Payment Verification Failed</h1>
+                    <p id="error-message" class="text-gray-600 mb-8">We couldn't verify your payment. Please contact support if you were charged.</p>
+                    <a href="consultations.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition-all">
+                        <i data-feather="arrow-left" class="w-5 h-5"></i>
+                        Back to Consultations
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const API_URL = 'http://localhost:4000/api';
+
+        // Get payment reference from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const reference = urlParams.get('reference');
+
+        if (!reference) {
+            showError('No payment reference provided');
+        } else {
+            verifyPayment();
+        }
+
+        // Verify payment and create session
+        async function verifyPayment() {
+            try {
+                const response = await fetch(`${API_URL}/consultation/payment/verify?reference=${reference}`);
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.message || 'Payment verification failed');
+                }
+
+                // Show success state
+                document.getElementById('verifying-state').classList.add('hidden');
+                document.getElementById('success-state').classList.remove('hidden');
+
+                // Display session details
+                document.getElementById('anonymous-id').textContent = result.data.clientAnonymousId;
+
+                const expiresAt = new Date(result.data.endsAt);
+                document.getElementById('expires-at').textContent = expiresAt.toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit'
+                });
+
+                feather.replace();
+
+                // Store session token in localStorage
+                localStorage.setItem('consultationSessionToken', result.data.sessionToken);
+                localStorage.setItem('consultationSessionId', result.data.sessionId);
+
+                // Countdown and redirect
+                let countdown = 3;
+                const countdownElement = document.getElementById('countdown');
+
+                const timer = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+
+                    if (countdown === 0) {
+                        clearInterval(timer);
+                        window.location.href = `consultation-session.html?sessionId=${result.data.sessionId}`;
+                    }
+                }, 1000);
+
+            } catch (error) {
+                console.error('Verification error:', error);
+                showError(error.message || 'An unexpected error occurred');
+            }
+        }
+
+        // Show error state
+        function showError(message) {
+            document.getElementById('verifying-state').classList.add('hidden');
+            document.getElementById('error-state').classList.remove('hidden');
+            document.getElementById('error-message').textContent = message;
+            feather.replace();
+        }
+
+        // Initialize
+        feather.replace();
+    </script>
+    <script src="assistant.js"></script>
+</body>
+</html>
