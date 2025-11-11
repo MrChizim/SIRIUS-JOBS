@@ -124,9 +124,9 @@
       categories: ['Beauty & Wellness'],
       logoUrl: '',
       media: [
+        { type: 'image', url: 'https://images.unsplash.com/photo-1508674861872-a51e06c50c7c?auto=format&fit=crop&w=900&q=80' },
+        { type: 'image', url: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80' },
         { type: 'image', url: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80' },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80' },
-        { type: 'image', url: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=900&q=80' },
       ],
     },
   ];
