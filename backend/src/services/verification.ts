@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { Prisma, type VerificationType, type LicenseCheckStatus } from '@prisma/client';
 import { prisma } from '../lib/prisma.js';
-import type { VerificationType, LicenseCheckStatus } from '@prisma/client';
 
 type VerificationPayload = {
   userId: string;
@@ -61,7 +61,7 @@ export async function markVerificationResult(
       status,
       reviewedAt: new Date(),
       externalRef: reference,
-      payload: details ? (details as Record<string, unknown>) : undefined,
+      payload: details ? (details as Prisma.JsonValue) : undefined,
     },
   });
 

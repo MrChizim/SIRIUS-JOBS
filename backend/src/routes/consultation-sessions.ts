@@ -1,11 +1,11 @@
 import { Router, Request, Response } from 'express';
 import mongoose from 'mongoose';
-import { verifyClientSessionToken } from '../utils/consultationUtils.ts';
-import { requireAuth, AuthenticatedRequest } from '../middleware/auth.ts';
-import { ConsultationSession } from '../models/ConsultationSession.ts';
-import { Professional } from '../models/Professional.ts';
-import { Message } from '../models/Message.ts';
-import { Review } from '../models/Review.ts';
+import { verifyClientSessionToken } from '../utils/consultationUtils.js';
+import { requireAuth, AuthenticatedRequest } from '../middleware/auth.js';
+import { ConsultationSession } from '../models/ConsultationSession.js';
+import { Professional } from '../models/Professional.js';
+import { Message } from '../models/Message.js';
+import { Review } from '../models/Review.js';
 
 const router = Router();
 

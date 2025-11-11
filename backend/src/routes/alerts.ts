@@ -15,19 +15,24 @@ router.post('/', requireAuth(), async (req: AuthenticatedRequest, res) => {
     return res.status(400).json({ errors: payload.error.flatten() });
   }
 
-  const subscription = await prisma.alertSubscription.upsert({
+  const existing = await prisma.alertSubscription.findFirst({
     where: {
-      userId_serviceCategoryId: {
-        userId: req.user!.id,
-        serviceCategoryId: payload.data.serviceCategoryId,
-      },
-    },
-    update: { active: true },
-    create: {
       userId: req.user!.id,
       serviceCategoryId: payload.data.serviceCategoryId,
     },
   });
+
+  const subscription = existing
+    ? await prisma.alertSubscription.update({
+        where: { id: existing.id },
+        data: { active: true },
+      })
+    : await prisma.alertSubscription.create({
+        data: {
+          userId: req.user!.id,
+          serviceCategoryId: payload.data.serviceCategoryId,
+        },
+      });
 
   res.json(subscription);
 });

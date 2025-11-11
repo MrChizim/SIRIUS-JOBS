@@ -44,8 +44,6 @@ const ConsultationSessionSchema = new Schema<IConsultationSession>({
 
 // Indexes for faster queries
 ConsultationSessionSchema.index({ professionalId: 1, status: 1 });
-ConsultationSessionSchema.index({ clientSessionToken: 1 });
-ConsultationSessionSchema.index({ paymentReference: 1 });
 ConsultationSessionSchema.index({ status: 1, endsAt: 1 }); // For auto-close worker
 
 export const ConsultationSession = mongoose.model<IConsultationSession>('ConsultationSession', ConsultationSessionSchema);

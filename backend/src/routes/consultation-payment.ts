@@ -1,14 +1,14 @@
 import { Router, Request, Response } from 'express';
 import mongoose from 'mongoose';
-import { initializePayment, verifyPayment } from '../services/paystack.ts';
+import { initializePayment, verifyPayment } from '../services/paystack.js';
 import {
   generateAnonymousId,
   generateClientSessionToken,
   generatePaymentReference
-} from '../utils/consultationUtils.ts';
-import { ConsultationSession } from '../models/ConsultationSession.ts';
-import { Professional } from '../models/Professional.ts';
-import { Message } from '../models/Message.ts';
+} from '../utils/consultationUtils.js';
+import { ConsultationSession } from '../models/ConsultationSession.js';
+import { Professional } from '../models/Professional.js';
+import { Message } from '../models/Message.js';
 
 const router = Router();
 

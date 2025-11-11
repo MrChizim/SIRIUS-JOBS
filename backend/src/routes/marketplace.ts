@@ -326,8 +326,8 @@ router.post('/listings', requireAuth(['merchant']), async (req: AuthenticatedReq
   }
   const listing = await prisma.marketplaceListing.create({
     data: {
-      merchantId,
       ...payload.data,
+      merchant: { connect: { id: merchantId } },
     },
   });
   res.status(201).json({ listing });

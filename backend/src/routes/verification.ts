@@ -1,5 +1,6 @@
 import express from 'express';
 import { z } from 'zod';
+import { Prisma } from '@prisma/client';
 import { prisma } from '../lib/prisma.js';
 import { requireAuth, type AuthenticatedRequest } from '../middleware/auth.js';
 import { verifyGovernmentId, markVerificationResult, verifyProfessionalLicenseStub } from '../services/verification.js';
@@ -25,7 +26,7 @@ router.post('/', requireAuth(), async (req: AuthenticatedRequest, res) => {
       userId: req.user!.id,
       type: payload.data.type,
       status: 'PENDING',
-      payload: payload.data.metadata,
+      payload: payload.data.metadata as Prisma.JsonValue | undefined,
     },
   });
 

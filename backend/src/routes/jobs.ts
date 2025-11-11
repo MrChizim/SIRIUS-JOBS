@@ -69,10 +69,13 @@ router.post('/', requireAuth(['EMPLOYER', 'ADMIN']), async (req: AuthenticatedRe
     return res.status(400).json({ errors: payload.error.flatten() });
   }
 
+  const { serviceCategoryId, ...jobInput } = payload.data;
+
   const job = await prisma.job.create({
     data: {
-      ...payload.data,
-      postedById: req.user!.id,
+      ...jobInput,
+      postedBy: { connect: { id: req.user!.id } },
+      serviceCategory: { connect: { id: serviceCategoryId } },
     },
     include: {
       serviceCategory: true,

@@ -21,6 +21,5 @@ const ReviewSchema = new Schema<IReview>({
 
 // Indexes for faster queries
 ReviewSchema.index({ professionalId: 1, createdAt: -1 });
-ReviewSchema.index({ sessionId: 1 }, { unique: true }); // One review per session
 
 export const Review = mongoose.model<IReview>('Review', ReviewSchema);
