@@ -130,7 +130,7 @@
 
                 <!-- Registration Form -->
                 <div class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
-                    <form id="registration-form" class="space-y-6">
+                    <form id="registration-form" class="space-y-6" enctype="multipart/form-data">
                         <!-- Account Information -->
                         <div class="space-y-4">
                             <div>
@@ -499,7 +499,13 @@
 
         const toBase64 = (file) => new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = () => resolve(reader.result as string);
+            reader.onload = () => {
+                if (typeof reader.result === 'string') {
+                    resolve(reader.result);
+                } else {
+                    reject(new Error('Unable to read file. Please try again.'));
+                }
+            };
             reader.onerror = () => reject(new Error('Unable to read file. Please try again.'));
             reader.readAsDataURL(file);
         });
@@ -537,18 +543,32 @@
         const uploadField = document.getElementById('licenseUploadField');
         const fileInput = document.getElementById('licenseDocumentFile');
 
+        const getSelectedVerificationMethod = () => {
+            const selectedRadio = document.querySelector('input[name="licenseVerificationType"]:checked');
+            if (selectedRadio instanceof HTMLInputElement) {
+                return selectedRadio.value || 'LINK';
+            }
+            return 'LINK';
+        };
+
+        const toggleLicenseFields = (method) => {
+            if (!linkField || !uploadField) return;
+            if (method === 'UPLOAD') {
+                linkField.classList.add('hidden');
+                uploadField.classList.remove('hidden');
+            } else {
+                uploadField.classList.add('hidden');
+                linkField.classList.remove('hidden');
+                if (fileInput) fileInput.value = '';
+            }
+        };
+
         verificationRadios.forEach(radio => {
             radio.addEventListener('change', () => {
-                if (radio.value === 'UPLOAD') {
-                    linkField.classList.add('hidden');
-                    uploadField.classList.remove('hidden');
-                } else {
-                    uploadField.classList.add('hidden');
-                    linkField.classList.remove('hidden');
-                    if (fileInput) fileInput.value = '';
-                }
+                toggleLicenseFields(getSelectedVerificationMethod());
             });
         });
+        toggleLicenseFields(getSelectedVerificationMethod());
 
         // Form submission
         document.getElementById('registration-form').addEventListener('submit', async (e) => {
@@ -562,9 +582,10 @@
                 confirmPassword: document.getElementById('confirmPassword').value,
             };
 
-            const verificationMethod = (document.querySelector('input[name="licenseVerificationType"]:checked') as HTMLInputElement)?.value || 'LINK';
-            let licenseDocumentLink = document.getElementById('licenseDocument')?.value.trim() ?? '';
-            let licenseDocumentUpload: { name: string; type: string; size: number; data: string } | undefined;
+            const verificationMethod = getSelectedVerificationMethod();
+            const linkFieldInput = document.getElementById('licenseDocument');
+            let licenseDocumentLink = linkFieldInput ? linkFieldInput.value.trim() : '';
+            let licenseDocumentUpload;
 
             if (verificationMethod === 'LINK') {
                 if (!licenseDocumentLink) {

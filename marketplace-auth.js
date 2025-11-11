@@ -14,6 +14,9 @@
       whatsapp: '+2347012345678',
       password: 'Demo1234!',
       plan: '12-month',
+      category: 'Tech & gadgets',
+      website: 'https://dewissonmarket.ng',
+      city: 'Port Harcourt',
       createdAt: new Date().toISOString(),
     },
   ];
@@ -72,7 +75,10 @@
       instagram: payload.instagram?.trim() || '',
       whatsapp: payload.whatsapp?.trim() || '',
       password: payload.password,
-      plan: payload.plan || '3-month',
+      plan: payload.plan || 'PENDING_SELECTION',
+      category: payload.category || 'general',
+      website: payload.website || '',
+      city: payload.city || '',
       createdAt: new Date().toISOString(),
     };
     merchants.push(record);

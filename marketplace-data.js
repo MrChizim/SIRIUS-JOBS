@@ -104,6 +104,31 @@
         { type: 'image', url: 'https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=900&q=80' },
       ],
     },
+    {
+      id: 'veloire-hair',
+      order: 5,
+      name: 'Veloire Hair',
+      owner: 'Veloire Studio',
+      headline: 'Custom wigs, revamps & premium hair bundles',
+      summary: 'Handmade units, revamp services and curated bundles for clients in the UK and Nigeria.',
+      location: 'Birmingham, UK • Ships worldwide',
+      delivery: 'UK-wide courier dispatch from Birmingham studio plus international shipping on request.',
+      whatsapp: '+447404335619',
+      instagram: 'https://www.instagram.com/veloire_hair?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==',
+      highlights: [
+        'Custom machine and hand-stitched wig units',
+        'Wig laundry, revamp, colouring and styling packages',
+        'Raw and luxury bundles sourced from verified suppliers',
+      ],
+      hero: false,
+      categories: ['Beauty & Wellness'],
+      logoUrl: '',
+      media: [
+        { type: 'image', url: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80' },
+        { type: 'image', url: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80' },
+        { type: 'image', url: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=900&q=80' },
+      ],
+    },
   ];
 
   const HERO_FALLBACK_ID = 'dewiss';
