@@ -9,6 +9,8 @@
       order: 1,
       name: 'Dewiss Gadget Hub',
       owner: 'Dewiss Operations',
+      ownerEmail: '',
+      ownerMerchantId: '',
       headline: 'Phones, laptops & premium gadgets you can trust',
       summary: 'Same-day dispatch of phones, laptops, consoles and accessories with diagnostics support and trade-in options.',
       location: 'Port Harcourt • Nationwide delivery',
@@ -34,6 +36,8 @@
       order: 2,
       name: 'Glyts Paints',
       owner: 'Glyts Team',
+      ownerEmail: '',
+      ownerMerchantId: '',
       headline: 'Decorative & protective coatings for every surface',
       summary: 'Premium interior/exterior, marine and specialty coatings with colour lab support and certified applicators.',
       location: 'Port Harcourt • Delivers nationwide',
@@ -59,6 +63,8 @@
       order: 3,
       name: 'De Eminent Eatery',
       owner: 'Glyts Eats',
+      ownerEmail: '',
+      ownerMerchantId: '',
       headline: 'Shawarma, pizza, pastries & outdoor catering',
       summary: 'Quick-service meals, corporate catering and bakery delights with delivery within Port Harcourt and pickup hubs.',
       location: 'Port Harcourt • Delivery on request nationwide',
@@ -84,6 +90,8 @@
       order: 4,
       name: 'Izreal Palm Rich',
       owner: 'Isreal Okwu',
+      ownerEmail: '',
+      ownerMerchantId: '',
       headline: 'Cold-pressed palm oil, palm kernel oil & allied products',
       summary: 'Premium palm produce sourced from Imo State, filtered twice for purity and packaged for households, retailers and export clients.',
       location: 'Imo State • Nationwide fulfilment',
@@ -109,6 +117,8 @@
       order: 5,
       name: 'Veloire Hair',
       owner: 'Veloire Studio',
+      ownerEmail: '',
+      ownerMerchantId: '',
       headline: 'Custom wigs, revamps & premium hair bundles',
       summary: 'Handmade units, revamp services and curated bundles for clients in the UK and Nigeria.',
       location: 'Birmingham, UK • Ships worldwide',
@@ -210,6 +220,8 @@
     vendor.whatsappLink = buildWhatsAppLink(vendor.whatsapp);
     vendor.categories = Array.isArray(vendor.categories) ? [...vendor.categories] : [];
     vendor.owner = vendor.owner?.trim() || '';
+    vendor.ownerEmail = vendor.ownerEmail?.toString().trim().toLowerCase() || '';
+    vendor.ownerMerchantId = vendor.ownerMerchantId?.toString().trim() || '';
     vendor.headline = vendor.headline?.trim() || '';
     vendor.summary = vendor.summary?.trim() || '';
     vendor.location = vendor.location?.trim() || '';

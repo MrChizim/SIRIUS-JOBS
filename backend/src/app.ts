@@ -14,7 +14,7 @@ import paymentsRouter from './routes/payments.js';
 import dashboardRouter from './routes/dashboard.js';
 import alertsRouter from './routes/alerts.js';
 import authRouter from './routes/auth.js';
-import marketplaceRouter from './routes/marketplace.js';
+import marketplaceRouter, { publicMarketplaceRouter } from './routes/marketplace.js';
 import consultationProfessionalsRouter from './routes/consultation-professionals.js';
 import consultationPaymentRouter from './routes/consultation-payment.js';
 import consultationSessionsRouter from './routes/consultation-sessions.js';
@@ -66,6 +66,8 @@ app.use('/api/alerts', alertsRouter);
 // Authentication Routes
 app.use('/api/auth', authRouter);
 app.use('/api/marketplace', marketplaceRouter);
+app.use('/api/merchants', marketplaceRouter);
+app.use('/api/public', publicMarketplaceRouter);
 
 // Consultation Routes
 app.use('/api/consultation', consultationRegisterRouter);

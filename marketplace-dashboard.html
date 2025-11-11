@@ -114,6 +114,30 @@
 
         <!-- MAIN CONTENT -->
         <section class="space-y-8">
+          <!-- PLAN & BILLING -->
+          <div class="bg-white border-2 border-gray-100 rounded-3xl shadow-xl p-8 md:p-10">
+            <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between mb-8">
+              <div>
+                <p class="text-xs font-bold text-primary/80 uppercase tracking-[0.25em] mb-2">Plan & Billing</p>
+                <h2 class="text-2xl font-black text-gray-900">Pick a visibility plan</h2>
+                <p class="text-sm text-gray-600" id="planStatusLabel">Loading plan status…</p>
+              </div>
+              <div class="text-sm text-gray-500 bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 max-w-sm">
+                Paystack checkout is rolling out shortly. Select a plan now and our team will send the payment link to your email.
+              </div>
+            </div>
+
+            <div class="grid gap-6 md:grid-cols-3" id="planCards"></div>
+
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-8">
+              <button type="button" id="activatePlanBtn" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 disabled:opacity-60 disabled:cursor-not-allowed" disabled>
+                <i data-feather="credit-card" class="w-4 h-4"></i>
+                Activate Selected Plan
+              </button>
+              <p id="planMessage" class="text-sm text-gray-500 md:text-right">Select a plan to enable payment instructions.</p>
+            </div>
+          </div>
+
           <!-- EDIT FORM -->
           <div class="bg-white border-2 border-gray-100 rounded-3xl shadow-xl p-8 md:p-10">
             <div class="mb-8">
@@ -354,10 +378,47 @@
         return;
       }
 
+      const PLAN_OPTIONS = [
+        {
+          id: '3-month',
+          label: '3 Month Spotlight',
+          price: '₦35,000',
+          cycle: 'billed every 3 months',
+          perks: [
+            'Featured on marketplace homepage hero queue',
+            'Live analytics dashboard access',
+            'WhatsApp and Instagram call-to-action buttons',
+          ],
+        },
+        {
+          id: '6-month',
+          label: '6 Month Growth',
+          price: '₦60,000',
+          cycle: 'billed every 6 months',
+          perks: [
+            'Everything in 3 month plan',
+            'Priority hero consideration',
+            'Quarterly performance review session',
+          ],
+        },
+        {
+          id: '12-month',
+          label: '12 Month Partner',
+          price: '₦100,000',
+          cycle: 'billed every 12 months',
+          perks: [
+            'Always-on hero eligibility',
+            'Custom campaign slots with Sirius',
+            'Dedicated merchant success manager',
+          ],
+        },
+      ];
+
       let vendors = [];
       let activeVendor = null;
       let currentMerchant = null;
       let logoDataUrl = '';
+      let selectedPlan = 'PENDING_SELECTION';
 
       const vendorListEl = document.getElementById('vendorList');
       const previewEl = document.getElementById('previewCard');
@@ -375,6 +436,10 @@
       const analyticsWhatsappEl = document.getElementById('analyticsWhatsapp');
       const analyticsInstagramEl = document.getElementById('analyticsInstagram');
       const analyticsTotalEl = document.getElementById('analyticsTotalClicks');
+      const planCardsEl = document.getElementById('planCards');
+      const planStatusLabel = document.getElementById('planStatusLabel');
+      const activatePlanBtn = document.getElementById('activatePlanBtn');
+      const planMessageEl = document.getElementById('planMessage');
 
       logoutBtn?.addEventListener('click', () => {
         localStorage.removeItem(SESSION_KEY);
@@ -430,6 +495,125 @@
         if (digits.startsWith('234')) return `https://wa.me/${digits}`;
         if (digits.startsWith('0')) return `https://wa.me/234${digits.slice(1)}`;
         return `https://wa.me/${digits}`;
+      }
+
+      function formatPlanLabel(planId) {
+        if (planId === 'PENDING_SELECTION') return 'No plan selected';
+        const plan = PLAN_OPTIONS.find(option => option.id === planId);
+        return plan ? plan.label : planId;
+      }
+
+      function syncPlanButtonState() {
+        if (!activatePlanBtn) return;
+        const currentPlan = currentMerchant?.plan || 'PENDING_SELECTION';
+        const canActivate = Boolean(selectedPlan && selectedPlan !== currentPlan && selectedPlan !== 'PENDING_SELECTION');
+        activatePlanBtn.disabled = !canActivate;
+      }
+
+      function updatePlanStatus() {
+        if (!planStatusLabel) return;
+        const currentPlan = currentMerchant?.plan || 'PENDING_SELECTION';
+        if (currentPlan === 'PENDING_SELECTION') {
+          planStatusLabel.textContent = 'No active plan yet. Pick a plan to receive payment instructions.';
+        } else {
+          planStatusLabel.textContent = `${formatPlanLabel(currentPlan)} is active. Upgrade anytime by picking another plan.`;
+        }
+        syncPlanButtonState();
+      }
+
+      function renderPlanCards(activePlan) {
+        if (!planCardsEl) return;
+        if (!PLAN_OPTIONS.some(option => option.id === selectedPlan)) {
+          selectedPlan = activePlan && PLAN_OPTIONS.some(option => option.id === activePlan) ? activePlan : PLAN_OPTIONS[0]?.id || 'PENDING_SELECTION';
+        }
+
+        planCardsEl.innerHTML = PLAN_OPTIONS.map(option => {
+          const isCurrent = option.id === activePlan;
+          const isSelected = option.id === selectedPlan;
+          const classes = isSelected
+            ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10'
+            : 'border-gray-100 bg-gray-50 hover:border-primary/40 hover:bg-white transition-all';
+          const badge = isCurrent ? '<span class="text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">Current plan</span>' : '';
+          return `
+            <button type="button" class="text-left w-full rounded-2xl border-2 p-5 ${classes}" data-plan-id="${option.id}">
+              <div class="flex items-start justify-between gap-3 mb-4">
+                <div>
+                  <p class="text-sm font-bold text-primary/70 uppercase tracking-wide">${option.label}</p>
+                  <p class="text-3xl font-black text-gray-900">${option.price}</p>
+                  <p class="text-xs text-gray-500">${option.cycle}</p>
+                </div>
+                ${badge}
+              </div>
+              <ul class="space-y-2 text-sm text-gray-600">
+                ${option.perks
+                  .map(perk => `<li class="flex items-start gap-2"><i data-feather="check" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i><span>${perk}</span></li>`)
+                  .join('')}
+              </ul>
+            </button>
+          `;
+        }).join('');
+
+        planCardsEl.querySelectorAll('[data-plan-id]').forEach(button => {
+          button.addEventListener('click', () => {
+            selectedPlan = button.getAttribute('data-plan-id') || selectedPlan;
+            if (planMessageEl) {
+              planMessageEl.textContent = 'Click “Activate selected plan” to receive the payment link.';
+              planMessageEl.className = 'text-sm text-gray-600 md:text-right';
+            }
+            renderPlanCards(activePlan);
+            feather.replace();
+            syncPlanButtonState();
+          });
+        });
+
+        feather.replace();
+        syncPlanButtonState();
+      }
+
+      async function handlePlanActivation() {
+        if (!selectedPlan || selectedPlan === 'PENDING_SELECTION' || !activatePlanBtn) return;
+        const currentPlan = currentMerchant?.plan || 'PENDING_SELECTION';
+        if (selectedPlan === currentPlan) return;
+
+        if (planMessageEl) {
+          planMessageEl.textContent = 'Saving plan selection…';
+          planMessageEl.className = 'text-sm text-gray-500 md:text-right';
+        }
+        activatePlanBtn.disabled = true;
+        activatePlanBtn.classList.add('cursor-wait');
+
+        try {
+          const response = await fetch('/api/merchants/plan', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${session.token}`,
+            },
+            body: JSON.stringify({ plan: selectedPlan }),
+          });
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data?.message || 'Unable to update plan.');
+          }
+
+          currentMerchant = { ...(currentMerchant || {}), plan: data.plan };
+          if (planMessageEl) {
+            planMessageEl.textContent = data.message || 'Plan saved! Watch your email for payment instructions.';
+            planMessageEl.className = 'text-sm font-semibold text-green-600 md:text-right';
+          }
+          renderPlanCards(currentMerchant.plan);
+          updatePlanStatus();
+          const toast = window.SiriusUI?.showToast;
+          if (toast) toast('Plan updated successfully.', 'success');
+        } catch (error) {
+          if (planMessageEl) {
+            planMessageEl.textContent = error.message || 'Unable to save plan right now.';
+            planMessageEl.className = 'text-sm font-semibold text-red-600 md:text-right';
+          }
+        } finally {
+          activatePlanBtn.classList.remove('cursor-wait');
+          syncPlanButtonState();
+        }
       }
 
       function updateAnalyticsSummary(data) {
@@ -732,9 +916,14 @@
         }
       });
 
+      activatePlanBtn?.addEventListener('click', handlePlanActivation);
+
       async function bootstrapDashboard() {
         try {
           currentMerchant = await fetchCurrentMerchant();
+          selectedPlan = currentMerchant?.plan && currentMerchant.plan !== 'PENDING_SELECTION' ? currentMerchant.plan : selectedPlan;
+          renderPlanCards(currentMerchant?.plan || 'PENDING_SELECTION');
+          updatePlanStatus();
           ensureMerchantVendor();
           const params = new URLSearchParams(window.location.search);
           const requestedVendor = params.get('vendor');

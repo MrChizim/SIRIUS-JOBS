@@ -374,6 +374,7 @@ model Merchant {
   lastLoginIp        String?
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
+  listings           MarketplaceListing[]
 }
 
 model MarketplaceAnalytics {
@@ -385,4 +386,27 @@ model MarketplaceAnalytics {
   lastEventAt     DateTime?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+}
+
+model MarketplaceListing {
+  id          String   @id @default(cuid())
+  merchantId  String
+  merchant    Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  businessName String
+  owner       String?
+  ownerEmail  String?
+  description  String
+  location     String
+  category     String
+  images       String[] @default([])
+  headline     String?
+  delivery     String?
+  highlights   String[] @default([])
+  whatsapp     String?
+  instagram    String?
+  hero         Boolean  @default(false)
+  logoUrl      String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
