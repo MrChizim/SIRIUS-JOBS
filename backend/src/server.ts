@@ -1,12 +1,12 @@
 import http from 'http';
 import { Server } from 'socket.io';
-import app from './app.js';
-import { events } from './services/event-bus.js';
-import { startLicenseRecheckWorker, primeLicenseQueueFromDatabase } from './services/license-recheck-queue.js';
-import { connectMongo } from './config/mongo.js';
-import { verifyClientSessionToken } from './utils/consultationUtils.js';
-import { ConsultationSession } from './models/ConsultationSession.js';
-import { Message } from './models/Message.js';
+import app from './app';
+import { events } from './services/event-bus';
+import { startLicenseRecheckWorker, primeLicenseQueueFromDatabase } from './services/license-recheck-queue';
+import { connectMongo } from './config/mongo';
+import { verifyClientSessionToken } from './utils/consultationUtils';
+import { ConsultationSession } from './models/ConsultationSession';
+import { Message } from './models/Message';
 
 const port = Number(process.env.PORT ?? 4000);
 async function bootstrap() {
