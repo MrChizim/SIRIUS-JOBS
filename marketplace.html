@@ -192,19 +192,58 @@
         </a>
       </div>
       <div class="grid gap-4 md:grid-cols-4 sm:grid-cols-2">
-        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-4"><h3 class="text-sm font-black text-gray-900">Tech & Gadgets</h3><p class="text-xs text-gray-600">Phones, laptops, smart accessories.</p></article>
-        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-4"><h3 class="text-sm font-black text-gray-900">Beauty & Wellness</h3><p class="text-xs text-gray-600">Spa, skincare labs, salon suppliers.</p></article>
-        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-4"><h3 class="text-sm font-black text-gray-900">Food & Catering</h3><p class="text-xs text-gray-600">Restaurants, grills, outdoor caterers.</p></article>
-        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-4"><h3 class="text-sm font-black text-gray-900">Agro & Commodities</h3><p class="text-xs text-gray-600">Palm produce, grains, farm inputs.</p></article>
-        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-4"><h3 class="text-sm font-black text-gray-900">Construction & Finishing</h3><p class="text-xs text-gray-600">Paints, sanitary ware, POP & lighting.</p></article>
-        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-4"><h3 class="text-sm font-black text-gray-900">Logistics & Mobility</h3><p class="text-xs text-gray-600">Dispatch bikes, fleets, auto dealers.</p></article>
-        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-4"><h3 class="text-sm font-black text-gray-900">Fashion & Apparel</h3><p class="text-xs text-gray-600">Ready-to-wear, sneakers, fabrics.</p></article>
-        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-4"><h3 class="text-sm font-black text-gray-900">Events & Lifestyle</h3><p class="text-xs text-gray-600">Decor, rentals, experiential gifting.</p></article>
-        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-4"><h3 class="text-sm font-black text-gray-900">Home & Interior</h3><p class="text-xs text-gray-600">Furniture, decor, lighting & scent brands.</p></article>
-        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-4"><h3 class="text-sm font-black text-gray-900">Renewable Energy & Solar</h3><p class="text-xs text-gray-600">Solar installers, inverter and battery dealers.</p></article>
-        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-4"><h3 class="text-sm font-black text-gray-900">Professional Services</h3><p class="text-xs text-gray-600">Accountants, legal, branding & consulting shops.</p></article>
-        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-4"><h3 class="text-sm font-black text-gray-900">Baby, Kids & Parenting</h3><p class="text-xs text-gray-600">Kids fashion, toys, educational supplies.</p></article>
-        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-4"><h3 class="text-sm font-black text-gray-900">Health & Pharma</h3><p class="text-xs text-gray-600">Pharmacies, diagnostics, wellness clinics.</p></article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Tech & Gadgets" tabindex="0" role="button" aria-label="View Tech & Gadgets merchants">
+          <h3 class="text-sm font-black text-gray-900">Tech & Gadgets</h3><p class="text-xs text-gray-600">Phones, laptops, smart accessories.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Beauty & Wellness" tabindex="0" role="button" aria-label="View Beauty & Wellness merchants">
+          <h3 class="text-sm font-black text-gray-900">Beauty & Wellness</h3><p class="text-xs text-gray-600">Spa, skincare labs, salon suppliers.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Food & Catering" tabindex="0" role="button" aria-label="View Food & Catering merchants">
+          <h3 class="text-sm font-black text-gray-900">Food & Catering</h3><p class="text-xs text-gray-600">Restaurants, grills, outdoor caterers.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Agro & Commodities" tabindex="0" role="button" aria-label="View Agro & Commodities merchants">
+          <h3 class="text-sm font-black text-gray-900">Agro & Commodities</h3><p class="text-xs text-gray-600">Palm produce, grains, farm inputs.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Construction & Finishing" tabindex="0" role="button" aria-label="View Construction & Finishing merchants">
+          <h3 class="text-sm font-black text-gray-900">Construction & Finishing</h3><p class="text-xs text-gray-600">Paints, sanitary ware, POP & lighting.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Logistics & Mobility" tabindex="0" role="button" aria-label="View Logistics & Mobility merchants">
+          <h3 class="text-sm font-black text-gray-900">Logistics & Mobility</h3><p class="text-xs text-gray-600">Dispatch bikes, fleets, auto dealers.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Fashion & Apparel" tabindex="0" role="button" aria-label="View Fashion & Apparel merchants">
+          <h3 class="text-sm font-black text-gray-900">Fashion & Apparel</h3><p class="text-xs text-gray-600">Ready-to-wear, sneakers, fabrics.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Events & Lifestyle" tabindex="0" role="button" aria-label="View Events & Lifestyle merchants">
+          <h3 class="text-sm font-black text-gray-900">Events & Lifestyle</h3><p class="text-xs text-gray-600">Decor, rentals, experiential gifting.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Home & Interior" tabindex="0" role="button" aria-label="View Home & Interior merchants">
+          <h3 class="text-sm font-black text-gray-900">Home & Interior</h3><p class="text-xs text-gray-600">Furniture, decor, lighting & scent brands.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Renewable Energy & Solar" tabindex="0" role="button" aria-label="View Renewable Energy & Solar merchants">
+          <h3 class="text-sm font-black text-gray-900">Renewable Energy & Solar</h3><p class="text-xs text-gray-600">Solar installers, inverter and battery dealers.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Professional Services" tabindex="0" role="button" aria-label="View Professional Services merchants">
+          <h3 class="text-sm font-black text-gray-900">Professional Services</h3><p class="text-xs text-gray-600">Accountants, legal, branding & consulting shops.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Baby, Kids & Parenting" tabindex="0" role="button" aria-label="View Baby, Kids & Parenting merchants">
+          <h3 class="text-sm font-black text-gray-900">Baby, Kids & Parenting</h3><p class="text-xs text-gray-600">Kids fashion, toys, educational supplies.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Health & Pharma" tabindex="0" role="button" aria-label="View Health & Pharma merchants">
+          <h3 class="text-sm font-black text-gray-900">Health & Pharma</h3><p class="text-xs text-gray-600">Pharmacies, diagnostics, wellness clinics.</p>
+        </article>
       </div>
     </div>
   </section>
@@ -300,44 +339,40 @@
 
   <!-- FOR MERCHANTS -->
   <section class="py-16 bg-gray-50 border-t border-gray-100">
-    <div class="container mx-auto px-4 lg:px-6 grid md:grid-cols-2 gap-10 items-center">
-      <div class="space-y-4">
+    <div class="container mx-auto px-4 lg:px-6 space-y-10">
+      <div class="space-y-4 text-center md:text-left max-w-3xl mx-auto">
         <p class="text-sm font-semibold text-primary uppercase tracking-[0.3em]">For merchants</p>
         <h3 class="text-3xl font-black text-gray-900">Want your business featured here?</h3>
         <p class="text-gray-600">Create an account, pick a plan, upload your media, and we publish your public profile so customers can find you on the marketplace wall.</p>
-        <ul class="space-y-3 text-sm text-gray-700">
-          <li class="flex gap-2"><i data-feather="check" class="w-4 h-4 text-primary"></i>Media upload support (photos, MP4 under 60s, price sheets)</li>
-          <li class="flex gap-2"><i data-feather="check" class="w-4 h-4 text-primary"></i>Sirius QA before your profile goes live</li>
-          <li class="flex gap-2"><i data-feather="check" class="w-4 h-4 text-primary"></i>Monthly performance recap + creative refresh</li>
-        </ul>
-        <div class="flex flex-col sm:flex-row gap-4">
-          <a href="marketplace-register.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-2xl">Register now</a>
-          <a href="https://wa.me/2347044470559" target="_blank" rel="noopener" class="inline-flex items-center gap-2 border border-primary text-primary font-bold px-6 py-3 rounded-2xl">
-            <i data-feather="message-circle" class="w-4 h-4"></i>
-            Talk to sales
-          </a>
-        </div>
       </div>
-      <div class="bg-white border border-gray-100 rounded-3xl p-6 shadow-lg space-y-5">
-        <p class="text-sm font-semibold text-gray-500 uppercase tracking-[0.3em]">Onboarding steps</p>
-        <ol class="space-y-4 text-sm text-gray-700">
-          <li class="flex gap-3">
-            <span class="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center">1</span>
-            Create a merchant account and verify your business contacts.
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-10 max-w-3xl mx-auto space-y-6 text-gray-700">
+        <div class="text-center space-y-2">
+          <p class="text-sm font-semibold text-primary uppercase tracking-[0.3em]">Onboarding steps</p>
+          <p class="text-base text-gray-600">Same playbook we use with every merchant.</p>
+        </div>
+        <ol class="space-y-5 text-sm text-gray-700">
+          <li class="flex gap-4 items-start">
+            <span class="w-10 h-10 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center">1</span>
+            <p><strong>Create your merchant login.</strong> Enter business name, email, and secure password.</p>
           </li>
-          <li class="flex gap-3">
-            <span class="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center">2</span>
-            Choose a 3, 6, or 12 month plan and pay to reserve your slot.
+          <li class="flex gap-4 items-start">
+            <span class="w-10 h-10 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center">2</span>
+            <p><strong>Choose your plan.</strong> Pick a 3, 6, or 12-month spot and lock it in from the dashboard.</p>
           </li>
-          <li class="flex gap-3">
-            <span class="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center">3</span>
-            Upload photos, videos, descriptions, and price notes from the dashboard.
+          <li class="flex gap-4 items-start">
+            <span class="w-10 h-10 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center">3</span>
+            <p><strong>Upload media + details.</strong> Photos, videos, price notes, WhatsApp and Instagram links.</p>
           </li>
-          <li class="flex gap-3">
-            <span class="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center">4</span>
-            Sirius publishes your profile so you can share the link or let us promote it.
+          <li class="flex gap-4 items-start">
+            <span class="w-10 h-10 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center">4</span>
+            <p><strong>Go live.</strong> Sirius publishes your public profile and promotes it across the marketplace.</p>
           </li>
         </ol>
+        <div class="text-center">
+          <a href="marketplace-register.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-full shadow-lg hover:bg-primary/90 transition">
+            Click here to register
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -566,6 +601,7 @@
     const vendorGrid = document.getElementById('vendorGrid');
     const searchInput = document.getElementById('search-merchants');
     const categoryFilter = document.getElementById('filter-category');
+    const categoryCards = document.querySelectorAll('[data-category-card]');
 
     function formatHighlights(highlights = []) {
       if (!highlights.length) return '';
@@ -649,6 +685,39 @@
       });
       renderVendors(filtered);
     }
+
+    function ensureCategoryOption(category) {
+      if (!categoryFilter || !category) return;
+      const exists = Array.from(categoryFilter.options).some(option => option.value === category);
+      if (!exists) {
+        const opt = document.createElement('option');
+        opt.value = category;
+        opt.textContent = category;
+        categoryFilter.appendChild(opt);
+      }
+    }
+
+    function handleCategoryCard(category) {
+      if (!category) return;
+      ensureCategoryOption(category);
+      if (categoryFilter) {
+        categoryFilter.value = category;
+      }
+      filterVendors();
+      document.getElementById('merchant-wall')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    categoryCards.forEach(card => {
+      const category = card.getAttribute('data-category-card');
+      ensureCategoryOption(category);
+      card.addEventListener('click', () => handleCategoryCard(category));
+      card.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          handleCategoryCard(category);
+        }
+      });
+    });
 
     searchInput?.addEventListener('input', debounce(filterVendors, 200));
     categoryFilter?.addEventListener('change', filterVendors);
