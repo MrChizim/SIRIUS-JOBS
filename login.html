@@ -54,7 +54,7 @@
         <div class="container mx-auto px-4 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <a href="index.html" class="flex items-center space-x-3 group">
-                    <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-16 w-auto drop-shadow-2xl transition-transform group-hover:scale-105" />
+                    <img src="images/logo.png" alt="SiriusJobs logo" class="h-16 w-auto drop-shadow-2xl transition-transform group-hover:scale-105" />
                     <span class="sr-only">SiriusJobs home</span>
                 </a>
                 <div class="hidden lg:flex items-center space-x-8">
@@ -331,14 +331,15 @@
 
                     try {
                         if (accountType === 'merchant') {
-                            const merchantResp = await fetch('/api/marketplace/login', {
+                            const merchantResp = await fetch('/api/merchants/login', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ email, password })
                             });
                             const merchantData = await merchantResp.json();
                             if (!merchantResp.ok) {
-                                throw new Error(merchantData.message || 'Merchant login failed');
+                                const errorMessage = merchantResp.status === 401 ? 'Invalid credentials' : (merchantData.message || 'Merchant login failed');
+                                throw new Error(errorMessage);
                             }
 
                             const marketplaceSession = {
@@ -424,7 +425,7 @@
 
                     } catch (error) {
                         console.error('Login error:', error);
-                        workerLoginMessage.textContent = error.message || 'Invalid email or password';
+                        workerLoginMessage.textContent = error.message || 'Invalid credentials';
                         workerLoginMessage.className = 'text-sm text-red-600';
                         workerLoginMessage.classList.remove('hidden');
 
@@ -545,7 +546,7 @@
     <div class="site-footer__inner container mx-auto px-4 lg:px-6">
       <div class="site-footer__grid">
         <div class="site-footer__brand">
-          <img src="assets/sirius-logo.svg" alt="Sirius logo">
+          <img src="images/logo.png" alt="Sirius logo">
           <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
           <div class="site-footer__social">
             <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>

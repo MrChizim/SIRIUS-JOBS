@@ -58,7 +58,7 @@
     <div class="container mx-auto px-4 lg:px-6">
       <div class="flex items-center justify-between h-16">
         <a href="index.html" class="flex items-center gap-3">
-          <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="w-16 h-16 drop-shadow-2xl" />
+          <img src="images/logo.png" alt="SiriusJobs logo" class="w-16 h-16 drop-shadow-2xl" />
           </a>
         <div class="hidden lg:flex items-center gap-6 text-sm font-semibold">
           <a href="services.html" class="text-gray-600 hover:text-primary">Services</a>
@@ -529,7 +529,7 @@
     <div class="site-footer__inner container mx-auto px-4 lg:px-6">
       <div class="site-footer__grid">
         <div class="site-footer__brand">
-          <img src="assets/sirius-logo.svg" alt="Sirius logo">
+          <img src="images/logo.png" alt="Sirius logo">
           <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
           <div class="site-footer__social">
             <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
@@ -589,54 +589,78 @@
     </div>
   </div>
 
-  <script src="marketplace-data.js"></script>
   <script>
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    menuBtn?.addEventListener('click', () => mobileMenu?.classList.toggle('hidden'));
+    (function () {
+      const vendorGrid = document.getElementById('vendorGrid');
+      const searchInput = document.getElementById('search-merchants');
+      const categoryFilter = document.getElementById('filter-category');
+      const categoryCards = document.querySelectorAll('[data-category-card]');
+      let vendors = [];
 
-    const marketplace = window.SiriusMarketplace || { loadVendors: () => [] };
-    const vendors = marketplace.loadVendors();
-
-    const vendorGrid = document.getElementById('vendorGrid');
-    const searchInput = document.getElementById('search-merchants');
-    const categoryFilter = document.getElementById('filter-category');
-    const categoryCards = document.querySelectorAll('[data-category-card]');
-
-    function formatHighlights(highlights = []) {
-      if (!highlights.length) return '';
-      return `<ul class="space-y-2 mt-4 text-sm text-gray-700">${highlights
-        .map(item => `<li class="flex gap-2"><i data-feather="check" class="w-4 h-4 text-primary"></i><span>${item}</span></li>`)
-        .join('')}</ul>`;
-    }
-
-    function primaryMedia(vendor) {
-      const media = vendor.media || [];
-      if (!media.length) return '';
-      const first = media.find(item => item.type === 'image') || media[0];
-      return first?.thumbnail || first?.url || '';
-    }
-
-    function renderVendorCard(vendor) {
-      const mediaUrl = primaryMedia(vendor);
-      const bgStyle = mediaUrl ? `style="background-image:url('${mediaUrl}');"` : '';
-      const heroBadge = vendor.hero
-        ? '<span class="absolute top-4 right-4 bg-white text-primary text-xs font-black px-3 py-1 rounded-full shadow">Featured</span>'
-        : '';
-      const socialChunks = [];
-      if (vendor.whatsappLink) {
-        socialChunks.push(
-          `<a href="${vendor.whatsappLink}" target="_blank" rel="noopener" class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 text-white font-bold px-4 py-2.5 rounded-2xl shadow" style="background-color:#25D366" data-vendor-social="whatsapp" data-vendor="${vendor.id}"><i data-feather="message-circle" class="w-4 h-4"></i>WhatsApp</a>`,
-        );
+      function buildWhatsAppLink(phone) {
+        if (!phone) return '';
+        const digits = phone.replace(/\D/g, '');
+        if (!digits) return '';
+        if (digits.startsWith('0')) return `https://wa.me/234${digits.slice(1)}`;
+        if (digits.startsWith('234')) return `https://wa.me/${digits}`;
+        return `https://wa.me/${digits}`;
       }
-      if (vendor.instagram) {
-        socialChunks.push(
-          `<a href="${vendor.instagram}" target="_blank" rel="noopener" class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 text-white font-bold px-4 py-2.5 rounded-2xl shadow hover:scale-[1.02]" style="background-color:#F56040" data-vendor-social="instagram" data-vendor="${vendor.id}"><i data-feather="instagram" class="w-4 h-4"></i>Instagram</a>`,
-        );
-      }
-      const socialButtons = socialChunks.join('');
 
-      return `
+      function normaliseListing(listing) {
+        const highlights = Array.isArray(listing.highlights) ? listing.highlights : [];
+        const images = Array.isArray(listing.images) ? listing.images : [];
+        return {
+          id: listing.id,
+          name: listing.businessName,
+          owner: listing.owner,
+          location: listing.location,
+          summary: listing.description || '',
+          headline: listing.headline,
+          delivery: listing.delivery,
+          highlights,
+          categories: listing.category ? [listing.category] : [],
+          instagram: listing.instagram,
+          whatsapp: listing.whatsapp,
+          whatsappLink: buildWhatsAppLink(listing.whatsapp),
+          hero: Boolean(listing.hero),
+          media: images.map(url => ({ type: 'image', url, thumbnail: url })),
+        };
+      }
+
+      function formatHighlights(highlights = []) {
+        if (!highlights.length) return '';
+        return `<ul class="space-y-2 text-sm text-gray-700 mt-3">${highlights
+          .map(item => `<li class="flex gap-2"><i data-feather="check" class="w-4 h-4 text-primary"></i><span>${item}</span></li>`)
+          .join('')}</ul>`;
+      }
+
+      function primaryMedia(vendor) {
+        const media = vendor.media || [];
+        if (!media.length) return '';
+        const first = media.find(item => item.type === 'image') || media[0];
+        return first?.thumbnail || first?.url || '';
+      }
+
+      function renderVendorCard(vendor) {
+        const mediaUrl = primaryMedia(vendor);
+        const bgStyle = mediaUrl ? `style="background-image:url('${mediaUrl}');"` : '';
+        const heroBadge = vendor.hero
+          ? '<span class="absolute top-4 right-4 bg-white text-primary text-xs font-black px-3 py-1 rounded-full shadow">Featured</span>'
+          : '';
+        const socialChunks = [];
+        if (vendor.whatsappLink) {
+          socialChunks.push(
+            `<a href="${vendor.whatsappLink}" target="_blank" rel="noopener" class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 text-white font-bold px-4 py-2.5 rounded-2xl shadow" style="background-color:#25D366" data-vendor-social="whatsapp" data-vendor="${vendor.id}"><i data-feather="message-circle" class="w-4 h-4"></i>WhatsApp</a>`,
+          );
+        }
+        if (vendor.instagram) {
+          socialChunks.push(
+            `<a href="${vendor.instagram}" target="_blank" rel="noopener" class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 text-white font-bold px-4 py-2.5 rounded-2xl shadow hover:scale-[1.02]" style="background-color:#F56040" data-vendor-social="instagram" data-vendor="${vendor.id}"><i data-feather="instagram" class="w-4 h-4"></i>Instagram</a>`,
+          );
+        }
+        const socialButtons = socialChunks.join('');
+
+        return `
         <article class="merchant-card bg-white border border-gray-100 rounded-3xl overflow-hidden flex flex-col">
           <div class="relative h-48 bg-gray-200 bg-cover bg-center" ${bgStyle}>
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -659,224 +683,95 @@
           </div>
         </article>
       `;
-    }
-
-    function renderVendors(list) {
-      if (!vendorGrid) return;
-      if (!list.length) {
-        vendorGrid.innerHTML = '<p class="text-center text-gray-500 col-span-full">No merchants match your filters yet.</p>';
-        return;
       }
-      vendorGrid.innerHTML = list.map(renderVendorCard).join('');
-      feather.replace();
-    }
 
-    renderVendors(vendors);
-
-    function filterVendors() {
-      const query = searchInput?.value?.toLowerCase() || '';
-      const category = categoryFilter?.value || '';
-      const filtered = vendors.filter(v => {
-        const matchesQuery = [v.name, v.summary, v.headline, v.location, ...(v.categories || [])]
-          .filter(Boolean)
-          .some(field => field.toLowerCase().includes(query));
-        const matchesCategory = category ? (v.categories || []).includes(category) : true;
-        return matchesQuery && matchesCategory;
-      });
-      renderVendors(filtered);
-    }
-
-    function ensureCategoryOption(category) {
-      if (!categoryFilter || !category) return;
-      const exists = Array.from(categoryFilter.options).some(option => option.value === category);
-      if (!exists) {
-        const opt = document.createElement('option');
-        opt.value = category;
-        opt.textContent = category;
-        categoryFilter.appendChild(opt);
-      }
-    }
-
-    function handleCategoryCard(category) {
-      if (!category) return;
-      ensureCategoryOption(category);
-      if (categoryFilter) {
-        categoryFilter.value = category;
-      }
-      filterVendors();
-      document.getElementById('merchant-wall')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    categoryCards.forEach(card => {
-      const category = card.getAttribute('data-category-card');
-      ensureCategoryOption(category);
-      card.addEventListener('click', () => handleCategoryCard(category));
-      card.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          handleCategoryCard(category);
+      function renderVendors(list) {
+        if (!vendorGrid) return;
+        if (!list.length) {
+          vendorGrid.innerHTML = '<p class="text-center text-gray-500 col-span-full">No merchants match your filters yet.</p>';
+          return;
         }
-      });
-    });
-
-    searchInput?.addEventListener('input', debounce(filterVendors, 200));
-    categoryFilter?.addEventListener('change', filterVendors);
-
-    function debounce(fn, delay) {
-      let timeout;
-      return (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => fn.apply(null, args), delay);
-      };
-    }
-
-    // Modal logic
-    const vendorModal = document.getElementById('vendorModal');
-    const vendorModalContent = document.getElementById('vendorModalContent');
-    const closeVendorModalBtn = document.getElementById('closeVendorModal');
-
-    function buildMediaMarkup(item, isThumb = false) {
-      if (!item) return '';
-      if (item.type === 'video') {
-        return isThumb
-          ? `<div class="aspect-square rounded-2xl bg-gray-900 text-white flex items-center justify-center">VID</div>`
-          : `<video src="${item.url}" controls class="w-full h-full rounded-2xl bg-black"></video>`;
+        vendorGrid.innerHTML = list.map(renderVendorCard).join('');
+        feather.replace();
       }
-      return `<img src="${item.url}" alt="Merchant media" class="w-full h-full object-cover rounded-2xl" />`;
-    }
 
-    function trackMarketplaceEvent(action, vendorId) {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: 'marketplace_interaction',
-        action,
-        vendorId,
-        timestamp: Date.now(),
-      });
-
-      if (!vendorId) return;
-
-      const eventMap = {
-        'view-profile': 'PROFILE_VIEW',
-        'social-whatsapp': 'WHATSAPP_CLICK',
-        'social-instagram': 'INSTAGRAM_CLICK',
-      };
-
-      const eventType = eventMap[action];
-      if (!eventType) return;
-
-      try {
-        fetch('/api/marketplace/analytics/event', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ vendorId, eventType }),
-          keepalive: true,
-        }).catch(() => {});
-      } catch (error) {
-        // Swallow errors – analytics shouldn't block UX
+      async function loadListings() {
+        if (!vendorGrid) return;
+        vendorGrid.innerHTML = '<p class="text-center text-gray-500 col-span-full">Loading marketplace listings...</p>';
+        try {
+          const response = await fetch('/api/public/listings');
+          if (!response.ok) throw new Error('Request failed');
+          const data = await response.json();
+          vendors = (data.listings || []).map(normaliseListing);
+          if (!vendors.length) {
+            vendorGrid.innerHTML = '<p class="text-center text-gray-500 col-span-full">Marketplace listings will appear here soon.</p>';
+            return;
+          }
+          const uniqueCategories = new Set(vendors.flatMap(v => v.categories || []));
+          uniqueCategories.forEach(category => ensureCategoryOption(category));
+          renderVendors(vendors);
+        } catch (error) {
+          console.error('Unable to load listings', error);
+          vendorGrid.innerHTML = '<p class="text-center text-gray-500 col-span-full">Unable to load marketplace listings right now.</p>';
+        }
       }
-    }
 
-    function openVendorModal(vendor) {
-      if (!vendor) return;
-      trackMarketplaceEvent('view-profile', vendor.id);
-      const media = vendor.media || [];
-      const mainMedia = media[0];
-      vendorModalContent.innerHTML = `
-        <div class="grid md:grid-cols-[2fr_1fr] gap-6">
-          <div>
-            <div class="aspect-video bg-gray-100 rounded-3xl overflow-hidden" data-media-main>
-              ${mainMedia ? buildMediaMarkup(mainMedia) : '<div class="w-full h-full flex items-center justify-center text-gray-400 text-sm">Merchant has not uploaded media yet.</div>'}
-            </div>
-            ${media.length > 1
-              ? `<div class="grid grid-cols-4 gap-3 mt-4">
-                  ${media
-                    .map(
-                      (item, index) => `
-                        <button class="border-2 border-transparent rounded-2xl overflow-hidden" data-media-thumb="${index}">
-                          <div class="aspect-square overflow-hidden">${buildMediaMarkup(item, true)}</div>
-                        </button>
-                      `,
-                    )
-                    .join('')}
-                </div>`
-              : ''}
-          </div>
-          <div class="space-y-4">
-            <div>
-              <p class="text-xs uppercase tracking-[0.3em] text-primary">${vendor.categories?.join(' • ') || 'Marketplace Merchant'}</p>
-              <h3 class="text-2xl font-black text-gray-900">${vendor.name}</h3>
-              <p class="text-sm text-gray-600">${vendor.location || ''}</p>
-            </div>
-            <p class="text-sm text-gray-700">${vendor.summary || vendor.headline || ''}</p>
-            ${formatHighlights(vendor.highlights)}
-            ${vendor.delivery ? `<p class="text-sm font-semibold text-gray-700">${vendor.delivery}</p>` : ''}
-            <div class="flex flex-wrap gap-3 pt-2 border-t border-gray-200">
-              ${vendor.whatsappLink
-                ? `<a href="${vendor.whatsappLink}" target="_blank" rel="noopener" class="flex-1 inline-flex items-center justify-center gap-2 text-white font-bold px-4 py-3 rounded-2xl" style="background-color:#25D366">
-                    <i data-feather="message-circle" class="w-4 h-4"></i>WhatsApp ${vendor.whatsapp?.replace('+234', '+234 ')}
-                  </a>`
-                : ''}
-              ${vendor.instagram
-                ? `<a href="${vendor.instagram}" target="_blank" rel="noopener" class="flex-1 inline-flex items-center justify-center gap-2 text-white font-bold px-4 py-3 rounded-2xl" style="background-color:#F56040">
-                    <i data-feather="instagram" class="w-4 h-4"></i>Instagram
-                  </a>`
-                : ''}
-            </div>
-          </div>
-        </div>
-      `;
+      function filterVendors() {
+        const query = searchInput?.value?.toLowerCase() || '';
+        const category = categoryFilter?.value || '';
+        const filtered = vendors.filter(v => {
+          const matchesQuery = [v.name, v.summary, v.headline, v.location, ...(v.categories || [])]
+            .filter(Boolean)
+            .some(field => field.toLowerCase().includes(query));
+          const matchesCategory = category ? (v.categories || []).includes(category) : true;
+          return matchesQuery && matchesCategory;
+        });
+        renderVendors(filtered);
+      }
 
-      vendorModal.classList.remove('hidden');
-      document.body.classList.add('overflow-hidden');
-      feather.replace();
-      setupMediaThumbs(vendor);
-    }
+      function ensureCategoryOption(category) {
+        if (!categoryFilter || !category) return;
+        const exists = Array.from(categoryFilter.options).some(option => option.value === category);
+        if (!exists) {
+          const opt = document.createElement('option');
+          opt.value = category;
+          opt.textContent = category;
+          categoryFilter.appendChild(opt);
+        }
+      }
 
-    function setupMediaThumbs(vendor) {
-      const media = vendor.media || [];
-      const modal = vendorModalContent.closest('#vendorModal');
-      const mainContainer = vendorModalContent.querySelector('[data-media-main]');
-      modal.querySelectorAll('[data-media-thumb]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const index = Number(btn.getAttribute('data-media-thumb'));
-          modal.querySelectorAll('[data-media-thumb]').forEach(b => b.classList.remove('media-thumb-active'));
-          btn.classList.add('media-thumb-active');
-          const selected = media[index];
-          mainContainer.innerHTML = selected ? buildMediaMarkup(selected) : '';
-          feather.replace();
+      function handleCategoryCard(category) {
+        if (!category) return;
+        ensureCategoryOption(category);
+        if (categoryFilter) {
+          categoryFilter.value = category;
+        }
+        filterVendors();
+        document.getElementById('merchant-wall')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      categoryCards.forEach(card => {
+        const category = card.getAttribute('data-category-card');
+        card.addEventListener('click', () => handleCategoryCard(category));
+        card.addEventListener('keypress', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            handleCategoryCard(category);
+          }
         });
       });
-    }
 
-    function closeVendorModal() {
-      vendorModal?.classList.add('hidden');
-      document.body.classList.remove('overflow-hidden');
-    }
+      searchInput?.addEventListener('input', debounce(filterVendors, 200));
+      categoryFilter?.addEventListener('change', filterVendors);
 
-    closeVendorModalBtn?.addEventListener('click', closeVendorModal);
-    vendorModal?.addEventListener('click', e => {
-      if (e.target === vendorModal) closeVendorModal();
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && !vendorModal.classList.contains('hidden')) closeVendorModal();
-    });
-
-    document.addEventListener('click', e => {
-      const socialBtn = e.target.closest('[data-vendor-social]');
-      if (socialBtn) {
-        trackMarketplaceEvent(`social-${socialBtn.getAttribute('data-vendor-social')}`, socialBtn.getAttribute('data-vendor'));
+      function debounce(fn, delay) {
+        let timeout;
+        return (...args) => {
+          clearTimeout(timeout);
+          timeout = setTimeout(() => fn.apply(null, args), delay);
+        };
       }
 
-      const btn = e.target.closest('[data-vendor-profile]');
-      if (!btn) return;
-      const vendorId = btn.getAttribute('data-vendor-profile');
-      const vendor = vendors.find(v => v.id === vendorId);
-      openVendorModal(vendor);
-    });
-
-    window.addEventListener('load', () => feather.replace());
-  </script>
   <script src="assistant.js" defer></script>
   <script src="assets/site-shell.js" defer></script>
 </body>

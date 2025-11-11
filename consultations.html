@@ -76,7 +76,7 @@
             <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
                 <a href="index.html" class="flex items-center space-x-3 group">
-                    <img src="assets/sirius-logo.svg" alt="SiriusJobs logo" class="h-16 w-auto drop-shadow-2xl transition-transform group-hover:scale-105" />
+                    <img src="images/logo.png" alt="SiriusJobs logo" class="h-16 w-auto drop-shadow-2xl transition-transform group-hover:scale-105" />
                     <span class="sr-only">SiriusJobs home</span>
                 </a>
 
@@ -214,7 +214,7 @@
     <div class="site-footer__inner container mx-auto px-4 lg:px-6">
       <div class="site-footer__grid">
         <div class="site-footer__brand">
-          <img src="assets/sirius-logo.svg" alt="Sirius logo">
+          <img src="images/logo.png" alt="Sirius logo">
           <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
           <div class="site-footer__social">
             <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
@@ -266,6 +266,57 @@
         let allProfessionals = [];
         let currentFilter = 'all';
 
+        const fallbackProfessionals = [
+            {
+                _id: 'consult-aliyupokiman',
+                firstName: 'Aliyu',
+                lastName: 'Pokiman',
+                profession: 'LAWYER',
+                specialization: 'Property, contracts & SME compliance',
+                yearsOfExperience: 9,
+                totalSessions: 142,
+                totalReviews: 48,
+                averageRating: 4.9,
+                bio: 'Barrister Aliyu advises estate developers and SMEs on contracts, property closings and dispute resolution.'
+            },
+            {
+                _id: 'consult-joshuaogaraku',
+                firstName: 'Joshua',
+                lastName: 'Ogaraku',
+                profession: 'DOCTOR',
+                specialization: 'Family medicine & wellness planning',
+                yearsOfExperience: 11,
+                totalSessions: 188,
+                totalReviews: 61,
+                averageRating: 4.8,
+                bio: 'Dr. Joshua supports families with general consultations, follow-ups and personalised wellness plans.'
+            },
+            {
+                _id: 'consult-obinnachukwuocha',
+                firstName: 'Obinna',
+                lastName: 'Chukwuocha',
+                profession: 'DOCTOR',
+                specialization: 'Internal medicine & diagnostics',
+                yearsOfExperience: 13,
+                totalSessions: 205,
+                totalReviews: 74,
+                averageRating: 4.9,
+                bio: 'Dr. Obinna focuses on diagnostics, chronic care management and complex case reviews for adults.'
+            },
+            {
+                _id: 'consult-arthuriyanu',
+                firstName: 'Arthur Onishe',
+                lastName: 'Iyanu',
+                profession: 'DOCTOR',
+                specialization: 'Emergency & critical care',
+                yearsOfExperience: 12,
+                totalSessions: 176,
+                totalReviews: 58,
+                averageRating: 4.9,
+                bio: 'Dr. Arthur delivers urgent response support, clinic triage training and telehealth follow-ups.'
+            }
+        ];
+
         // Mobile menu toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -292,12 +343,13 @@
             try {
                 const response = await fetch(`${API_URL}/consultation/professionals`);
                 if (!response.ok) throw new Error('Failed to fetch professionals');
-                allProfessionals = await response.json();
+                const data = await response.json();
+                allProfessionals = Array.isArray(data) && data.length ? data : fallbackProfessionals;
                 renderProfessionals();
             } catch (error) {
                 console.error('Error fetching professionals:', error);
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('empty-state').classList.remove('hidden');
+                allProfessionals = fallbackProfessionals;
+                renderProfessionals();
             }
         }
 

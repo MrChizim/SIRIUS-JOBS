@@ -75,12 +75,11 @@
     <div class="container mx-auto px-4 lg:px-8">
       <div class="flex items-center justify-between h-20">
         <a href="index.html" class="flex items-center gap-3 group">
-          <img src="assets/sirius-logo.svg" alt="Sirius logo" class="h-16 w-auto drop-shadow-2xl group-hover:scale-105 transition-transform">
+          <img src="images/logo.png" alt="Sirius logo" class="h-16 w-auto drop-shadow-2xl group-hover:scale-105 transition-transform">
           <span class="sr-only">Sirius Jobs</span>
         </a>
         <div class="flex items-center gap-4 text-sm font-semibold text-slate-600">
           <a href="marketplace.html" class="hover:text-primary transition-colors">Marketplace</a>
-          <a href="contact.html" class="hover:text-primary transition-colors">Contact</a>
           <a href="login.html#merchant-login" class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-slate-200 hover:border-primary hover:text-primary transition-all">
             <i data-feather="log-in" class="w-4 h-4"></i>
             Merchant login
@@ -120,10 +119,6 @@
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border border-slate-200">
               <i data-feather="zap" class="w-4 h-4 text-primary"></i>
               Setup takes under five minutes
-            </div>
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border border-slate-200">
-              <i data-feather="shield" class="w-4 h-4 text-primary"></i>
-              Profiles reviewed before they go live
             </div>
           </div>
 
@@ -168,12 +163,22 @@
                 <label for="businessCategory" class="label">Business category</label>
                 <select id="businessCategory" name="businessCategory" class="input">
                   <option value="">Select category</option>
-                  <option value="Home & living">Home & living</option>
-                  <option value="Fashion & beauty">Fashion & beauty</option>
-                  <option value="Food & drinks">Food & drinks</option>
-                  <option value="Tech & gadgets">Tech & gadgets</option>
-                  <option value="Services">Professional services</option>
-                  <option value="Other">Other / Mixed</option>
+                  <option value="Tech & Gadgets">Tech & Gadgets</option>
+                  <option value="Beauty & Wellness">Beauty & Wellness</option>
+                  <option value="Food & Catering">Food & Catering</option>
+                  <option value="Agro & Commodities">Agro & Commodities</option>
+                  <option value="Food & Agriculture">Food & Agriculture</option>
+                  <option value="Construction & Finishing">Construction & Finishing</option>
+                  <option value="Home & Interior">Home & Interior</option>
+                  <option value="Fashion & Apparel">Fashion & Apparel</option>
+                  <option value="Events & Lifestyle">Events & Lifestyle</option>
+                  <option value="Logistics & Mobility">Logistics & Mobility</option>
+                  <option value="Renewable Energy & Solar">Renewable Energy & Solar</option>
+                  <option value="Professional Services">Professional Services</option>
+                  <option value="Surface Care">Surface Care</option>
+                  <option value="Baby, Kids & Parenting">Baby, Kids & Parenting</option>
+                  <option value="Health & Pharma">Health & Pharma</option>
+                  <option value="Other / Mixed">Other / Mixed</option>
                 </select>
               </div>
               <div>
@@ -225,7 +230,7 @@
     <div class="site-footer__inner container mx-auto px-4 lg:px-6">
       <div class="site-footer__grid">
         <div class="site-footer__brand">
-          <img src="assets/sirius-logo.svg" alt="Sirius logo">
+          <img src="images/logo.png" alt="Sirius logo">
           <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
           <div class="site-footer__social">
             <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
@@ -288,9 +293,8 @@
         });
       });
 
-      form.addEventListener('submit', event => {
+      form.addEventListener('submit', async event => {
         event.preventDefault();
-        if (!window.SiriusMarketplaceAuth) return;
         const submitBtn = form.querySelector('button[type="submit"]');
         const password = form.merchantPassword.value;
         const confirmPassword = form.merchantPasswordConfirm.value;
@@ -316,22 +320,40 @@
           businessName: form.businessName.value.trim(),
           email: form.merchantEmail.value.trim(),
           password,
-          whatsapp: '',
-          instagram: '',
           plan: 'PENDING_SELECTION',
-          category: form.businessCategory.value || 'Other',
+          contactName: '',
+          phone: '',
+          instagram: '',
+          whatsapp: '',
         };
 
         try {
-          const merchant = window.SiriusMarketplaceAuth.register(payload);
-          feedback.textContent = `Welcome ${merchant.businessName}! Redirecting to your dashboard...`;
-          feedback.classList.add('text-emerald-500');
+          const response = await fetch('/api/merchants/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.message || 'Unable to create merchant account right now.');
+          }
+
+          const marketplaceSession = {
+            merchantId: data.merchant?.id,
+            token: data.token,
+            merchant: data.merchant,
+            signedInAt: Date.now(),
+          };
+          localStorage.setItem('siriusMarketplaceSession', JSON.stringify(marketplaceSession));
+
+          feedback.textContent = 'Account created! Redirecting to your dashboard...';
+          feedback.className = 'text-sm text-center font-bold text-emerald-600';
           setTimeout(() => {
             window.location.href = 'marketplace-dashboard.html';
-          }, 900);
+          }, 800);
         } catch (error) {
           feedback.textContent = error.message || 'Unable to create merchant account right now.';
-          feedback.classList.add('text-red-500');
+          feedback.className = 'text-sm text-center font-bold text-red-500';
         } finally {
           submitBtn.disabled = false;
           submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
