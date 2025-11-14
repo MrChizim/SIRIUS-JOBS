@@ -349,314 +349,279 @@
 
   <!-- SCRIPTS -->
   <script>
-    // Mobile menu toggle
-    document.getElementById('menu-btn').addEventListener('click', function() {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
-    });
+    (function () {
+      const menuBtn = document.getElementById('menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+      }
 
-    // Feather icons
-    feather.replace();
-  </script>
+      function toggleModal(modal, open = true) {
+        if (!modal) return;
+        modal.classList.toggle('hidden', !open);
+        modal.classList.toggle('flex', open);
+      }
 
-  <script>
-    // ======= SAMPLE DATA =======
-    const artisans = [
-      { id:501, name:'Chinedu Nwakile', skill:'TV & Security Installations', category:'Home and property repairs', location:'Port Harcourt, Rivers', rating:4.9, reviews:48, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Chinedu+Nwakile', verified:true, subscriptionActive:true, bio:'Tv repair and install, CCTV install, DSTV install.', phone:'+2348038993888', whatsapp:'https://wa.me/2348038993888', email:'chinedu.nwakile@siriusjobs.ng' },
-      { id:502, name:'Favour Ifeajika', skill:'Hair & Beauty Specialist', category:'Hair and beauty care', location:'Port Harcourt, Rivers', rating:4.8, reviews:37, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Favour+Ifeajika', verified:true, subscriptionActive:true, bio:'Wig and bundle sales plus interior decoration support for glam studios.', phone:'+2348111072339', whatsapp:'https://wa.me/2348111072339', email:'favour.ifeajika@siriusjobs.ng' },
-      { id:503, name:'Gift Jude', skill:'Barber', category:'Hair and beauty care', location:'Port Harcourt, Rivers', rating:4.7, reviews:29, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Gift+Jude', verified:true, subscriptionActive:true, bio:'Precision cuts and grooming services for high-volume salons and private clients.', phone:'+2349077767108', whatsapp:'https://wa.me/2349077767108', email:'gift.jude@siriusjobs.ng' },
-      { id:504, name:'Alex Ekpeyong Effiok', skill:'Photographer', category:'Event and Lifestyle', location:'Port Harcourt, Rivers', rating:4.9, reviews:41, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Alex+Ekpeyong', verified:true, subscriptionActive:true, bio:'Event and lifestyle photographer for weddings, portraits and brand work.', phone:'+2349019664276', whatsapp:'https://wa.me/2349019664276', email:'alex.ekpeyong@siriusjobs.ng' },
-      { id:505, name:'Precious Joseph (Photoluxe Studio)', skill:'Photographer', category:'Event and Lifestyle', location:'Port Harcourt, Rivers', rating:5.0, reviews:54, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Precious+Joseph', verified:true, subscriptionActive:true, bio:'Studio and on-location photography, specializing in creative portraits.', phone:'+2349025454585', whatsapp:'https://wa.me/2349025454585', email:'precious.joseph@siriusjobs.ng' },
-      { id:506, name:'Kendrik Hair', skill:'Beauty Product Retailer', category:'Hair and beauty care', location:'Port Harcourt, Rivers', rating:4.8, reviews:33, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Kendrik+Hair', verified:true, subscriptionActive:true, bio:'Sell hair products, hairs, tripods, LED lights and hair care essentials.', phone:'+2347035882198', whatsapp:'https://wa.me/2347035882198', email:'kendrik.hair@siriusjobs.ng' },
-      { id:507, name:'Henry Ubong', skill:'Painter & Interior Finisher', category:'Home and property repairs', location:'Port Harcourt, Rivers', rating:4.7, reviews:31, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Henry+Ubong', verified:true, subscriptionActive:true, bio:'Painting, screeding and interior decoration for homes and offices.', phone:'+2348136852134', whatsapp:'https://wa.me/2348136852134', email:'henry.ubong@siriusjobs.ng' },
-      { id:508, name:'Glyts Paints', skill:'Painting & Catering', category:'Home and property repairs', location:'Port Harcourt, Rivers', rating:4.6, reviews:26, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Glyts+Paints', verified:true, subscriptionActive:true, bio:'Delivers painting projects and event catering for residential clients.', phone:'+2347039539167', whatsapp:'https://wa.me/2347039539167', email:'glyts.paints@siriusjobs.ng' },
-      { id:509, name:'Christian Orji', skill:'Driver & Electrician', category:'Home and property repairs', location:'Port Harcourt, Rivers', rating:4.8, reviews:35, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Christian+Orji', verified:true, subscriptionActive:true, bio:'Driver plus electrician handling conduit and surface wiring jobs.', phone:'+2347035763168', whatsapp:'https://wa.me/2347035763168', email:'christian.orji@siriusjobs.ng' },
-      { id:510, name:'Stanley GHMI', skill:'Architect', category:'Home and property repairs', location:'Port Harcourt, Rivers', rating:4.9, reviews:39, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Stanley+GHMI', verified:true, subscriptionActive:true, bio:'Architectural support for remodels, space planning and bespoke builds.', phone:'+2347069137201', whatsapp:'https://wa.me/2347069137201', email:'stanley.ghmi@siriusjobs.ng' },
-      { id:511, name:'Ufuoma Alice', skill:'Braider & Content Writer', category:'Hair and beauty care', location:'Port Harcourt, Rivers', rating:4.8, reviews:24, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Ufuoma+Alice', verified:true, subscriptionActive:true, bio:'Professional braider offering content writing for beauty brands.', phone:'+2348106732816', whatsapp:'https://wa.me/2348106732816', email:'ufuoma.alice@siriusjobs.ng' },
-      { id:512, name:'Emma Alloy Auto Mech Enterprises', skill:'Auto Mechanic', category:'Home and property repairs', location:'Port Harcourt, Rivers', rating:4.7, reviews:32, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Emma+Alloy', verified:true, subscriptionActive:true, bio:'Toyota, Mazda, Honda and Ford specialist for diagnostics and repairs.', phone:'+2348033171684', whatsapp:'https://wa.me/2348033171684', email:'emma.alloy@siriusjobs.ng' },
-      { id:513, name:'Destiny Uchendu', skill:'Print Specialist', category:'Printing', location:'Port Harcourt, Rivers', rating:4.6, reviews:28, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Destiny+Uchendu', verified:true, subscriptionActive:true, bio:'Prints flyers, complementary cards and marketing collateral.', phone:'+2348086680567', whatsapp:'https://wa.me/2348086680567', email:'destiny.uchendu@siriusjobs.ng' },
-      { id:514, name:'Engineer Michael Amaechi', skill:'Electrical & Cooling Engineer', category:'Home and property repairs', location:'Port Harcourt, Rivers', rating:4.9, reviews:46, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Michael+Amaechi', verified:true, subscriptionActive:true, bio:'Electrician plus cable installation, fridge and AC repairs.', phone:'+2348032555048', whatsapp:'https://wa.me/2348032555048', email:'michael.amaechi@siriusjobs.ng' },
-      { id:515, name:'Endurance Nwaturume', skill:'Generator Technician', category:'Home and property repairs', location:'Port Harcourt, Rivers', rating:4.7, reviews:30, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Endurance+Nwaturume', verified:true, subscriptionActive:true, bio:'Generator repair for homes, stores and small factories.', phone:'+2348066788837', whatsapp:'https://wa.me/2348066788837', email:'endurance.nwaturume@siriusjobs.ng' },
-      { id:516, name:'Clinton Ibuchim Rex', skill:'Furniture Maker', category:'Home and property repairs', location:'Port Harcourt, Rivers', rating:4.8, reviews:34, photo:'https://ui-avatars.com/api/?background=0056b3&color=fff&name=Clinton+Rex', verified:true, subscriptionActive:true, bio:'Custom furniture and fittings built for homes and storefronts.', phone:'+2349130566843', whatsapp:'https://wa.me/2349130566843', email:'clinton.rex@siriusjobs.ng' }
-    ];
+      const paModal = document.getElementById('paApplicationModal');
+      const openPaModalBtn = document.getElementById('paModalTrigger');
+      const closePaModalBtn = document.getElementById('closePaModal');
+      const paRequestForm = document.getElementById('paRequestForm');
+      const paApplyForm = document.getElementById('paApplyForm');
 
-    // Populate skill and location filters
-    const extraSkills = [
-      'Home Cleaning Specialist',
-      'Interior Designer',
-      'IT Support Specialist',
-      'Home Tutor',
-      'Personal Assistant (Day Hire)',
-      'Doctor Consultation (Affordable)',
-      'Lawyer Consultation (Affordable)'
-    ];
-    const skills = Array.from(new Set([...artisans.map(a => a.skill), ...extraSkills])).sort();
+      function openPaModal() {
+        toggleModal(paModal, true);
+        document.body.classList.add('overflow-hidden');
+      }
 
-    const locations = [
-      "Abia – Umuahia", "Adamawa – Yola", "Akwa Ibom – Uyo", "Anambra – Awka",
-      "Bauchi – Bauchi", "Bayelsa – Yenagoa", "Benue – Makurdi", "Borno – Maiduguri",
-      "Cross River – Calabar", "Delta – Asaba", "Ebonyi – Abakaliki", "Edo – Benin City",
-      "Ekiti – Ado-Ekiti", "Enugu – Enugu", "Gombe – Gombe", "Imo – Owerri",
-      "Jigawa – Dutse", "Kaduna – Kaduna", "Kano – Kano", "Katsina – Katsina",
-      "Kebbi – Birnin Kebbi", "Kogi – Lokoja", "Kwara – Ilorin", "Lagos – Ikeja",
-      "Nasarawa – Lafia", "Niger – Minna", "Ogun – Abeokuta", "Ondo – Akure",
-      "Osun – Osogbo", "Oyo – Ibadan", "Plateau – Jos", "Rivers – Port Harcourt",
-      "Sokoto – Sokoto", "Taraba – Jalingo", "Yobe – Damaturu", "Zamfara – Gusau",
-      "Federal Capital Territory – Abuja"
-    ];
+      function closePaModal() {
+        toggleModal(paModal, false);
+        document.body.classList.remove('overflow-hidden');
+      }
 
-    const categorySelect = document.getElementById('categoryFilter');
-    const skillSelect = document.getElementById('skillFilter');
-    const locSelect = document.getElementById('locationFilter');
-    const paModal = document.getElementById('paApplicationModal');
-    const openPaModalBtn = document.getElementById('paModalTrigger');
-    const closePaModalBtn = document.getElementById('closePaModal');
-    const paRequestForm = document.getElementById('paRequestForm');
-    const paApplyForm = document.getElementById('paApplyForm');
-
-    const categories = Array.from(new Set(artisans.map(a => a.category))).filter(Boolean).sort();
-
-    categories.forEach(c => {
-      const opt = document.createElement('option');
-      opt.value = c;
-      opt.textContent = c;
-      categorySelect.appendChild(opt);
-    });
-
-    skills.forEach(s => {
-      const opt = document.createElement('option');
-      opt.value = s;
-      opt.textContent = s;
-      skillSelect.appendChild(opt);
-    });
-
-    locations.forEach(l => {
-      const opt = document.createElement('option');
-      opt.value = l;
-      opt.textContent = l;
-      locSelect.appendChild(opt);
-    });
-
-    function openPaModal(){
-      paModal.classList.remove('hidden');
-      paModal.classList.add('flex');
-      document.body.classList.add('overflow-hidden');
-    }
-
-    function closePaModal(){
-      paModal.classList.remove('flex');
-      paModal.classList.add('hidden');
-      document.body.classList.remove('overflow-hidden');
-    }
-
-    if(openPaModalBtn){
-      openPaModalBtn.addEventListener('click', openPaModal);
-    }
-    if(closePaModalBtn){
-      closePaModalBtn.addEventListener('click', closePaModal);
-    }
-    if(paModal){
-      paModal.addEventListener('click', (event) => {
-        if(event.target === paModal){
+      openPaModalBtn?.addEventListener('click', openPaModal);
+      closePaModalBtn?.addEventListener('click', closePaModal);
+      paModal?.addEventListener('click', (event) => {
+        if (event.target === paModal) {
           closePaModal();
         }
       });
-    }
-
-    if(paRequestForm){
-      paRequestForm.addEventListener('submit', (event) => {
+      paRequestForm?.addEventListener('submit', (event) => {
         event.preventDefault();
-        paRequestForm.reset();
+        event.target.reset();
         closePaModal();
         alert('✅ Thank you! Our concierge team will reach out shortly with a day PA match.');
       });
-    }
-    if(paApplyForm){
-      paApplyForm.addEventListener('submit', (event) => {
+      paApplyForm?.addEventListener('submit', (event) => {
         event.preventDefault();
-        paApplyForm.reset();
+        event.target.reset();
         closePaModal();
         alert('🎉 Application received! We will review and contact you for upcoming PA assignments.');
       });
-    }
 
-    // Rendering logic
-    function renderArtisans(filter = {}) {
-      const grid = document.getElementById('artisanGrid');
-      grid.innerHTML = '';
-      const search = (filter.search||'').toLowerCase();
-      const category = filter.category || '';
-      const skill = filter.skill || '';
-      const location = filter.location || '';
-      const sort = filter.sort || 'relevance';
+      const consultationModal = document.getElementById('artisanModal');
+      const modalContent = document.getElementById('modalContent');
+      const modalClose = document.getElementById('modalClose');
+      const workerGrid = document.getElementById('artisanGrid');
+      const resultsCountText = document.getElementById('resultsCountText');
+      const searchInput = document.getElementById('searchInput');
+      const categorySelect = document.getElementById('categoryFilter');
+      const skillSelect = document.getElementById('skillFilter');
+      const locationSelect = document.getElementById('locationFilter');
+      const sortBy = document.getElementById('sortBy');
 
-      let list = artisans.filter(a => a.verified === true && a.subscriptionActive === true);
+      let artisans = [];
 
-      if (search) {
-        list = list.filter(a => (a.name + ' ' + a.skill).toLowerCase().includes(search));
+      const formatPhoneLink = (value) => {
+        if (!value) return '';
+        const digits = value.replace(/[^\d]/g, '');
+        return digits ? `https://wa.me/${digits}` : '';
+      };
+
+      function renderStars(rating) {
+        const full = Math.floor(rating);
+        let html = '';
+        for (let i = 0; i < 5; i += 1) {
+          if (i < full) {
+            html += '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.173c.969 0 1.371 1.24.588 1.81l-3.376 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118L10 15.347 6.409 18.75c-.785.57-1.84-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.415 9.093c-.783-.57-.38-1.81.588-1.81h4.173a1 1 0 00.95-.69L9.049 2.927z"/></svg>';
+          } else {
+            html += '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-300" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.173c.969 0 1.371 1.24.588 1.81l-3.376 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118L10 15.347 6.409 18.75c-.785.57-1.84-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.415 9.093c-.783-.57-.38-1.81.588-1.81h4.173a1 1 0 00.95-.69L9.049 2.927z"/></svg>';
+          }
+        }
+        return html;
       }
-      if (category) list = list.filter(a => a.category === category);
-      if (skill) list = list.filter(a => a.skill === skill);
-      if (location) list = list.filter(a => a.location === location);
 
-      if (sort === 'rating_desc') list.sort((x,y)=> y.rating - x.rating);
-      if (sort === 'reviews_desc') list.sort((x,y)=> y.reviews - x.reviews);
+      function mapWorker(worker) {
+        const name = worker.user?.name || 'Sirius Artisan';
+        const skills = Array.isArray(worker.skills) ? worker.skills : [];
+        const rating = Math.min(5, 3 + (skills.length || 1) * 0.25);
+        const reviews = Math.max(1, (skills.length || 1) * 4);
+        const primarySkill = skills[0] || worker.experience || 'General services';
+        const location = worker.location || worker.user?.location || 'Nigeria';
+        return {
+          id: worker.userId,
+          name,
+          skill: primarySkill,
+          category: worker.category || primarySkill,
+          location,
+          rating,
+          reviews,
+          photo: worker.profilePhoto || `https://ui-avatars.com/api/?background=0056b3&color=fff&name=${encodeURIComponent(name)}`,
+          verified: worker.subscription?.status === 'active',
+          subscriptionActive: worker.subscription?.status === 'active',
+          bio: worker.bio || worker.experience || 'Talented professional ready to help you.',
+          phone: worker.user?.phone,
+          whatsapp: worker.user?.whatsapp || formatPhoneLink(worker.user?.phone || ''),
+          email: worker.user?.email,
+          skills,
+        };
+      }
 
-      document.getElementById('resultsCountText').textContent = `${list.length} artisan(s) found`;
+      function populateSelect(select, label, values) {
+        if (!select) return;
+        const options = values.filter(Boolean).map((value) => `<option value="${value}">${value}</option>`).join('');
+        select.innerHTML = `<option value="">${label}</option>${options}`;
+      }
 
-      if (list.length === 0) {
-        grid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-16">
-          <i data-feather="search" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
-          <p class="text-lg font-bold">No verified artisans found for your filters.</p>
-        </div>`;
+      function populateFilters() {
+        const categories = Array.from(new Set(artisans.map((a) => a.category))).sort();
+        const skillSet = Array.from(new Set(artisans.flatMap((a) => a.skills))).sort();
+        const locations = Array.from(new Set(artisans.map((a) => a.location))).sort();
+        populateSelect(categorySelect, 'All Categories', categories);
+        populateSelect(skillSelect, 'All Services', skillSet);
+        populateSelect(locationSelect, 'All Locations', locations);
+      }
+
+      function renderArtisans(filter = {}) {
+        const { search = '', category = '', skill = '', location = '', sort = 'relevance' } = filter;
+        let list = artisans.filter((a) => a.subscriptionActive);
+        if (search) {
+          const query = search.toLowerCase();
+          list = list.filter((a) => `${a.name} ${a.skill} ${a.skills.join(' ')}`.toLowerCase().includes(query));
+        }
+        if (category) {
+          list = list.filter((a) => a.category.toLowerCase().includes(category.toLowerCase()));
+        }
+        if (skill) {
+          list = list.filter((a) => a.skills.some((s) => s.toLowerCase().includes(skill.toLowerCase())));
+        }
+        if (location) {
+          list = list.filter((a) => a.location.toLowerCase().includes(location.toLowerCase()));
+        }
+        if (sort === 'rating_desc') {
+          list.sort((a, b) => b.rating - a.rating);
+        } else if (sort === 'reviews_desc') {
+          list.sort((a, b) => b.reviews - a.reviews);
+        }
+        resultsCountText.textContent = `${list.length} artisan(s) found`;
+        if (!list.length) {
+          workerGrid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-16"><i data-feather="search" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i><p class="text-lg font-bold">No verified artisans found for your filters.</p></div>`;
+          feather.replace();
+          return;
+        }
+        const cards = list
+          .map((a) => {
+            const consultationTag = /doctor|lawyer|medical|legal/i.test(a.category)
+              ? '<span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full">From ₦3,000</span>'
+              : '';
+            return `
+            <div class="worker-card bg-white rounded-3xl shadow-xl p-6 border-2 border-gray-100 hover:border-primary">
+              <div class="flex gap-4 mb-4">
+                <img src="${a.photo}" alt="${a.name}" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0" onerror="this.src='https://via.placeholder.com/140x140?text=Photo'"/>
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-lg font-black text-gray-900 mb-1 truncate">${a.name}</h3>
+                  <p class="text-sm text-gray-600 font-medium mb-2">${a.skill}</p>
+                  <div class="flex items-center gap-2 text-xs text-gray-500">
+                    <i data-feather="map-pin" class="w-3.5 h-3.5"></i>
+                    <span class="truncate">${a.location}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <div class="flex items-center text-yellow-400">${renderStars(a.rating)}</div>
+                  <span class="text-sm font-bold text-gray-700">${a.rating.toFixed(1)}</span>
+                  <span class="text-xs text-gray-500">(${a.reviews})</span>
+                </div>
+                ${a.verified ? '<span class="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full"><i data-feather="check-circle" class="w-3.5 h-3.5"></i>Verified</span>' : ''}
+              </div>
+              <div class="flex items-center justify-between gap-3">
+                ${consultationTag}
+                <button data-id="${a.id}" class="open-profile flex-1 bg-primary text-white text-sm font-bold py-2.5 px-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">View Profile</button>
+              </div>
+            </div>`;
+          })
+          .join('');
+        workerGrid.innerHTML = cards;
         feather.replace();
-        return;
-      }
-
-      list.forEach(a => {
-        const consultationTag = (a.category === 'Healthcare' || a.category === 'Legal')
-          ? '<span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full">From ₦3,000</span>'
-          : '';
-        const card = document.createElement('div');
-        card.className = 'worker-card bg-white rounded-3xl shadow-xl p-6 border-2 border-gray-100 hover:border-primary';
-        card.innerHTML = `
-          <div class="flex gap-4 mb-4">
-            <img src="${a.photo}" alt="${a.name}" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0" onerror="this.src='https://via.placeholder.com/140x140?text=Photo'"/>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-lg font-black text-gray-900 mb-1 truncate">${a.name}</h3>
-              <p class="text-sm text-gray-600 font-medium mb-2">${a.skill}</p>
-              <div class="flex items-center gap-2 text-xs text-gray-500">
-                <i data-feather="map-pin" class="w-3.5 h-3.5"></i>
-                <span class="truncate">${a.location}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-2">
-              <div class="flex items-center text-yellow-400">
-                ${renderStars(a.rating)}
-              </div>
-              <span class="text-sm font-bold text-gray-700">${a.rating}</span>
-              <span class="text-xs text-gray-500">(${a.reviews})</span>
-            </div>
-            ${a.verified ? '<span class="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full"><i data-feather="check-circle" class="w-3.5 h-3.5"></i>Verified</span>' : ''}
-          </div>
-
-          <div class="flex items-center justify-between gap-3">
-            ${consultationTag}
-            <button data-id="${a.id}" class="open-profile flex-1 bg-primary text-white text-sm font-bold py-2.5 px-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">View Profile</button>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-
-      feather.replace();
-
-      // attach click listeners
-      document.querySelectorAll('.open-profile').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const id = Number(e.currentTarget.getAttribute('data-id'));
-          openProfileModal(id);
+        document.querySelectorAll('.open-profile').forEach((btn) => {
+          btn.addEventListener('click', (event) => {
+            const id = event.currentTarget.getAttribute('data-id');
+            openProfileModal(id);
+          });
         });
-      });
-    }
-
-    function renderStars(rating) {
-      const full = Math.floor(rating);
-      let html = '';
-      for (let i=0;i<5;i++){
-        if (i < full) html += '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.173c.969 0 1.371 1.24.588 1.81l-3.376 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118L10 15.347 6.409 18.75c-.785.57-1.84-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.415 9.093c-.783-.57-.38-1.81.588-1.81h4.173a1 1 0 00.95-.69L9.049 2.927z"/></svg>';
-        else html += '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-300" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.173c.969 0 1.371 1.24.588 1.81l-3.376 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118L10 15.347 6.409 18.75c-.785.57-1.84-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.415 9.093c-.783-.57-.38-1.81.588-1.81h4.173a1 1 0 00.95-.69L9.049 2.927z"/></svg>';
       }
-      return html;
-    }
 
-    // Show profile modal
-    function openProfileModal(id) {
-      const artisan = artisans.find(a => a.id === id);
-      const modal = document.getElementById('artisanModal');
-      const content = document.getElementById('modalContent');
-      const requiresConsultation = artisan.category === 'Healthcare' || artisan.category === 'Legal';
-      const contactButtons = !requiresConsultation && (artisan.phone || artisan.whatsapp)
-        ? `
-          <div class="grid gap-3 sm:grid-cols-2 mt-6">
-            ${artisan.phone ? `<a href="tel:${artisan.phone.replace(/[^+\\d]/g,'')}" class="inline-flex items-center justify-center gap-3 bg-primary text-white text-base font-black tracking-wide py-3.5 px-6 rounded-2xl whitespace-nowrap flex-shrink-0 shadow-lg shadow-primary/25 hover:bg-primary/95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all"><span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/15"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5c0-1.105.895-2 2-2h2.28a1 1 0 01.98.804l.72 3.6a1 1 0 01-.54 1.09l-1.568.784a13.042 13.042 0 006.146 6.146l.784-1.568a1 1 0 011.09-.54l3.6.72a1 1 0 01.804.98V19a2 2 0 01-2 2h-1C9.163 21 3 14.837 3 7V5z"/></svg></span><span>${artisan.phone}</span></a>` : ''}
-            ${artisan.whatsapp ? `<a href="${artisan.whatsapp}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold py-3 px-5 rounded-2xl hover:bg-primary hover:text-white transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40"><i data-feather="message-circle" class="w-4 h-4"></i>WhatsApp</a>` : ''}
-          </div>
-        ` : '';
-      const consultationCTA = requiresConsultation
-        ? `
-          <div class="flex flex-col sm:flex-row gap-3 mt-6">
-            <a href="consultations.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"><i data-feather="lock" class="w-4 h-4"></i>Book secure consultation</a>
-            <a href="client-dashboard.html" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary hover:text-white transition-all"><i data-feather="layout" class="w-4 h-4"></i>Consultation dashboard</a>
-          </div>
-          <p class="mt-4 text-xs text-gray-500 bg-gray-50 rounded-xl p-4">Doctors and lawyers serve clients through our protected consultations platform.</p>
-        ` : '';
-
-      content.innerHTML = `
-        <div class="md:flex gap-8">
-          <div class="md:w-1/3 text-center mb-6 md:mb-0">
-            <img src="${artisan.photo}" alt="${artisan.name}" class="w-48 h-48 rounded-3xl object-cover mx-auto mb-4 shadow-xl" onerror="this.src='https://via.placeholder.com/240x240?text=Photo'"/>
-            <div class="flex items-center justify-center gap-2">
-              ${artisan.verified ? '<span class="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full"><i data-feather="check-circle" class="w-3.5 h-3.5"></i>Verified</span>' : ''}
-            </div>
-          </div>
-          <div class="md:flex-1">
-            <h2 class="text-3xl font-black text-gray-900 mb-2">${artisan.name}</h2>
-            <p class="text-base text-gray-600 font-medium mb-4">${artisan.skill} • ${artisan.location}</p>
-            <div class="flex items-center gap-3 mb-6">
-              <div class="flex items-center text-yellow-400">${renderStars(artisan.rating)}</div>
-              <div class="text-base font-bold text-gray-700">${artisan.rating}</div>
-              <div class="text-sm text-gray-500">(${artisan.reviews} reviews)</div>
-            </div>
-            <p class="text-gray-700 leading-relaxed mb-6">${artisan.bio}</p>
-
-            ${requiresConsultation
-              ? consultationCTA
-              : `${contactButtons}<p class="mt-6 text-xs text-green-700 bg-green-50 rounded-xl p-4 font-medium">Contact details for regular artisans are free to view. Sirius verifies every professional listed here.</p>`}
-          </div>
-        </div>
-      `;
-
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      feather.replace();
-    }
-
-    // Close modal
-    document.getElementById('modalClose').addEventListener('click', () => {
-      document.getElementById('artisanModal').classList.add('hidden');
-      document.getElementById('artisanModal').classList.remove('flex');
-    });
-
-    // Filters
-    const searchInput = document.getElementById('searchInput');
-    const sortBy = document.getElementById('sortBy');
-
-    function applyFilters() {
-      renderArtisans({
-        search: searchInput.value,
-        category: categorySelect.value,
-        skill: skillSelect.value,
-        location: locSelect.value,
-        sort: sortBy.value
-      });
-    }
-
-    searchInput.addEventListener('input', () => applyFilters());
-    categorySelect.addEventListener('change', () => applyFilters());
-    skillSelect.addEventListener('change', () => applyFilters());
-    locSelect.addEventListener('change', () => applyFilters());
-    sortBy.addEventListener('change', () => applyFilters());
-
-    document.addEventListener('keydown', (event) => {
-      if(event.key === 'Escape' && paModal && paModal.classList.contains('flex')){
-        closePaModal();
+      function applyFilters() {
+        renderArtisans({
+          search: searchInput?.value || '',
+          category: categorySelect?.value || '',
+          skill: skillSelect?.value || '',
+          location: locationSelect?.value || '',
+          sort: sortBy?.value || 'relevance',
+        });
       }
-    });
 
-    // Initial render
-    renderArtisans();
+      function openProfileModal(id) {
+        const artisan = artisans.find((a) => a.id === id);
+        if (!artisan || !consultationModal || !modalContent) return;
+        const consultationCTA = /doctor|lawyer|medical|legal/i.test(artisan.category)
+          ? '<div class="flex flex-col sm:flex-row gap-3 mt-6"><a href="consultations.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"><i data-feather="lock" class="w-4 h-4"></i>Book secure consultation</a><a href="client-dashboard.html" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary hover:text-white transition-all"><i data-feather="layout" class="w-4 h-4"></i>Consultation dashboard</a></div><p class="mt-4 text-xs text-gray-500 bg-gray-50 rounded-xl p-4">Doctors and lawyers serve clients through our protected consultations platform.</p>'
+          : '';
+        const contactButtons = artisan.phone || artisan.whatsapp
+          ? `<div class="grid gap-3 sm:grid-cols-2 mt-6">${artisan.phone ? `<a href="tel:${artisan.phone.replace(/[^+\d]/g,'')}" class="inline-flex items-center justify-center gap-3 bg-primary text-white text-base font-black tracking-wide py-3.5 px-6 rounded-2xl whitespace-nowrap flex-shrink-0 shadow-lg shadow-primary/25 hover:bg-primary/95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all"><span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/15"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5c0-1.105.895-2 2-2h2.28a1 1 0 01.98.804l.72 3.6a1 1 0 01-.54 1.09l-1.568.784a13.042 13.042 0 006.146 6.146l.784-1.568a1 1 0 011.09-.54l3.6.72a1 1 0 01.804.98V19a2 2 0 01-2 2h-1C9.163 21 3 14.837 3 7V5z"/></svg></span><span>${artisan.phone}</span></a>` : ''}${artisan.whatsapp ? `<a href="${artisan.whatsapp}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold py-3 px-5 rounded-2xl hover:bg-primary hover:text-white transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40"><i data-feather="message-circle" class="w-4 h-4"></i>WhatsApp</a>` : ''}</div>`
+          : '';
+        modalContent.innerHTML = `
+          <div class="md:flex gap-8">
+            <div class="md:w-1/3 text-center mb-6 md:mb-0">
+              <img src="${artisan.photo}" alt="${artisan.name}" class="w-48 h-48 rounded-3xl object-cover mx-auto mb-4 shadow-xl" onerror="this.src='https://via.placeholder.com/240x240?text=Photo'"/>
+              <div class="flex items-center justify-center gap-2">
+                ${artisan.verified ? '<span class="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full"><i data-feather="check-circle" class="w-3.5 h-3.5"></i>Verified</span>' : ''}
+              </div>
+            </div>
+            <div class="md:flex-1">
+              <h2 class="text-3xl font-black text-gray-900 mb-2">${artisan.name}</h2>
+              <p class="text-base text-gray-600 font-medium mb-4">${artisan.skill} • ${artisan.location}</p>
+              <div class="flex items-center gap-3 mb-6">
+                <div class="flex items-center text-yellow-400">${renderStars(artisan.rating)}</div>
+                <div class="text-base font-bold text-gray-700">${artisan.rating.toFixed(1)}</div>
+                <div class="text-sm text-gray-500">(${artisan.reviews} reviews)</div>
+              </div>
+              <p class="text-gray-700 leading-relaxed mb-6">${artisan.bio}</p>
+              ${consultationCTA || contactButtons || '<p class="mt-6 text-xs text-green-700 bg-green-50 rounded-xl p-4 font-medium">Interested in an artisan? Send a request through our contact form and we will confirm availability.</p>'}
+            </div>
+          </div>`;
+        toggleModal(consultationModal, true);
+        feather.replace();
+      }
+
+      modalClose?.addEventListener('click', () => toggleModal(consultationModal, false));
+      consultationModal?.addEventListener('click', (event) => {
+        if (event.target === consultationModal) {
+          toggleModal(consultationModal, false);
+        }
+      });
+
+      searchInput?.addEventListener('input', () => applyFilters());
+      categorySelect?.addEventListener('change', () => applyFilters());
+      skillSelect?.addEventListener('change', () => applyFilters());
+      locationSelect?.addEventListener('change', () => applyFilters());
+      sortBy?.addEventListener('change', () => applyFilters());
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          toggleModal(consultationModal, false);
+          closePaModal();
+        }
+      });
+
+      async function fetchArtisans() {
+        try {
+          const response = await fetch('/api/v2/workers?limit=60');
+          if (!response.ok) {
+            throw new Error('Unable to fetch artisans');
+          }
+          const payload = await response.json();
+          artisans = (payload.data?.workers ?? []).map(mapWorker);
+        } catch (error) {
+          console.warn('Unable to load artisans', error);
+          artisans = [];
+        }
+        populateFilters();
+        renderArtisans();
+      }
+
+      fetchArtisans();
+    })();
   </script>
   <script src="assistant.js"></script>
   <script src="assets/site-shell.js" defer></script>

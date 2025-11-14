@@ -6,12 +6,10 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate deploy",
     "consult:prune": "tsx scripts/purge-consult-account.ts"
   },
   "dependencies": {
-    "@prisma/client": "^5.13.0",
+    "@types/multer": "^2.0.0",
     "axios": "^1.6.7",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
@@ -27,6 +25,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.1",
     "morgan": "^1.10.0",
+    "multer": "^2.0.2",
     "nodemailer": "^6.9.11",
     "socket.io": "^4.7.5",
     "uuid": "^9.0.1",
@@ -43,7 +42,6 @@
     "@types/morgan": "^1.9.7",
     "@types/node": "^20.11.7",
     "@types/uuid": "^9.0.7",
-    "prisma": "^5.13.0",
     "tsx": "^4.7.1",
     "typescript": "^5.4.2"
   }

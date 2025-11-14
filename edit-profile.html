@@ -7,6 +7,9 @@
   <meta name="description" content="Update your worker profile on Sirius Jobs." />
   <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="api.js"></script>
+  <script src="session-utils.js"></script>
+  <script src="upload-utils.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -61,19 +64,32 @@
   <main class="container mx-auto px-4 py-16 max-w-3xl">
     <div class="bg-white rounded-3xl border-2 border-gray-100 shadow-2xl p-8 md:p-12">
       <form id="profileForm" class="space-y-6">
-        <div>
-          <label class="block text-sm font-bold text-gray-700 mb-2">Full Name</label>
-          <input type="text" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+        <div class="grid gap-6 md:grid-cols-2">
+          <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2">First Name</label>
+            <input id="firstNameInput" type="text" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2">Last Name</label>
+            <input id="lastNameInput" type="text" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+          </div>
         </div>
 
         <div>
           <label class="block text-sm font-bold text-gray-700 mb-2">Skill / Profession</label>
-          <input type="text" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+          <input id="skillInput" type="text" list="serviceCategoryOptions" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Start typing and select from the list" required>
+          <datalist id="serviceCategoryOptions"></datalist>
+          <p class="text-xs text-gray-500 mt-1">Choose the service that best matches what you offer.</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-bold text-gray-700 mb-2">Years of experience</label>
+          <input id="experienceInput" type="number" min="0" max="60" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="e.g. 5">
         </div>
 
         <div>
           <label class="block text-sm font-bold text-gray-700 mb-2">Location (State)</label>
-          <select class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+          <select id="locationSelect" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
             <option value="">Select State</option>
             <option>Abia – Umuahia</option><option>Adamawa – Yola</option><option>Akwa Ibom – Uyo</option><option>Anambra – Awka</option>
             <option>Bauchi – Bauchi</option><option>Bayelsa – Yenagoa</option><option>Benue – Makurdi</option><option>Borno – Maiduguri</option>
@@ -90,7 +106,7 @@
 
         <div>
           <label class="block text-sm font-bold text-gray-700 mb-2">Bio / Description</label>
-          <textarea rows="4" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"></textarea>
+          <textarea id="bioInput" rows="4" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Describe your services, tools and guarantees."></textarea>
         </div>
 
         <div>
@@ -105,7 +121,9 @@
           </div>
         </div>
 
-        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-bold py-4 px-6 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+        <p id="profileStatus" class="text-sm font-bold hidden"></p>
+
+        <button id="profileSubmitBtn" type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-bold py-4 px-6 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
           <i data-feather="save" class="w-5 h-5"></i>
           Save Changes
         </button>
@@ -167,48 +185,270 @@
   <script>
     feather.replace();
 
+    const sessionUtils = window.SiriusSession ?? null;
+    const workerSession = sessionUtils?.parse ? sessionUtils.parse('siriusWorkerAuth') : null;
+    const profileForm = document.getElementById('profileForm');
+    const firstNameInput = document.getElementById('firstNameInput');
+    const lastNameInput = document.getElementById('lastNameInput');
+    const skillInput = document.getElementById('skillInput');
+    const experienceInput = document.getElementById('experienceInput');
+    const locationSelect = document.getElementById('locationSelect');
+    const bioInput = document.getElementById('bioInput');
+    const profileStatus = document.getElementById('profileStatus');
+    const submitBtn = document.getElementById('profileSubmitBtn');
+    const categoryDatalist = document.getElementById('serviceCategoryOptions');
+
     const photoPreview = document.getElementById('profilePhotoPreview');
     const photoInput = document.getElementById('profilePhotoInput');
     const removePhotoBtn = document.getElementById('removePhotoBtn');
     const defaultPhoto = photoPreview ? photoPreview.src : '';
+    const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
+    let photoDataUrl = null;
 
-    if(photoInput){
-      photoInput.addEventListener('change', (event) => {
-        const file = event.target.files && event.target.files[0];
-        if(!file){
-          return;
+    const labelToId = new Map();
+    const idToLabel = new Map();
+
+    const setStatus = (message, tone = 'info') => {
+      if (!profileStatus) return;
+      profileStatus.textContent = message;
+      profileStatus.className = 'text-sm font-bold';
+      if (!message) {
+        profileStatus.classList.add('hidden');
+        return;
+      }
+      profileStatus.classList.remove('hidden');
+      const toneClass =
+        tone === 'success'
+          ? 'text-green-600'
+          : tone === 'error'
+          ? 'text-red-600'
+          : 'text-gray-600';
+      profileStatus.classList.add(toneClass);
+    };
+
+    const loadCategories = async () => {
+      const res = await fetch('/api/services/categories');
+      if (!res.ok) {
+        throw new Error('Unable to load service categories.');
+      }
+      const categories = await res.json();
+      categories.forEach(category => {
+        labelToId.set(category.label.toLowerCase(), category.id);
+        idToLabel.set(category.id, category.label);
+        const option = document.createElement('option');
+        option.value = category.label;
+        categoryDatalist.appendChild(option);
+      });
+    };
+
+    const populateForm = profile => {
+      const user = profile.user ?? workerSession?.user ?? {};
+      firstNameInput.value = user.firstName ?? '';
+      lastNameInput.value = user.lastName ?? '';
+      const categoryLabel = profile.headline ?? profile.serviceCategory?.label ?? '';
+      skillInput.value = categoryLabel;
+      if (profile.location) {
+        const hasOption = Array.from(locationSelect.options).some(option => option.value === profile.location);
+        if (!hasOption) {
+          const option = document.createElement('option');
+          option.value = profile.location;
+          option.textContent = profile.location;
+          locationSelect.appendChild(option);
         }
-        if(!file.type.startsWith('image/')){
-          alert('Please choose a valid image file (PNG or JPG).');
+        locationSelect.value = profile.location;
+      } else {
+        locationSelect.value = '';
+      }
+      bioInput.value = profile.bio ?? '';
+      experienceInput.value = profile.yearsExperience ?? '';
+      if (profile.showcaseMediaUrl) {
+        photoPreview.src = profile.showcaseMediaUrl;
+        photoDataUrl = profile.showcaseMediaUrl;
+      } else {
+        photoPreview.src = defaultPhoto;
+        photoDataUrl = null;
+      }
+    };
+
+    const loadProfile = async () => {
+      setStatus('Loading your profile…');
+      const res = await fetch('/api/dashboard/artisan', {
+        headers: { Authorization: `Bearer ${workerSession.token}` },
+      });
+      if (res.status === 401) {
+        window.location.href = 'login.html';
+        return;
+      }
+      if (!res.ok) {
+        throw new Error('Unable to load your profile right now.');
+      }
+      const data = await res.json();
+      populateForm(data.profile ?? {});
+      setStatus('');
+    };
+
+    if (photoInput) {
+      photoInput.addEventListener('change', async event => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        // Validate file
+        const validation = window.SiriusUpload.validateFile(file, {
+          allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'],
+          maxSize: MAX_PHOTO_BYTES
+        });
+
+        if (!validation.valid) {
+          alert(validation.error);
           photoInput.value = '';
           return;
         }
+
+        // Show preview immediately
         const reader = new FileReader();
-        reader.onload = (loadEvent) => {
-          if(photoPreview){
-            photoPreview.src = loadEvent.target?.result || defaultPhoto;
+        reader.onload = loadEvent => {
+          const result = typeof loadEvent.target?.result === 'string' ? loadEvent.target.result : null;
+          if (photoPreview && result) {
+            photoPreview.src = result;
           }
         };
         reader.readAsDataURL(file);
+
+        // Upload file
+        try {
+          setStatus('Uploading photo...', 'info');
+          const result = await window.SiriusUpload.uploadProfilePhoto(file, workerSession.token);
+          photoDataUrl = result.url;
+          setStatus('Photo uploaded successfully!', 'success');
+          setTimeout(() => setStatus(''), 2000);
+        } catch (error) {
+          alert('Failed to upload photo: ' + error.message);
+          photoInput.value = '';
+          photoPreview.src = defaultPhoto;
+          photoDataUrl = null;
+          setStatus('', '');
+        }
       });
     }
 
-    if(removePhotoBtn){
+    if (removePhotoBtn) {
       removePhotoBtn.addEventListener('click', () => {
-        if(photoPreview){
+        photoDataUrl = null;
+        if (photoPreview) {
           photoPreview.src = defaultPhoto;
         }
-        if(photoInput){
+        if (photoInput) {
           photoInput.value = '';
         }
       });
     }
 
-    document.getElementById('profileForm').addEventListener('submit', e => {
-      e.preventDefault();
-      alert('✅ Profile saved successfully!');
-      window.location.href = 'worker-dashboard.html';
+    profileForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!workerSession?.token) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const firstName = firstNameInput.value.trim();
+      const lastName = lastNameInput.value.trim();
+      if (firstName.length < 2 || lastName.length < 2) {
+        setStatus('Enter your first and last name to continue.', 'error');
+        return;
+      }
+
+      const skillLabel = skillInput.value.trim();
+      const serviceCategoryId = labelToId.get(skillLabel.toLowerCase());
+      if (!serviceCategoryId) {
+        setStatus('Please select a valid skill from the suggestions.', 'error');
+        return;
+      }
+
+      const locationValue = locationSelect.value.trim();
+      if (!locationValue) {
+        setStatus('Select your location.', 'error');
+        return;
+      }
+
+      const yearsRaw = experienceInput.value ? Number(experienceInput.value) : null;
+      if (yearsRaw !== null && (Number.isNaN(yearsRaw) || yearsRaw < 0)) {
+        setStatus('Years of experience must be a positive number.', 'error');
+        return;
+      }
+
+      const payload = {
+        firstName,
+        lastName,
+        serviceCategoryId,
+        headline: skillLabel,
+        location: locationValue,
+        bio: bioInput.value.trim() || null,
+        yearsExperience: yearsRaw,
+        photo: photoDataUrl,
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.classList.add('opacity-70', 'cursor-wait');
+      setStatus('Saving your profile…');
+
+      try {
+        const res = await fetch('/api/profiles/artisan/me', {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${workerSession.token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+        const body = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          throw new Error(body.message || 'Unable to update your profile right now.');
+        }
+
+        if (workerSession) {
+          const updatedSession = {
+            ...workerSession,
+            firstName: body.user?.firstName ?? firstName,
+            lastName: body.user?.lastName ?? lastName,
+            artisanProfile: {
+              ...(workerSession.artisanProfile ?? {}),
+              headline: body.profile?.headline ?? skillLabel,
+              location: body.profile?.location ?? locationValue,
+              bio: body.profile?.bio ?? payload.bio,
+              yearsExperience: body.profile?.yearsExperience ?? yearsRaw,
+              serviceCategory: body.profile?.serviceCategory ?? workerSession.artisanProfile?.serviceCategory,
+              showcaseMediaUrl: body.profile?.showcaseMediaUrl ?? photoDataUrl,
+            },
+          };
+          sessionStorage.setItem('siriusWorkerAuth', JSON.stringify(updatedSession));
+        }
+
+        setStatus('Profile updated successfully!', 'success');
+        setTimeout(() => {
+          window.location.href = 'worker-dashboard.html';
+        }, 900);
+      } catch (error) {
+        setStatus(error.message || 'Unable to update your profile.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-70', 'cursor-wait');
+      }
     });
+
+    const init = async () => {
+      if (!workerSession?.token) {
+        window.location.href = 'login.html';
+        return;
+      }
+      try {
+        await loadCategories();
+        await loadProfile();
+      } catch (error) {
+        setStatus(error.message || 'Unable to load the profile form.', 'error');
+      }
+    };
+
+    init();
   </script>
   <script src="assistant.js"></script>
 

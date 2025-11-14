@@ -2,20 +2,15 @@ import http from 'http';
 import { Server } from 'socket.io';
 import app from './app';
 import { events } from './services/event-bus';
-import { startLicenseRecheckWorker, primeLicenseQueueFromDatabase } from './services/license-recheck-queue';
-import { connectMongo } from './config/mongo';
+import { connectMongoDB } from './config/database';
 import { verifyClientSessionToken } from './utils/consultationUtils';
-import { ConsultationSession } from './models/ConsultationSession';
+import { ConsultationSession } from './models/ConsultationSession.model';
 import { Message } from './models/Message';
 
 const port = Number(process.env.PORT ?? 4000);
 async function bootstrap() {
-  // Connect to MongoDB for consultation features
-  try {
-    await connectMongo();
-  } catch (error) {
-    console.warn('[mongo] Consultation features will be unavailable');
-  }
+  // Connect to MongoDB for all Mongoose models
+  await connectMongoDB();
 
   const server = http.createServer(app);
 
@@ -205,11 +200,6 @@ async function bootstrap() {
   });
 
   console.log('[socket] Socket.IO started');
-  startLicenseRecheckWorker();
-  primeLicenseQueueFromDatabase().catch(error => {
-    console.error('Unable to prime licence recheck queue', error);
-  });
-
   server.listen(port, () => {
     console.log(`Express listening on port ${port}`);
   });

@@ -142,33 +142,15 @@
           </div>
 
           <p class="text-sm text-white/80">
-            <span class="font-bold text-yellow-300">1,500+ products</span> from
-            <span class="font-bold text-green-300">200+ verified merchants</span> nationwide
+            <span class="font-bold text-yellow-300" id="productCount">...</span> from
+            <span class="font-bold text-green-300" id="merchantCount">...</span> verified merchants nationwide
           </p>
         </div>
 
-        <!-- Right Side - 3D Floating Cards -->
+        <!-- Right Side - Featured Merchant (Dynamic) -->
         <div class="relative h-[420px] hidden xl:flex items-center justify-center">
-          <div class="w-72 float-animation">
-            <div class="bg-white rounded-3xl p-6 shadow-2xl transform rotate-3 hover:rotate-0 transition-all duration-500 card-3d border border-gray-100">
-              <div class="bg-gradient-to-br from-primary/10 via-white to-blue-100 rounded-2xl h-40 mb-4 flex flex-col items-center justify-center text-center px-4">
-                <img src="assets/dewiss-logo.png" alt="Dewiss logo" class="w-16 h-16 object-contain mb-2" onerror="this.style.display='none';">
-                <p class="text-xs font-semibold text-primary uppercase tracking-[0.3em]">Trusted partner</p>
-              </div>
-              <div class="space-y-3 text-left">
-                <h4 class="font-black text-2xl text-gray-900">Dewiss Gadget Hub</h4>
-                <p class="text-sm text-gray-600">Phones, laptops, wearables and consoles shipped nationwide with repair support.</p>
-                <ul class="text-sm text-gray-700 space-y-2">
-                  <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-primary"></i>Smartphones, laptops, gaming consoles & accessories</li>
-                  <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-primary"></i>Trade-in support and certified diagnostics</li>
-                  <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-primary"></i>Express delivery hubs in Port Harcourt & Lagos</li>
-                </ul>
-                <a href="#merchant-wall" class="inline-flex items-center justify-center gap-2 text-primary font-semibold text-sm">
-                  View Dewiss profile
-                  <i data-feather="arrow-up-right" class="w-4 h-4"></i>
-                </a>
-              </div>
-            </div>
+          <div id="featuredMerchantCard" class="w-72 float-animation">
+            <!-- Featured merchant will be loaded dynamically -->
           </div>
         </div>
       </div>

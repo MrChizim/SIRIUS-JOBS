@@ -201,43 +201,9 @@
   }
 
   /**
-   * Wrap fetch to automatically handle errors
+   * NOTE: Fetch wrapper removed - let pages handle their own errors
+   * Global fetch wrapping was causing issues with normal error handling
    */
-  const originalFetch = window.fetch;
-  window.fetch = async function (...args) {
-    try {
-      const response = await originalFetch(...args);
-
-      // Handle HTTP errors
-      if (!response.ok) {
-        const error = new Error(`HTTP ${response.status}: ${response.statusText}`);
-        error.status = response.status;
-        error.response = response;
-
-        // Try to get error message from response body
-        try {
-          const data = await response.clone().json();
-          if (data.error || data.message) {
-            error.message = data.error || data.message;
-          }
-        } catch (e) {
-          // Ignore JSON parse errors
-        }
-
-        throw error;
-      }
-
-      return response;
-    } catch (error) {
-      // Add context about the request
-      error.url = args[0];
-      error.method = args[1]?.method || 'GET';
-
-      // Don't automatically handle errors for fetch calls
-      // Let the caller decide whether to handle or rethrow
-      throw error;
-    }
-  };
 
   /**
    * Global error event listener

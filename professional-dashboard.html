@@ -503,9 +503,12 @@
     const mobileMenu = document.getElementById('mobile-menu');
     mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 
-    function handleLogout(){
+    function handleLogout(showAlert = true){
       sessionStorage.clear();
-      alert('You have been logged out.');
+      localStorage.removeItem('siriusRememberMe');
+      if (showAlert) {
+        alert('You have been logged out.');
+      }
       window.location.href = 'login.html';
     }
     document.getElementById('professionalLogout').addEventListener('click', handleLogout);
@@ -528,9 +531,13 @@
         setProfessionalSession({ profileImageUrl: photoPayload });
         updateProfileCompletion({ photoUrl: photoPayload });
         try {
+          if (!professionalSession?.token) {
+            handleLogout();
+            return;
+          }
           const res = await fetch('/api/profiles/professional/me', {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: withAuth({ 'Content-Type': 'application/json' }),
             body: JSON.stringify({ profileImageUrl: photoPayload }),
           });
           if (!res.ok) {
@@ -686,6 +693,8 @@
       professionalSession.profession = fallbackProfession;
       persistProfessionalSession(professionalSession);
     }
+    const withAuth = (headers = {}) =>
+      professionalSession?.token ? { ...headers, Authorization: `Bearer ${professionalSession.token}` } : headers;
     const targetProfession = isDoctor ? 'LAWYER' : isLawyer ? 'DOCTOR' : null;
     const targetProfessionLabel = targetProfession === 'LAWYER' ? 'lawyer' : targetProfession === 'DOCTOR' ? 'doctor' : '';
 
@@ -792,7 +801,10 @@
         return paystackPublicKey;
       }
       try {
-        const res = await fetch('/api/consultation/config', { cache: 'no-store' });
+        const res = await fetch('/api/consultation/config', {
+          cache: 'no-store',
+          headers: withAuth(),
+        });
         if (!res.ok) {
           return '';
         }
@@ -886,6 +898,10 @@
       if (!professionalSession?.email || !targetProfession) {
         return;
       }
+      if (!professionalSession?.token) {
+        handleLogout();
+        return;
+      }
       const reason = crossConsultReason?.value.trim() ?? '';
       if (reason.length < 10) {
         if (crossConsultStatus) {
@@ -910,7 +926,7 @@
       try {
         const res = await fetch('/api/consultations/cross-book', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: withAuth({ 'Content-Type': 'application/json' }),
           body: JSON.stringify({
             professionalEmail: professionalSession.email,
             targetProfession,
@@ -1139,7 +1155,7 @@
       try {
         const res = await fetch('/api/profiles/professional/completion', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: withAuth({ 'Content-Type': 'application/json' }),
           body: JSON.stringify({ completion: percent }),
         });
         if (!res.ok) {
@@ -1265,24 +1281,37 @@
     };
 
     async function loadProfessionalData(){
-      if (platformAvailable && professionalSession?.email) {
-        try {
-          const snapshot = window.SiriusPlatform.getProfessionalSnapshot(professionalSession.email);
-          if (snapshot) {
-            hydrateDashboard(snapshot);
-            return;
-          }
-        } catch (error) {
-          console.warn('Unable to load local professional snapshot', error);
-        }
-      }
       try {
-        const res = await fetch('/api/dashboard/professional', { cache: 'no-store' });
+        if (!professionalSession?.token) {
+          throw new Error('AUTH_REQUIRED');
+        }
+        const res = await fetch('/api/dashboard/professional', {
+          cache: 'no-store',
+          headers: withAuth(),
+        });
+        if (res.status === 401 || res.status === 403) {
+          throw new Error('AUTH_REQUIRED');
+        }
         if (!res.ok) throw new Error('Unable to fetch professional dashboard');
         const data = await res.json();
         hydrateDashboard(data);
       } catch (error) {
-        console.warn(error);
+        if (error.message === 'AUTH_REQUIRED') {
+          handleLogout();
+          return;
+        }
+        console.warn('Professional dashboard API unavailable, falling back to local snapshot.', error);
+        if (platformAvailable && professionalSession?.email) {
+          try {
+            const snapshot = window.SiriusPlatform.getProfessionalSnapshot(professionalSession.email);
+            if (snapshot) {
+              hydrateDashboard(snapshot);
+              return;
+            }
+          } catch (fallbackError) {
+            console.warn('Unable to load local professional snapshot', fallbackError);
+          }
+        }
         hydrateDashboard(getFallbackProfessional());
       }
     }
@@ -1296,8 +1325,11 @@
         professionalSession.profileCompletion = data.user.profileCompletion;
         persistProfessionalSession(professionalSession);
       }
-     const name = `${profile?.user?.firstName ?? 'Professional'} ${profile?.user?.lastName ?? ''}`.trim();
-     document.getElementById('proName').textContent = name || 'Professional Name';
+     const name = [professionalSession?.firstName, professionalSession?.lastName]
+       .filter(Boolean)
+       .join(' ')
+       .trim() || 'Professional';
+     document.getElementById('proName').textContent = name;
      document.getElementById('proProfession').textContent = `${profile?.profession ?? 'Specialist'}${profile?.regulatoryBody ? ' • ' + profile.regulatoryBody : ''}`;
      if (profile?.profileImageUrl) {
        avatarImg.src = profile.profileImageUrl;
@@ -1415,19 +1447,12 @@
       event.preventDefault();
       const formData = Object.fromEntries(new FormData(payoutForm).entries());
       try {
-        if (platformAvailable && professionalSession?.email) {
-          window.SiriusPlatform.saveProfessionalPayoutAccount(professionalSession.email, formData);
-          latestPayoutAccount = formData;
-          setProfessionalSession({ payoutAccount: formData });
-          updateProfileCompletion({ payoutAccount: formData });
-          payoutFormStatus.textContent = 'Payout account saved successfully.';
-          payoutFormStatus.className = 'text-xs text-green-600 font-medium mt-3';
-          showToast('Payout account saved successfully.', 'success');
-          return;
+        if (!professionalSession?.token) {
+          throw new Error('Please sign in again to save your payout account.');
         }
         const res = await fetch('/api/dashboard/professional/payout-account', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: withAuth({ 'Content-Type': 'application/json' }),
           body: JSON.stringify(formData),
         });
         if (!res.ok) {
@@ -1441,6 +1466,20 @@
         payoutFormStatus.className = 'text-xs text-green-600 font-medium mt-3';
         showToast('Payout account saved successfully.', 'success');
       } catch (error) {
+        if (platformAvailable && professionalSession?.email) {
+          try {
+            window.SiriusPlatform.saveProfessionalPayoutAccount(professionalSession.email, formData);
+            latestPayoutAccount = formData;
+            setProfessionalSession({ payoutAccount: formData });
+            updateProfileCompletion({ payoutAccount: formData });
+            payoutFormStatus.textContent = 'Payout account saved locally.';
+            payoutFormStatus.className = 'text-xs text-amber-600 font-medium mt-3';
+            showToast('Saved payout account locally. Sync when you are back online.', 'info');
+            return;
+          } catch (fallbackError) {
+            error = fallbackError;
+          }
+        }
         payoutFormStatus.textContent = error.message;
         payoutFormStatus.className = 'text-xs text-red-600 font-medium mt-3';
         showToast(error.message || 'Unable to save payout account.', 'error');

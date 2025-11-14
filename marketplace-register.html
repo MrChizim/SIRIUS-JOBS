@@ -316,35 +316,48 @@
         feedback.textContent = '';
         feedback.className = 'text-sm text-center font-bold';
 
+        const category = form.businessCategory.value.trim();
+        if (!category) {
+          feedback.textContent = 'Please select a business category.';
+          feedback.className = 'text-sm text-center font-bold text-red-500';
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+          return;
+        }
+
         const payload = {
+          firstName: form.businessName.value.trim(), // Use business name as first name
+          lastName: 'Merchant', // Default last name
           businessName: form.businessName.value.trim(),
+          category,
           email: form.merchantEmail.value.trim(),
           password,
-          plan: 'PENDING_SELECTION',
-          contactName: '',
-          phone: '',
-          instagram: '',
-          whatsapp: '',
         };
 
         try {
-          const response = await fetch('/api/merchants/register', {
+          const response = await fetch('/api/auth/register-merchant', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
           });
-          const data = await response.json();
+
           if (!response.ok) {
-            throw new Error(data.message || 'Unable to create merchant account right now.');
+            const errorData = await response.json().catch(() => ({ message: 'Registration failed' }));
+            throw new Error(errorData.message || errorData.error || 'Unable to create merchant account');
           }
 
-          const marketplaceSession = {
-            merchantId: data.merchant?.id,
-            token: data.token,
-            merchant: data.merchant,
-            signedInAt: Date.now(),
-          };
-          localStorage.setItem('siriusMarketplaceSession', JSON.stringify(marketplaceSession));
+          const data = await response.json();
+
+          // Store session using SiriusSession utility
+          if (window.SiriusSession && data.data) {
+            const payload = window.SiriusSession.createPayload(data.data, {
+              activeRole: 'MERCHANT',
+              email: form.merchantEmail.value.trim(),
+              firstName: form.businessName.value.trim(),
+              lastName: 'Merchant',
+            });
+            window.SiriusSession.persist(payload);
+          }
 
           feedback.textContent = 'Account created! Redirecting to your dashboard...';
           feedback.className = 'text-sm text-center font-bold text-emerald-600';

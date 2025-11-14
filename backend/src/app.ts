@@ -4,24 +4,27 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
-import jobsRouter from './routes/jobs.js';
-import applicationsRouter from './routes/applications.js';
-import servicesRouter from './routes/services.js';
-import profilesRouter from './routes/profiles.js';
-import verificationRouter from './routes/verification.js';
-import paymentsRouter from './routes/payments.js';
-import dashboardRouter from './routes/dashboard.js';
-import alertsRouter from './routes/alerts.js';
-import authRouter from './routes/auth.js';
-import marketplaceRouter, { publicMarketplaceRouter } from './routes/marketplace.js';
-import consultationProfessionalsRouter from './routes/consultation-professionals.js';
-import consultationPaymentRouter from './routes/consultation-payment.js';
-import consultationSessionsRouter from './routes/consultation-sessions.js';
-import consultationRegisterRouter from './routes/consultation-register.js';
-import consultationProfessionalManagementRouter from './routes/consultation-professional-management.js';
-import { apiLimiter, speedLimiter } from './middleware/rateLimiter.js';
-import { logger } from './lib/logger.js';
+// Mongo-first routes (v2)
+import authRoutes from './routes/auth.routes';
+import workerRoutes from './routes/worker.routes';
+import analyticsRoutes from './routes/analytics.routes';
+import jobRoutes from './routes/job.routes';
+import employerRoutes from './routes/employer.routes';
+import professionalRoutes from './routes/professional.routes';
+import merchantRoutes from './routes/merchant.routes';
+import paymentRoutes from './routes/payment.routes';
+import servicesRoutes from './routes/services.routes';
+import alertsRoutes from './routes/alerts.routes';
+import uploadRoutes from './routes/upload.routes';
+import dashboardRoutes from './routes/dashboard.routes';
+import profilesRoutes from './routes/profiles.routes';
+import applicationsRoutes from './routes/applications.routes';
+import publicRoutes from './routes/public.routes';
+import { apiLimiter, speedLimiter } from './middleware/rateLimiter';
+import { logger } from './lib/logger';
+import { errorHandler } from './middleware/error.middleware';
 
 const rawOrigins = process.env.CLIENT_ORIGIN?.split(',').map(origin => origin.trim()).filter(Boolean) ?? [];
 const corsOrigin = rawOrigins.length > 0 ? rawOrigins : true;
@@ -53,31 +56,46 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// API Routes
-app.use('/api/jobs', jobsRouter);
-app.use('/api/applications', applicationsRouter);
-app.use('/api/services', servicesRouter);
-app.use('/api/profiles', profilesRouter);
-app.use('/api/verification', verificationRouter);
-app.use('/api/payments', paymentsRouter);
-app.use('/api/dashboard', dashboardRouter);
-app.use('/api/alerts', alertsRouter);
+// Serve uploaded files statically
+const uploadDir = process.env.UPLOAD_DIR || './uploads';
+app.use('/uploads', express.static(path.join(process.cwd(), uploadDir)));
 
-// Authentication Routes
-app.use('/api/auth', authRouter);
-app.use('/api/marketplace', marketplaceRouter);
-app.use('/api/merchants', marketplaceRouter);
-app.use('/api/public', publicMarketplaceRouter);
+// Legacy API Routes (backward compatibility - no version prefix)
+app.use('/api/auth', authRoutes);
+app.use('/api/workers', workerRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/employers', employerRoutes);
+app.use('/api/professionals', professionalRoutes);
+app.use('/api/merchants', merchantRoutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/services', servicesRoutes);
+app.use('/api/alerts', alertsRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/profiles', profilesRoutes);
+app.use('/api/applications', applicationsRoutes);
 
-// Consultation Routes
-app.use('/api/consultation', consultationRegisterRouter);
-app.use('/api/consultation/professionals', consultationProfessionalManagementRouter); // Profile & payout management (authenticated)
-app.use('/api/consultation/professionals', consultationProfessionalsRouter); // Public professional listings
-app.use('/api/consultation/payment', consultationPaymentRouter);
-app.use('/api/consultation/sessions', consultationSessionsRouter);
+// Mongo API Routes (v2 - same routes with version prefix)
+app.use('/api/v2/auth', authRoutes);
+app.use('/api/v2/upload', uploadRoutes);
+app.use('/api/v2/workers', workerRoutes);
+app.use('/api/v2/analytics', analyticsRoutes);
+app.use('/api/v2/jobs', jobRoutes);
+app.use('/api/v2/employers', employerRoutes);
+app.use('/api/v2/professionals', professionalRoutes);
+app.use('/api/v2/merchants', merchantRoutes);
+app.use('/api/v2/payments', paymentRoutes);
+app.use('/api/v2/services', servicesRoutes);
+app.use('/api/v2/alerts', alertsRoutes);
+app.use('/api/v2/public', publicRoutes);
 
+// 404 handler - must come before error handler
 app.use((_req, res) => {
-  res.status(404).json({ message: 'Route not found' });
+  res.status(404).json({ success: false, message: 'Route not found' });
 });
+
+// Global error handler - must be last
+app.use(errorHandler);
 
 export default app;

@@ -1,0 +1,32 @@
+/**
+ * Job Routes (v2)
+ * Mongo-backed job board endpoints
+ */
+
+import { Router } from 'express';
+import * as jobController from '../controllers/job.controller';
+import { authenticate, authorize } from '../middleware/auth.middleware';
+
+const router = Router();
+
+// Public listings
+router.get('/', jobController.getAllJobs);
+router.get('/employer/:employerId', jobController.getJobsByEmployer);
+
+// Authenticated worker flows
+router.get('/my-applications', authenticate, authorize('worker'), jobController.getMyApplications);
+router.get('/applications/:applicationId', authenticate, jobController.getApplicationById);
+router.delete('/applications/:applicationId', authenticate, authorize('worker'), jobController.withdrawApplication);
+
+// Employer CRUD
+router.post('/', authenticate, authorize('employer'), jobController.createJob);
+router.put('/:id', authenticate, authorize('employer'), jobController.updateJob);
+router.delete('/:id', authenticate, authorize('employer'), jobController.deleteJob);
+
+// Worker applications
+router.post('/:id/apply', authenticate, authorize('worker'), jobController.applyToJob);
+
+// Public job detail (keep last to avoid conflicts)
+router.get('/:id', jobController.getJobById);
+
+export default router;

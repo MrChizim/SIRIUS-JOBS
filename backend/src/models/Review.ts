@@ -22,4 +22,4 @@ const ReviewSchema = new Schema<IReview>({
 // Indexes for faster queries
 ReviewSchema.index({ professionalId: 1, createdAt: -1 });
 
-export const Review = mongoose.model<IReview>('Review', ReviewSchema);
+export const Review = mongoose.models.Review || mongoose.model<IReview>('Review', ReviewSchema);

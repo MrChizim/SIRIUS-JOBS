@@ -456,6 +456,10 @@
     });
     const sessionUtils = window.SiriusSession ?? null;
     const employerSessionPayload = sessionUtils?.parse ? sessionUtils.parse('siriusEmployerAuth') : null;
+    const withAuth = (headers = {}) =>
+      employerSessionPayload?.token
+        ? { ...headers, Authorization: `Bearer ${employerSessionPayload.token}` }
+        : headers;
     const showToast = window.SiriusUI?.showToast ?? ((message, tone) => {
       const logger = tone === 'error' ? console.error : console.log;
       logger(message);
@@ -1004,7 +1008,7 @@
       try {
         const res = await fetch('/api/dashboard/employer', {
           cache: 'no-store',
-          headers: { Authorization: `Bearer ${employerSessionPayload.token}` },
+          headers: withAuth(),
         });
         if (res.status === 401 || res.status === 403) {
           showToast('Your session expired. Please log in again.', 'error');
@@ -1218,7 +1222,7 @@
       try{
         const res = await fetch(`/api/applications/${decisionApplicationId.value}/decision`, {
           method: 'POST',
-          headers: { 'Content-Type':'application/json' },
+          headers: withAuth({ 'Content-Type':'application/json' }),
           body: JSON.stringify(payload)
         });
         if(!res.ok){
@@ -1371,6 +1375,7 @@
       sessionStorage.clear();
       sessionStorage.removeItem('siriusPaidJobCredit');
       sessionStorage.removeItem('siriusPremiumEmployer');
+      localStorage.removeItem('siriusRememberMe');
       showToast('You have been logged out of Sirius Jobs.', 'info');
       window.location.href = 'login.html';
     }

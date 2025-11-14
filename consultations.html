@@ -354,70 +354,74 @@
             return numeric.toFixed(1);
         }
 
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
 
-        // Filter tabs
-        const filterTabs = document.querySelectorAll('.filter-tab');
-        filterTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Update active state
-                filterTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
+            // Filter tabs
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Update active state
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Filter professionals
+                    currentFilter = tab.dataset.filter;
+                    renderProfessionals();
+                });
+            });
+
+            // Fetch professionals
+            async function fetchProfessionals() {
+                try {
+                    const response = await fetch(`${API_URL}/consultation/professionals`);
+                    if (!response.ok) throw new Error('Failed to fetch professionals');
+                    const data = await response.json();
+                    allProfessionals = Array.isArray(data) && data.length ? data : fallbackProfessionals;
+                    renderProfessionals();
+                } catch (error) {
+                    console.error('Error fetching professionals:', error);
+                    allProfessionals = fallbackProfessionals;
+                    renderProfessionals();
+                }
+            }
+
+            // Render professionals
+            function renderProfessionals() {
+                const grid = document.getElementById('professionals-grid');
+                const loading = document.getElementById('loading');
+                const emptyState = document.getElementById('empty-state');
 
                 // Filter professionals
-                currentFilter = tab.dataset.filter;
-                renderProfessionals();
-            });
-        });
+                let filtered = allProfessionals;
+                if (currentFilter !== 'all') {
+                    filtered = allProfessionals.filter(p => p.profession === currentFilter);
+                }
 
-        // Fetch professionals
-        async function fetchProfessionals() {
-            try {
-                const response = await fetch(`${API_URL}/consultation/professionals`);
-                if (!response.ok) throw new Error('Failed to fetch professionals');
-                const data = await response.json();
-                allProfessionals = Array.isArray(data) && data.length ? data : fallbackProfessionals;
-                renderProfessionals();
-            } catch (error) {
-                console.error('Error fetching professionals:', error);
-                allProfessionals = fallbackProfessionals;
-                renderProfessionals();
-            }
-        }
+                // Hide loading
+                loading.classList.add('hidden');
 
-        // Render professionals
-        function renderProfessionals() {
-            const grid = document.getElementById('professionals-grid');
-            const loading = document.getElementById('loading');
-            const emptyState = document.getElementById('empty-state');
+                // Show empty state if no results
+                if (filtered.length === 0) {
+                    grid.classList.add('hidden');
+                    emptyState.classList.remove('hidden');
+                    return;
+                }
 
-            // Filter professionals
-            let filtered = allProfessionals;
-            if (currentFilter !== 'all') {
-                filtered = allProfessionals.filter(p => p.profession === currentFilter);
-            }
+                // Show grid
+                emptyState.classList.add('hidden');
+                grid.classList.remove('hidden');
 
-            // Hide loading
-            loading.classList.add('hidden');
-
-            // Show empty state if no results
-            if (filtered.length === 0) {
-                grid.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-                return;
-            }
-
-            // Show grid
-            emptyState.classList.add('hidden');
-            grid.classList.remove('hidden');
-
-            // Render cards
-            grid.innerHTML = filtered.map(pro => `
+                // Render cards
+                grid.innerHTML = filtered.map(pro => `
                 <div class="professional-card bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
                     <!-- Header -->
                     <div class="flex items-start justify-between mb-4">
@@ -453,7 +457,7 @@
                         </div>
                     </div>
 
-                    ${renderContactActions(pro)}
+                    ${renderContactActions()}
 
                     <!-- Bio Preview -->
                     <p class="text-sm text-gray-600 mb-6 line-clamp-2">
@@ -467,67 +471,48 @@
                 </div>
             `).join('');
 
-            // Reinitialize feather icons
+                // Reinitialize feather icons
+                feather.replace();
+            }
+
+            function renderContactActions() {
+                return `
+                <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 mb-4">
+                    <p class="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                        <i data-feather="lock" class="w-4 h-4"></i>
+                        Chat & calls stay inside Sirius
+                    </p>
+                    <p class="text-xs text-slate-500 mt-2">
+                        Personal WhatsApp, phone, and email details are hidden. Book this professional to unlock our in-app chat and call tools.
+                    </p>
+                </div>
+            `;
+            }
+
+            // Render star rating
+            function renderStars(rating) {
+                const safeRating = typeof rating === 'number' ? rating : 0;
+                const fullStars = Math.floor(safeRating);
+                const hasHalfStar = safeRating % 1 >= 0.5;
+                const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                let stars = '';
+                for (let i = 0; i < fullStars; i++) {
+                    stars += '<i data-feather="star" class="w-4 h-4 fill-current"></i>';
+                }
+                if (hasHalfStar) {
+                    stars += '<i data-feather="star" class="w-4 h-4"></i>';
+                }
+                for (let i = 0; i < emptyStars; i++) {
+                    stars += '<i data-feather="star" class="w-4 h-4 text-gray-300"></i>';
+                }
+                return stars;
+            }
+
+            // Initialize
             feather.replace();
-        }
-
-        function renderContactActions(pro) {
-            const buttons = [];
-            const whatsappUrl = buildWhatsappUrl(pro.whatsapp || '');
-            if (whatsappUrl) {
-                buttons.push(`
-                    <a href="${whatsappUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-green-50 text-green-700 border border-green-200 font-semibold px-3 py-2 rounded-xl text-sm hover:bg-green-100 transition">
-                        <i data-feather="message-circle" class="w-4 h-4"></i>
-                        WhatsApp
-                    </a>
-                `);
-            }
-            if (pro.phone) {
-                const phone = normalisePhone(pro.phone);
-                buttons.push(`
-                    <a href="tel:${phone.replace('+', '%2B')}" class="inline-flex items-center gap-2 bg-blue-50 text-blue-700 border border-blue-200 font-semibold px-3 py-2 rounded-xl text-sm hover:bg-blue-100 transition">
-                        <i data-feather="phone" class="w-4 h-4"></i>
-                        Call
-                    </a>
-                `);
-            }
-            if (pro.email) {
-                buttons.push(`
-                    <a href="mailto:${pro.email}" class="inline-flex items-center gap-2 bg-gray-50 text-gray-700 border border-gray-200 font-semibold px-3 py-2 rounded-xl text-sm hover:bg-gray-100 transition">
-                        <i data-feather="mail" class="w-4 h-4"></i>
-                        Email
-                    </a>
-                `);
-            }
-            if (!buttons.length) {
-                return `<p class="text-xs text-gray-500 font-medium mb-4">Book via Sirius to unlock private messaging with this professional.</p>`;
-            }
-            return `<div class="flex flex-wrap gap-3 mb-4">${buttons.join('')}</div>`;
-        }
-
-        // Render star rating
-        function renderStars(rating) {
-            const safeRating = typeof rating === 'number' ? rating : 0;
-            const fullStars = Math.floor(safeRating);
-            const hasHalfStar = safeRating % 1 >= 0.5;
-            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
-            let stars = '';
-            for (let i = 0; i < fullStars; i++) {
-                stars += '<i data-feather="star" class="w-4 h-4 fill-current"></i>';
-            }
-            if (hasHalfStar) {
-                stars += '<i data-feather="star" class="w-4 h-4"></i>';
-            }
-            for (let i = 0; i < emptyStars; i++) {
-                stars += '<i data-feather="star" class="w-4 h-4 text-gray-300"></i>';
-            }
-            return stars;
-        }
-
-        // Initialize
-        feather.replace();
-        fetchProfessionals();
+            fetchProfessionals();
+        }); // End DOMContentLoaded
     </script>
     <script src="assistant.js"></script>
   <script src="assets/site-shell.js" defer></script>

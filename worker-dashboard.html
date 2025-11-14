@@ -153,7 +153,7 @@
           <i data-feather="file-text" class="text-primary w-7 h-7"></i>
         </div>
         <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Jobs Applied</p>
-        <h3 class="text-4xl font-black text-primary">56</h3>
+        <h3 id="jobsAppliedStat" class="text-4xl font-black text-primary">0</h3>
       </div>
 
       <div class="stat-card bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
@@ -161,7 +161,7 @@
           <i data-feather="check-circle" class="text-green-600 w-7 h-7"></i>
         </div>
         <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Jobs Won</p>
-        <h3 class="text-4xl font-black text-green-600">14</h3>
+        <h3 id="jobsWonStat" class="text-4xl font-black text-green-600">0</h3>
       </div>
 
       <div class="stat-card bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
@@ -169,7 +169,7 @@
           <i data-feather="shield" class="text-green-600 w-7 h-7"></i>
         </div>
         <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Verification</p>
-        <h3 class="text-lg font-black text-green-600">Verified</h3>
+        <h3 id="verificationStat" class="text-lg font-black text-green-600">Checking…</h3>
       </div>
     </section>
 
@@ -205,7 +205,7 @@
           </div>
           <h3 class="text-xl font-black text-gray-900 mb-2">Subscription</h3>
           <p class="text-sm text-gray-600 mb-1">₦1,000 monthly renewal</p>
-          <p class="text-xs text-gray-500 mb-6">Status: <span id="subStatus" class="font-bold text-green-600">Active • Renews in 24 days</span></p>
+          <p class="text-xs text-gray-500 mb-6">Status: <span id="subStatus" class="font-bold text-gray-600">Loading status…</span></p>
           <button class="w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-700 transition-all shadow-lg shadow-green-600/25" id="renewBtn">Renew Subscription</button>
         </div>
       </aside>
@@ -369,17 +369,40 @@
     });
     const sessionUtils = window.SiriusSession ?? null;
     const workerSessionPayload = sessionUtils?.parse ? sessionUtils.parse('siriusWorkerAuth') : null;
+    if (!workerSessionPayload?.token) {
+      window.location.href = 'login.html';
+      throw new Error('Worker session missing');
+    }
+    const defaultAvatar = '/images/users/sample_worker.jpg';
+    const jobsAppliedStatEl = document.getElementById('jobsAppliedStat');
+    const jobsWonStatEl = document.getElementById('jobsWonStat');
+    const verificationStatEl = document.getElementById('verificationStat');
+    const subStatusEl = document.getElementById('subStatus');
+    const appliedListEl = document.getElementById('appliedList');
 
-    // sample data
-    const worker = {
-      name: 'Samuel Ade',
-      skill: 'Mechanic',
-      location: 'Abeokuta, Ogun',
-      bio: 'I specialize in engine repairs, servicing and diagnostics.',
-      photo: true,
-      photoUrl: '/images/users/sample_worker.jpg',
-      verified: false
+    const sessionName =
+      [workerSessionPayload?.firstName, workerSessionPayload?.lastName].filter(Boolean).join(' ').trim() ||
+      'Loading profile…';
+    const sessionSkill =
+      workerSessionPayload?.artisanProfile?.headline ||
+      workerSessionPayload?.artisanProfile?.serviceCategory?.label ||
+      'Add your service category';
+    const sessionLocation = workerSessionPayload?.artisanProfile?.location || '';
+    const sessionPhoto = workerSessionPayload?.artisanProfile?.showcaseMediaUrl || defaultAvatar;
+
+    let worker = {
+      name: sessionName,
+      skill: sessionSkill,
+      location: sessionLocation,
+      bio: workerSessionPayload?.artisanProfile?.bio || '',
+      photo: Boolean(workerSessionPayload?.artisanProfile?.showcaseMediaUrl),
+      photoUrl: sessionPhoto,
+      verified: Boolean(workerSessionPayload?.user?.verificationStatus === 'VERIFIED'),
+      subscriptionStatus: workerSessionPayload?.artisanProfile?.subscriptionStatus || 'NONE',
+      subscriptionEndsAt: workerSessionPayload?.artisanProfile?.subscriptionEndsAt || null,
     };
+    let applied = [];
+    let isLoadingApplications = true;
 
     // profile completion weights
     const weights = { name:10, skill:10, location:10, bio:20, photo:20, verified:30 };
@@ -396,12 +419,13 @@
     }
 
     function renderProfile(){
-      worker.photo = Boolean(worker.photoUrl);
+      worker.photo = Boolean(worker.photoUrl && worker.photoUrl !== defaultAvatar);
       const avatar = document.getElementById('workerAvatar');
-      avatar.src = worker.photoUrl || 'https://via.placeholder.com/120x120?text=You';
+      avatar.src = worker.photoUrl || defaultAvatar;
       avatar.alt = `${worker.name} profile photo`;
       document.getElementById('wName').textContent = worker.name;
-      document.getElementById('wSkillLoc').textContent = `${worker.skill} • ${worker.location}`;
+      const skillLocation = [worker.skill, worker.location].filter(Boolean).join(' • ');
+      document.getElementById('wSkillLoc').textContent = skillLocation || 'Update your profile details';
       const { score, missing } = computeCompletion(worker);
       document.getElementById('profileBar').style.width = score + '%';
       document.getElementById('profilePct').textContent = `${score}% complete`;
@@ -423,6 +447,168 @@
           verifyBtn.disabled = false;
           verifyBtn.className='w-full border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all';
         }
+      }
+      if (verificationStatEl) {
+        verificationStatEl.textContent = worker.verified ? 'Verified' : 'Pending verification';
+        verificationStatEl.classList.toggle('text-green-600', worker.verified);
+        verificationStatEl.classList.toggle('text-yellow-600', !worker.verified);
+      }
+    }
+
+    function updateStatsFromApplications(applications = []) {
+      const jobsApplied = applications.length;
+      const jobsWon = applications.filter(app => (app.status ?? '').toUpperCase() === 'ACCEPTED').length;
+      if (jobsAppliedStatEl) {
+        jobsAppliedStatEl.textContent = jobsApplied.toString();
+      }
+      if (jobsWonStatEl) {
+        jobsWonStatEl.textContent = jobsWon.toString();
+      }
+    }
+
+    function updateSubscriptionCard(profile = {}) {
+      if (!subStatusEl) return;
+      const status = (profile.subscriptionStatus || 'NONE').toUpperCase();
+      let text = 'Not subscribed';
+      let className = 'font-bold text-gray-600';
+      if (status === 'ACTIVE') {
+        const endsAt = profile.subscriptionEndsAt ? new Date(profile.subscriptionEndsAt) : null;
+        text = endsAt
+          ? `Active • renews ${endsAt.toLocaleDateString('en-NG', { month: 'short', day: 'numeric' })}`
+          : 'Active';
+        className = 'font-bold text-green-600';
+      } else if (status === 'TRIAL') {
+        text = 'Trial plan • upgrade soon';
+        className = 'font-bold text-primary';
+      } else if (status === 'LAPSED') {
+        text = 'Lapsed • renew now';
+        className = 'font-bold text-red-600';
+      }
+      subStatusEl.textContent = text;
+      subStatusEl.className = className;
+    }
+
+    function formatCurrency(value) {
+      if (typeof value !== 'number' || Number.isNaN(value)) {
+        return '—';
+      }
+      return `₦${new Intl.NumberFormat('en-NG').format(value)}`;
+    }
+
+    function formatTimelineDate(value) {
+      if (!value) return 'Date unavailable';
+      try {
+        const date = new Date(value);
+        return date.toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' });
+      } catch {
+        return 'Date unavailable';
+      }
+    }
+
+    function statusMeta(status) {
+      const normalized = (status || 'PENDING').toUpperCase();
+      const map = {
+        PENDING: { chip: 'bg-amber-50 border-2 border-amber-200 text-amber-700', label: 'Awaiting review', next: 'Employer reviewing your profile' },
+        ACCEPTED: { chip: 'bg-green-50 border-2 border-green-200 text-green-700', label: 'Hired', next: 'You were hired for this job' },
+        WITHDRAWN: { chip: 'bg-gray-100 border-2 border-gray-200 text-gray-600', label: 'Withdrawn', next: 'You withdrew this application' },
+        REJECTED: { chip: 'bg-red-50 border-2 border-red-200 text-red-600', label: 'Not selected', next: 'Not selected this time' },
+      };
+      return map[normalized] ?? map.PENDING;
+    }
+
+    function deriveWorkerName(user = {}) {
+      const apiName = [user.firstName, user.lastName].filter(Boolean).join(' ').trim();
+      if (apiName) return apiName;
+      const sessionName = [workerSessionPayload?.firstName, workerSessionPayload?.lastName].filter(Boolean).join(' ').trim();
+      return sessionName || 'Complete your name';
+    }
+
+    function ensureApplicationsPlaceholder(message) {
+      if (!appliedListEl) return;
+      appliedListEl.innerHTML = `<li class="text-center text-sm text-gray-500 py-8">${message}</li>`;
+    }
+
+    async function loadWorkerDashboard() {
+      if (!workerSessionPayload?.token) {
+        handleLogout(false);
+        return;
+      }
+
+      ensureApplicationsPlaceholder('Loading your applications…');
+
+      try {
+        const res = await fetch('/api/dashboard/artisan', {
+          headers: { Authorization: `Bearer ${workerSessionPayload.token}` },
+        });
+
+        if (res.status === 401) {
+          handleLogout(false);
+          return;
+        }
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.message || 'Unable to load your dashboard right now.');
+        }
+
+        const profile = data.profile ?? {};
+        const user = profile.user ?? {};
+        const isVerified = Boolean(
+          profile.verifiedBadge ||
+            profile.user?.verificationStatus === 'VERIFIED',
+        );
+        worker = {
+          name: deriveWorkerName(user),
+          skill:
+            profile.headline ??
+            profile.serviceCategory?.label ??
+            workerSessionPayload?.artisanProfile?.headline ??
+            workerSessionPayload?.artisanProfile?.serviceCategory?.label ??
+            'Add your service category',
+          location: profile.location ?? workerSessionPayload?.artisanProfile?.location ?? '',
+          bio: profile.bio ?? '',
+          photo: Boolean(profile.showcaseMediaUrl),
+          photoUrl: profile.showcaseMediaUrl || defaultAvatar,
+          verified: isVerified,
+          subscriptionStatus: profile.subscriptionStatus ?? 'NONE',
+          subscriptionEndsAt: profile.subscriptionEndsAt ?? null,
+        };
+
+        applied = Array.isArray(data.applications) ? data.applications : [];
+        isLoadingApplications = false;
+
+        if (workerSessionPayload) {
+          const updatedSession = {
+            ...workerSessionPayload,
+            firstName: user.firstName ?? workerSessionPayload.firstName,
+            lastName: user.lastName ?? workerSessionPayload.lastName,
+            user: {
+              ...(workerSessionPayload.user ?? {}),
+              firstName: user.firstName ?? workerSessionPayload.firstName,
+              lastName: user.lastName ?? workerSessionPayload.lastName,
+              verificationStatus: user.verificationStatus ?? workerSessionPayload.user?.verificationStatus,
+            },
+            artisanProfile: {
+              ...(workerSessionPayload.artisanProfile ?? {}),
+              headline: worker.skill,
+              location: worker.location,
+              bio: profile.bio ?? workerSessionPayload.artisanProfile?.bio,
+              yearsExperience: profile.yearsExperience ?? workerSessionPayload.artisanProfile?.yearsExperience,
+              serviceCategory: profile.serviceCategory ?? workerSessionPayload.artisanProfile?.serviceCategory,
+              showcaseMediaUrl: worker.photoUrl,
+            },
+          };
+          sessionStorage.setItem('siriusWorkerAuth', JSON.stringify(updatedSession));
+        }
+
+        renderProfile();
+        updateStatsFromApplications(applied);
+        updateSubscriptionCard(profile);
+        renderApplied();
+      } catch (error) {
+        console.error('Worker dashboard error:', error);
+        isLoadingApplications = false;
+        ensureApplicationsPlaceholder(error.message || 'Unable to load applications.');
       }
     }
 
@@ -590,106 +776,73 @@
     }
 
     // lists
-    const applied = [
-      {
-        id:'app-101',
-        job:'Residential Electrician',
-        company:'Sirius Homes',
-        status:'Pending',
-        date:'Applied 22 Oct 2025',
-        location:'Port Harcourt • On-site',
-        rate:'₦25,000 / day',
-        nextStep:'Employer reviewing your profile'
-      },
-      {
-        id:'app-102',
-        job:'Office Generator Repair',
-        company:'ACME Ltd',
-        status:'Hired',
-        date:'Hired 12 Oct 2025',
-        location:'Lagos • 2 day project',
-        rate:'₦60,000 total',
-        nextStep:'Remember to update job notes after completion'
-      },
-      {
-        id:'app-103',
-        job:'Luxury Apartment Cleaning Team Lead',
-        company:'BrightSpark Facilities',
-        status:'Withdrawn',
-        date:'Withdrawn 05 Oct 2025',
-        location:'Abuja • Contract',
-        rate:'₦18,000 / shift',
-        nextStep:'You withdrew this application'
-      }
-    ];
     function renderApplied(){
-      const statusStyles = {
-        Pending: {
-          chip: 'bg-amber-50 border-2 border-amber-200 text-amber-700',
-          label: 'Awaiting review'
-        },
-        Hired: {
-          chip: 'bg-green-50 border-2 border-green-200 text-green-700',
-          label: 'Hired'
-        },
-        Withdrawn: {
-          chip: 'bg-gray-100 border-2 border-gray-200 text-gray-600',
-          label: 'Withdrawn'
-        },
-        Rejected: {
-          chip: 'bg-red-50 border-2 border-red-200 text-red-600',
-          label: 'Not selected'
-        }
-      };
+      if (!appliedListEl) return;
+      if (isLoadingApplications) {
+        ensureApplicationsPlaceholder('Loading your applications…');
+        return;
+      }
 
-      const el = document.getElementById('appliedList');
-      el.innerHTML='';
+      if (!applied.length) {
+        ensureApplicationsPlaceholder('No applications yet. Browse jobs to get started.');
+        return;
+      }
+
+      appliedListEl.innerHTML='';
 
       applied.forEach(application => {
-        const statusStyle = statusStyles[application.status] ?? statusStyles.Pending;
+        const statusStyle = statusMeta(application.status);
+        const withdrawAllowed = (application.status || '').toUpperCase() === 'PENDING';
+        const jobTitle = application.job?.title ?? 'Job opportunity';
+        const jobLocation = application.job?.location ?? 'Location not specified';
+        const applicationId = application.id;
+        const appliedDate = formatTimelineDate(application.createdAt);
+        const payLabel = typeof application.expectedPay === 'number' ? formatCurrency(application.expectedPay) : '—';
+
         const li = document.createElement('li');
         li.className = 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-6 space-y-4 hover:border-primary/30 hover:shadow-lg transition-all';
-        const withdrawButton = application.status === 'Pending'
-          ? `<button class="withdrawBtn inline-flex items-center gap-1 text-xs text-red-600 hover:text-red-700 font-bold" data-application="${application.id}"><i data-feather="slash" class="w-3.5 h-3.5"></i>Withdraw</button>`
+        const withdrawButton = withdrawAllowed
+          ? `<button class="withdrawBtn inline-flex items-center gap-1 text-xs text-red-600 hover:text-red-700 font-bold" data-application="${applicationId}"><i data-feather="slash" class="w-3.5 h-3.5"></i>Withdraw</button>`
           : '';
 
         li.innerHTML = `
           <div class="flex items-start justify-between gap-4">
             <div>
-              <h4 class="text-base font-black text-gray-900">${application.job}</h4>
-              <p class="text-xs text-gray-500 font-medium mt-1">${application.company}</p>
-              <p class="text-xs text-gray-400 mt-1">${application.location ?? ''}</p>
+              <h4 class="text-base font-black text-gray-900">${jobTitle}</h4>
+              <p class="text-xs text-gray-500 font-medium mt-1">${jobLocation}</p>
             </div>
             <span class="text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap ${statusStyle.chip}">${statusStyle.label}</span>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-gray-600">
-            <div class="flex items-center gap-2"><i data-feather="calendar" class="w-4 h-4 text-gray-400"></i><span class="font-medium">${application.date}</span></div>
-            <div class="flex items-center gap-2"><span class="text-primary font-bold uppercase tracking-wide">Rate</span><span class="font-medium">${application.rate ?? '—'}</span></div>
-            <div class="flex items-center gap-2"><i data-feather="info" class="w-4 h-4 text-gray-400"></i><span class="font-medium">${application.nextStep ?? ''}</span></div>
+            <div class="flex items-center gap-2"><i data-feather="calendar" class="w-4 h-4 text-gray-400"></i><span class="font-medium">${appliedDate}</span></div>
+            <div class="flex items-center gap-2"><span class="text-primary font-bold uppercase tracking-wide">Expected pay</span><span class="font-medium">${payLabel}</span></div>
+            <div class="flex items-center gap-2"><i data-feather="info" class="w-4 h-4 text-gray-400"></i><span class="font-medium">${statusStyle.next}</span></div>
           </div>
           <div class="flex items-center justify-between pt-3 border-t-2 border-gray-100 text-xs">
             <a href="jobs.html" class="inline-flex items-center gap-1 text-primary hover:text-primary/80 font-bold transition"><i data-feather="external-link" class="w-4 h-4"></i>View job</a>
             ${withdrawButton}
           </div>`;
 
-        el.appendChild(li);
+        appliedListEl.appendChild(li);
       });
 
-      el.querySelectorAll('.withdrawBtn').forEach(btn => {
+      appliedListEl.querySelectorAll('.withdrawBtn').forEach(btn => {
         btn.addEventListener('click', async (event) => {
           const applicationId = event.currentTarget.getAttribute('data-application');
           if(!confirm('Withdraw this application?')) return;
           try{
-            const res = await fetch(`/api/applications/${applicationId}/withdraw`, { method:'POST' });
+            const res = await fetch(`/api/applications/${applicationId}/withdraw`, {
+              method:'POST',
+              headers: { Authorization: `Bearer ${workerSessionPayload?.token ?? ''}` },
+            });
             if(!res.ok){
               const body = await res.json().catch(()=>({ message:'Unable to withdraw' }));
               throw new Error(body.message || 'Unable to withdraw');
             }
             const record = applied.find(item => item.id === applicationId);
             if(record){
-              record.status = 'Withdrawn';
-              record.nextStep = 'You withdrew this application';
-              record.date = `Withdrawn ${new Date().toLocaleDateString()}`;
+              record.status = 'WITHDRAWN';
+              record.reviewedAt = new Date().toISOString();
             }
             renderApplied();
             alert('Application withdrawn.');
@@ -704,7 +857,7 @@
 
     // interactions
     const verifyWorkerBtn = document.getElementById('verifyWorkerBtn');
-    verifyWorkerBtn.addEventListener('click', () => {
+    verifyWorkerBtn?.addEventListener('click', () => {
       if(worker.verified) return;
       window.location.href = 'verify.html?returnTo=worker-dashboard';
     });
@@ -748,15 +901,20 @@
     });
 
     // init
-    function handleLogout(){
+    function handleLogout(showAlert = true){
       sessionStorage.clear();
-      alert('You have been logged out.');
+      localStorage.removeItem('siriusRememberMe');
+      if (showAlert) {
+        alert('You have been logged out.');
+      }
       window.location.href = 'login.html';
     }
     document.getElementById('workerLogout').addEventListener('click', handleLogout);
     document.getElementById('workerLogoutMobile').addEventListener('click', handleLogout);
 
-    renderProfile(); renderApplied();
+    renderProfile();
+    renderApplied();
+    loadWorkerDashboard();
   </script>
   <script src="assistant.js"></script>
   <script src="session-timeout.js"></script>
