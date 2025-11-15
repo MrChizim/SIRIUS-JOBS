@@ -79,6 +79,18 @@
         .nav-link:hover::after {
             width: 100%;
         }
+
+        .nav-link.active {
+            color: #0056b3 !important;
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .mobile-menu-link.active {
+            color: #0056b3 !important;
+        }
     </style>
   <link rel="stylesheet" href="assets/site-shell.css">
 </head>
@@ -122,11 +134,11 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" aria-hidden="true" class="hidden lg:hidden bg-white border-t border-gray-200">
             <div class="container mx-auto px-4 py-6 space-y-4">
-                <a href="index.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Home</a>
-                <a href="jobs.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Jobs</a>
-                <a href="consultations.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Consultations</a>
-                <a href="marketplace.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Marketplace</a>
-                <a href="about.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">About</a>
+                <a href="index.html" class="mobile-menu-link block text-sm font-semibold text-gray-600 hover:text-primary">Home</a>
+                <a href="jobs.html" class="mobile-menu-link block text-sm font-semibold text-gray-600 hover:text-primary">Jobs</a>
+                <a href="consultations.html" class="mobile-menu-link block text-sm font-semibold text-gray-600 hover:text-primary">Consultations</a>
+                <a href="marketplace.html" class="mobile-menu-link block text-sm font-semibold text-gray-600 hover:text-primary">Marketplace</a>
+                <a href="about.html" class="mobile-menu-link block text-sm font-semibold text-gray-600 hover:text-primary">About</a>
                 <div class="pt-4 space-y-3">
                     <a href="login.html" class="block text-center text-sm font-semibold text-gray-600">Sign in</a>
                     <a href="register.html" class="block text-center bg-primary text-white font-semibold px-6 py-3 rounded-full">Get Started</a>
@@ -610,7 +622,7 @@
     <div class="site-footer__inner container mx-auto px-4 lg:px-6">
       <div class="site-footer__grid">
         <div class="site-footer__brand">
-          <img src="images/logo.png" alt="Sirius logo">
+          <img src="images/logo.png" alt="Sirius logo" class="h-16 w-auto drop-shadow-2xl">
           <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
           <div class="site-footer__social">
             <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
@@ -701,6 +713,24 @@
                 mobileMenuBtn.setAttribute('aria-expanded', String(!isHidden));
             });
         }
+
+        const highlightActiveLinks = () => {
+            const currentPage = window.location.pathname.replace(/^\/+/, '') || 'index.html';
+            const linkCollections = [
+                ...document.querySelectorAll('.nav-link'),
+                ...document.querySelectorAll('.mobile-menu-link'),
+            ];
+
+            linkCollections.forEach(link => {
+                const href = link.getAttribute('href');
+                if (!href) return;
+                const resolved = new URL(href, window.location.href);
+                const linkPath = resolved.pathname.replace(/^\/+/, '') || 'index.html';
+                link.classList.toggle('active', linkPath === currentPage);
+            });
+        };
+
+        highlightActiveLinks();
 
         window.feather?.replace?.();
     </script>
