@@ -6,8 +6,7 @@
 
 .nav-brand { gap: 0 !important; }
 .nav-brand img {
-  width: 68px;
-  height: 68px;
+  /* Removed fixed width/height to allow HTML classes to control size */
   object-fit: contain;
   filter: drop-shadow(0 10px 25px rgba(15,23,42,0.3));
 }
@@ -51,8 +50,7 @@
 }
 
 .site-footer__brand img {
-  width: 90px;
-  height: 90px;
+  /* Removed fixed width/height to allow HTML classes to control size */
   filter: drop-shadow(0 15px 35px rgba(15,23,42,0.45));
 }
 
