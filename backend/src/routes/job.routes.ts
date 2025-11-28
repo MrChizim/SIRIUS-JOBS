@@ -18,10 +18,13 @@ router.get('/my-applications', authenticate, authorize('worker'), jobController.
 router.get('/applications/:applicationId', authenticate, jobController.getApplicationById);
 router.delete('/applications/:applicationId', authenticate, authorize('worker'), jobController.withdrawApplication);
 
-// Employer CRUD
-router.post('/', authenticate, authorize('employer'), jobController.createJob);
-router.put('/:id', authenticate, authorize('employer'), jobController.updateJob);
-router.delete('/:id', authenticate, authorize('employer'), jobController.deleteJob);
+// Get applicants for a job (job poster only)
+router.get('/applications/job/:jobId', authenticate, jobController.getJobApplicants);
+
+// Job CRUD (all user types can post jobs)
+router.post('/', authenticate, jobController.createJob);
+router.put('/:id', authenticate, jobController.updateJob);
+router.delete('/:id', authenticate, jobController.deleteJob);
 
 // Worker applications
 router.post('/:id/apply', authenticate, authorize('worker'), jobController.applyToJob);

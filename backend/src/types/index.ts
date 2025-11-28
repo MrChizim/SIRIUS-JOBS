@@ -136,7 +136,6 @@ export interface IMerchantProfile {
     endDate?: Date;
     amount: number;
     maxImages: number;
-    newsletterEligible: boolean;
   };
   cacNumber?: string; // CAC registration for recommended badge
   hasRecommendedBadge?: boolean;
@@ -241,7 +240,7 @@ export interface IPayment {
   _id?: string;
   userId: string;
   accountType: AccountType;
-  paymentType: 'subscription' | 'consultation' | 'recommended_badge' | 'merchant_package';
+  paymentType: 'subscription' | 'consultation' | 'recommended_badge' | 'merchant_package' | 'job_post';
   amount: number;
   paystackReference: string;
   status: PaymentStatus;

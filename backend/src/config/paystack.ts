@@ -188,6 +188,7 @@ export const PAYMENT_AMOUNTS = {
   MERCHANT_3MONTHS: 10000, // ₦10,000
   MERCHANT_6MONTHS: 19000, // ₦19,000 (5% discount)
   MERCHANT_12MONTHS: 36000, // ₦36,000 (10% discount)
+  JOB_POST: 1000, // ₦1,000 per job post (all user types)
 };
 
 /**

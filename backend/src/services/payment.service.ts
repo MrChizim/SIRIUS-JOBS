@@ -157,6 +157,37 @@ export const initializeMerchantPackage = async (
 };
 
 /**
+ * Initialize job post payment (for all user types)
+ * @param userId - User ID
+ * @param email - User email
+ * @param accountType - Account type
+ * @returns Payment initialization data
+ */
+export const initializeJobPost = async (
+  userId: string,
+  email: string,
+  accountType: AccountType
+) => {
+  const amount = PAYMENT_AMOUNTS.JOB_POST;
+
+  const metadata = createPaymentMetadata(userId, accountType, 'job_post', {});
+
+  const response = await paystackClient.initializeTransaction(email, amount, metadata);
+
+  await Payment.create({
+    userId,
+    accountType,
+    paymentType: 'job_post',
+    amount,
+    paystackReference: response.data.reference,
+    status: 'pending',
+    metadata,
+  });
+
+  return response.data;
+};
+
+/**
  * Verify payment and process based on type
  * This is called from the webhook
  * @param reference - Paystack reference
@@ -192,6 +223,10 @@ export const verifyAndProcessPayment = async (reference: string) => {
       break;
     case 'merchant_package':
       await processMerchantPackage(payment);
+      break;
+    case 'job_post':
+      // Job post payment verified - no additional processing needed
+      // Frontend will check payment status before allowing job creation
       break;
   }
   

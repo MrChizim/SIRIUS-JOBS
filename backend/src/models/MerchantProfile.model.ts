@@ -11,7 +11,6 @@ interface IMerchantProfileDocument extends Document, IMerchantProfile {
     amount: number;
     duration: number;
     maxImages: number;
-    newsletterEligible: boolean;
   };
   isSubscriptionActive(): boolean;
 }
@@ -106,11 +105,7 @@ const merchantProfileSchema = new Schema<IMerchantProfileDocument>(
       },
       maxImages: {
         type: Number,
-        default: 5,
-      },
-      newsletterEligible: {
-        type: Boolean,
-        default: false,
+        default: 20, // All packages now get same max images
       },
     },
 
@@ -136,38 +131,36 @@ merchantProfileSchema.index({ 'subscription.status': 1 });
 
 /**
  * Calculate subscription details based on package
+ * All packages have same features - only difference is price discount
  */
 merchantProfileSchema.methods.calculateSubscription = function(packageType: MerchantPackage) {
   const basePrice = 10000; // ₦10,000 for 3 months
+  const maxImages = 20; // All packages get same max images
 
   switch (packageType) {
     case '3months':
       return {
         amount: basePrice,
         duration: 3,
-        maxImages: 5,
-        newsletterEligible: false,
+        maxImages,
       };
     case '6months':
       return {
         amount: basePrice * 2 * 0.95, // 5% discount = ₦19,000
         duration: 6,
-        maxImages: 10,
-        newsletterEligible: false,
+        maxImages,
       };
     case '12months':
       return {
         amount: basePrice * 4 * 0.90, // 10% discount = ₦36,000
         duration: 12,
-        maxImages: 20,
-        newsletterEligible: true, // Newsletter once per month
+        maxImages,
       };
     default:
       return {
         amount: basePrice,
         duration: 3,
-        maxImages: 5,
-        newsletterEligible: false,
+        maxImages,
       };
   }
 };

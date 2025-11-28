@@ -29,6 +29,11 @@ router.post(
   authorize('merchant'),
   paymentController.initializeMerchantPackage
 );
+router.post(
+  '/job-post',
+  authenticate,
+  paymentController.initializeJobPost
+);
 
 // Verification & webhook
 router.get('/verify/:reference', authenticate, paymentController.verifyPayment);

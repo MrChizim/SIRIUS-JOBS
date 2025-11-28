@@ -31,7 +31,7 @@ const paymentSchema = new Schema<IPaymentDocument>(
     paymentType: {
       type: String,
       required: true,
-      enum: ['subscription', 'consultation', 'recommended_badge', 'merchant_package'],
+      enum: ['subscription', 'consultation', 'recommended_badge', 'merchant_package', 'job_post'],
     },
 
     amount: {

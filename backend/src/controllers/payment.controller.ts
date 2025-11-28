@@ -113,6 +113,20 @@ export const initializeMerchantPackage = asyncHandler(async (req: AuthRequest, r
 });
 
 /**
+ * Initialize job post payment (all user types)
+ * POST /api/payments/job-post
+ */
+export const initializeJobPost = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const userId = req.user!.userId;
+  const email = req.user!.email;
+  const accountType = req.user!.accountType;
+
+  const paymentData = await paymentService.initializeJobPost(userId, email, accountType);
+
+  return sendSuccess(res, paymentData, 'Job post payment initialized successfully');
+});
+
+/**
  * Verify payment
  * GET /api/payments/verify/:reference
  */

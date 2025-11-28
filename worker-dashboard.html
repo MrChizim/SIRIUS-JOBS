@@ -107,26 +107,6 @@
     </div>
   </header>
 
-  <!-- Role Switch Section -->
-  <section id="workerRoleSwitch" class="container mx-auto px-4 -mt-8 relative z-20">
-    <div class="bg-white shadow-xl border border-gray-100 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-      <div class="flex items-start gap-4">
-        <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-          <i data-feather="repeat" class="w-6 h-6 text-primary"></i>
-        </div>
-        <div>
-          <p id="workerSwitchTag" class="text-xs font-bold text-primary uppercase tracking-wide mb-1">Hire Someone</p>
-          <h2 id="workerSwitchTitle" class="text-xl font-black text-gray-900 mb-1">Need an extra pair of hands?</h2>
-          <p id="workerSwitchCopy" class="text-sm text-gray-600">Switch to your employer tools to post a job or track applicants without signing out.</p>
-        </div>
-      </div>
-      <button id="switchToEmployerBtn" type="button" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all whitespace-nowrap">
-        <i id="workerSwitchIcon" data-feather="briefcase" class="w-5 h-5"></i>
-        <span id="workerSwitchBtnLabel">Go to Hire Mode</span>
-      </button>
-    </div>
-  </section>
-
   <!-- Main Content -->
   <main class="container mx-auto px-4 py-16">
     <!-- Profile Completion -->
@@ -176,7 +156,29 @@
     <!-- Main Content Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Application History -->
-      <div class="lg:col-span-2">
+      <div class="lg:col-span-2 space-y-8">
+        <!-- Job Posting Section -->
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-2xl font-black text-gray-900">Hire Someone</h2>
+              <p class="text-sm text-gray-600 mt-1">Post a job for ₦1,000 and manage applicants</p>
+            </div>
+            <button id="workerPostJobBtn" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+              <i data-feather="plus" class="w-4 h-4"></i>
+              Post Job
+            </button>
+          </div>
+
+          <!-- My Posted Jobs -->
+          <div id="workerPostedJobsSection">
+            <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">My Posted Jobs</h3>
+            <ul id="workerPostedJobsList" class="space-y-4"></ul>
+            <p id="workerPostedJobsEmpty" class="text-sm text-gray-500 border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center">No jobs posted yet. Click "Post Job" to get started.</p>
+          </div>
+        </div>
+
+        <!-- Application History -->
         <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-black text-gray-900">Application History</h2>
@@ -203,10 +205,14 @@
           <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center mb-4">
             <i data-feather="zap" class="w-6 h-6 text-green-600"></i>
           </div>
-          <h3 class="text-xl font-black text-gray-900 mb-2">Subscription</h3>
-          <p class="text-sm text-gray-600 mb-1">₦1,000 monthly renewal</p>
-          <p class="text-xs text-gray-500 mb-6">Status: <span id="subStatus" class="font-bold text-gray-600">Loading status…</span></p>
-          <button class="w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-700 transition-all shadow-lg shadow-green-600/25" id="renewBtn">Renew Subscription</button>
+          <h3 class="text-xl font-black text-gray-900 mb-2">Worker Listing</h3>
+          <p class="text-sm text-gray-600 mb-1">₦1,000 monthly to appear on worker list</p>
+          <p class="text-xs text-gray-500 mb-4">Status: <span id="subStatus" class="font-bold text-gray-600">Loading status…</span></p>
+          <p class="text-xs text-gray-500 mb-6 bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <i data-feather="info" class="w-3 h-3 inline mr-1"></i>
+            Posting jobs costs ₦1,000 per job (separate from listing fee)
+          </p>
+          <button class="w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-700 transition-all shadow-lg shadow-green-600/25" id="renewBtn">Renew Listing</button>
         </div>
       </aside>
     </div>
@@ -225,8 +231,8 @@
           <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6">
             <i data-feather="star" class="w-8 h-8 text-white"></i>
           </div>
-          <h2 class="text-3xl font-black text-gray-900 mb-4">Renew your plan</h2>
-          <p class="text-gray-600 mb-8 leading-relaxed">Choose the plan that matches how you work and keep your profile visible to premium employers.</p>
+          <h2 class="text-3xl font-black text-gray-900 mb-4">Renew your listing</h2>
+          <p class="text-gray-600 mb-8 leading-relaxed">Keep your profile visible to employers searching for skilled workers. Note: Job posting is separate (₦1,000 per job).</p>
           <div class="flex items-center gap-3 text-sm text-gray-600 bg-white/70 border border-primary/20 rounded-xl px-4 py-3">
             <i data-feather="shield" class="text-primary w-5 h-5 flex-shrink-0"></i>
             <span>Secure checkout powered by Paystack (coming soon)</span>
@@ -272,44 +278,75 @@
     </div>
   </div>
 
-  <!-- Extend Hire Mode Modal -->
-  <div id="workerExtendModal" class="fixed inset-0 hidden items-center justify-center px-4 py-6 bg-gray-900/60 backdrop-blur-sm z-50">
-    <div class="absolute inset-0"></div>
-    <div class="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8 space-y-6">
-      <div class="flex items-start justify-between gap-4">
-        <div>
-          <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-3 py-1 mb-3">
-            <i data-feather="unlock" class="w-3.5 h-3.5"></i>
-            <span class="text-xs font-bold uppercase tracking-wide">Unlock Feature</span>
-          </div>
-          <h3 class="text-3xl font-black text-gray-900 mb-2">Add employer tools</h3>
-          <p class="text-sm text-gray-600">Confirm your password and phone number so we can enable job posting and hiring features instantly.</p>
+  <!-- Job Post Payment Modal -->
+  <div id="workerJobPostModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full relative overflow-hidden">
+      <button id="closeWorkerJobPostModal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition z-10">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="p-12">
+        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
+          <i data-feather="briefcase" class="w-8 h-8 text-white"></i>
         </div>
-        <button id="closeWorkerExtendModal" class="text-gray-400 hover:text-gray-700 transition">
-          <i data-feather="x" class="w-5 h-5"></i>
-        </button>
+        <h2 class="text-3xl font-black text-gray-900 mb-4 text-center">Post a Job</h2>
+        <p class="text-gray-600 mb-8 leading-relaxed text-center">Pay ₦1,000 to publish your job listing and receive applications.</p>
+
+        <div class="border-2 border-primary/30 rounded-2xl p-6 mb-6">
+          <p class="text-5xl font-black text-gray-900 mb-1 text-center">₦1,000</p>
+          <p class="text-center text-gray-500 mb-6">One-time payment per job</p>
+          <ul class="space-y-3 text-sm text-gray-600">
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Reach active job seekers</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Manage all applications</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>No hidden fees</span></li>
+          </ul>
+        </div>
+
+        <button id="workerJobPostPayBtn" class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Pay ₦1,000 & Post Job</button>
       </div>
-
-      <form id="workerExtendForm" class="space-y-5">
-        <div>
-          <label for="workerExtendPassword" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Password</label>
-          <input type="password" id="workerExtendPassword" required class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Enter your Sirius Jobs password">
-        </div>
-
-        <div>
-          <label for="workerExtendPhone" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Phone Number</label>
-          <input type="tel" id="workerExtendPhone" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="07012345678">
-        </div>
-
-        <p id="workerExtendMessage" class="hidden text-sm font-medium"></p>
-
-        <button type="submit" id="workerExtendSubmit" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-4 rounded-xl shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all">
-          <i data-feather="unlock" class="w-5 h-5"></i>
-          Enable Hire Mode
-        </button>
-      </form>
     </div>
   </div>
+
+  <!-- View Applicants Modal -->
+  <div id="workerViewApplicantsModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full relative overflow-hidden max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between px-8 py-6 border-b-2 border-gray-100 sticky top-0 bg-white z-10">
+        <div>
+          <h3 id="workerApplicantsJobTitle" class="text-2xl font-black text-gray-900">Job Applicants</h3>
+          <p class="text-sm text-gray-500">Review and manage applications for this job</p>
+        </div>
+        <button id="closeWorkerApplicantsModal" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="workerApplicantsBody" class="p-8">
+        <ul id="workerApplicantsList" class="space-y-4"></ul>
+        <p id="workerApplicantsEmpty" class="text-sm text-gray-500 border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center">No applications yet. Candidates will appear here once they apply.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Applicant Profile Modal -->
+  <div id="workerApplicantProfileModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-8 py-6 border-b-2 border-gray-100">
+        <div>
+          <h3 id="workerApplicantProfileName" class="text-2xl font-black text-gray-900">Applicant Profile</h3>
+          <p class="text-sm text-gray-500">Review candidate details before making a decision</p>
+        </div>
+        <button id="closeWorkerApplicantProfile" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="workerApplicantProfileBody" class="p-8 space-y-4">
+        <div class="flex items-center justify-center py-12 text-gray-400">
+          <i data-feather="loader" class="animate-spin mr-2"></i>
+          Loading profile...
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="site-footer__inner container mx-auto px-4 lg:px-6">
@@ -612,168 +649,7 @@
       }
     }
 
-    const switchToEmployerSection = document.getElementById('workerRoleSwitch');
-    const switchToEmployerBtn = document.getElementById('switchToEmployerBtn');
-    const switchToEmployerLabel = document.getElementById('workerSwitchBtnLabel');
-    const switchToEmployerIcon = document.getElementById('workerSwitchIcon');
-    const switchTag = document.getElementById('workerSwitchTag');
-    const switchTitle = document.getElementById('workerSwitchTitle');
-    const switchCopy = document.getElementById('workerSwitchCopy');
-    const employerSession = sessionUtils?.parse ? sessionUtils.parse('siriusEmployerAuth') : null;
-    const canSwitchToEmployer = Boolean(employerSession?.roles?.length);
-    const workerExtendModal = document.getElementById('workerExtendModal');
-    const workerExtendForm = document.getElementById('workerExtendForm');
-    const workerExtendPassword = document.getElementById('workerExtendPassword');
-    const workerExtendPhone = document.getElementById('workerExtendPhone');
-    const workerExtendMessage = document.getElementById('workerExtendMessage');
-    const workerExtendSubmit = document.getElementById('workerExtendSubmit');
-    const closeWorkerExtendModalBtn = document.getElementById('closeWorkerExtendModal');
-
-    const handleSwitchToEmployer = () => {
-      window.location.href = 'employer-dashboard.html';
-    };
-
-    const openWorkerExtendModal = () => {
-      if (!workerExtendModal) return;
-      workerExtendModal.classList.remove('hidden');
-      workerExtendModal.classList.add('flex');
-      if (workerExtendPassword) {
-        workerExtendPassword.value = '';
-      }
-      if (workerExtendPhone && workerSessionPayload?.phone) {
-        workerExtendPhone.value = workerSessionPayload.phone;
-      }
-      if (workerExtendMessage) {
-        workerExtendMessage.classList.add('hidden');
-        workerExtendMessage.textContent = '';
-      }
-      setTimeout(() => {
-        workerExtendPassword?.focus();
-      }, 90);
-    };
-
-    const closeWorkerExtendModal = () => {
-      if (!workerExtendModal) return;
-      workerExtendModal.classList.remove('flex');
-      workerExtendModal.classList.add('hidden');
-    };
-
-    closeWorkerExtendModalBtn?.addEventListener('click', closeWorkerExtendModal);
-    workerExtendModal?.addEventListener('click', (event) => {
-      if (event.target === workerExtendModal) {
-        closeWorkerExtendModal();
-      }
-    });
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && workerExtendModal?.classList.contains('flex')) {
-        closeWorkerExtendModal();
-      }
-    });
-
-    workerExtendForm?.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      if (!workerSessionPayload?.email) {
-        return;
-      }
-      const password = workerExtendPassword?.value.trim() ?? '';
-      const phone = workerExtendPhone?.value.trim() ?? '';
-      if (!password) {
-        workerExtendMessage?.classList.remove('hidden');
-        workerExtendMessage.classList.remove('text-green-600');
-        workerExtendMessage?.classList.add('text-red-600');
-        if (workerExtendMessage) workerExtendMessage.textContent = 'Enter your password to continue.';
-        return;
-      }
-      workerExtendSubmit?.setAttribute('disabled', 'true');
-      workerExtendSubmit?.classList.add('opacity-70', 'cursor-wait');
-      workerExtendMessage?.classList.add('hidden');
-      try {
-        const res = await fetch('/api/auth/extend-role', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: workerSessionPayload.email,
-            password,
-            targetRole: 'EMPLOYER',
-            phone: phone || undefined,
-          }),
-        });
-        const bodyText = await res.text();
-        const data = bodyText ? JSON.parse(bodyText) : {};
-        if (!res.ok) {
-          throw new Error(data?.message || 'Unable to add hire mode right now.');
-        }
-        if (workerExtendMessage) {
-          workerExtendMessage.classList.remove('hidden');
-          workerExtendMessage.classList.remove('text-red-600');
-          workerExtendMessage.classList.add('text-green-600');
-          workerExtendMessage.textContent = data?.message || 'Hire mode activated! Redirecting you now...';
-        }
-        if (sessionUtils) {
-          const sessionPayload = sessionUtils.createPayload(data, {
-            activeRole: 'EMPLOYER',
-            email: workerSessionPayload.email,
-            firstName: data?.user?.firstName ?? workerSessionPayload.firstName,
-            lastName: data?.user?.lastName ?? workerSessionPayload.lastName,
-          });
-          sessionUtils.persist(sessionPayload);
-        }
-        setTimeout(() => {
-          closeWorkerExtendModal();
-          window.location.href = 'employer-dashboard.html';
-        }, 800);
-      } catch (error) {
-        if (workerExtendMessage) {
-          workerExtendMessage.classList.remove('hidden');
-          workerExtendMessage.classList.remove('text-green-600');
-          workerExtendMessage.classList.add('text-red-600');
-          workerExtendMessage.textContent = error.message || 'Unable to add hire mode right now.';
-        }
-      } finally {
-        workerExtendSubmit?.removeAttribute('disabled');
-        workerExtendSubmit?.classList.remove('opacity-70', 'cursor-wait');
-      }
-    });
-
-    if (switchToEmployerSection && switchToEmployerBtn) {
-      if (canSwitchToEmployer) {
-        switchToEmployerBtn.className =
-          'inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all whitespace-nowrap';
-        if (switchToEmployerLabel) {
-          switchToEmployerLabel.textContent = 'Go to Hire Mode';
-        }
-        if (switchTag) {
-          switchTag.textContent = 'Hire Someone';
-        }
-        if (switchTitle) {
-          switchTitle.textContent = 'Need an extra pair of hands?';
-        }
-        if (switchCopy) {
-          switchCopy.textContent = 'Switch to your employer tools to post jobs or track applicants without signing out.';
-        }
-        switchToEmployerBtn.addEventListener('click', handleSwitchToEmployer);
-      } else {
-        switchToEmployerBtn.className =
-          'inline-flex items-center justify-center gap-2 bg-white text-primary font-bold px-6 py-3 rounded-xl border-2 border-primary hover:bg-primary/10 transition-all whitespace-nowrap';
-        if (switchToEmployerLabel) {
-          switchToEmployerLabel.textContent = 'Unlock Hire Mode';
-        }
-        if (switchTag) {
-          switchTag.textContent = 'Quick upgrade';
-        }
-        if (switchTitle) {
-          switchTitle.textContent = 'Want to hire from your phone?';
-        }
-        if (switchCopy) {
-          switchCopy.textContent = 'Add employer access to this account and manage your hires without juggling logins.';
-        }
-        if (switchToEmployerIcon) {
-          switchToEmployerIcon.setAttribute('data-feather', 'plus');
-        }
-        switchToEmployerBtn.addEventListener('click', openWorkerExtendModal);
-      }
-      feather.replace();
-    }
+    // Role switching functionality removed - users now post jobs directly from their dashboard
 
     // lists
     function renderApplied(){
@@ -899,6 +775,246 @@
         closeSubscriptionModal();
       });
     });
+
+    // Job posting functionality
+    let workerPostedJobs = [];
+    let currentJobApplicants = [];
+    let currentJobId = null;
+
+    async function loadWorkerPostedJobs() {
+      try {
+        const res = await fetch(`/api/jobs/employer/${workerSessionPayload?.userId}`, {
+          headers: { Authorization: `Bearer ${workerSessionPayload?.token ?? ''}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          workerPostedJobs = data.data?.jobs || [];
+          renderWorkerPostedJobs();
+        }
+      } catch (error) {
+        console.error('Failed to load posted jobs:', error);
+      }
+    }
+
+    function renderWorkerPostedJobs() {
+      const list = document.getElementById('workerPostedJobsList');
+      const empty = document.getElementById('workerPostedJobsEmpty');
+      if (!list) return;
+
+      list.innerHTML = '';
+      if (workerPostedJobs.length === 0) {
+        if (empty) empty.classList.remove('hidden');
+        return;
+      }
+      if (empty) empty.classList.add('hidden');
+
+      workerPostedJobs.forEach(job => {
+        const li = document.createElement('li');
+        li.className = 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-6 hover:border-primary/30 hover:shadow-lg transition-all';
+        const statusClass = job.status === 'open' ? 'text-green-600 bg-green-50' : 'text-gray-600 bg-gray-50';
+        li.innerHTML = `
+          <div class="flex justify-between items-start gap-4">
+            <div>
+              <h4 class="text-base font-black text-gray-900">${job.title || 'Untitled Job'}</h4>
+              <p class="text-sm text-gray-500 font-medium mt-1">${job.location || 'Location TBC'} • ${job.applicationCount || 0} applicant(s)</p>
+            </div>
+            <span class="text-xs ${statusClass} font-bold px-3 py-1.5 rounded-full border-2">${job.status?.toUpperCase() || 'DRAFT'}</span>
+          </div>
+          <button class="viewJobApplicantsBtn mt-4 w-full inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-4 py-2 rounded-xl hover:bg-primary hover:text-white transition-all text-sm" data-job-id="${job._id}">
+            <i data-feather="users" class="w-4 h-4"></i>
+            View Applicants (${job.applicationCount || 0})
+          </button>
+        `;
+        list.appendChild(li);
+      });
+
+      list.querySelectorAll('.viewJobApplicantsBtn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const jobId = btn.dataset.jobId;
+          openWorkerApplicantsModal(jobId);
+        });
+      });
+
+      feather.replace();
+    }
+
+    async function openWorkerApplicantsModal(jobId) {
+      currentJobId = jobId;
+      const job = workerPostedJobs.find(j => j._id === jobId);
+      const modal = document.getElementById('workerViewApplicantsModal');
+      const title = document.getElementById('workerApplicantsJobTitle');
+      if (title && job) title.textContent = `${job.title} - Applicants`;
+
+      modal.classList.remove('hidden');
+      await loadJobApplicants(jobId);
+    }
+
+    async function loadJobApplicants(jobId) {
+      try {
+        const res = await fetch(`/api/applications/job/${jobId}`, {
+          headers: { Authorization: `Bearer ${workerSessionPayload?.token ?? ''}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          currentJobApplicants = data.data?.applications || [];
+          renderJobApplicants();
+        }
+      } catch (error) {
+        console.error('Failed to load applicants:', error);
+      }
+    }
+
+    function renderJobApplicants() {
+      const list = document.getElementById('workerApplicantsList');
+      const empty = document.getElementById('workerApplicantsEmpty');
+      if (!list) return;
+
+      list.innerHTML = '';
+      if (currentJobApplicants.length === 0) {
+        if (empty) empty.classList.remove('hidden');
+        return;
+      }
+      if (empty) empty.classList.add('hidden');
+
+      currentJobApplicants.forEach(app => {
+        const li = document.createElement('li');
+        li.className = 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-6 text-sm space-y-4 hover:border-primary/30 hover:shadow-lg transition-all';
+        const statusClass = app.status === 'accepted' ? 'text-green-600' : app.status === 'rejected' ? 'text-red-600' : 'text-gray-600';
+        li.innerHTML = `
+          <div class="flex justify-between items-start gap-4">
+            <div>
+              <div class="text-base font-black text-gray-900">${app.worker?.name || 'Anonymous'}</div>
+              <div class="text-xs text-gray-500 font-medium mt-1">${app.worker?.email || ''}</div>
+            </div>
+            <span class="text-xs ${statusClass} font-bold">${app.status?.toUpperCase() || 'PENDING'}</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button class="viewWorkerProfileBtn inline-flex items-center gap-1 border-2 border-primary text-primary px-4 py-2 rounded-xl hover:bg-primary hover:text-white transition-all text-xs font-bold" data-worker-id="${app.workerId}">
+              <i data-feather="user"></i> View Profile
+            </button>
+            ${app.status === 'pending' ? `
+              <button class="acceptWorkerBtn inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-green-600/25 transition-all" data-application-id="${app._id}">
+                <i data-feather="check"></i> Accept
+              </button>
+              <button class="rejectWorkerBtn inline-flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-red-500/25 transition-all" data-application-id="${app._id}">
+                <i data-feather="x-circle"></i> Reject
+              </button>
+            ` : ''}
+          </div>
+        `;
+        list.appendChild(li);
+      });
+
+      list.querySelectorAll('.viewWorkerProfileBtn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const workerId = btn.dataset.workerId;
+          openWorkerProfileModal(workerId);
+        });
+      });
+
+      list.querySelectorAll('.acceptWorkerBtn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const appId = btn.dataset.applicationId;
+          if (!confirm('Accept this applicant?')) return;
+          await updateApplicationStatus(appId, 'ACCEPT');
+        });
+      });
+
+      list.querySelectorAll('.rejectWorkerBtn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const appId = btn.dataset.applicationId;
+          if (!confirm('Reject this applicant?')) return;
+          await updateApplicationStatus(appId, 'REJECT');
+        });
+      });
+
+      feather.replace();
+    }
+
+    async function updateApplicationStatus(applicationId, decision) {
+      try {
+        const res = await fetch(`/api/applications/${applicationId}/decision`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${workerSessionPayload?.token ?? ''}`,
+          },
+          body: JSON.stringify({ decision }),
+        });
+        if (!res.ok) throw new Error('Failed to update application');
+        alert(decision === 'ACCEPT' ? 'Applicant accepted!' : 'Applicant rejected.');
+        await loadJobApplicants(currentJobId);
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    async function openWorkerProfileModal(workerId) {
+      const modal = document.getElementById('workerApplicantProfileModal');
+      const body = document.getElementById('workerApplicantProfileBody');
+      modal.classList.remove('hidden');
+
+      try {
+        const res = await fetch(`/api/profiles/${workerId}`);
+        if (!res.ok) throw new Error('Profile not found');
+        const profile = await res.json();
+
+        body.innerHTML = `
+          <section class="space-y-4">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex items-center gap-1 text-xs ${profile.data.verificationStatus === 'VERIFIED' ? 'text-green-600 bg-green-100' : 'text-amber-600 bg-amber-100'} px-2 py-1 rounded-full uppercase tracking-wide font-semibold">
+                <i data-feather="${profile.data.verificationStatus === 'VERIFIED' ? 'shield' : 'alert-triangle'}" class="w-3.5 h-3.5"></i>
+                ${profile.data.verificationStatus === 'VERIFIED' ? 'Verified' : 'Verification Pending'}
+              </span>
+            </div>
+            ${profile.data.artisanProfile ? `
+              <div class="border rounded-lg p-4 bg-gray-50">
+                <p class="text-sm text-gray-600 mb-2">${profile.data.artisanProfile.bio || 'No bio provided yet.'}</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-gray-500">
+                  <li class="flex items-center gap-1"><i data-feather="briefcase" class="w-4 h-4"></i> ${profile.data.artisanProfile.serviceCategory?.label || 'General'}</li>
+                  <li class="flex items-center gap-1"><i data-feather="clock" class="w-4 h-4"></i> ${profile.data.artisanProfile.yearsExperience || 0} yrs experience</li>
+                </ul>
+              </div>
+            ` : ''}
+          </section>
+        `;
+        feather.replace();
+      } catch (error) {
+        body.innerHTML = `
+          <div class="text-center py-12">
+            <i data-feather="alert-circle" class="mx-auto mb-3 text-red-500"></i>
+            <p class="text-sm text-gray-600">Could not load this profile.</p>
+          </div>
+        `;
+        feather.replace();
+      }
+    }
+
+    // Modal handlers
+    document.getElementById('workerPostJobBtn')?.addEventListener('click', () => {
+      document.getElementById('workerJobPostModal').classList.remove('hidden');
+    });
+
+    document.getElementById('closeWorkerJobPostModal')?.addEventListener('click', () => {
+      document.getElementById('workerJobPostModal').classList.add('hidden');
+    });
+
+    document.getElementById('workerJobPostPayBtn')?.addEventListener('click', () => {
+      window.open('https://paystack.com/pay/siriusjobs-post', '_blank', 'noopener');
+      alert('Complete the ₦1,000 payment, then return to post your job.');
+      document.getElementById('workerJobPostModal').classList.add('hidden');
+    });
+
+    document.getElementById('closeWorkerApplicantsModal')?.addEventListener('click', () => {
+      document.getElementById('workerViewApplicantsModal').classList.add('hidden');
+    });
+
+    document.getElementById('closeWorkerApplicantProfile')?.addEventListener('click', () => {
+      document.getElementById('workerApplicantProfileModal').classList.add('hidden');
+    });
+
+    // Load posted jobs on init
+    loadWorkerPostedJobs();
 
     // init
     function handleLogout(showAlert = true){

@@ -78,6 +78,26 @@
   <!-- MAIN DASHBOARD -->
   <main class="py-12 md:py-16">
     <div class="container mx-auto px-4 lg:px-6">
+      <!-- Job Posting Section -->
+      <section class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 mb-8">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-2xl font-black text-gray-900">Hire Someone</h2>
+            <p class="text-sm text-gray-600 mt-1">Post a job for ₦1,000 and manage applicants</p>
+          </div>
+          <button id="merchantPostJobBtn" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+            <i data-feather="plus" class="w-4 h-4"></i>
+            Post Job
+          </button>
+        </div>
+
+        <div id="merchantPostedJobsSection">
+          <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">My Posted Jobs</h3>
+          <ul id="merchantPostedJobsList" class="space-y-4"></ul>
+          <p id="merchantPostedJobsEmpty" class="text-sm text-gray-500 border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center">No jobs posted yet. Click "Post Job" to get started.</p>
+        </div>
+      </section>
+
       <div class="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
         <!-- SIDEBAR -->
         <aside class="space-y-6">
@@ -307,6 +327,68 @@
       </div>
     </div>
   </main>
+
+  <!-- Merchant Job Post Payment Modal -->
+  <div id="merchantJobPostModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full relative overflow-hidden">
+      <button id="closeMerchantJobPostModal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition z-10">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+      <div class="p-12">
+        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
+          <i data-feather="briefcase" class="w-8 h-8 text-white"></i>
+        </div>
+        <h2 class="text-3xl font-black text-gray-900 mb-4 text-center">Post a Job</h2>
+        <p class="text-gray-600 mb-8 leading-relaxed text-center">Pay ₦1,000 to publish your job listing and receive applications.</p>
+        <div class="border-2 border-primary/30 rounded-2xl p-6 mb-6">
+          <p class="text-5xl font-black text-gray-900 mb-1 text-center">₦1,000</p>
+          <p class="text-center text-gray-500 mb-6">One-time payment per job</p>
+          <ul class="space-y-3 text-sm text-gray-600">
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Reach active job seekers</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Manage all applications</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>No hidden fees</span></li>
+          </ul>
+        </div>
+        <button id="merchantJobPostPayBtn" class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Pay ₦1,000 & Post Job</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Merchant Applicants Modal -->
+  <div id="merchantApplicantsModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full overflow-hidden max-h-[90vh] overflow-y-auto">
+      <div class="px-8 py-6 border-b-2 border-gray-100 flex items-center justify-between">
+        <div>
+          <h3 class="text-2xl font-black text-gray-900">Job Applicants</h3>
+          <p class="text-sm text-gray-500 mt-1">Review and manage candidates</p>
+        </div>
+        <button id="closeMerchantApplicantsModal" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div class="p-8">
+        <ul id="merchantApplicantsList" class="space-y-4"></ul>
+        <p id="merchantApplicantsEmpty" class="text-center text-gray-500 py-8">No applications yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Merchant Applicant Profile Modal -->
+  <div id="merchantProfileModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-8 py-6 border-b-2 border-gray-100">
+        <div>
+          <h3 id="merchantProfileModalName" class="text-2xl font-black text-gray-900">Applicant Profile</h3>
+          <p class="text-sm text-gray-500">Verify the worker's background before deciding.</p>
+        </div>
+        <button id="closeMerchantProfileModal" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="merchantProfileModalBody" class="p-8 max-h-[70vh] overflow-y-auto"></div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="site-footer__inner container mx-auto px-4 lg:px-6">
@@ -946,7 +1028,194 @@
       }
 
       bootstrapDashboard();
+      initializeMerchantJobPosting();
     })();
+
+    // Merchant Job Posting Functionality
+    let merchantPostedJobs = [];
+    let merchantCurrentJobApplicants = [];
+    let merchantCurrentJobId = null;
+
+    async function initializeMerchantJobPosting() {
+      await loadMerchantPostedJobs();
+      document.getElementById('merchantPostJobBtn')?.addEventListener('click', () => {
+        document.getElementById('merchantJobPostModal').classList.remove('hidden');
+      });
+      document.getElementById('closeMerchantJobPostModal')?.addEventListener('click', () => {
+        document.getElementById('merchantJobPostModal').classList.add('hidden');
+      });
+      document.getElementById('merchantJobPostPayBtn')?.addEventListener('click', () => {
+        window.open('https://paystack.com/pay/siriusjobs-post', '_blank', 'noopener');
+        alert('Complete the ₦1,000 payment, then return to post your job.');
+        document.getElementById('merchantJobPostModal').classList.add('hidden');
+      });
+      document.getElementById('closeMerchantApplicantsModal')?.addEventListener('click', () => {
+        document.getElementById('merchantApplicantsModal').classList.add('hidden');
+      });
+      document.getElementById('closeMerchantProfileModal')?.addEventListener('click', () => {
+        document.getElementById('merchantProfileModal').classList.add('hidden');
+      });
+    }
+
+    async function loadMerchantPostedJobs() {
+      try {
+        const session = JSON.parse(localStorage.getItem(SESSION_KEY));
+        const res = await fetch(`/api/jobs/employer/${session?.userId}`, {
+          headers: { Authorization: `Bearer ${session?.token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          merchantPostedJobs = data.data?.jobs || [];
+          renderMerchantPostedJobs();
+        }
+      } catch (error) {
+        console.error('Failed to load posted jobs:', error);
+      }
+    }
+
+    function renderMerchantPostedJobs() {
+      const listEl = document.getElementById('merchantPostedJobsList');
+      const emptyEl = document.getElementById('merchantPostedJobsEmpty');
+      if (!listEl || !emptyEl) return;
+      if (merchantPostedJobs.length === 0) {
+        listEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+      listEl.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+      listEl.innerHTML = merchantPostedJobs.map(job => `
+        <li class="bg-gray-50 rounded-2xl p-6 border-2 border-gray-200 hover:border-primary/30 transition-all">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex-1">
+              <h4 class="font-bold text-gray-900 text-lg mb-1">${job.title}</h4>
+              <p class="text-sm text-gray-600 line-clamp-2">${job.description}</p>
+            </div>
+            <span class="text-xs px-3 py-1 rounded-full font-bold ${job.status === 'open' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-700'}">${job.status}</span>
+          </div>
+          <div class="flex items-center justify-between text-sm text-gray-600">
+            <span><i data-feather="map-pin" class="w-4 h-4 inline"></i> ${job.location}</span>
+            <span><i data-feather="users" class="w-4 h-4 inline"></i> ${job.applicationCount || 0} applicants</span>
+          </div>
+          <button onclick="openMerchantApplicantsModal('${job._id}')" class="mt-4 w-full bg-primary text-white font-bold py-2 rounded-xl hover:bg-primary/90 transition-all text-sm">View Applicants</button>
+        </li>
+      `).join('');
+      feather.replace();
+    }
+
+    async function openMerchantApplicantsModal(jobId) {
+      merchantCurrentJobId = jobId;
+      document.getElementById('merchantApplicantsModal').classList.remove('hidden');
+      await loadMerchantJobApplicants(jobId);
+    }
+
+    async function loadMerchantJobApplicants(jobId) {
+      try {
+        const session = JSON.parse(localStorage.getItem(SESSION_KEY));
+        const res = await fetch(`/api/applications/job/${jobId}`, {
+          headers: { Authorization: `Bearer ${session?.token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          merchantCurrentJobApplicants = data.data?.applications || [];
+          renderMerchantApplicants();
+        }
+      } catch (error) {
+        console.error('Failed to load applicants:', error);
+      }
+    }
+
+    function renderMerchantApplicants() {
+      const listEl = document.getElementById('merchantApplicantsList');
+      const emptyEl = document.getElementById('merchantApplicantsEmpty');
+      if (!listEl || !emptyEl) return;
+      if (merchantCurrentJobApplicants.length === 0) {
+        listEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+      listEl.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+      listEl.innerHTML = merchantCurrentJobApplicants.map(app => `
+        <li class="bg-gray-50 rounded-2xl p-6 border-2 border-gray-200">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <h4 class="font-bold text-gray-900 text-lg">${app.worker?.name || 'Unknown'}</h4>
+              <p class="text-sm text-gray-600">${app.workerProfile?.skills?.join(', ') || 'No skills listed'}</p>
+            </div>
+            <span class="text-xs px-3 py-1 rounded-full font-bold ${
+              app.status === 'accepted' ? 'bg-green-100 text-green-700' :
+              app.status === 'rejected' ? 'bg-red-100 text-red-700' :
+              'bg-yellow-100 text-yellow-700'
+            }">${app.status}</span>
+          </div>
+          ${app.coverLetter ? `<p class="text-sm text-gray-600 mb-4 italic">"${app.coverLetter}"</p>` : ''}
+          <div class="flex gap-2">
+            <button onclick="viewMerchantApplicantProfile('${app.workerId}')" class="flex-1 border-2 border-primary text-primary font-bold py-2 rounded-xl hover:bg-primary/5 transition-all text-sm">View Profile</button>
+            ${app.status === 'pending' ? `
+              <button onclick="updateMerchantApplicationStatus('${app._id}', 'accepted')" class="flex-1 bg-green-600 text-white font-bold py-2 rounded-xl hover:bg-green-700 transition-all text-sm">Accept</button>
+              <button onclick="updateMerchantApplicationStatus('${app._id}', 'rejected')" class="flex-1 bg-red-600 text-white font-bold py-2 rounded-xl hover:bg-red-700 transition-all text-sm">Reject</button>
+            ` : ''}
+          </div>
+        </li>
+      `).join('');
+      feather.replace();
+    }
+
+    async function viewMerchantApplicantProfile(workerId) {
+      try {
+        const session = JSON.parse(localStorage.getItem(SESSION_KEY));
+        const res = await fetch(`/api/dashboard/artisan/${workerId}`, {
+          headers: { Authorization: `Bearer ${session?.token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const profile = data.data;
+          const modalBody = document.getElementById('merchantProfileModalBody');
+          const modalName = document.getElementById('merchantProfileModalName');
+          if (modalName) modalName.textContent = profile.name || 'Worker Profile';
+          if (modalBody) {
+            modalBody.innerHTML = `
+              <div class="space-y-6">
+                <div><h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Skills</h4><div class="flex flex-wrap gap-2">${(profile.skills || []).map(skill => `<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">${skill}</span>`).join('')}</div></div>
+                <div><h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Experience</h4><p class="text-gray-700">${profile.experience || 'No experience provided'}</p></div>
+                <div><h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Bio</h4><p class="text-gray-700">${profile.bio || 'No bio provided'}</p></div>
+                <div><h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Location</h4><p class="text-gray-700">${profile.location || 'Not specified'}</p></div>
+              </div>
+            `;
+          }
+          document.getElementById('merchantProfileModal').classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('Failed to load profile:', error);
+        alert('Failed to load worker profile');
+      }
+    }
+
+    async function updateMerchantApplicationStatus(applicationId, decision) {
+      try {
+        const session = JSON.parse(localStorage.getItem(SESSION_KEY));
+        const res = await fetch(`/api/applications/${applicationId}/decision`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.token}` },
+          body: JSON.stringify({ decision }),
+        });
+        if (res.ok) {
+          alert(`Application ${decision}!`);
+          await loadMerchantJobApplicants(merchantCurrentJobId);
+        } else {
+          const data = await res.json();
+          alert(data.message || `Failed to ${decision} application`);
+        }
+      } catch (error) {
+        console.error('Failed to update application:', error);
+        alert(`Failed to ${decision} application`);
+      }
+    }
+
+    window.openMerchantApplicantsModal = openMerchantApplicantsModal;
+    window.viewMerchantApplicantProfile = viewMerchantApplicantProfile;
+    window.updateMerchantApplicationStatus = updateMerchantApplicationStatus;
   </script>
   <script src="assistant.js"></script>
   <script src="session-timeout.js"></script>

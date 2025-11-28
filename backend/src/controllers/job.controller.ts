@@ -19,27 +19,31 @@ import { Notification } from '../models/Notification.model';
 import { events } from '../services/event-bus';
 
 /**
- * Create a new job (employer only)
+ * Create a new job (all user types - pay ₦1,000 per post)
  * POST /api/jobs
  */
 export const createJob = asyncHandler(async (req: AuthRequest, res: Response) => {
   const userId = req.user!.userId;
-  
+
   const jobSchema = z.object({
     title: z.string().min(5).max(200),
     description: z.string().min(20).max(5000),
     skills: z.array(z.string()).max(10).optional(),
     budget: z.number().min(0).optional(),
     location: z.string().min(2),
+    paymentReference: z.string().optional(), // Paystack payment reference for ₦1,000
   });
-  
+
   const validation = jobSchema.safeParse(req.body);
-  
+
   if (!validation.success) {
     return sendError(res, 'Validation failed', 400, validation.error.errors);
   }
-  
-  // Create job
+
+  // TODO: Verify payment reference for ₦1,000 job post fee
+  // For now, allowing job creation (payment verification will be added)
+
+  // Create job - employerId now can be any user type
   const job = await Job.create({
     employerId: userId,
     title: validation.data.title,
@@ -49,7 +53,7 @@ export const createJob = asyncHandler(async (req: AuthRequest, res: Response) =>
     location: validation.data.location,
     status: 'open',
   });
-  
+
   // Track job posted
   await analyticsService.trackJobPosted(userId);
 
@@ -57,7 +61,7 @@ export const createJob = asyncHandler(async (req: AuthRequest, res: Response) =>
   notifyJobSubscribers(job).catch(error => {
     console.error('Failed to notify subscribers', error);
   });
-  
+
   return sendSuccess(res, job, 'Job posted successfully');
 });
 
@@ -460,6 +464,49 @@ export const getJobsByEmployer = asyncHandler(async (req: AuthRequest, res: Resp
       total,
       totalPages: Math.ceil(total / Number(limit)),
     },
+  });
+});
+
+/**
+ * Get all applicants for a specific job (job poster only)
+ * GET /api/applications/job/:jobId
+ */
+export const getJobApplicants = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const userId = req.user!.userId;
+  const { jobId } = req.params;
+
+  // Check if job exists and user is the employer
+  const job = await Job.findById(jobId);
+
+  if (!job) {
+    return sendNotFound(res, 'Job not found');
+  }
+
+  // Verify ownership
+  if (job.employerId !== userId) {
+    return sendError(res, 'You do not have permission to view these applications', 403);
+  }
+
+  // Get all applications for this job
+  const applications = await JobApplication.find({ jobId })
+    .sort({ appliedAt: -1 });
+
+  // Get worker details for each application
+  const applicationsWithWorkers = await Promise.all(
+    applications.map(async (application) => {
+      const worker = await User.findById(application.workerId);
+      const workerProfile = await WorkerProfile.findOne({ userId: application.workerId });
+
+      return {
+        ...application.toJSON(),
+        worker: worker?.toJSON(),
+        workerProfile,
+      };
+    })
+  );
+
+  return sendSuccess(res, {
+    applications: applicationsWithWorkers,
   });
 });
 

@@ -167,8 +167,7 @@ async function createTestAccounts() {
             startDate: new Date(),
             endDate: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000), // 6 months
             amount: 19000,
-            maxImages: 10,
-            newsletterEligible: false,
+            maxImages: 20,
           },
         },
       },
@@ -190,8 +189,7 @@ async function createTestAccounts() {
             startDate: new Date(),
             endDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 3 months
             amount: 10000,
-            maxImages: 5,
-            newsletterEligible: false,
+            maxImages: 20,
           },
         },
       },

@@ -108,26 +108,6 @@
     </div>
   </header>
 
-  <!-- Role Switch Section -->
-  <section id="employerRoleSwitch" class="container mx-auto px-4 -mt-8 relative z-20">
-    <div class="bg-white shadow-xl border border-gray-100 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-      <div class="flex items-start gap-4">
-        <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-          <i data-feather="home" class="w-6 h-6 text-primary"></i>
-        </div>
-        <div>
-          <p id="employerSwitchTag" class="text-xs font-bold text-primary uppercase tracking-wide mb-1">Join a project</p>
-          <h2 id="employerSwitchTitle" class="text-xl font-black text-gray-900 mb-1">Want to pick up a gig yourself?</h2>
-          <p id="employerSwitchCopy" class="text-sm text-gray-600">Hop into your worker tools to browse jobs, track applications, and manage your subscription.</p>
-        </div>
-      </div>
-      <button id="switchToWorkerBtn" type="button" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all whitespace-nowrap">
-        <i id="employerSwitchIcon" data-feather="tool" class="w-5 h-5"></i>
-        <span id="employerSwitchBtnLabel">Go to Work Mode</span>
-      </button>
-    </div>
-  </section>
-
   <!-- Main Content -->
   <main class="container mx-auto px-4 py-16">
     <!-- Profile Completion -->
@@ -226,110 +206,45 @@
           <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center mb-4">
             <i data-feather="zap" class="w-6 h-6 text-green-600"></i>
           </div>
-          <h3 class="text-xl font-black text-gray-900 mb-2">Subscription & Limits</h3>
-          <p class="text-sm text-gray-600 mb-3">Posting a job requires an active plan. Activate Pay-per-post or Premium Plus to publish roles.</p>
+          <h3 class="text-xl font-black text-gray-900 mb-2">Job Posting</h3>
+          <p class="text-sm text-gray-600 mb-3">Every job post costs ₦1,000. Simple, transparent pricing with no subscriptions.</p>
           <div class="space-y-2 text-sm text-gray-600 mb-4">
-            <p>Direct recommendations left: <span id="recommendationCredits" class="font-bold text-primary">0</span></p>
-            <p>Free hire left: <span id="freeHiresLeft" class="font-bold text-primary">1</span></p>
+            <p class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-600"></i>Pay only when you post</p>
+            <p class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-600"></i>No monthly fees</p>
+            <p class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-600"></i>Reach qualified candidates</p>
           </div>
-          <p id="planStatus" class="text-xs text-gray-500 mb-6">Every job post costs ₦1,000. Pay per post or upgrade to Premium Plus for unlimited posts and direct recommendations.</p>
-          <button id="upgradeBtn" class="w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-700 transition-all shadow-lg shadow-green-600/25">Upgrade Plan</button>
+          <p id="planStatus" class="text-xs text-gray-500 mb-6">Click "Post New Job" and pay ₦1,000 to publish your listing.</p>
         </div>
       </aside>
     </div>
   </main>
 
-  <!-- Employer Subscription Modal -->
+  <!-- Job Payment Modal -->
   <div id="employerSubscriptionModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
-    <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full relative overflow-hidden max-h-[90vh] overflow-y-auto">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full relative overflow-hidden">
       <button id="closeEmployerModalBtn" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition z-10">
         <i data-feather="x" class="w-5 h-5"></i>
       </button>
 
-      <div class="grid md:grid-cols-2">
-        <!-- Left Side -->
-        <div class="bg-gradient-to-br from-primary/10 to-blue-900/10 p-12 flex flex-col justify-center">
-          <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6">
-            <i data-feather="briefcase" class="w-8 h-8 text-white"></i>
-          </div>
-          <h2 class="text-3xl font-black text-gray-900 mb-4">Choose how to keep hiring</h2>
-          <p class="text-gray-600 mb-8 leading-relaxed">Grab a single extra job post when you need it or upgrade to Premium Plus and let us hand you vetted hires.</p>
-          <div class="flex items-center gap-3 text-sm text-gray-600 bg-white/70 border border-primary/20 rounded-xl px-4 py-3">
-            <i data-feather="shield" class="text-primary w-5 h-5 flex-shrink-0"></i>
-            <span>Flexible add-ons billed securely via Paystack (coming soon)</span>
-          </div>
+      <div class="p-12">
+        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
+          <i data-feather="briefcase" class="w-8 h-8 text-white"></i>
+        </div>
+        <h2 class="text-3xl font-black text-gray-900 mb-4 text-center">Post a Job</h2>
+        <p class="text-gray-600 mb-8 leading-relaxed text-center">Pay ₦1,000 to publish your job listing and reach qualified candidates.</p>
+
+        <div class="border-2 border-primary/30 rounded-2xl p-6 mb-6">
+          <p class="text-5xl font-black text-gray-900 mb-1 text-center">₦1,000</p>
+          <p class="text-center text-gray-500 mb-6">One-time payment per job</p>
+          <ul class="space-y-3 text-sm text-gray-600">
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Reach active job seekers</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Manage all applications</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>No hidden fees</span></li>
+          </ul>
         </div>
 
-        <!-- Right Side - Plans -->
-        <div class="p-12 space-y-6">
-          <div class="border-2 border-primary/30 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-xl font-black text-primary">Pay per job post</h3>
-              <span class="text-xs uppercase tracking-wide font-bold text-primary/70 bg-primary/10 px-3 py-1 rounded-full">Simple</span>
-            </div>
-            <p class="text-4xl font-black text-gray-900 mb-1">₦1,000<span class="text-base font-medium text-gray-500"> / post</span></p>
-            <ul class="mt-6 space-y-3 text-sm text-gray-600">
-              <li class="flex items-start gap-2"><i data-feather="zap" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Pay only when you need another job slot</span></li>
-              <li class="flex items-start gap-2"><i data-feather="users" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>We keep your access to all worker contacts open</span></li>
-              <li class="flex items-start gap-2"><i data-feather="shield" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Upload proof and we'll publish the job immediately</span></li>
-            </ul>
-            <button data-plan="pay-per-post" class="employerSubscribeBtn mt-6 w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Pay ₦1,000 & post now</button>
-          </div>
-
-          <div class="border-2 border-gray-200 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-xl font-black text-gray-900">Premium Plus</h3>
-              <span class="text-xs uppercase tracking-wide font-bold text-primary bg-primary/10 px-3 py-1 rounded-full flex items-center gap-1"><i data-feather="award" class="w-3.5 h-3.5"></i>Best Value</span>
-            </div>
-            <p class="text-4xl font-black text-gray-900 mb-1">₦5,000<span class="text-base font-medium text-gray-500"> / month</span></p>
-            <ul class="mt-6 space-y-3 text-sm text-gray-600">
-              <li class="flex items-start gap-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span>Unlimited job posts plus 3 direct recommendations monthly</span></li>
-              <li class="flex items-start gap-2"><i data-feather="briefcase" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span>Dedicated talent manager introducing pre-vetted hires</span></li>
-              <li class="flex items-start gap-2"><i data-feather="message-circle" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span>Concierge follow-up until you confirm the hire</span></li>
-            </ul>
-            <button data-plan="premium-plus" class="employerSubscribeBtn mt-6 w-full border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all">Activate Premium Plus</button>
-          </div>
-        </div>
+        <button data-plan="pay-per-post" class="employerSubscribeBtn w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Pay ₦1,000 & Post Job</button>
       </div>
-    </div>
-  </div>
-
-  <!-- Extend Work Mode Modal -->
-  <div id="employerExtendModal" class="fixed inset-0 hidden items-center justify-center px-4 py-6 bg-gray-900/60 backdrop-blur-sm z-50">
-    <div class="absolute inset-0"></div>
-    <div class="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8 space-y-6">
-      <div class="flex items-start justify-between gap-4">
-        <div>
-          <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-3 py-1 mb-3">
-            <i data-feather="unlock" class="w-3.5 h-3.5"></i>
-            <span class="text-xs font-bold uppercase tracking-wide">Unlock Feature</span>
-          </div>
-          <h3 class="text-3xl font-black text-gray-900 mb-2">Add worker tools</h3>
-          <p class="text-sm text-gray-600">Confirm your password and craft details so you can apply for jobs without juggling multiple logins.</p>
-        </div>
-        <button id="closeEmployerExtendModal" class="text-gray-400 hover:text-gray-700 transition">
-          <i data-feather="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <form id="employerExtendForm" class="space-y-5">
-        <div>
-          <label for="employerExtendPassword" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Password</label>
-          <input type="password" id="employerExtendPassword" required class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Enter your Sirius Jobs password">
-        </div>
-
-        <div>
-          <label for="employerExtendPhone" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Phone Number</label>
-          <input type="tel" id="employerExtendPhone" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="07012345678">
-        </div>
-
-        <p id="employerExtendMessage" class="hidden text-sm font-medium"></p>
-
-        <button type="submit" id="employerExtendSubmit" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-4 rounded-xl shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all">
-          <i data-feather="unlock" class="w-5 h-5"></i>
-          Enable Work Mode
-        </button>
-      </form>
     </div>
   </div>
 
@@ -480,26 +395,7 @@
       return { score, missing };
     }
 
-    const planState = {
-      freeHiresLeft: 0,
-      directRecommendationCredits: 0,
-      premiumPlusActive: false,
-      paidPostReady: false,
-    };
-
-    function syncPlanFlags() {
-      if (typeof sessionStorage === 'undefined') return;
-      if (planState.paidPostReady) {
-        sessionStorage.setItem('siriusPaidJobCredit', 'true');
-      } else {
-        sessionStorage.removeItem('siriusPaidJobCredit');
-      }
-      if (planState.premiumPlusActive) {
-        sessionStorage.setItem('siriusPremiumEmployer', 'true');
-      } else {
-        sessionStorage.removeItem('siriusPremiumEmployer');
-      }
-    }
+    // Removed subscription logic - pay per post only
 
     const metricsState = {
       jobsPosted: 0,
@@ -544,163 +440,7 @@
       return 'Recently';
     }
 
-    const switchToWorkerSection = document.getElementById('employerRoleSwitch');
-    const switchToWorkerBtn = document.getElementById('switchToWorkerBtn');
-    const switchToWorkerLabel = document.getElementById('employerSwitchBtnLabel');
-    const switchToWorkerIcon = document.getElementById('employerSwitchIcon');
-    const employerSwitchTag = document.getElementById('employerSwitchTag');
-    const employerSwitchTitle = document.getElementById('employerSwitchTitle');
-    const employerSwitchCopy = document.getElementById('employerSwitchCopy');
-    const workerSession = sessionUtils?.parse ? sessionUtils.parse('siriusWorkerAuth') : null;
-    const canSwitchToWorker = Boolean(workerSession?.roles?.length);
-    const employerExtendModal = document.getElementById('employerExtendModal');
-    const employerExtendForm = document.getElementById('employerExtendForm');
-    const employerExtendPassword = document.getElementById('employerExtendPassword');
-    const employerExtendPhone = document.getElementById('employerExtendPhone');
-    const employerExtendMessage = document.getElementById('employerExtendMessage');
-    const employerExtendSubmit = document.getElementById('employerExtendSubmit');
-    const closeEmployerExtendModalBtn = document.getElementById('closeEmployerExtendModal');
-
-    const handleSwitchToWorker = () => {
-      window.location.href = 'worker-dashboard.html';
-    };
-
-    const openEmployerExtendModal = () => {
-      if (!employerExtendModal) return;
-      employerExtendModal.classList.remove('hidden');
-      employerExtendModal.classList.add('flex');
-      if (employerExtendPassword) {
-        employerExtendPassword.value = '';
-      }
-      if (employerExtendPhone && employerSessionPayload?.phone) {
-        employerExtendPhone.value = employerSessionPayload.phone;
-      }
-      if (employerExtendMessage) {
-        employerExtendMessage.classList.add('hidden');
-        employerExtendMessage.textContent = '';
-      }
-      setTimeout(() => {
-        employerExtendPassword?.focus();
-      }, 90);
-    };
-
-    const closeEmployerExtendModal = () => {
-      if (!employerExtendModal) return;
-      employerExtendModal.classList.remove('flex');
-      employerExtendModal.classList.add('hidden');
-    };
-
-    closeEmployerExtendModalBtn?.addEventListener('click', closeEmployerExtendModal);
-    employerExtendModal?.addEventListener('click', (event) => {
-      if (event.target === employerExtendModal) {
-        closeEmployerExtendModal();
-      }
-    });
-
-    employerExtendForm?.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      if (!employerSessionPayload?.email) {
-        return;
-      }
-      const password = employerExtendPassword?.value.trim() ?? '';
-      const phone = employerExtendPhone?.value.trim() ?? '';
-      if (!password) {
-        employerExtendMessage?.classList.remove('hidden');
-        employerExtendMessage?.classList.remove('text-green-600');
-        employerExtendMessage?.classList.add('text-red-600');
-        if (employerExtendMessage) employerExtendMessage.textContent = 'Enter your password to continue.';
-        return;
-      }
-      employerExtendSubmit?.setAttribute('disabled', 'true');
-      employerExtendSubmit?.classList.add('opacity-70', 'cursor-wait');
-      employerExtendMessage?.classList.add('hidden');
-      try {
-        const res = await fetch('/api/auth/extend-role', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: employerSessionPayload.email,
-            password,
-            targetRole: 'ARTISAN',
-            phone: phone || undefined,
-          }),
-        });
-        const bodyText = await res.text();
-        const data = bodyText ? JSON.parse(bodyText) : {};
-        if (!res.ok) {
-          throw new Error(data?.message || 'Unable to add work mode right now.');
-        }
-        if (employerExtendMessage) {
-          employerExtendMessage.classList.remove('hidden');
-          employerExtendMessage.classList.remove('text-red-600');
-          employerExtendMessage.classList.add('text-green-600');
-          employerExtendMessage.textContent = data?.message || 'Work mode activated! Redirecting you now...';
-        }
-        if (sessionUtils) {
-          const sessionPayload = sessionUtils.createPayload(data, {
-            activeRole: 'ARTISAN',
-            email: employerSessionPayload.email,
-            firstName: data?.user?.firstName ?? employerSessionPayload.firstName,
-            lastName: data?.user?.lastName ?? employerSessionPayload.lastName,
-          });
-          sessionUtils.persist(sessionPayload);
-        }
-        setTimeout(() => {
-          closeEmployerExtendModal();
-          window.location.href = 'worker-dashboard.html';
-        }, 800);
-      } catch (error) {
-        if (employerExtendMessage) {
-          employerExtendMessage.classList.remove('hidden');
-          employerExtendMessage.classList.remove('text-green-600');
-          employerExtendMessage.classList.add('text-red-600');
-          employerExtendMessage.textContent = error.message || 'Unable to add work mode right now.';
-        }
-      } finally {
-        employerExtendSubmit?.removeAttribute('disabled');
-        employerExtendSubmit?.classList.remove('opacity-70', 'cursor-wait');
-      }
-    });
-
-    if (switchToWorkerSection && switchToWorkerBtn) {
-      if (canSwitchToWorker) {
-        switchToWorkerBtn.className =
-          'inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all whitespace-nowrap';
-        if (switchToWorkerLabel) {
-          switchToWorkerLabel.textContent = 'Go to Work Mode';
-        }
-        if (employerSwitchTag) {
-          employerSwitchTag.textContent = 'Join a project';
-        }
-        if (employerSwitchTitle) {
-          employerSwitchTitle.textContent = 'Want to pick up a gig yourself?';
-        }
-        if (employerSwitchCopy) {
-          employerSwitchCopy.textContent = 'Hop into your worker tools to browse jobs, track applications, and manage your profile.';
-        }
-        switchToWorkerBtn.addEventListener('click', handleSwitchToWorker);
-      } else {
-        switchToWorkerBtn.className =
-          'inline-flex items-center justify-center gap-2 bg-white text-primary font-bold px-6 py-3 rounded-xl border-2 border-primary hover:bg-primary/10 transition-all whitespace-nowrap';
-        if (switchToWorkerLabel) {
-          switchToWorkerLabel.textContent = 'Unlock Work Mode';
-        }
-        if (employerSwitchTag) {
-          employerSwitchTag.textContent = 'Quick upgrade';
-        }
-        if (employerSwitchTitle) {
-          employerSwitchTitle.textContent = 'Need to showcase your skills?';
-        }
-        if (employerSwitchCopy) {
-          employerSwitchCopy.textContent = 'Add worker access to start applying for jobs with the same account.';
-        }
-        if (switchToWorkerIcon) {
-          switchToWorkerIcon.setAttribute('data-feather', 'user-plus');
-        }
-        switchToWorkerBtn.addEventListener('click', openEmployerExtendModal);
-      }
-      feather.replace();
-    }
+    // Role switching functionality removed - users now post jobs directly from their dashboard
 
     const profileModalEl = document.getElementById('profileModal');
     const profileModalName = document.getElementById('profileModalName');
@@ -800,27 +540,6 @@
           metricsState.activeListings ??
           jobs.filter(j => (j.status || '').toString().toUpperCase() === 'OPEN').length;
         activeListingsEl.textContent = activeCount;
-      }
-      const recEl = document.getElementById('recommendationCredits');
-      const freeHiresEl = document.getElementById('freeHiresLeft');
-      if (recEl) {
-        if (planState.premiumPlusActive) {
-          recEl.textContent = `${planState.directRecommendationCredits ?? 0}`;
-        } else {
-          recEl.textContent = planState.directRecommendationCredits > 0 ? `${planState.directRecommendationCredits}` : '—';
-        }
-      }
-      if (freeHiresEl) freeHiresEl.textContent = planState.premiumPlusActive ? 'Unlimited' : planState.freeHiresLeft;
-      const planStatus = document.getElementById('planStatus');
-      if (planStatus) {
-        if (planState.premiumPlusActive) {
-          const credits = planState.directRecommendationCredits ?? 0;
-          planStatus.textContent = `Premium Plus active — unlimited posts and ${credits} direct recommendation${credits === 1 ? '' : 's'} available this month.`;
-        } else if (planState.paidPostReady) {
-          planStatus.textContent = 'Payment received — click "Post New Job" to publish your paid listing.';
-        } else {
-          planStatus.textContent = 'Activate Pay-per-post (₦1,000) or Premium Plus to publish jobs.';
-        }
       }
     }
     function renderJobs(){
@@ -948,21 +667,7 @@
       jobs = Array.isArray(snapshot.jobs) ? snapshot.jobs : [];
       applicants = Array.isArray(snapshot.applicants) ? snapshot.applicants : [];
 
-      if (snapshot.plan) {
-        planState.freeHiresLeft =
-          typeof snapshot.plan.freeHiresLeft === 'number'
-            ? snapshot.plan.freeHiresLeft
-            : planState.freeHiresLeft;
-        planState.directRecommendationCredits =
-          typeof snapshot.plan.directRecommendationCredits === 'number'
-            ? snapshot.plan.directRecommendationCredits
-            : planState.directRecommendationCredits;
-        planState.premiumPlusActive = Boolean(
-          snapshot.plan.premiumPlusActive ?? planState.premiumPlusActive,
-        );
-        planState.paidPostReady = Boolean(snapshot.plan.paidPostReady ?? planState.paidPostReady);
-        syncPlanFlags();
-      }
+      // Plan/subscription data removed - pay per post only
 
       if (snapshot.stats) {
         metricsState.jobsPosted =
@@ -1245,10 +950,6 @@
     const employerModal = document.getElementById('employerSubscriptionModal');
     const closeEmployerModalBtn = document.getElementById('closeEmployerModalBtn');
     const employerSubscribeBtns = document.querySelectorAll('.employerSubscribeBtn');
-    const employerPlanLabels = {
-      'pay-per-post': 'Pay per job post (₦1,000)',
-      'premium-plus': 'Premium Plus (₦5,000/month)'
-    };
 
     function openEmployerModal(){
       employerModal.classList.remove('hidden');
@@ -1276,105 +977,32 @@
     });
     employerSubscribeBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        const plan = btn.dataset.plan;
-        if(plan === 'pay-per-post'){
-          planState.paidPostReady = true;
-          window.open('https://paystack.com/pay/siriusjobs-post', '_blank', 'noopener');
-          showToast('After completing the ₦1,000 payment, click "Post New Job" to publish your role.', 'info');
-          closeEmployerModal();
-          syncPlanFlags();
-          renderMetrics();
-        } else if(plan === 'premium-plus'){
-          planState.premiumPlusActive = true;
-          planState.freeHiresLeft = 0;
-          planState.directRecommendationCredits = Math.max(planState.directRecommendationCredits, 3);
-          planState.paidPostReady = false;
-          showToast('Premium Plus activated! Expect three direct candidate recommendations this month.', 'success');
-          closeEmployerModal();
-          syncPlanFlags();
-          renderMetrics();
-        } else {
-          showToast(`${employerPlanLabels[plan]} checkout is coming soon.`, 'info');
-          closeEmployerModal();
-        }
+        // Open Paystack payment link for ₦1,000 job post
+        window.open('https://paystack.com/pay/siriusjobs-post', '_blank', 'noopener');
+        showToast('Complete the ₦1,000 payment, then return to post your job.', 'info');
+        closeEmployerModal();
       });
     });
 
+    // Hire tracking - no longer tied to subscription
     function handleHire(applicant, triggerButton){
-      if(planState.premiumPlusActive){
-        metricsState.totalHires += 1;
-        metricsState.totalApplicants = Math.max(metricsState.totalApplicants - 1, applicants.length);
-        triggerButton.textContent = 'Hired';
-        triggerButton.disabled = true;
-        triggerButton.classList.add('opacity-60', 'cursor-not-allowed');
-        showToast(`${applicant.name} hired under your Premium Plus plan!`, 'success');
-        renderMetrics();
-        return;
-      }
-      if(planState.freeHiresLeft > 0){
-        planState.freeHiresLeft -= 1;
-        metricsState.totalHires += 1;
-        metricsState.totalApplicants = Math.max(metricsState.totalApplicants - 1, applicants.length);
-        triggerButton.textContent = 'Hired';
-        triggerButton.disabled = true;
-        triggerButton.classList.add('opacity-60', 'cursor-not-allowed');
-        showToast(`${applicant.name} hired! Free hires remaining: ${planState.freeHiresLeft}`, 'success');
-        renderMetrics();
-      } else {
-        showToast('Free hires exhausted. Buy a job credit or activate Premium Plus to keep hiring.', 'error');
-        openEmployerModal();
-      }
+      metricsState.totalHires += 1;
+      metricsState.totalApplicants = Math.max(metricsState.totalApplicants - 1, applicants.length);
+      triggerButton.textContent = 'Hired';
+      triggerButton.disabled = true;
+      triggerButton.classList.add('opacity-60', 'cursor-not-allowed');
+      showToast(`${applicant.name} hired successfully!`, 'success');
+      renderMetrics();
     }
 
     const postBtn = document.getElementById('postBtn');
     postBtn?.addEventListener('click', ()=>{
-      const fallbackLocation = employerProfile?.location || employerProfile?.industry || 'Nigeria';
-      const inferredCity = fallbackLocation.includes(',')
-        ? fallbackLocation.split(',')[0].trim()
-        : fallbackLocation;
-      const newJob = {
-        title:`New Role ${jobs.length + 1}`,
-        city: inferredCity || 'Lagos',
-        location: fallbackLocation,
-        status:'OPEN',
-        statusLabel: 'Open',
-        applicants:0,
-        createdAt: new Date().toISOString()
-      };
-      if(planState.premiumPlusActive){
-        jobs.unshift(newJob);
-        showToast('Job posted under your Premium Plus plan!', 'success');
-        metricsState.jobsPosted += 1;
-        metricsState.activeListings = jobs.filter(
-          job => (job.status || '').toString().toUpperCase() === 'OPEN',
-        ).length;
-        renderJobs();
-        renderMetrics();
-        return;
-      }
-      if (planState.paidPostReady) {
-        planState.paidPostReady = false;
-        jobs.unshift(newJob);
-        showToast('Paid job posted! Thank you for settling the ₦1,000 fee.', 'success');
-        metricsState.jobsPosted += 1;
-        metricsState.activeListings = jobs.filter(
-          job => (job.status || '').toString().toUpperCase() === 'OPEN',
-        ).length;
-        renderJobs();
-        renderMetrics();
-        syncPlanFlags();
-        return;
-      }
-      showToast('Activate Pay-per-post or Premium Plus to publish a new job.', 'error');
+      // Open payment modal for each job post
       openEmployerModal();
     });
 
-    document.getElementById('upgradeBtn').addEventListener('click', openEmployerModal);
-
     function handleLogout(){
       sessionStorage.clear();
-      sessionStorage.removeItem('siriusPaidJobCredit');
-      sessionStorage.removeItem('siriusPremiumEmployer');
       localStorage.removeItem('siriusRememberMe');
       showToast('You have been logged out of Sirius Jobs.', 'info');
       window.location.href = 'login.html';
