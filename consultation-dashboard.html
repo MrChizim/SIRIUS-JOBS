@@ -6,6 +6,9 @@
     <title>Professional Dashboard – Sirius Jobs Consultations</title>
     <meta name="description" content="Manage your consultation sessions">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
@@ -22,7 +25,7 @@
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -122,11 +125,21 @@
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="lg:hidden text-gray-600">
-                    <i data-feather="menu" class="w-6 h-6"></i>
+                <button class="menu-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </button>
             </div>
         </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <nav class="nav-menu-mobile">
+        <a href="consultation-dashboard.html" class="active">Dashboard</a>
+        <a href="consultations.html">Browse Professionals</a>
+        <a href="consultation-profile-edit.html">Edit Profile</a>
+        <button id="logout-btn-mobile" type="button">Logout</button>
     </nav>
 
     <!-- Main Content -->
@@ -440,20 +453,40 @@
         let currentFilter = 'all';
         let socket = null;
 
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+        // Hamburger menu functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu-mobile');
+
+        if (menuToggle && navMenu) {
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
             });
         }
 
         // Logout
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            sessionStorage.removeItem('siriusProAuth');
-            window.location.href = 'login.html';
-        });
+        [document.getElementById('logout-btn'), document.getElementById('logout-btn-mobile')]
+            .filter(Boolean)
+            .forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    sessionStorage.removeItem('siriusProAuth');
+                    window.location.href = 'login.html';
+                });
+            });
 
         // Filter buttons
         const filterButtons = document.querySelectorAll('.filter-btn');

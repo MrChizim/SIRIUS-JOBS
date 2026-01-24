@@ -6,6 +6,9 @@
     <title>Register - Sirius Jobs</title>
     <meta name="description" content="Create a new account on Sirius Jobs to access job opportunities or hire talent.">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -25,7 +28,7 @@
     <script src="session-utils.js"></script>
     <script src="ui-utils.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -74,28 +77,25 @@
                     </a>
                 </div>
 
-                <button id="menu-btn" class="lg:hidden p-2 text-gray-600 hover:text-primary transition">
-                    <i data-feather="menu" class="w-6 h-6"></i>
+                <button class="menu-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </button>
             </div>
         </div>
+    </nav>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-md">
-            <div class="container mx-auto px-4 py-4 space-y-1">
-                <a href="index.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Home</a>
-                <a href="services.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Services</a>
-                <a href="jobs.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Jobs</a>
-                <a href="consultations.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Consultations</a>
-                <a href="marketplace.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Marketplace</a>
-                <a href="findworker.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Find Workers</a>
-                <a href="faq.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">FAQs</a>
-                <a href="login.html" class="flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-primary hover:bg-primary/90 rounded-lg transition">
-                    <i data-feather="log-in" class="w-4 h-4"></i>
-                    Login
-                </a>
-            </div>
-        </div>
+    <!-- Mobile Menu Overlay -->
+    <nav class="nav-menu-mobile">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="jobs.html">Jobs</a>
+        <a href="consultations.html">Consultations</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="findworker.html">Find Workers</a>
+        <a href="faq.html">FAQs</a>
+        <a href="login.html">Login</a>
     </nav>
 
     <!-- Quick Access Buttons -->
@@ -352,11 +352,28 @@
     </section>
 
     <script>
-        // Mobile menu toggle
-        const registerMenuBtn = document.getElementById('menu-btn');
-        if (registerMenuBtn) {
-            registerMenuBtn.addEventListener('click', () => {
-                document.getElementById('mobile-menu').classList.toggle('hidden');
+        // Hamburger menu functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu-mobile');
+
+        if (menuToggle && navMenu) {
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
             });
         }
 

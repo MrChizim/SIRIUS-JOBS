@@ -6,6 +6,9 @@
     <title>Sirius Jobs – Verified Skilled Workers in Nigeria</title>
     <meta name="description" content="Connecting verified Nigerian blue-collar workers with individuals and businesses. Find reliable electricians, plumbers, cleaners, and artisans.">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -21,7 +24,6 @@
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -112,6 +114,8 @@
                     <a href="jobs.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Jobs</a>
                     <a href="consultations.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Consultations</a>
                     <a href="marketplace.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Marketplace</a>
+                    <a href="findworker.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Find Workers</a>
+                    <a href="faq.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">FAQs</a>
                     <a href="about.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">About</a>
                 </div>
 
@@ -125,26 +129,27 @@
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" type="button" aria-controls="mobile-menu" aria-expanded="false" class="lg:hidden text-gray-600">
-                    <i data-feather="menu" class="w-6 h-6"></i>
+                <button class="menu-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </button>
             </div>
         </div>
+    </nav>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" aria-hidden="true" class="hidden lg:hidden bg-white border-t border-gray-200">
-            <div class="container mx-auto px-4 py-6 space-y-4">
-                <a href="index.html" class="mobile-menu-link block text-sm font-semibold text-gray-600 hover:text-primary">Home</a>
-                <a href="jobs.html" class="mobile-menu-link block text-sm font-semibold text-gray-600 hover:text-primary">Jobs</a>
-                <a href="consultations.html" class="mobile-menu-link block text-sm font-semibold text-gray-600 hover:text-primary">Consultations</a>
-                <a href="marketplace.html" class="mobile-menu-link block text-sm font-semibold text-gray-600 hover:text-primary">Marketplace</a>
-                <a href="about.html" class="mobile-menu-link block text-sm font-semibold text-gray-600 hover:text-primary">About</a>
-                <div class="pt-4 space-y-3">
-                    <a href="login.html" class="block text-center text-sm font-semibold text-gray-600">Sign in</a>
-                    <a href="register.html" class="block text-center bg-primary text-white font-semibold px-6 py-3 rounded-full">Get Started</a>
-                </div>
-            </div>
-        </div>
+    <!-- Mobile Menu Overlay -->
+    <nav class="nav-menu-mobile">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="jobs.html">Jobs</a>
+        <a href="consultations.html">Consultations</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="findworker.html">Find Workers</a>
+        <a href="faq.html">FAQs</a>
+        <a href="about.html">About</a>
+        <a href="login.html">Sign In</a>
+        <a href="register.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-full hover:bg-blue-700 transition-all">Get Started</a>
     </nav>
 
     <!-- Split Hero Section with Image -->
@@ -240,7 +245,7 @@
                                         <i data-feather="activity" class="w-6 h-6 text-white"></i>
                                     </div>
                                     <h3 class="font-bold text-gray-900">Consulting Experts</h3>
-                                    <p class="text-xs text-gray-600">Doctors, lawyers & advisors</p>
+                                    <p class="text-xs text-gray-600">Doctors, lawyers & therapists</p>
                                 </div>
                             </div>
                         </div>
@@ -344,7 +349,7 @@
                             </div>
                             <h3 class="text-2xl font-black">Professional Consultations</h3>
                             <p class="text-white/70 leading-relaxed">
-                                Connect with doctors & lawyers via secure chat and calls for just ₦3,000
+                                Connect with doctors, lawyers & therapists via secure chat and calls for just ₦3,000
                             </p>
                         </div>
                         <a href="consultations.html" class="inline-flex items-center gap-2 text-primary font-semibold mt-4 group">
@@ -703,14 +708,31 @@
 
         fetchLiveStats();
 
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
+        // Hamburger menu functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu-mobile');
 
-        if (mobileMenuBtn && mobileMenu) {
-            mobileMenuBtn.addEventListener('click', () => {
-                const isHidden = mobileMenu.classList.toggle('hidden');
-                mobileMenu.setAttribute('aria-hidden', String(isHidden));
-                mobileMenuBtn.setAttribute('aria-expanded', String(!isHidden));
+        if (menuToggle && navMenu) {
+            // Toggle menu on button click
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // Close menu when clicking a nav link
+            document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
             });
         }
 

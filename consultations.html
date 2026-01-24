@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional Consultations – Sirius Jobs</title>
-    <meta name="description" content="Get expert consultations from verified doctors and lawyers. ₦3,000 for 24-hour secure consultation sessions.">
+    <meta name="description" content="Get expert consultations from verified doctors, lawyers, and therapists. ₦3,000 for 1-hour secure consultation sessions.">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -21,7 +24,7 @@
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -81,11 +84,14 @@
                 </a>
 
                 <!-- Desktop Menu -->
-                <div class="hidden lg:flex items-center space-x-8">
+                <div class="hidden lg:flex items-center gap-8 flex-1 justify-center">
+                    <a href="index.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Home</a>
                     <a href="services.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Services</a>
                     <a href="jobs.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Jobs</a>
                     <a href="consultations.html" class="nav-link text-sm font-semibold text-primary transition-colors">Consultations</a>
                     <a href="marketplace.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Marketplace</a>
+                    <a href="findworker.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Find Workers</a>
+                    <a href="faq.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">FAQs</a>
                     <a href="about.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">About</a>
                 </div>
 
@@ -99,26 +105,28 @@
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="lg:hidden text-gray-600">
-                    <i data-feather="menu" class="w-6 h-6"></i>
+                <button class="menu-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </button>
             </div>
         </div>
+    </nav>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-200">
-            <div class="container mx-auto px-4 py-6 space-y-4">
-                <a href="services.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Services</a>
-                <a href="jobs.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Jobs</a>
-                <a href="consultations.html" class="block text-sm font-semibold text-primary">Consultations</a>
-                <a href="marketplace.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Marketplace</a>
-                <a href="about.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">About</a>
-                <div class="pt-4 space-y-3">
-                    <a href="login.html" class="block text-center text-sm font-semibold text-gray-600">Sign in</a>
-                    <a href="consultation-pro-register.html" class="block text-center bg-primary text-white font-semibold px-6 py-3 rounded-full">Register as Professional</a>
-                </div>
-            </div>
-        </div>
+    <!-- Mobile Menu Overlay -->
+    <nav class="nav-menu-mobile">
+        <a href="index.html">Home</a>
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="jobs.html">Jobs</a>
+        <a href="consultations.html" class="active">Consultations</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="findworker.html">Find Workers</a>
+        <a href="faq.html">FAQs</a>
+        <a href="about.html">About</a>
+        <a href="login.html">Sign In</a>
+        <a href="consultation-pro-register.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-full">Register as Professional</a>
     </nav>
 
     <!-- Hero Section -->
@@ -135,7 +143,7 @@
                 </h1>
 
                 <p class="text-xl text-gray-600 leading-relaxed">
-                    Connect with verified doctors and lawyers for secure 24-hour consultation sessions. Only ₦3,000 per consultation.
+                    Connect with verified doctors, lawyers, and therapists for secure 1-hour consultation sessions. Only ₦3,000 per consultation.
                 </p>
 
                 <div class="flex items-center justify-center gap-8 pt-4">
@@ -144,7 +152,7 @@
                         <div class="text-sm text-gray-600">Per Session</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl font-black text-gray-900">24 Hours</div>
+                        <div class="text-3xl font-black text-gray-900">1 Hour</div>
                         <div class="text-sm text-gray-600">Access Duration</div>
                     </div>
                     <div class="text-center">
@@ -169,6 +177,9 @@
                 </button>
                 <button class="filter-tab px-8 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300" data-filter="LAWYER">
                     Lawyers
+                </button>
+                <button class="filter-tab px-8 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300" data-filter="THERAPIST">
+                    Therapists
                 </button>
             </div>
 
@@ -326,6 +337,36 @@
                 phone: '+2348097765432',
                 whatsapp: 'https://wa.me/2348097765432',
                 email: 'arthur.iyanu@siriusjobs.ng'
+            },
+            {
+                _id: 'consult-amandaokoro',
+                firstName: 'Amanda',
+                lastName: 'Okoro',
+                profession: 'THERAPIST',
+                specialization: 'Anxiety, depression & trauma counseling',
+                yearsOfExperience: 7,
+                totalSessions: 129,
+                totalReviews: 42,
+                averageRating: 4.9,
+                bio: 'Amanda provides compassionate counseling for mental health issues, stress management and personal growth.',
+                phone: '+2348156789012',
+                whatsapp: 'https://wa.me/2348156789012',
+                email: 'amanda.okoro@siriusjobs.ng'
+            },
+            {
+                _id: 'consult-davidchisom',
+                firstName: 'David',
+                lastName: 'Chisom',
+                profession: 'THERAPIST',
+                specialization: 'Relationship & family therapy',
+                yearsOfExperience: 9,
+                totalSessions: 154,
+                totalReviews: 51,
+                averageRating: 4.8,
+                bio: 'David specializes in relationship counseling, family dynamics and conflict resolution with evidence-based approaches.',
+                phone: '+2348234567890',
+                whatsapp: 'https://wa.me/2348234567890',
+                email: 'david.chisom@siriusjobs.ng'
             }
         ];
 
@@ -356,12 +397,28 @@
 
         // Wait for DOM to be ready
         document.addEventListener('DOMContentLoaded', function() {
-            // Mobile menu toggle
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenuBtn && mobileMenu) {
-                mobileMenuBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
+            // Hamburger menu functionality
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('.nav-menu-mobile');
+
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', () => {
+                    menuToggle.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                });
+
+                document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+                    link.addEventListener('click', () => {
+                        menuToggle.classList.remove('active');
+                        navMenu.classList.remove('active');
+                    });
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                        menuToggle.classList.remove('active');
+                        navMenu.classList.remove('active');
+                    }
                 });
             }
 

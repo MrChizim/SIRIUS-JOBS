@@ -6,6 +6,9 @@
     <title>Contact Us - Sirius Jobs</title>
     <meta name="description" content="Get in touch with Sirius Jobs for inquiries, support, or partnership opportunities in Nigeria.">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -21,7 +24,7 @@
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -62,25 +65,26 @@
                         <i data-feather="log-in" class="w-4 h-4"></i>
                         Login
                     </a>
-                    <button id="menu-btn" class="lg:hidden text-gray-700 hover:text-primary transition-colors">
-                        <i data-feather="menu" class="w-6 h-6"></i>
+                    <button class="menu-toggle" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </button>
                 </div>
             </div>
         </div>
+    </nav>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-gray-200/50">
-            <div class="container mx-auto px-4 py-4 space-y-1">
-                <a href="index.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Home</a>
-                <a href="services.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Services</a>
-                <a href="jobs.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Jobs</a>
-                <a href="consultations.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Consultations</a>
-                <a href="marketplace.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Marketplace</a>
-                <a href="findworker.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Find Workers</a>
-                <a href="faq.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">FAQs</a>
-            </div>
-        </div>
+    <!-- Mobile Menu Overlay -->
+    <nav class="nav-menu-mobile">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="jobs.html">Jobs</a>
+        <a href="consultations.html">Consultations</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="findworker.html">Find Workers</a>
+        <a href="faq.html">FAQs</a>
+        <a href="login.html">Login</a>
     </nav>
 
     <!-- HERO -->
@@ -167,32 +171,32 @@
                 <!-- Contact Form -->
                 <div class="bg-gradient-to-br from-primary/5 to-blue-50 border-2 border-primary/10 rounded-3xl shadow-xl p-8 md:p-10">
                     <h2 class="text-3xl font-black text-gray-900 mb-6">Send Us a Message</h2>
-                    <form>
+                    <form action="https://formspree.io/f/xeeadqdn" method="POST">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                             <div>
                                 <label for="first-name" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">First Name*</label>
-                                <input type="text" id="first-name" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+                                <input type="text" id="first-name" name="first-name" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
                             </div>
 
                             <div>
                                 <label for="last-name" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Last Name*</label>
-                                <input type="text" id="last-name" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+                                <input type="text" id="last-name" name="last-name" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
                             </div>
 
                             <div>
                                 <label for="email" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Email*</label>
-                                <input type="email" id="email" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+                                <input type="email" id="email" name="email" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
                             </div>
 
                             <div>
                                 <label for="phone" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Phone Number</label>
-                                <input type="tel" id="phone" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                                <input type="tel" id="phone" name="phone" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
                             </div>
                         </div>
 
                         <div class="mb-6">
                             <label for="subject" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Subject*</label>
-                            <select id="subject" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+                            <select id="subject" name="subject" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
                                 <option value="">Select a subject</option>
                                 <option>General Inquiry</option>
                                 <option>Worker Verification</option>
@@ -205,7 +209,7 @@
 
                         <div class="mb-6">
                             <label for="message" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Message*</label>
-                            <textarea id="message" rows="5" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" required></textarea>
+                            <textarea id="message" name="message" rows="5" class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" required></textarea>
                         </div>
 
                         <div class="flex justify-end">
@@ -282,9 +286,30 @@
 
     <script>
         // Mobile menu toggle
-        document.getElementById('menu-btn').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
+        // Hamburger menu functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu-mobile');
+
+        if (menuToggle && navMenu) {
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            });
+        }
 
         // Feather icons
         feather.replace();

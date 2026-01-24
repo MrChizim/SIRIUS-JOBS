@@ -6,6 +6,9 @@
   <title>FAQs – Sirius Jobs</title>
   <meta name="description" content="Answers to common questions about hiring, verification, payouts, and consultations on Sirius Jobs." />
   <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -16,7 +19,7 @@
   </script>
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    
     body { font-family: 'Inter', sans-serif; }
 
     @keyframes gradient-shift {
@@ -56,11 +59,11 @@
 <body class="bg-white">
   <!-- NAVIGATION -->
   <nav data-sirius-shell="skip" class="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
-    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <div class="container mx-auto px-4 py-4 flex items-center">
       <a href="index.html" class="inline-flex items-center gap-3">
         <img src="images/logo.png" alt="SiriusJobs logo" class="h-16 w-auto drop-shadow-2xl transition-transform group-hover:scale-105">
         </a>
-      <div class="hidden md:flex items-center gap-6 text-sm font-bold text-gray-700">
+      <div class="hidden md:flex items-center gap-6 text-sm font-bold text-gray-700 flex-1 justify-center">
         <a href="index.html" class="hover:text-primary transition-colors">Home</a>
         <a href="services.html" class="hover:text-primary transition-colors">Services</a>
         <a href="jobs.html" class="hover:text-primary transition-colors">Jobs</a>
@@ -68,20 +71,27 @@
         <a href="marketplace.html" class="hover:text-primary transition-colors">Marketplace</a>
         <a href="findworker.html" class="hover:text-primary transition-colors">Find Workers</a>
         <a href="faq.html" class="text-primary">FAQs</a>
+        <a href="about.html" class="hover:text-primary transition-colors">About</a>
       </div>
-      <button id="menu-btn" class="md:hidden text-gray-700">
-        <i data-feather="menu" class="w-6 h-6"></i>
+      <div class="hidden md:block w-20"></div>
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 py-3 space-y-2 text-sm font-bold">
-      <a href="index.html" class="block py-2 hover:text-primary transition-colors">Home</a>
-      <a href="services.html" class="block py-2 hover:text-primary transition-colors">Services</a>
-      <a href="jobs.html" class="block py-2 hover:text-primary transition-colors">Jobs</a>
-      <a href="consultations.html" class="block py-2 hover:text-primary transition-colors">Consultations</a>
-      <a href="marketplace.html" class="block py-2 hover:text-primary transition-colors">Marketplace</a>
-      <a href="findworker.html" class="block py-2 hover:text-primary transition-colors">Find Workers</a>
-      <a href="faq.html" class="block py-2 text-primary">FAQs</a>
-    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <nav class="nav-menu-mobile">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="consultations.html">Consultations</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="findworker.html">Find Workers</a>
+    <a href="faq.html" class="active">FAQs</a>
+    <a href="about.html">About</a>
   </nav>
 
   <!-- HERO SECTION -->
@@ -122,7 +132,7 @@
             <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
           </button>
           <div class="faq-answer px-8 pb-6">
-            <p class="text-base text-gray-600 leading-relaxed">Sirius Jobs is Nigeria's premier platform connecting skilled professionals (doctors, lawyers), frontline artisans (plumbers, electricians, carpenters), and the clients who need their services. We verify credentials, facilitate secure payments, and provide consultation tools for trusted professionals.</p>
+            <p class="text-base text-gray-600 leading-relaxed">Sirius Jobs is Nigeria's premier platform connecting skilled professionals (doctors, lawyers, therapists), frontline artisans (plumbers, electricians, carpenters), and the clients who need their services. We verify credentials, facilitate secure payments, and provide consultation tools for trusted professionals.</p>
           </div>
         </div>
 
@@ -132,7 +142,7 @@
             <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
           </button>
           <div class="faq-answer px-8 pb-6">
-            <p class="text-base text-gray-600 leading-relaxed">Click "Register" on the homepage and select your account type: Worker (artisan), Employer (hiring manager), Professional (doctor/lawyer), or Client (consultation seeker). Fill in your details and verify your email to get started.</p>
+            <p class="text-base text-gray-600 leading-relaxed">Click "Register" on the homepage and select your account type: Worker (artisan), Employer (hiring manager), Professional (doctor/lawyer/therapist), or Client (consultation seeker). Fill in your details and verify your email to get started.</p>
           </div>
         </div>
 
@@ -200,7 +210,7 @@
             <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
           </button>
           <div class="faq-answer px-8 pb-6">
-            <p class="text-base text-gray-600 leading-relaxed">Clients pay to unlock 24-hour access to a verified professional (doctor or lawyer). During this period, you can chat via secure messaging, start video/audio calls, and receive expert advice. Sessions expire after 24 hours or when marked complete.</p>
+            <p class="text-base text-gray-600 leading-relaxed">Clients pay to unlock 1-hour access to a verified professional (doctor, lawyer, or therapist). During this period, you can chat via secure messaging, start video/audio calls, and receive expert advice. Sessions expire after 1 hour or when marked complete.</p>
           </div>
         </div>
 
@@ -210,7 +220,7 @@
             <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
           </button>
           <div class="faq-answer px-8 pb-6">
-            <p class="text-base text-gray-600 leading-relaxed">Doctors and lawyers choose their own consultation fee (minimum ₦3,000). When a 24-hour session is completed, Sirius keeps a 15% platform fee to cover support and infrastructure, while the balance moves to your wallet. You can request payouts once your available balance hits ₦5,000.</p>
+            <p class="text-base text-gray-600 leading-relaxed">Doctors, lawyers, and therapists choose their own consultation fee (minimum ₦3,000). When a 1-hour session is completed, Sirius keeps a 15% platform fee to cover support and infrastructure, while the balance moves to your wallet. You can request payouts once your available balance hits ₦5,000.</p>
           </div>
         </div>
 
@@ -220,7 +230,7 @@
             <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
           </button>
           <div class="faq-answer px-8 pb-6">
-            <p class="text-base text-gray-600 leading-relaxed">Once your credentials are reviewed you pay a one-time ₦3,000 onboarding fee to push your professional profile live. During onboarding you can choose how to prove your license (document upload or regulator link). You only pay when you are ready to start receiving clients.</p>
+            <p class="text-base text-gray-600 leading-relaxed">Once your credentials are reviewed you pay a one-time ₦5,000 onboarding fee to push your professional profile live. During onboarding you can choose how to prove your license (document upload or regulator link). You only pay when you are ready to start receiving clients.</p>
           </div>
         </div>
       </div>
@@ -377,9 +387,30 @@
     feather.replace();
 
     // Mobile menu toggle
-    document.getElementById('menu-btn').addEventListener('click', () => {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
-    });
+    // Hamburger menu functionality
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu-mobile');
+
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+      });
+
+      document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        }
+      });
+    }
 
     // FAQ accordion functionality
     document.querySelectorAll('.faq-question').forEach(button => {

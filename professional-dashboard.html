@@ -6,6 +6,9 @@
   <title>Professional Dashboard – Sirius Jobs</title>
   <meta name="description" content="Monitor consultations, ratings, payouts and earnings as a Sirius Jobs professional." />
   <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -27,7 +30,7 @@
   <script src="session-utils.js"></script>
   <script src="ui-utils.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    
     body { font-family: 'Inter', sans-serif; }
 
     @keyframes gradient-shift {
@@ -74,28 +77,25 @@
           </button>
         </div>
 
-        <button id="menu-btn" class="lg:hidden p-2 text-gray-600 hover:text-primary transition">
-          <i data-feather="menu" class="w-6 h-6"></i>
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
       </div>
     </div>
+  </nav>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-md">
-      <div class="container mx-auto px-4 py-4 space-y-1">
-        <a href="index.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Home</a>
-        <a href="services.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Services</a>
-        <a href="jobs.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Jobs</a>
-        <a href="consultations.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Consultations</a>
-        <a href="marketplace.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Marketplace</a>
-        <a href="findworker.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Find Workers</a>
-        <a href="verify.html" class="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">Verify</a>
-        <button id="professionalLogoutMobile" class="flex items-center gap-2 w-full px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition">
-          <i data-feather="log-out" class="w-4 h-4"></i>
-          Logout
-        </button>
-      </div>
-    </div>
+  <!-- Mobile Menu Overlay -->
+  <nav class="nav-menu-mobile">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="consultations.html">Consultations</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="findworker.html">Find Workers</a>
+    <a href="verify.html">Verify</a>
+    <button id="professionalLogoutMobile" type="button">Logout</button>
   </nav>
 
   <!-- Hero Section -->
@@ -307,7 +307,7 @@
             <i data-feather="star" class="w-3.5 h-3.5"></i>
             <span class="text-xs font-bold uppercase tracking-wide">One-time activation</span>
           </div>
-          <h3 class="text-2xl font-black text-gray-900">Pay ₦3,000 to go public</h3>
+          <h3 class="text-2xl font-black text-gray-900">Pay ₦5,000 to go public</h3>
           <p class="text-sm text-gray-600 leading-relaxed">Settle the onboarding fee so we can verify you, feature your profile publicly, and allow clients to unlock your contact details.</p>
         </div>
         <ul class="space-y-2 text-xs text-gray-600">
@@ -317,7 +317,7 @@
         </ul>
         <button id="openOnboardingModalBtn" type="button" class="w-full inline-flex items-center justify-center gap-2 bg-green-600 text-white font-bold px-4 py-3 rounded-xl hover:bg-green-700 transition-all shadow-lg shadow-green-600/25">
           <i data-feather="credit-card" class="w-4 h-4"></i>
-          Pay ₦3,000 onboarding
+          Pay ₦5,000 onboarding
         </button>
         <p id="onboardingStatusNote" class="text-xs text-gray-500 font-medium">Pay securely with Paystack. Once payment succeeds, your consultation profile goes public automatically.</p>
       </aside>
@@ -444,7 +444,7 @@
           <div class="space-y-4">
             <div class="bg-primary/5 border-2 border-primary/20 rounded-2xl px-6 py-4">
               <p class="text-xs uppercase tracking-wide text-primary/70 font-bold mb-1">One-time fee</p>
-              <p class="text-3xl font-black text-primary">₦3,000</p>
+              <p class="text-3xl font-black text-primary">₦5,000</p>
               <p class="text-xs text-gray-500 mt-2">We use this to verify credentials, boost your profile, and support every consultation.</p>
             </div>
             <ul class="space-y-3 text-sm text-gray-700">
@@ -470,7 +470,7 @@
             </p>
             <button id="paystackCardBtn" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold text-sm px-6 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
               <i data-feather="credit-card" class="w-4 h-4"></i>
-              Pay ₦3,000 via Paystack
+              Pay ₦5,000 via Paystack
             </button>
             <p id="paymentStatusMessage" class="text-xs text-gray-500 font-medium"></p>
           </div>
@@ -501,7 +501,7 @@
         </button>
       </div>
       <form id="crossConsultForm" class="px-8 py-8 space-y-5">
-        <p id="crossModalCopy" class="text-sm text-gray-600">Pay ₦3,000 and our concierge will match you with a specialist within 24 hours.</p>
+        <p id="crossModalCopy" class="text-sm text-gray-600">Pay ₦3,000 and our concierge will match you with a specialist within 1 hour.</p>
         <div>
           <label for="crossConsultReason" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Why do you need this consultation?</label>
           <textarea id="crossConsultReason" rows="4" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Describe the situation so we can match you with the right specialist..." required></textarea>
@@ -580,9 +580,30 @@
 
   <script>
     feather.replace();
-    const mobileMenuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    // Hamburger menu functionality
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu-mobile');
+
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+      });
+
+      document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        }
+      });
+    }
 
     function handleLogout(showAlert = true){
       sessionStorage.clear();
@@ -1352,8 +1373,8 @@
       }
       if (crossModalCopy) {
         crossModalCopy.textContent = targetProfession === 'LAWYER'
-          ? 'Pay ₦3,000 and our concierge will match you with a practising lawyer within 24 hours.'
-          : 'Pay ₦3,000 and our concierge will connect you with a trusted doctor within 24 hours.';
+          ? 'Pay ₦3,000 and our concierge will match you with a practising lawyer within 1 hour.'
+          : 'Pay ₦3,000 and our concierge will connect you with a trusted doctor within 1 hour.';
       }
       if (crossConsultSubmitLabel) {
         crossConsultSubmitLabel.textContent = `Pay ${feeText} & confirm`;

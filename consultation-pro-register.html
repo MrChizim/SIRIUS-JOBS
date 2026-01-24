@@ -6,6 +6,9 @@
     <title>Professional Registration – Sirius Jobs Consultations</title>
     <meta name="description" content="Register as a professional to offer consultations">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="session-utils.js"></script>
     <script>
@@ -22,7 +25,7 @@
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -78,11 +81,24 @@
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="lg:hidden text-gray-600">
-                    <i data-feather="menu" class="w-6 h-6"></i>
+                <button class="menu-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </button>
             </div>
         </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <nav class="nav-menu-mobile">
+        <a href="services.html">Services</a>
+        <a href="jobs.html">Jobs</a>
+        <a href="consultations.html" class="active">Consultations</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="about.html">About</a>
+        <a href="login.html">Sign in</a>
+        <a href="consultations.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-full">Browse Professionals</a>
     </nav>
 
     <!-- Main Content -->
@@ -110,7 +126,7 @@
                             <i data-feather="dollar-sign" class="w-6 h-6 text-primary"></i>
                         </div>
                         <h3 class="font-bold text-gray-900 mb-2">Earn ₦2,500</h3>
-                        <p class="text-sm text-gray-600">Per 24-hour consultation</p>
+                        <p class="text-sm text-gray-600">Per 1-hour consultation</p>
                     </div>
                     <div class="bg-white p-6 rounded-xl border border-gray-200 text-center">
                         <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mx-auto mb-3">
@@ -247,6 +263,7 @@
                                 <option value="">Select your profession</option>
                                 <option value="doctor">Doctor</option>
                                 <option value="lawyer">Lawyer</option>
+                                <option value="therapist">Therapist</option>
                             </select>
                             <p class="text-sm text-gray-500 mt-2">
                                 <i data-feather="info" class="w-3 h-3 inline"></i>
@@ -290,7 +307,7 @@
             </div>
 
             <!-- Right Column - removed old verification fields -->
-                            />
+                           
                         </div>
 
                         <!-- Licence Verification Method -->
@@ -504,12 +521,28 @@
         });
         const MAX_LICENSE_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+        // Hamburger menu functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu-mobile');
+
+        if (menuToggle && navMenu) {
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
             });
         }
 
@@ -636,7 +669,7 @@
                 // Store session
                 if (window.SiriusSession && data.data) {
                     const payload = window.SiriusSession.createPayload(data.data, {
-                        activeRole: profession === 'doctor' ? 'DOCTOR' : 'LAWYER',
+                        activeRole: profession === 'doctor' ? 'DOCTOR' : profession === 'lawyer' ? 'LAWYER' : 'THERAPIST',
                         email,
                         firstName,
                         lastName,

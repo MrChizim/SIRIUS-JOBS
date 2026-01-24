@@ -6,6 +6,9 @@
     <title>Login - Sirius Jobs</title>
     <meta name="description" content="Login to your Sirius Jobs account to access job opportunities or hire talent.">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -24,7 +27,7 @@
     <script src="api.js"></script>
     <script src="session-utils.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -65,22 +68,23 @@
                 <div class="hidden lg:flex items-center space-x-4">
                     <a href="register.html" class="text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Sign up</a>
                 </div>
-                <button id="menu-btn" class="lg:hidden text-gray-600">
-                    <i data-feather="menu" class="w-6 h-6"></i>
+                <button class="menu-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </button>
             </div>
         </div>
-        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-200">
-            <div class="container mx-auto px-4 py-6 space-y-4">
-                <a href="services.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Services</a>
-                <a href="jobs.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Jobs</a>
-                <a href="consultations.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Consultations</a>
-                <a href="marketplace.html" class="block text-sm font-semibold text-gray-600 hover:text-primary">Marketplace</a>
-                <div class="pt-4 space-y-3">
-                    <a href="register.html" class="block text-center text-sm font-semibold text-gray-600">Sign up</a>
-                </div>
-            </div>
-        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <nav class="nav-menu-mobile">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="jobs.html">Jobs</a>
+        <a href="consultations.html">Consultations</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="register.html">Sign Up</a>
     </nav>
 
     <!-- Split Screen Layout -->
@@ -232,12 +236,30 @@
     </div>
 
     <script>
-        // Mobile menu toggle
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        // Hamburger menu functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu-mobile');
+
+        if (menuToggle && navMenu) {
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            });
+        }
 
         // Feather icons
         feather.replace();
@@ -412,13 +434,13 @@
                             redirectUrl = 'worker-dashboard.html';
                         } else if (accountType === 'employer' && (roles.includes('EMPLOYER') || roles.includes('ADMIN'))) {
                             redirectUrl = 'employer-dashboard.html';
-                        } else if (accountType === 'professional' && (roles.includes('DOCTOR') || roles.includes('LAWYER'))) {
+                        } else if (accountType === 'professional' && (roles.includes('DOCTOR') || roles.includes('LAWYER') || roles.includes('THERAPIST'))) {
                             redirectUrl = 'consultation-dashboard.html';
                         } else if (roles.includes('ARTISAN')) {
                             redirectUrl = 'worker-dashboard.html';
                         } else if (roles.includes('EMPLOYER')) {
                             redirectUrl = 'employer-dashboard.html';
-                        } else if (roles.includes('DOCTOR') || roles.includes('LAWYER')) {
+                        } else if (roles.includes('DOCTOR') || roles.includes('LAWYER') || roles.includes('THERAPIST')) {
                             redirectUrl = 'consultation-dashboard.html';
                         }
 

@@ -6,6 +6,9 @@
   <title>Sirius Marketplace – Advertise Your Business</title>
   <meta name="description" content="Showcase your business to Sirius Jobs clients. Upload photos & videos, share WhatsApp/Instagram links, and let buyers browse your profile." />
   <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -25,7 +28,6 @@
   </script>
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
     body { font-family: 'Inter', sans-serif; }
 
     .gradient-hero {
@@ -61,36 +63,47 @@
           <img src="images/logo.png" alt="SiriusJobs logo" class="h-16 w-auto drop-shadow-2xl transition-transform group-hover:scale-105" />
           </a>
         <div class="hidden lg:flex items-center gap-6 text-sm font-semibold">
+          <a href="index.html" class="text-gray-600 hover:text-primary">Home</a>
           <a href="services.html" class="text-gray-600 hover:text-primary">Services</a>
           <a href="jobs.html" class="text-gray-600 hover:text-primary">Jobs</a>
           <a href="consultations.html" class="text-gray-600 hover:text-primary">Consultations</a>
           <a href="marketplace.html" class="text-primary">Marketplace</a>
           <a href="findworker.html" class="text-gray-600 hover:text-primary">Find Workers</a>
+          <a href="faq.html" class="text-gray-600 hover:text-primary">FAQs</a>
+          <a href="about.html" class="text-gray-600 hover:text-primary">About</a>
         </div>
         <div class="flex items-center gap-3">
-          <a href="login.html#merchant-login" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-4 py-2.5 rounded-full hover:bg-primary/90 shadow-lg shadow-primary/20">
+          <a href="login.html#merchant-login" class="hidden lg:inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-4 py-2.5 rounded-full hover:bg-primary/90 shadow-lg shadow-primary/20 text-center">
             <i data-feather="log-in" class="w-4 h-4"></i>
             Merchant Login
           </a>
-          <button id="menu-btn" class="lg:hidden p-2 text-gray-600" aria-label="Toggle menu">
-            <i data-feather="menu" class="w-6 h-6"></i>
+          <button class="menu-toggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
           </button>
         </div>
       </div>
     </div>
-    <div id="mobile-menu" class="hidden lg:hidden bg-white/95 border-t border-gray-200">
-      <div class="container mx-auto px-4 py-4 space-y-2 text-sm font-semibold">
-        <a href="services.html" class="block px-3 py-2 rounded-lg hover:bg-primary/5">Services</a>
-        <a href="jobs.html" class="block px-3 py-2 rounded-lg hover:bg-primary/5">Jobs</a>
-        <a href="consultations.html" class="block px-3 py-2 rounded-lg hover:bg-primary/5">Consultations</a>
-        <a href="marketplace.html" class="block px-3 py-2 rounded-lg bg-primary/5 text-primary">Marketplace</a>
-        <a href="findworker.html" class="block px-3 py-2 rounded-lg hover:bg-primary/5">Find Workers</a>
-      </div>
-    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <nav class="nav-menu-mobile">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="consultations.html">Consultations</a>
+    <a href="marketplace.html" class="active">Marketplace</a>
+    <a href="findworker.html">Find Workers</a>
+    <a href="faq.html">FAQs</a>
+    <a href="about.html">About</a>
+    <a href="login.html#merchant-login">Merchant Login</a>
+    <a href="marketplace-register.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-full">Register as Merchant</a>
   </nav>
 
   <!-- HERO SECTION - Dynamic & Eye-Catching -->
   <header class="pt-24 pb-20 md:pt-32 md:pb-28 bg-gradient-to-br from-primary via-blue-600 to-purple-600 animated-gradient text-white overflow-hidden relative">
+    <div class="absolute inset-0 bg-center bg-cover opacity-15 pointer-events-none" style="background-image: url('images/markethero.JPG');"></div>
     <!-- Decorative Elements -->
     <div class="absolute top-20 right-10 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
     <div class="absolute bottom-10 left-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
@@ -568,6 +581,31 @@
   </div>
 
   <script>
+    // Hamburger menu functionality
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu-mobile');
+
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+      });
+
+      document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        }
+      });
+    }
+
     (function () {
       const vendorGrid = document.getElementById('vendorGrid');
       const searchInput = document.getElementById('search-merchants');
@@ -749,6 +787,10 @@
           timeout = setTimeout(() => fn.apply(null, args), delay);
         };
       }
+
+      loadListings();
+    })();
+  </script>
 
   <script src="assistant.js" defer></script>
   <script src="assets/site-shell.js" defer></script>

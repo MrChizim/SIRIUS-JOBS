@@ -6,6 +6,9 @@
   <title>Terms of Service – Sirius Jobs</title>
   <meta name="description" content="Terms of Service for Sirius Jobs Nigeria – rules and user agreements for using our platform." />
   <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -16,7 +19,7 @@
   </script>
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    
     body { font-family: 'Inter', sans-serif; }
 
     @keyframes gradient-shift {
@@ -57,16 +60,20 @@
           Login
         </a>
       </div>
-      <button id="menu-btn" class="md:hidden text-gray-700">
-        <i data-feather="menu" class="w-6 h-6"></i>
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 py-3 space-y-2 text-sm font-bold">
-      <a href="index.html" class="block py-2 hover:text-primary transition-colors">Home</a>
-      <a href="jobs.html" class="block py-2 hover:text-primary transition-colors">Jobs</a>
-      <a href="contact.html" class="block py-2 hover:text-primary transition-colors">Contact</a>
-      <a href="login.html" class="block py-2 hover:text-primary transition-colors">Login</a>
-    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <nav class="nav-menu-mobile">
+    <a href="index.html">Home</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="contact.html">Contact</a>
+    <a href="login.html">Login</a>
   </nav>
 
   <!-- HERO -->
@@ -118,7 +125,7 @@
 
           <div id="section-2" class="space-y-4 mb-12 scroll-mt-24">
             <h2 class="text-3xl font-black text-gray-900">2. Service Description</h2>
-            <p class="text-base text-gray-700 leading-relaxed">Sirius Jobs powers (a) the Jobs board for workers and employers, (b) the consultations platform for verified doctors and lawyers, and (c) the Sirius Marketplace where merchants advertise with media galleries and real-time analytics. We are not a staffing agency; all contracts remain between users.</p>
+            <p class="text-base text-gray-700 leading-relaxed">Sirius Jobs powers (a) the Jobs board for workers and employers, (b) the consultations platform for verified doctors, lawyers, and therapists, and (c) the Sirius Marketplace where merchants advertise with media galleries and real-time analytics. We are not a staffing agency; all contracts remain between users.</p>
           </div>
 
           <div id="section-3" class="space-y-4 mb-12 scroll-mt-24">
@@ -296,9 +303,30 @@
     feather.replace();
 
     // Mobile menu toggle
-    document.getElementById('menu-btn').addEventListener('click', () => {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
-    });
+    // Hamburger menu functionality
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu-mobile');
+
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+      });
+
+      document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        }
+      });
+    }
 
     // Table of contents active state on scroll
     const sections = document.querySelectorAll('[id^="section-"]');

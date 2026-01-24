@@ -6,6 +6,9 @@
   <title>Find Artisans — Sirius Jobs</title>
   <meta name="description" content="Find verified artisans by skill and location on Sirius Jobs." />
   <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -21,7 +24,7 @@
   </script>
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    
     body { font-family: 'Inter', sans-serif; }
 
     @keyframes gradient-shift {
@@ -63,6 +66,7 @@
           <a href="marketplace.html" class="text-gray-600 hover:text-primary transition-colors">Marketplace</a>
           <a href="findworker.html" class="text-primary">Find Workers</a>
           <a href="faq.html" class="text-gray-600 hover:text-primary transition-colors">FAQs</a>
+          <a href="about.html" class="text-gray-600 hover:text-primary transition-colors">About</a>
         </div>
 
         <div class="flex items-center gap-3">
@@ -70,29 +74,31 @@
             <i data-feather="log-in" class="w-4 h-4"></i>
             Login
           </a>
-          <button id="menu-btn" class="lg:hidden text-gray-700 hover:text-primary transition-colors">
-            <i data-feather="menu" class="w-6 h-6"></i>
+          <button class="menu-toggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
           </button>
         </div>
       </div>
     </div>
+  </nav>
 
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-gray-200/50">
-      <div class="container mx-auto px-4 py-4 space-y-1">
-        <a href="index.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Home</a>
-        <a href="services.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Services</a>
-        <a href="jobs.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Jobs</a>
-        <a href="consultations.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Consultations</a>
-        <a href="marketplace.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">Marketplace</a>
-        <a href="findworker.html" class="block py-2.5 px-3 text-primary bg-primary/5 rounded-lg font-bold">Find Workers</a>
-        <a href="faq.html" class="block py-2.5 px-3 text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all font-medium">FAQs</a>
-      </div>
-    </div>
+  <!-- Mobile Menu Overlay -->
+  <nav class="nav-menu-mobile">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="consultations.html">Consultations</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="findworker.html" class="active">Find Workers</a>
+    <a href="faq.html">FAQs</a>
+    <a href="about.html">About</a>
+    <a href="login.html">Login</a>
   </nav>
 
   <!-- HERO WITH SEARCH -->
-  <header class="pt-24 pb-16 bg-gradient-to-br from-black via-primary to-blue-900 animated-gradient text-white">
+  <header class="pt-24 pb-16 hero-gradient text-white animated-gradient">
     <div class="container mx-auto px-4 lg:px-6">
       <div class="text-center max-w-4xl mx-auto mb-10">
         <h1 class="text-4xl md:text-6xl font-black mb-4 leading-tight">Find Trusted, Verified Artisans</h1>
@@ -158,101 +164,18 @@
     </div>
   </header>
 
-  <!-- PA Application Modal -->
-  <div id="paApplicationModal" class="fixed inset-0 hidden items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-6 z-50">
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative overflow-hidden">
-      <button id="closePaModal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-900 transition-all z-10">
-        <i data-feather="x" class="w-5 h-5"></i>
-      </button>
-      <div class="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-100">
-        <div class="p-8 md:p-10">
-          <h3 class="text-2xl font-black text-gray-900 mb-2">Request a day PA</h3>
-          <p class="text-sm text-gray-600 mb-6">Tell us what you need and we'll match you within hours.</p>
-          <form id="paRequestForm" class="space-y-4">
-            <div>
-              <label for="paRequestName" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Full Name</label>
-              <input id="paRequestName" type="text" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-            </div>
-            <div>
-              <label for="paRequestPhone" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Phone / WhatsApp</label>
-              <input id="paRequestPhone" type="tel" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-            </div>
-            <div>
-              <label for="paRequestLocation" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Location</label>
-              <input id="paRequestLocation" type="text" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-            </div>
-            <div>
-              <label for="paRequestDate" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Date Needed</label>
-              <input id="paRequestDate" type="date" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-            </div>
-            <div>
-              <label for="paRequestTasks" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Key Tasks</label>
-              <textarea id="paRequestTasks" rows="3" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" placeholder="Errands, schedule coordination, event support..."></textarea>
-            </div>
-            <button type="submit" class="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Submit Request</button>
-          </form>
-        </div>
-        <div class="p-8 md:p-10">
-          <h3 class="text-2xl font-black text-gray-900 mb-2">Apply to be a day PA</h3>
-          <p class="text-sm text-gray-600 mb-6">Share your details and availability to join our PA roster.</p>
-          <form id="paApplyForm" class="space-y-4">
-            <div>
-              <label for="paApplyName" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Full Name</label>
-              <input id="paApplyName" type="text" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-            </div>
-            <div>
-              <label for="paApplyPhone" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Phone / WhatsApp</label>
-              <input id="paApplyPhone" type="tel" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-            </div>
-            <div>
-              <label for="paApplyLocation" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">City / State</label>
-              <input id="paApplyLocation" type="text" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-            </div>
-            <div>
-              <label for="paApplyExperience" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Experience Summary</label>
-              <textarea id="paApplyExperience" rows="3" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" placeholder="Tell us about previous PA or admin roles..."></textarea>
-            </div>
-            <div>
-              <label for="paApplyAvailability" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Availability</label>
-              <select id="paApplyAvailability" required class="w-full rounded-xl border-2 border-gray-200 py-3 px-4 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-                <option value="">Select an option</option>
-                <option value="Weekdays">Weekdays</option>
-                <option value="Weekends">Weekends</option>
-                <option value="Flexible">Flexible / on call</option>
-              </select>
-            </div>
-            <button type="submit" class="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Send Application</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- MAIN CONTENT -->
   <main class="py-12 md:py-16">
     <div class="container mx-auto px-4 lg:px-6">
       <div id="resultsInfo" class="mb-6 flex items-center justify-between flex-wrap gap-3">
         <span id="resultsCountText" class="text-sm font-bold text-gray-700">&nbsp;</span>
-        <span class="text-xs text-gray-600">👩‍⚕️ Want your medical or legal practice listed? <a href="consultations.html#join" class="text-primary font-bold hover:underline">Apply via our partner program</a>.</span>
+        <span class="text-xs text-gray-600">👩‍⚕️ Want your medical, legal or mental health practice listed? <a href="consultations.html#join" class="text-primary font-bold hover:underline">Apply via our partner program</a>.</span>
       </div>
 
       <!-- Featured Services -->
       <div class="bg-gradient-to-br from-primary/5 to-blue-50 border border-primary/10 rounded-3xl p-8 md:p-10 mb-10 shadow-xl">
         <h2 class="text-3xl font-black text-gray-900 mb-6">Need Something Extra Fast?</h2>
         <div class="grid gap-6 md:grid-cols-3">
-          <div class="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
-            <div class="mb-6">
-              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                <i data-feather="briefcase" class="w-6 h-6 text-primary"></i>
-              </div>
-              <h3 class="text-xl font-black text-gray-900 mb-2">Hire a Personal Assistant for a Day</h3>
-              <p class="text-sm text-gray-600 leading-relaxed">Get a dependable PA to handle errands, scheduling and event support for just the hours you need.</p>
-            </div>
-            <div class="space-y-2">
-              <button id="paModalTrigger" type="button" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-white py-3 px-4 font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">Request or Apply</button>
-              <p class="text-xs text-gray-500 text-center">Prefer to work as a day PA? Apply inside the form.</p>
-            </div>
-          </div>
           <div class="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
             <div class="mb-6">
               <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
@@ -272,6 +195,16 @@
               <p class="text-sm text-gray-600 leading-relaxed">Trusted legal guidance for contracts, property, employment issues and more without breaking the bank. Contacts unlock after a ₦3,000 payment.</p>
             </div>
             <a href="consultations.html#lawyers" class="block w-full text-center rounded-xl border-2 border-primary text-primary py-3 font-bold hover:bg-primary hover:text-white transition-all">Meet Lawyers</a>
+          </div>
+          <div class="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div class="mb-6">
+              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                <i data-feather="smile" class="w-6 h-6 text-primary"></i>
+              </div>
+              <h3 class="text-xl font-black text-gray-900 mb-2">Consult a Therapist (Affordable)</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">Get professional mental health support, counseling, and therapy from licensed therapists. Confidential and affordable sessions for just ₦3,000.</p>
+            </div>
+            <a href="consultations.html#therapists" class="block w-full text-center rounded-xl border-2 border-primary text-primary py-3 font-bold hover:bg-primary hover:text-white transition-all">Meet Therapists</a>
           </div>
         </div>
       </div>
@@ -350,10 +283,29 @@
   <!-- SCRIPTS -->
   <script>
     (function () {
-      const menuBtn = document.getElementById('menu-btn');
-      const mobileMenu = document.getElementById('mobile-menu');
-      if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+      // Hamburger menu functionality
+      const menuToggle = document.querySelector('.menu-toggle');
+      const navMenu = document.querySelector('.nav-menu-mobile');
+
+      if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => {
+          menuToggle.classList.toggle('active');
+          navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+          link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+          });
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+            menuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+          }
+        });
       }
 
       function toggleModal(modal, open = true) {
@@ -361,42 +313,6 @@
         modal.classList.toggle('hidden', !open);
         modal.classList.toggle('flex', open);
       }
-
-      const paModal = document.getElementById('paApplicationModal');
-      const openPaModalBtn = document.getElementById('paModalTrigger');
-      const closePaModalBtn = document.getElementById('closePaModal');
-      const paRequestForm = document.getElementById('paRequestForm');
-      const paApplyForm = document.getElementById('paApplyForm');
-
-      function openPaModal() {
-        toggleModal(paModal, true);
-        document.body.classList.add('overflow-hidden');
-      }
-
-      function closePaModal() {
-        toggleModal(paModal, false);
-        document.body.classList.remove('overflow-hidden');
-      }
-
-      openPaModalBtn?.addEventListener('click', openPaModal);
-      closePaModalBtn?.addEventListener('click', closePaModal);
-      paModal?.addEventListener('click', (event) => {
-        if (event.target === paModal) {
-          closePaModal();
-        }
-      });
-      paRequestForm?.addEventListener('submit', (event) => {
-        event.preventDefault();
-        event.target.reset();
-        closePaModal();
-        alert('✅ Thank you! Our concierge team will reach out shortly with a day PA match.');
-      });
-      paApplyForm?.addEventListener('submit', (event) => {
-        event.preventDefault();
-        event.target.reset();
-        closePaModal();
-        alert('🎉 Application received! We will review and contact you for upcoming PA assignments.');
-      });
 
       const consultationModal = document.getElementById('artisanModal');
       const modalContent = document.getElementById('modalContent');
@@ -500,7 +416,7 @@
         }
         const cards = list
           .map((a) => {
-            const consultationTag = /doctor|lawyer|medical|legal/i.test(a.category)
+            const consultationTag = /doctor|lawyer|therapist|medical|legal|mental/i.test(a.category)
               ? '<span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full">From ₦3,000</span>'
               : '';
             return `
@@ -554,8 +470,8 @@
       function openProfileModal(id) {
         const artisan = artisans.find((a) => a.id === id);
         if (!artisan || !consultationModal || !modalContent) return;
-        const consultationCTA = /doctor|lawyer|medical|legal/i.test(artisan.category)
-          ? '<div class="flex flex-col sm:flex-row gap-3 mt-6"><a href="consultations.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"><i data-feather="lock" class="w-4 h-4"></i>Book secure consultation</a><a href="client-dashboard.html" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary hover:text-white transition-all"><i data-feather="layout" class="w-4 h-4"></i>Consultation dashboard</a></div><p class="mt-4 text-xs text-gray-500 bg-gray-50 rounded-xl p-4">Doctors and lawyers serve clients through our protected consultations platform.</p>'
+        const consultationCTA = /doctor|lawyer|therapist|medical|legal|mental/i.test(artisan.category)
+          ? '<div class="flex flex-col sm:flex-row gap-3 mt-6"><a href="consultations.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"><i data-feather="lock" class="w-4 h-4"></i>Book secure consultation</a><a href="client-dashboard.html" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary hover:text-white transition-all"><i data-feather="layout" class="w-4 h-4"></i>Consultation dashboard</a></div><p class="mt-4 text-xs text-gray-500 bg-gray-50 rounded-xl p-4">Doctors, lawyers and therapists serve clients through our protected consultations platform.</p>'
           : '';
         const contactButtons = artisan.phone || artisan.whatsapp
           ? `<div class="grid gap-3 sm:grid-cols-2 mt-6">${artisan.phone ? `<a href="tel:${artisan.phone.replace(/[^+\d]/g,'')}" class="inline-flex items-center justify-center gap-3 bg-primary text-white text-base font-black tracking-wide py-3.5 px-6 rounded-2xl whitespace-nowrap flex-shrink-0 shadow-lg shadow-primary/25 hover:bg-primary/95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all"><span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/15"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5c0-1.105.895-2 2-2h2.28a1 1 0 01.98.804l.72 3.6a1 1 0 01-.54 1.09l-1.568.784a13.042 13.042 0 006.146 6.146l.784-1.568a1 1 0 011.09-.54l3.6.72a1 1 0 01.804.98V19a2 2 0 01-2 2h-1C9.163 21 3 14.837 3 7V5z"/></svg></span><span>${artisan.phone}</span></a>` : ''}${artisan.whatsapp ? `<a href="${artisan.whatsapp}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold py-3 px-5 rounded-2xl hover:bg-primary hover:text-white transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40"><i data-feather="message-circle" class="w-4 h-4"></i>WhatsApp</a>` : ''}</div>`
