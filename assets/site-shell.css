@@ -235,6 +235,18 @@ body > nav[data-sirius-shell="skip"] {
   color: #bfdbfe;
 }
 
+/* Tablet/iPad tune: reduce mobile menu density to avoid overflow */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .nav-menu-mobile {
+    gap: 28px;
+    padding-top: 88px;
+  }
+  .nav-menu-mobile a,
+  .nav-menu-mobile button {
+    font-size: 20px;
+  }
+}
+
 
 /* Show hamburger on mobile */
 @media (max-width: 1023px) {
