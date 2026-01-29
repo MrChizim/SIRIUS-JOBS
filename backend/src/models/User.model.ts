@@ -16,13 +16,23 @@ interface IUserDocument extends Document, Omit<IUser, '_id'> {
  * User Schema Definition
  */
 const userSchema = new Schema<IUserDocument>(
-  {
+ {
     name: {
       type: String,
       required: [true, 'Name is required'],
       trim: true,
       minlength: [2, 'Name must be at least 2 characters'],
       maxlength: [100, 'Name cannot exceed 100 characters'],
+    },
+
+    // Optional anonymous handle (primarily for client accounts).
+    username: {
+      type: String,
+      trim: true,
+      minlength: [2, 'Username must be at least 2 characters'],
+      maxlength: [30, 'Username cannot exceed 30 characters'],
+      unique: true,
+      sparse: true,
     },
 
     email: {
@@ -48,7 +58,7 @@ const userSchema = new Schema<IUserDocument>(
       type: String,
       required: [true, 'Account type is required'],
       enum: {
-        values: ['worker', 'employer', 'professional', 'merchant'],
+        values: ['worker', 'employer', 'professional', 'merchant', 'client'],
         message: '{VALUE} is not a valid account type',
       },
     },
@@ -84,6 +94,7 @@ const userSchema = new Schema<IUserDocument>(
  * Note: email and googleId already have unique indexes from field definitions
  */
 userSchema.index({ accountType: 1 });
+userSchema.index({ username: 1 });
 
 /**
  * Pre-save middleware to hash password

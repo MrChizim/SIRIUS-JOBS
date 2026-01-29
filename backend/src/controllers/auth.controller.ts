@@ -18,6 +18,7 @@ import { commonSchemas } from '../middleware/validation.middleware';
 const registerSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters').max(50),
   lastName: z.string().min(2, 'Last name must be at least 2 characters').max(50),
+  username: z.string().min(2, 'Username must be at least 2 characters').max(30).optional(),
   email: commonSchemas.email,
   phone: z.string().optional(),
   password: commonSchemas.password,
@@ -31,7 +32,7 @@ const legacyRegisterSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100),
   email: commonSchemas.email,
   password: commonSchemas.password,
-  accountType: z.enum(['worker', 'employer', 'professional', 'merchant']),
+  accountType: z.enum(['worker', 'employer', 'professional', 'merchant', 'client']),
 });
 
 /**
@@ -49,7 +50,7 @@ const googleSignInSchema = z.object({
   googleId: z.string().min(1),
   email: commonSchemas.email,
   name: z.string().min(2),
-  accountType: z.enum(['worker', 'employer', 'professional', 'merchant']),
+  accountType: z.enum(['worker', 'employer', 'professional', 'merchant', 'client']),
 });
 
 /**
@@ -59,7 +60,7 @@ const googleSignInSchema = z.object({
 export const register = asyncHandler(async (req: Request, res: Response) => {
   // Determine accountType from route path
   const path = req.path;
-  let accountType: 'worker' | 'employer' | 'professional' | 'merchant' = 'worker';
+  let accountType: 'worker' | 'employer' | 'professional' | 'merchant' | 'client' = 'worker';
 
   if (path.includes('register-worker')) {
     accountType = 'worker';
@@ -69,13 +70,15 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     accountType = 'professional';
   } else if (path.includes('register-merchant')) {
     accountType = 'merchant';
+  } else if (path.includes('register-client')) {
+    accountType = 'client';
   }
 
   // Try frontend format first (firstName, lastName)
   const frontendValidation = registerSchema.safeParse(req.body);
 
   if (frontendValidation.success) {
-    const { firstName, lastName, email, phone, password } = frontendValidation.data;
+    const { firstName, lastName, username, email, phone, password } = frontendValidation.data;
     const name = `${firstName} ${lastName}`.trim();
 
     // Extract additional fields for specific account types
@@ -90,8 +93,13 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
       additionalData.category = req.body.category;
     }
 
+    if (accountType === 'client' && !username) {
+      return sendError(res, 'Username is required for client accounts', 400);
+    }
+
     const result = await authService.registerUser({
       name,
+      username,
       email,
       phone,
       password,

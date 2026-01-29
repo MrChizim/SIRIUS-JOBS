@@ -68,9 +68,6 @@
                     <a href="services.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Services</a>
                     <a href="jobs.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Jobs</a>
                     <a href="consultations.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Consultations</a>
-                    <a href="marketplace.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Marketplace</a>
-                    <a href="findworker.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Find Workers</a>
-                    <a href="faq.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">FAQs</a>
                     <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition">
                         <i data-feather="log-in" class="w-4 h-4"></i>
                         Login
@@ -92,9 +89,6 @@
         <a href="services.html">Services</a>
         <a href="jobs.html">Jobs</a>
         <a href="consultations.html">Consultations</a>
-        <a href="marketplace.html">Marketplace</a>
-        <a href="findworker.html">Find Workers</a>
-        <a href="faq.html">FAQs</a>
         <a href="login.html">Login</a>
     </nav>
 
@@ -208,6 +202,13 @@
                                         <span class="font-semibold text-sm">Employer</span>
                                     </label>
                                 </div>
+                                <div>
+                                    <input type="radio" id="client" name="account-type" value="client" class="hidden peer">
+                                    <label for="client" class="flex flex-col items-center justify-center p-4 border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-primary peer-checked:bg-primary/5 transition-all hover:border-primary/50">
+                                        <i data-feather="message-square" class="w-7 h-7 mb-2 text-primary"></i>
+                                        <span class="font-semibold text-sm">Client</span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
@@ -221,6 +222,20 @@
                                 placeholder="John Doe"
                                 required
                             >
+                            <p class="text-xs text-gray-500 mt-2">Clients can stay anonymous with a username. Your full name is only used for account recovery.</p>
+                        </div>
+
+                        <!-- Client Username (only for client accounts) -->
+                        <div id="clientUsernameField" class="hidden">
+                            <label for="client-username" class="block text-sm font-bold text-gray-900 mb-2">Username*</label>
+                            <input
+                                type="text"
+                                id="client-username"
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-0 transition outline-none"
+                                placeholder="anonymous123"
+                                minlength="2"
+                            >
+                            <p class="text-xs text-gray-500 mt-2">This handle is shown to professionals instead of your real name.</p>
                         </div>
 
                         <!-- Email -->
@@ -437,6 +452,12 @@
                 redirect: 'employer-dashboard.html',
                 sessionRole: 'EMPLOYER',
                 successCopy: 'Employer tools unlocked! Taking you to your dashboard...'
+            },
+            client: {
+                endpoint: '/api/auth/register-client',
+                redirect: 'consultations.html',
+                sessionRole: 'CLIENT',
+                successCopy: 'Client account created! Redirecting you to consultations...'
             }
         };
 
@@ -475,6 +496,20 @@
             };
         };
 
+        // Client account UI toggles (username + helper copy)
+        const clientUsernameField = document.getElementById('clientUsernameField');
+        const accountTypeInputs = Array.from(document.querySelectorAll('input[name="account-type"]'));
+        const updateAccountUI = () => {
+            const selectedType = registerForm?.querySelector('input[name="account-type"]:checked')?.value ?? 'worker';
+            if (clientUsernameField) {
+                clientUsernameField.classList.toggle('hidden', selectedType !== 'client');
+            }
+        };
+        accountTypeInputs.forEach((input) => {
+            input.addEventListener('change', updateAccountUI);
+        });
+        updateAccountUI();
+
         registerForm?.addEventListener('submit', async (event) => {
             event.preventDefault();
             resetRegisterMessage();
@@ -488,6 +523,7 @@
             }
 
             const fullName = document.getElementById('full-name').value.trim();
+            const username = document.getElementById('client-username')?.value.trim();
             const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
             const password = passwordInput.value;
@@ -514,6 +550,13 @@
                 return;
             }
 
+            if (accountType === 'client') {
+                if (!username || username.length < 2) {
+                    setRegisterMessage('Please choose a username for your client account.');
+                    return;
+                }
+            }
+
             submitBtn.disabled = true;
             submitBtn.textContent = 'Creating your account...';
 
@@ -527,6 +570,7 @@
                         email,
                         phone,
                         password,
+                        username: accountType === 'client' ? username : undefined,
                     }),
                 });
                 if (!res.ok) {
@@ -558,6 +602,17 @@
                 }
 
                 sessionUtils.persist(sessionPayload);
+
+                // Client-specific session helpers for anonymous consultations
+                if (accountType === 'client') {
+                    const clientSession = {
+                        clientId: data.user?.id || sessionPayload.userId,
+                        token: sessionPayload.token,
+                        username: data.user?.username || username || 'Anonymous',
+                        signedInAt: Date.now(),
+                    };
+                    localStorage.setItem('siriusClientAuth', JSON.stringify(clientSession));
+                }
 
                 const successText = response_data?.message ?? config.successCopy ?? 'Account created! Redirecting you to your dashboard...';
                 setRegisterMessage(successText, 'success');
@@ -627,7 +682,7 @@
           <h4>Contact</h4>
           <ul class="space-y-2">
             <li><span>WhatsApp: 0704 447 0559</span></li>
-            <li><span>Email: support@siriusjobsng.com</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
             <li><span>Port Harcourt, Rivers State</span></li>
           </ul>
         </div>

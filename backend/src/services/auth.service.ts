@@ -30,6 +30,7 @@ const formatAuthResponse = (user: any, tokens: { accessToken: string; refreshTok
     employer: 'EMPLOYER',
     professional: 'DOCTOR', // Can be DOCTOR or LAWYER - frontend handles
     merchant: 'MERCHANT',
+    client: 'CLIENT',
   };
 
   const role = roleMap[user.accountType as AccountType] || 'ARTISAN';
@@ -50,6 +51,7 @@ const formatAuthResponse = (user: any, tokens: { accessToken: string; refreshTok
       accountType: user.accountType,
       role,
       roles,
+      username: user.username,
       isVerified: user.isVerified || false,
       verified: user.isVerified || false,
       emailVerifiedAt: user.isVerified ? (user.createdAt?.toISOString() || new Date().toISOString()) : null,
@@ -66,6 +68,7 @@ const formatAuthResponse = (user: any, tokens: { accessToken: string; refreshTok
  */
 export const registerUser = async (userData: {
   name: string;
+  username?: string;
   email: string;
   password: string;
   accountType: AccountType;
@@ -89,6 +92,7 @@ export const registerUser = async (userData: {
   // Create user
   const user = await User.create({
     name: userData.name,
+    username: userData.username,
     email: userData.email.toLowerCase(),
     password: userData.password,
     accountType: userData.accountType,
@@ -271,6 +275,9 @@ const createProfileForAccountType = async (accountType: AccountType, userId: str
         category: additionalData?.category,
       });
       break;
+    case 'client':
+      // Client accounts do not require a dedicated profile yet.
+      break;
   }
 };
 
@@ -307,6 +314,9 @@ export const getUserProfile = async (userId: string, accountType: AccountType) =
       break;
     case 'merchant':
       profile = await MerchantProfile.findOne({ userId });
+      break;
+    case 'client':
+      profile = null;
       break;
   }
 

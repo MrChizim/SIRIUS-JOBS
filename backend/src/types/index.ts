@@ -3,7 +3,8 @@
  * Central location for all shared types across the application
  */
 
-export type AccountType = 'worker' | 'employer' | 'professional' | 'merchant';
+// NOTE: "client" is used for anonymous consultation seekers with a username + password.
+export type AccountType = 'worker' | 'employer' | 'professional' | 'merchant' | 'client';
 
 export type ProfessionalType = 'doctor' | 'lawyer';
 
@@ -28,6 +29,8 @@ export type AlertType = 'JOB_MATCH';
 export interface IUser {
   _id?: string;
   name: string;
+  // Optional anonymous handle (primarily for client accounts).
+  username?: string;
   email: string;
   password: string;
   accountType: AccountType;

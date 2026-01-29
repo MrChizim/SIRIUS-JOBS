@@ -45,6 +45,13 @@ router.post('/register-professional', authController.register);
 router.post('/register-merchant', authController.register);
 
 /**
+ * @route   POST /api/auth/register-client
+ * @desc    Register a new client (consultation seeker)
+ * @access  Public
+ */
+router.post('/register-client', authController.register);
+
+/**
  * @route   POST /api/auth/login
  * @desc    Login user
  * @access  Public
