@@ -39,7 +39,7 @@ const legacyRegisterSchema = z.object({
  * Login validation schema
  */
 const loginSchema = z.object({
-  email: commonSchemas.email,
+  identifier: z.string().min(1, 'Email or username is required'),
   password: z.string().min(1, 'Password is required'),
 });
 
@@ -128,15 +128,16 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
  * POST /api/auth/login
  */
 export const login = asyncHandler(async (req: Request, res: Response) => {
-  const validation = loginSchema.safeParse(req.body);
+  const identifier = req.body.identifier || req.body.email;
+  const validation = loginSchema.safeParse({ identifier, password: req.body.password });
   
   if (!validation.success) {
     return sendError(res, 'Validation failed', 400, validation.error.errors);
   }
   
-  const { email, password } = validation.data;
+  const { identifier: loginId, password } = validation.data;
   
-  const result = await authService.loginUser(email, password);
+  const result = await authService.loginUser(loginId, password);
   
   return sendSuccess(res, result, 'Login successful');
 });

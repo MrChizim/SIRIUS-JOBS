@@ -179,8 +179,8 @@
                         <!-- Login Form -->
                         <form id="workerEmployerLoginForm" class="space-y-5">
                             <div>
-                                <label for="workerEmail" class="block text-sm font-bold text-gray-900 mb-2">Email Address</label>
-                                <input type="email" id="workerEmail" class="w-full rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-0 py-3 px-4 font-medium" placeholder="your@email.com" required>
+                            <label for="workerEmail" class="block text-sm font-bold text-gray-900 mb-2">Email or Username</label>
+                            <input type="text" id="workerEmail" class="w-full rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-0 py-3 px-4 font-medium" placeholder="your@email.com or username" required>
                             </div>
                             <div>
                                 <label for="workerPassword" class="block text-sm font-bold text-gray-900 mb-2">Password</label>
@@ -377,7 +377,7 @@
 
                     // Validate inputs
                     if (!email || !password) {
-                        workerLoginMessage.textContent = 'Please enter both email and password';
+                        workerLoginMessage.textContent = 'Please enter your email/username and password';
                         workerLoginMessage.className = 'text-sm text-red-600';
                         workerLoginMessage.classList.remove('hidden');
                         return;
@@ -393,7 +393,7 @@
                             const clientResp = await fetch('/api/auth/login', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ email, password })
+                                body: JSON.stringify({ identifier: email, password })
                             });
                             const clientData = await clientResp.json();
                             if (!clientResp.ok) {
@@ -462,7 +462,7 @@
                             headers: {
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify({ email, password })
+                            body: JSON.stringify({ identifier: email, password })
                         });
 
                         const response_data = await response.json();

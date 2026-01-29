@@ -157,7 +157,7 @@
                                 Includes 1-hour access to your professional
                             </div>
                             <div class="text-xs text-gray-400 mt-2">
-                                You can extend your session mid-consultation for ₦1,500 per additional 30 minutes.
+                                Need more time later? Extend mid-session in 30 minute blocks (+₦1,500 per 30 min).
                             </div>
                         </div>
 
@@ -258,12 +258,13 @@
         // Get professional ID and duration from URL
         const urlParams = new URLSearchParams(window.location.search);
         const professionalId = urlParams.get('professionalId');
-        const durationMinutes = parseInt(urlParams.get('duration')) || 60;
+        const rawDuration = parseInt(urlParams.get('duration'), 10) || 60;
+        const durationMinutes = Math.max(60, Math.round(rawDuration / 30) * 30);
 
         // Pricing: ₦1,500 per 30 minutes
         const RATE_PER_30_MIN = 1500;
         const sessionPrice = (durationMinutes / 30) * RATE_PER_30_MIN;
-        const durationLabels = { 30: '30 minutes', 60: '1 hour', 90: '1.5 hours', 120: '2 hours' };
+        const durationLabels = { 60: '1 hour', 90: '1.5 hours', 120: '2 hours', 150: '2.5 hours', 180: '3 hours' };
         const durationLabel = durationLabels[durationMinutes] || `${durationMinutes} minutes`;
 
         // Update price display
@@ -286,6 +287,26 @@
         if (!hasSession()) {
             document.getElementById('payment-auth-gate').classList.remove('hidden');
             document.getElementById('payment-form').classList.add('hidden');
+        }
+
+        // Auto-fill username/email for signed-in clients (anonymous handle stays consistent).
+        const clientSession = window.SiriusSession?.parse('siriusClientAuth');
+        const clientLocal = localStorage.getItem('siriusClientAuth');
+        const clientLocalData = clientLocal ? JSON.parse(clientLocal) : null;
+        const usernameField = document.getElementById('username');
+        const emailField = document.getElementById('email');
+        if (usernameField) {
+            const storedUsername = clientSession?.username || clientLocalData?.username;
+            if (storedUsername) {
+                usernameField.value = storedUsername;
+                usernameField.setAttribute('readonly', 'readonly');
+            }
+        }
+        if (emailField) {
+            const storedEmail = clientSession?.email || clientLocalData?.email;
+            if (storedEmail) {
+                emailField.value = storedEmail;
+            }
         }
 
         // Load professional details

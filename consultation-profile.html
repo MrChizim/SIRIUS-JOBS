@@ -170,7 +170,7 @@
                                 <div class="text-sm text-gray-600">Total Reviews</div>
                             </div>
                             <div class="text-center p-4 bg-primary text-white rounded-xl">
-                                <div class="text-2xl font-black">From ₦1,500</div>
+                                <div class="text-2xl font-black">From ₦3,000</div>
                                 <div class="text-sm">Per Session</div>
                             </div>
                         </div>
@@ -179,13 +179,6 @@
                         <div class="mb-6">
                             <h3 class="text-sm font-bold text-gray-500 uppercase mb-3">Select Session Duration</h3>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="duration-selector">
-                                <label class="duration-option cursor-pointer">
-                                    <input type="radio" name="duration" value="30" class="hidden peer">
-                                    <div class="border-2 border-gray-200 rounded-xl p-4 text-center peer-checked:border-primary peer-checked:bg-blue-50 transition-all hover:border-primary/50">
-                                        <div class="text-lg font-black text-gray-900">30 Minutes</div>
-                                        <div class="text-2xl font-black text-primary mt-1">₦1,500</div>
-                                    </div>
-                                </label>
                                 <label class="duration-option cursor-pointer">
                                     <input type="radio" name="duration" value="60" class="hidden peer" checked>
                                     <div class="border-2 border-gray-200 rounded-xl p-4 text-center peer-checked:border-primary peer-checked:bg-blue-50 transition-all hover:border-primary/50">
@@ -208,8 +201,22 @@
                                         <div class="text-2xl font-black text-primary mt-1">₦6,000</div>
                                     </div>
                                 </label>
+                                <label class="duration-option cursor-pointer">
+                                    <input type="radio" name="duration" value="150" class="hidden peer">
+                                    <div class="border-2 border-gray-200 rounded-xl p-4 text-center peer-checked:border-primary peer-checked:bg-blue-50 transition-all hover:border-primary/50">
+                                        <div class="text-lg font-black text-gray-900">2.5 Hours</div>
+                                        <div class="text-2xl font-black text-primary mt-1">₦7,500</div>
+                                    </div>
+                                </label>
+                                <label class="duration-option cursor-pointer">
+                                    <input type="radio" name="duration" value="180" class="hidden peer">
+                                    <div class="border-2 border-gray-200 rounded-xl p-4 text-center peer-checked:border-primary peer-checked:bg-blue-50 transition-all hover:border-primary/50">
+                                        <div class="text-lg font-black text-gray-900">3 Hours</div>
+                                        <div class="text-2xl font-black text-primary mt-1">₦9,000</div>
+                                    </div>
+                                </label>
                             </div>
-                            <p class="text-xs text-gray-500 mt-2">You can also extend your session mid-consultation for an additional ₦1,500 per 30 minutes.</p>
+                            <p class="text-xs text-gray-500 mt-2">Need more time? Extend mid-session in 30 minute blocks (+₦1,500 per 30 min).</p>
                         </div>
 
                         <!-- Specialization -->
@@ -228,7 +235,7 @@
                         <button id="book-btn" class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl text-lg">
                             Book Consultation – ₦3,000
                         </button>
-                        <p class="text-xs text-gray-500 text-center mt-2">Minimum session: 30 minutes. You must be logged in to book.</p>
+                        <p class="text-xs text-gray-500 text-center mt-2">Minimum session: 1 hour. You must be logged in to book.</p>
                     </div>
                 </div>
             </div>
@@ -387,8 +394,8 @@
             document.getElementById('pro-bio').textContent = pro.bio;
 
             // Duration selector - update book button
-            const durationPrices = { 30: 1500, 60: 3000, 90: 4500, 120: 6000 };
-            const durationLabels = { 30: '30 min', 60: '1 Hour', 90: '1.5 Hours', 120: '2 Hours' };
+            const durationPrices = { 60: 3000, 90: 4500, 120: 6000, 150: 7500, 180: 9000 };
+            const durationLabels = { 60: '1 Hour', 90: '1.5 Hours', 120: '2 Hours', 150: '2.5 Hours', 180: '3 Hours' };
             const bookBtn = document.getElementById('book-btn');
 
             document.querySelectorAll('input[name="duration"]').forEach(radio => {

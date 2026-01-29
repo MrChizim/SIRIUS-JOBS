@@ -130,9 +130,20 @@ export const registerUser = async (userData: {
  * @param password - User password
  * @returns User and tokens
  */
-export const loginUser = async (email: string, password: string) => {
-  // Find user with password field
-  const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
+export const loginUser = async (identifier: string, password: string) => {
+  const normalized = identifier.trim();
+  const isEmail = normalized.includes('@');
+  // Find user by email or username with password field
+  let user = await User.findOne(
+    isEmail
+      ? { email: normalized.toLowerCase() }
+      : { username: normalized }
+  ).select('+password');
+
+  // Fallback: if username lookup fails, try email (helps users who type email without @).
+  if (!user && !isEmail) {
+    user = await User.findOne({ email: normalized.toLowerCase() }).select('+password');
+  }
 
   if (!user) {
     throw new AppError('Invalid email or password', 401);

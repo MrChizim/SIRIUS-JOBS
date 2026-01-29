@@ -212,8 +212,8 @@
                             </div>
                         </div>
 
-                        <!-- Full Name -->
-                        <div>
+                        <!-- Full Name (hidden for client accounts) -->
+                        <div id="fullNameField">
                             <label for="full-name" class="block text-sm font-bold text-gray-900 mb-2">Full Name*</label>
                             <input
                                 type="text"
@@ -222,7 +222,7 @@
                                 placeholder="John Doe"
                                 required
                             >
-                            <p class="text-xs text-gray-500 mt-2">Clients can stay anonymous with a username. Your full name is only used for account recovery.</p>
+                            <p class="text-xs text-gray-500 mt-2">We use this to personalize your account and recovery emails.</p>
                         </div>
 
                         <!-- Client Username (only for client accounts) -->
@@ -498,11 +498,20 @@
 
         // Client account UI toggles (username + helper copy)
         const clientUsernameField = document.getElementById('clientUsernameField');
+        const fullNameField = document.getElementById('fullNameField');
+        const fullNameInput = document.getElementById('full-name');
         const accountTypeInputs = Array.from(document.querySelectorAll('input[name="account-type"]'));
         const updateAccountUI = () => {
             const selectedType = registerForm?.querySelector('input[name="account-type"]:checked')?.value ?? 'worker';
             if (clientUsernameField) {
                 clientUsernameField.classList.toggle('hidden', selectedType !== 'client');
+            }
+            if (fullNameField) {
+                const hideFullName = selectedType === 'client';
+                fullNameField.classList.toggle('hidden', hideFullName);
+                if (fullNameInput) {
+                    fullNameInput.required = !hideFullName;
+                }
             }
         };
         accountTypeInputs.forEach((input) => {
@@ -522,15 +531,18 @@
                 return;
             }
 
-            const fullName = document.getElementById('full-name').value.trim();
+            const fullName = document.getElementById('full-name')?.value.trim() ?? '';
             const username = document.getElementById('client-username')?.value.trim();
             const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
             const password = passwordInput.value;
             const confirmPassword = confirmPasswordInput.value;
 
-            const { firstName, lastName } = toNameParts(fullName);
-            if (firstName.length < 2 || lastName.length < 2) {
+            const nameParts = accountType === 'client'
+                ? { firstName: username || 'Anonymous', lastName: 'Client' }
+                : toNameParts(fullName);
+            const { firstName, lastName } = nameParts;
+            if (accountType !== 'client' && (firstName.length < 2 || lastName.length < 2)) {
                 setRegisterMessage('Enter your first and last name to continue.');
                 return;
             }
