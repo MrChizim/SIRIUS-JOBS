@@ -258,7 +258,7 @@
     if (!match) {
       return {
         text:
-          "I couldn't find an exact match, but a specialist can help. Drop us a note via support@siriusjobsng.com or choose “How hiring works”, “Verification steps”, “Payouts” below.",
+          "I couldn't find an exact match, but a specialist can help. Drop us a note via info@siriusjobs.com.ng or choose “How hiring works”, “Verification steps”, “Payouts” below.",
       };
     }
 
@@ -408,7 +408,7 @@
         ).join('')}
       </div>
       <p style="margin:1.5rem 0 0;font-size:0.8rem;color:#64748b;">
-        Need more help? Ask the assistant in the corner or email <a href="mailto:support@siriusjobsng.com" style="color:#0056b3;text-decoration:none;">support@siriusjobsng.com</a>.
+        Need more help? Ask the assistant in the corner or email <a href="mailto:info@siriusjobs.com.ng" style="color:#0056b3;text-decoration:none;">info@siriusjobs.com.ng</a>.
       </p>
     `;
 

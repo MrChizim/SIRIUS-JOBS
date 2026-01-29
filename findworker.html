@@ -4,6 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Find Artisans — Sirius Jobs</title>
+  <meta name="description" content="Search verified artisans and skilled workers across Nigeria. Filter by category, skill, and location.">
+  <meta name="keywords" content="Sirius Jobs, find workers, artisans, Nigeria, verified workers, hire artisans">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://example.com/findworker.html">
+  <meta property="og:title" content="Find Artisans — Sirius Jobs">
+  <meta property="og:description" content="Search verified artisans and skilled workers across Nigeria. Filter by category, skill, and location.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://example.com/findworker.html">
+  <meta property="og:image" content="https://example.com/images/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Find Artisans — Sirius Jobs">
+  <meta name="twitter:description" content="Search verified artisans and skilled workers across Nigeria. Filter by category, skill, and location.">
+  <meta name="twitter:image" content="https://example.com/images/logo.png">
   <meta name="description" content="Find verified artisans by skill and location on Sirius Jobs." />
   <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,10 +76,6 @@
           <a href="services.html" class="text-gray-600 hover:text-primary transition-colors">Services</a>
           <a href="jobs.html" class="text-gray-600 hover:text-primary transition-colors">Jobs</a>
           <a href="consultations.html" class="text-gray-600 hover:text-primary transition-colors">Consultations</a>
-          <a href="marketplace.html" class="text-gray-600 hover:text-primary transition-colors">Marketplace</a>
-          <a href="findworker.html" class="text-primary">Find Workers</a>
-          <a href="faq.html" class="text-gray-600 hover:text-primary transition-colors">FAQs</a>
-          <a href="about.html" class="text-gray-600 hover:text-primary transition-colors">About</a>
         </div>
 
         <div class="flex items-center gap-3">
@@ -171,6 +180,16 @@
         <span id="resultsCountText" class="text-sm font-bold text-gray-700">&nbsp;</span>
         <span class="text-xs text-gray-600">👩‍⚕️ Want your medical, legal or mental health practice listed? <a href="consultations.html#join" class="text-primary font-bold hover:underline">Apply via our partner program</a>.</span>
       </div>
+      <div id="auth-gate" class="hidden text-center py-16 bg-white rounded-2xl border border-gray-200 mb-10">
+        <div class="max-w-xl mx-auto px-6">
+          <h3 class="text-2xl font-black text-gray-900 mb-4">Create an account to view workers</h3>
+          <p class="text-gray-600 mb-6">Sign in to view full profiles, contact workers, and leave verified reviews.</p>
+          <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="login.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl hover:bg-primary/90 transition">Sign In</a>
+            <a href="register.html" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary hover:text-white transition">Create Account</a>
+          </div>
+        </div>
+      </div>
 
       <!-- Featured Services -->
       <div class="bg-gradient-to-br from-primary/5 to-blue-50 border border-primary/10 rounded-3xl p-8 md:p-10 mb-10 shadow-xl">
@@ -266,7 +285,7 @@
           <h4>Contact</h4>
           <ul class="space-y-2">
             <li><span>WhatsApp: 0704 447 0559</span></li>
-            <li><span>Email: support@siriusjobsng.com</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
             <li><span>Port Harcourt, Rivers State</span></li>
           </ul>
         </div>
@@ -319,11 +338,17 @@
       const modalClose = document.getElementById('modalClose');
       const workerGrid = document.getElementById('artisanGrid');
       const resultsCountText = document.getElementById('resultsCountText');
+      const authGate = document.getElementById('auth-gate');
       const searchInput = document.getElementById('searchInput');
       const categorySelect = document.getElementById('categoryFilter');
       const skillSelect = document.getElementById('skillFilter');
       const locationSelect = document.getElementById('locationFilter');
       const sortBy = document.getElementById('sortBy');
+
+      const sessionKeys = ['siriusWorkerAuth', 'siriusClientAuth', 'siriusProAuth', 'siriusEmployerAuth'];
+      const hasSession = () =>
+        sessionKeys.some((key) => window.SiriusSession?.parse(key)) ||
+        Boolean(localStorage.getItem('siriusMarketplaceSession'));
 
       let artisans = [];
 
@@ -346,11 +371,22 @@
         return html;
       }
 
+      function formatDate(dateValue) {
+        if (!dateValue) return '';
+        const date = new Date(dateValue);
+        if (Number.isNaN(date.getTime())) return '';
+        return date.toLocaleDateString('en-NG', { year: 'numeric', month: 'short', day: 'numeric' });
+      }
+
       function mapWorker(worker) {
         const name = worker.user?.name || 'Sirius Artisan';
         const skills = Array.isArray(worker.skills) ? worker.skills : [];
-        const rating = Math.min(5, 3 + (skills.length || 1) * 0.25);
-        const reviews = Math.max(1, (skills.length || 1) * 4);
+        const rating = typeof worker.averageRating === 'number'
+          ? worker.averageRating
+          : Math.min(5, 3 + (skills.length || 1) * 0.25);
+        const reviews = typeof worker.totalReviews === 'number'
+          ? worker.totalReviews
+          : Math.max(1, (skills.length || 1) * 4);
         const primarySkill = skills[0] || worker.experience || 'General services';
         const location = worker.location || worker.user?.location || 'Nigeria';
         return {
@@ -369,6 +405,7 @@
           whatsapp: worker.user?.whatsapp || formatPhoneLink(worker.user?.phone || ''),
           email: worker.user?.email,
           skills,
+          reviewsList: Array.isArray(worker.reviews) ? worker.reviews : [],
         };
       }
 
@@ -388,6 +425,14 @@
       }
 
       function renderArtisans(filter = {}) {
+        if (!hasSession()) {
+          workerGrid.classList.add('hidden');
+          resultsCountText.textContent = '';
+          authGate?.classList.remove('hidden');
+          return;
+        }
+        authGate?.classList.add('hidden');
+        workerGrid.classList.remove('hidden');
         const { search = '', category = '', skill = '', location = '', sort = 'relevance' } = filter;
         let list = artisans.filter((a) => a.subscriptionActive);
         if (search) {
@@ -468,8 +513,33 @@
       }
 
       function openProfileModal(id) {
+        if (!hasSession()) {
+          modalContent.innerHTML = `
+            <div class="text-center py-10">
+              <h2 class="text-2xl font-black text-gray-900 mb-4">Sign in to view full profiles</h2>
+              <p class="text-gray-600 mb-6">Create an account to view details, contact workers, and leave reviews.</p>
+              <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="login.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl hover:bg-primary/90 transition">Sign In</a>
+                <a href="register.html" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary hover:text-white transition">Create Account</a>
+              </div>
+            </div>`;
+          toggleModal(consultationModal, true);
+          return;
+        }
         const artisan = artisans.find((a) => a.id === id);
         if (!artisan || !consultationModal || !modalContent) return;
+        const reviewsList = Array.isArray(artisan.reviewsList) ? artisan.reviewsList : [];
+        const reviewsMarkup = reviewsList.length
+          ? `<div class="space-y-4 mt-6">${reviewsList.map((review) => `
+              <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100">
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center text-yellow-400">${renderStars(review.rating || 0)}</div>
+                  <span class="text-xs text-gray-500">${review.createdAt ? formatDate(review.createdAt) : ''}</span>
+                </div>
+                <p class="text-sm text-gray-700">${review.reviewText || 'No review text provided.'}</p>
+              </div>
+            `).join('')}</div>`
+          : `<p class="mt-4 text-sm text-gray-500">No reviews yet. Complete a job to leave the first review.</p>`;
         const consultationCTA = /doctor|lawyer|therapist|medical|legal|mental/i.test(artisan.category)
           ? '<div class="flex flex-col sm:flex-row gap-3 mt-6"><a href="consultations.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"><i data-feather="lock" class="w-4 h-4"></i>Book secure consultation</a><a href="client-dashboard.html" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary hover:text-white transition-all"><i data-feather="layout" class="w-4 h-4"></i>Consultation dashboard</a></div><p class="mt-4 text-xs text-gray-500 bg-gray-50 rounded-xl p-4">Doctors, lawyers and therapists serve clients through our protected consultations platform.</p>'
           : '';
@@ -494,6 +564,10 @@
               </div>
               <p class="text-gray-700 leading-relaxed mb-6">${artisan.bio}</p>
               ${consultationCTA || contactButtons || '<p class="mt-6 text-xs text-green-700 bg-green-50 rounded-xl p-4 font-medium">Interested in an artisan? Send a request through our contact form and we will confirm availability.</p>'}
+              <div class="mt-8">
+                <h3 class="text-lg font-black text-gray-900 mb-3">Reviews</h3>
+                ${reviewsMarkup}
+              </div>
             </div>
           </div>`;
         toggleModal(consultationModal, true);
@@ -516,11 +590,14 @@
       document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
           toggleModal(consultationModal, false);
-          closePaModal();
         }
       });
 
       async function fetchArtisans() {
+        if (!hasSession()) {
+          renderArtisans();
+          return;
+        }
         try {
           const response = await fetch('/api/v2/workers?limit=60');
           if (!response.ok) {

@@ -63,7 +63,6 @@
                     <a href="services.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Services</a>
                     <a href="jobs.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Jobs</a>
                     <a href="consultations.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Consultations</a>
-                    <a href="marketplace.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Marketplace</a>
                 </div>
                 <div class="hidden lg:flex items-center space-x-4">
                     <a href="register.html" class="text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Sign up</a>
@@ -83,7 +82,6 @@
         <a href="services.html">Services</a>
         <a href="jobs.html">Jobs</a>
         <a href="consultations.html">Consultations</a>
-        <a href="marketplace.html">Marketplace</a>
         <a href="register.html">Sign Up</a>
     </nav>
 
@@ -171,6 +169,10 @@
                             <button type="button" class="workerAccountBtn flex-1 px-3 py-3 rounded-xl text-xs font-bold border-2 border-gray-200 text-gray-700 transition flex items-center justify-center gap-1.5" data-account="merchant">
                                 <i data-feather="shopping-bag" class="w-4 h-4"></i>
                                 Merchant
+                            </button>
+                            <button type="button" class="workerAccountBtn flex-1 px-3 py-3 rounded-xl text-xs font-bold border-2 border-gray-200 text-gray-700 transition flex items-center justify-center gap-1.5" data-account="client">
+                                <i data-feather="message-square" class="w-4 h-4"></i>
+                                Client
                             </button>
                         </div>
 
@@ -307,6 +309,7 @@
             employer: 'Post jobs, review applicants, and manage hiring campaigns',
             professional: 'Join consultation sessions, manage clients, and payouts',
             merchant: 'Upload media, edit marketplace listings, and monitor clicks',
+            client: 'Book anonymous consultations with doctors, lawyers, and therapists',
         };
 
         document.querySelectorAll('.workerAccountBtn').forEach(btn => {
@@ -386,6 +389,41 @@
                     workerLoginMessage.classList.add('hidden');
 
                     try {
+                        if (accountType === 'client') {
+                            const clientResp = await fetch('/api/auth/login', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email, password })
+                            });
+                            const clientData = await clientResp.json();
+                            if (!clientResp.ok) {
+                                throw new Error(clientData.error || 'Login failed');
+                            }
+                            const data = clientData.data || clientData;
+                            const payload = SiriusSession.createPayload(data);
+                            SiriusSession.persist(payload);
+
+                            // Also store client-specific session
+                            const clientSession = {
+                                clientId: data.user?.id || payload.userId,
+                                token: payload.token,
+                                username: data.user?.username || data.user?.firstName || 'Anonymous',
+                                signedInAt: Date.now(),
+                            };
+                            localStorage.setItem('siriusClientAuth', JSON.stringify(clientSession));
+
+                            workerLoginMessage.textContent = 'Login successful! Redirecting...';
+                            workerLoginMessage.className = 'text-sm text-center font-bold text-green-600';
+                            workerLoginMessage.classList.remove('hidden');
+                            if (window.SiriusUI?.showToast) {
+                                window.SiriusUI.showToast('Client login successful!', 'success');
+                            }
+                            setTimeout(() => {
+                                window.location.href = 'consultations.html';
+                            }, 600);
+                            return;
+                        }
+
                         if (accountType === 'merchant') {
                             const merchantResp = await fetch('/api/merchants/login', {
                                 method: 'POST',
@@ -638,7 +676,7 @@
           <h4>Contact</h4>
           <ul class="space-y-2">
             <li><span>WhatsApp: 0704 447 0559</span></li>
-            <li><span>Email: support@siriusjobsng.com</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
             <li><span>Port Harcourt, Rivers State</span></li>
           </ul>
         </div>

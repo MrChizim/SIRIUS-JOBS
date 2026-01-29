@@ -251,3 +251,33 @@ body > nav[data-sirius-shell="skip"] {
 .hero-gradient-alt {
   background: linear-gradient(135deg, #0056b3 0%, #1d4ed8 55%, #2563eb 100%);
 }
+
+/* Quick loading splash */
+.sirius-loader {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  z-index: 2000;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+.sirius-loader--hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sirius-loader__logo {
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+  animation: sirius-loader-pulse 1s ease-in-out infinite;
+}
+
+@keyframes sirius-loader-pulse {
+  0% { transform: scale(0.92); opacity: 0.7; }
+  50% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.92); opacity: 0.7; }
+}

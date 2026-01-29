@@ -85,6 +85,10 @@
                         <i data-feather="clock" class="w-4 h-4"></i>
                         <span id="time-remaining" class="font-semibold text-sm"></span>
                     </div>
+                    <button id="extend-session-btn" class="hidden md:flex items-center gap-2 bg-green-50 text-green-600 hover:bg-green-100 px-4 py-2 rounded-full font-semibold text-sm transition-all">
+                        <i data-feather="plus-circle" class="w-4 h-4"></i>
+                        Extend +30 min (₦1,500)
+                    </button>
                     <button id="end-session-btn" class="hidden md:flex items-center gap-2 bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-full font-semibold text-sm transition-all">
                         <i data-feather="x-circle" class="w-4 h-4"></i>
                         End Session
@@ -104,6 +108,9 @@
                         <i data-feather="clock" class="w-4 h-4"></i>
                         <span id="time-remaining-mobile" class="font-semibold text-sm"></span>
                     </div>
+                    <button id="extend-session-btn-mobile" class="text-green-600 font-semibold text-sm mr-3">
+                        +30 min
+                    </button>
                     <button id="end-session-btn-mobile" class="text-red-600 font-semibold text-sm">
                         End Session
                     </button>
@@ -155,11 +162,45 @@
         </div>
     </main>
 
+    <!-- Extend Session Modal -->
+    <div id="extend-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8">
+            <h2 class="text-2xl font-black text-gray-900 mb-2">Extend Your Session</h2>
+            <p class="text-gray-600 mb-6">Add more time to your current consultation.</p>
+
+            <div class="space-y-3 mb-6">
+                <label class="block cursor-pointer">
+                    <input type="radio" name="extend-duration" value="30" class="hidden peer" checked>
+                    <div class="border-2 border-gray-200 rounded-xl p-4 flex justify-between items-center peer-checked:border-primary peer-checked:bg-blue-50 transition-all">
+                        <span class="font-bold text-gray-900">+30 minutes</span>
+                        <span class="font-black text-primary">₦1,500</span>
+                    </div>
+                </label>
+                <label class="block cursor-pointer">
+                    <input type="radio" name="extend-duration" value="60" class="hidden peer">
+                    <div class="border-2 border-gray-200 rounded-xl p-4 flex justify-between items-center peer-checked:border-primary peer-checked:bg-blue-50 transition-all">
+                        <span class="font-bold text-gray-900">+1 hour</span>
+                        <span class="font-black text-primary">₦3,000</span>
+                    </div>
+                </label>
+            </div>
+
+            <div class="flex gap-3">
+                <button id="cancel-extend-btn" class="flex-1 bg-gray-200 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-300 transition-all">
+                    Cancel
+                </button>
+                <button id="confirm-extend-btn" class="flex-1 bg-primary text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition-all">
+                    Pay & Extend
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Review Modal -->
     <div id="review-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-2xl w-full p-8">
             <h2 class="text-3xl font-black text-gray-900 mb-4">Rate Your Consultation</h2>
-            <p class="text-gray-600 mb-6">Your feedback helps others find great professionals</p>
+            <p class="text-gray-600 mb-6">Your feedback helps others find great professionals. Your review will be posted under your anonymous username.</p>
 
             <form id="review-form" class="space-y-6">
                 <!-- Star Rating -->
@@ -425,6 +466,50 @@
         document.getElementById('end-session-btn').addEventListener('click', endSession);
         document.getElementById('end-session-btn-mobile').addEventListener('click', endSession);
 
+        // Extend session
+        function showExtendModal() {
+            document.getElementById('extend-modal').classList.remove('hidden');
+        }
+
+        document.getElementById('extend-session-btn').addEventListener('click', showExtendModal);
+        document.getElementById('extend-session-btn-mobile').addEventListener('click', showExtendModal);
+        document.getElementById('cancel-extend-btn').addEventListener('click', () => {
+            document.getElementById('extend-modal').classList.add('hidden');
+        });
+
+        document.getElementById('confirm-extend-btn').addEventListener('click', async () => {
+            const extraMinutes = parseInt(document.querySelector('input[name="extend-duration"]:checked').value);
+            const extraAmount = (extraMinutes / 30) * 1500;
+
+            try {
+                const response = await fetch(`${API_URL}/consultation/sessions/${sessionId}/extend`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionToken}`
+                    },
+                    body: JSON.stringify({ extraMinutes, amount: extraAmount * 100 })
+                });
+
+                const result = await response.json();
+
+                if (result.data && result.data.paymentUrl) {
+                    // Redirect to payment for extension
+                    window.location.href = result.data.paymentUrl;
+                } else if (result.success) {
+                    // Extension applied directly
+                    sessionData.endsAt = result.data.newEndsAt;
+                    document.getElementById('extend-modal').classList.add('hidden');
+                    appendMessage({ content: `Session extended by ${extraMinutes} minutes.`, messageType: 'system' });
+                } else {
+                    throw new Error(result.message || 'Failed to extend session');
+                }
+            } catch (error) {
+                console.error('Extend session error:', error);
+                alert(error.message || 'Failed to extend session. Please try again.');
+            }
+        });
+
         // Timer
         function startTimer() {
             updateTimer();
@@ -585,7 +670,7 @@
           <h4>Contact</h4>
           <ul class="space-y-2">
             <li><span>WhatsApp: 0704 447 0559</span></li>
-            <li><span>Email: support@siriusjobsng.com</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
             <li><span>Port Harcourt, Rivers State</span></li>
           </ul>
         </div>

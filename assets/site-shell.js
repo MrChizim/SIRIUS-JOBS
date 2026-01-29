@@ -110,7 +110,55 @@
     }
   }
 
+  function ensureFavicon() {
+    const existing = document.querySelector('link[rel="icon"]');
+    if (existing) return;
+    const favicon = document.createElement('link');
+    favicon.rel = 'icon';
+    favicon.type = 'image/png';
+    favicon.href = 'images/logo.png';
+    document.head.appendChild(favicon);
+  }
+
+  function showQuickLoader() {
+    if (document.querySelector('.sirius-loader')) return;
+    const loader = document.createElement('div');
+    loader.className = 'sirius-loader';
+    const logo = document.createElement('img');
+    logo.src = 'images/logo.png';
+    logo.alt = 'SiriusJobs';
+    logo.className = 'sirius-loader__logo';
+    loader.appendChild(logo);
+    document.body.appendChild(loader);
+    setTimeout(() => {
+      loader.classList.add('sirius-loader--hide');
+      setTimeout(() => loader.remove(), 400);
+    }, 1000);
+  }
+
+  function initAnalytics() {
+    const GA_ID = window.SIRIUS_GA_ID || 'G-XXXXXXX';
+    if (!GA_ID || GA_ID.includes('XXXX')) return;
+    if (document.querySelector(`script[data-ga="${GA_ID}"]`)) return;
+    const gaScript = document.createElement('script');
+    gaScript.async = true;
+    gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+    gaScript.dataset.ga = GA_ID;
+    document.head.appendChild(gaScript);
+    const inline = document.createElement('script');
+    inline.textContent = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${GA_ID}');
+    `;
+    document.head.appendChild(inline);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
+    ensureFavicon();
+    showQuickLoader();
+    initAnalytics();
     enhanceNav();
     try {
       window.feather?.replace();
