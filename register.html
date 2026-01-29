@@ -517,6 +517,14 @@
         accountTypeInputs.forEach((input) => {
             input.addEventListener('change', updateAccountUI);
         });
+        // Preselect account type from URL (e.g., ?account=client)
+        const accountParam = new URLSearchParams(window.location.search).get('account');
+        if (accountParam) {
+            const targetRadio = document.querySelector(`input[name="account-type"][value="${accountParam}"]`);
+            if (targetRadio) {
+                targetRadio.checked = true;
+            }
+        }
         updateAccountUI();
 
         registerForm?.addEventListener('submit', async (event) => {
