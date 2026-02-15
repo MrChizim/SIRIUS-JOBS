@@ -110,7 +110,7 @@ export const subscribe = asyncHandler(async (req: any, res: Response) => {
       status: 'pending',
       amount: 0,
       maxImages: 5,
-      newsletterEligible: false,
+      // newsletterEligible: false,
     },
   });
   
@@ -129,7 +129,7 @@ export const subscribe = asyncHandler(async (req: any, res: Response) => {
         status: 'pending',
         amount: subscriptionDetails.amount,
         maxImages: subscriptionDetails.maxImages,
-        newsletterEligible: subscriptionDetails.newsletterEligible,
+        // newsletterEligible: subscriptionDetails.newsletterEligible,
       },
     });
   }

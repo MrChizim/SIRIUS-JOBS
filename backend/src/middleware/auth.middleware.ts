@@ -24,7 +24,7 @@ export interface AuthRequest extends Request {
  * Adds user data to request object
  */
 export const authenticate = async (
-  req: AuthRequest,
+  req: any,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -61,7 +61,7 @@ export const authenticate = async (
  * @param allowedTypes - Array of allowed account types
  */
 export const authorize = (...allowedTypes: string[]) => {
-  return (req: AuthRequest, res: Response, next: NextFunction): void => {
+  return (req: any, res: Response, next: NextFunction): void => {
     if (!req.user) {
       sendUnauthorized(res, 'Authentication required');
       return;
@@ -81,7 +81,7 @@ export const authorize = (...allowedTypes: string[]) => {
  * Useful for routes that work with or without auth
  */
 export const optionalAuth = async (
-  req: AuthRequest,
+  req: any,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -111,7 +111,7 @@ export const optionalAuth = async (
  * Compare userId from token with userId from params
  */
 export const checkOwnership = (
-  req: AuthRequest,
+  req: any,
   res: Response,
   next: NextFunction
 ): void => {

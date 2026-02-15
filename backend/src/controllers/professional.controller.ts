@@ -309,7 +309,7 @@ export const getSessionMessages = asyncHandler(async (req: any, res: Response) =
   }
   
   return sendSuccess(res, {
-    messages: session.messages || [],
+    messages: session.messageCount || [],
   });
 });
 

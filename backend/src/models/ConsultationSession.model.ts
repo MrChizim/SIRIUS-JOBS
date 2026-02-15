@@ -55,6 +55,7 @@ export interface IConsultationSession extends Document {
           startSession(): void;
             extendSession(additionalHours: number, paymentReference: string): void;
               calculateExtensionCost(additionalHours: number): number;
+               addMessage(messageData: any): Promise<void>;
 }
 
 const consultationSessionSchema = new Schema<IConsultationSession>(
