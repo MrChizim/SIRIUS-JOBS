@@ -47,14 +47,6 @@ export interface IConsultationSession extends Document {
   // Metadata
   createdAt: Date;
   updatedAt: Date;
-
-  // Method signatures
-    isExpired(): boolean;
-      isActive(): boolean;
-        getRemainingTime(): number;
-          startSession(): void;
-            extendSession(additionalHours: number, paymentReference: string): void;
-              calculateExtensionCost(additionalHours: number): number;
 }
 
 const consultationSessionSchema = new Schema<IConsultationSession>(
