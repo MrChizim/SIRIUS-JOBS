@@ -57,7 +57,7 @@ const googleSignInSchema = z.object({
  * Register a new user
  * POST /api/auth/register or /api/auth/register-{accountType}
  */
-export const register = asyncHandler(async (req: Request, res: Response) => {
+export const register = asyncHandler(async (req: any, res: any) => {
   // Determine accountType from route path
   const path = req.path;
   let accountType: 'worker' | 'employer' | 'professional' | 'merchant' | 'client' = 'worker';
@@ -127,7 +127,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
  * Login user
  * POST /api/auth/login
  */
-export const login = asyncHandler(async (req: Request, res: Response) => {
+export const login = asyncHandler(async (req: any, res: any) => {
   const identifier = req.body.identifier || req.body.email;
   const validation = loginSchema.safeParse({ identifier, password: req.body.password });
   
@@ -146,7 +146,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
  * Google sign-in
  * POST /api/auth/google
  */
-export const googleSignIn = asyncHandler(async (req: Request, res: Response) => {
+export const googleSignIn = asyncHandler(async (req: any, res: any) => {
   const validation = googleSignInSchema.safeParse(req.body);
 
   if (!validation.success) {
@@ -162,7 +162,7 @@ export const googleSignIn = asyncHandler(async (req: Request, res: Response) => 
  * Refresh access token
  * POST /api/auth/refresh
  */
-export const refreshToken = asyncHandler(async (req: Request, res: Response) => {
+export const refreshToken = asyncHandler(async (req: any, res: any) => {
   const { refreshToken } = req.body;
   
   if (!refreshToken) {
@@ -185,7 +185,7 @@ export const refreshToken = asyncHandler(async (req: Request, res: Response) => 
  * Logout user
  * POST /api/auth/logout
  */
-export const logout = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const logout = asyncHandler(async (req: any, res: Response) => {
   if (!req.user) {
     return sendError(res, 'Not authenticated', 401);
   }
@@ -199,7 +199,7 @@ export const logout = asyncHandler(async (req: AuthRequest, res: Response) => {
  * Get current user profile
  * GET /api/auth/me
  */
-export const getMe = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getMe = asyncHandler(async (req: any, res: Response) => {
   if (!req.user) {
     return sendError(res, 'Not authenticated', 401);
   }
@@ -216,7 +216,7 @@ export const getMe = asyncHandler(async (req: AuthRequest, res: Response) => {
  * Verify email
  * POST /api/auth/verify-email
  */
-export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
+export const verifyEmail = asyncHandler(async (req: any, res: any) => {
   const { token } = req.body;
 
   if (!token) {
@@ -232,7 +232,7 @@ export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
  * Request password reset
  * POST /api/auth/forgot-password
  */
-export const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
+export const forgotPassword = asyncHandler(async (req: any, res: any) => {
   const validation = z.object({ email: commonSchemas.email }).safeParse(req.body);
 
   if (!validation.success) {
@@ -248,7 +248,7 @@ export const forgotPassword = asyncHandler(async (req: Request, res: Response) =
  * Reset password
  * POST /api/auth/reset-password
  */
-export const resetPassword = asyncHandler(async (req: Request, res: Response) => {
+export const resetPassword = asyncHandler(async (req: any, res: any) => {
   const validation = z.object({
     token: z.string().min(1),
     password: commonSchemas.password,
@@ -267,7 +267,7 @@ export const resetPassword = asyncHandler(async (req: Request, res: Response) =>
  * Extend user account with additional role
  * POST /api/auth/extend-role
  */
-export const extendRole = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const extendRole = asyncHandler(async (req: any, res: Response) => {
   if (!req.user) {
     return sendError(res, 'Not authenticated', 401);
   }

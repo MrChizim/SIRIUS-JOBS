@@ -19,7 +19,7 @@ import * as analyticsService from '../services/analytics.service';
  * Get employer profile
  * GET /api/employers/profile
  */
-export const getProfile = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getProfile = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const user = await User.findById(userId);
@@ -48,7 +48,7 @@ export const getProfile = asyncHandler(async (req: AuthRequest, res: Response) =
  * Update employer profile
  * PUT /api/employers/profile
  */
-export const updateProfile = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const updateProfile = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const updateSchema = z.object({
@@ -86,7 +86,7 @@ export const updateProfile = asyncHandler(async (req: AuthRequest, res: Response
  * Get employer analytics
  * GET /api/employers/analytics
  */
-export const getAnalytics = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getAnalytics = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const analytics = await analyticsService.getEmployerAnalytics(userId);
@@ -98,7 +98,7 @@ export const getAnalytics = asyncHandler(async (req: AuthRequest, res: Response)
  * Get all employers (public endpoint)
  * GET /api/employers
  */
-export const getAllEmployers = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getAllEmployers = asyncHandler(async (req: any, res: Response) => {
   const { page = 1, limit = 20, industry, location } = req.query;
   
   const query: any = {};
@@ -146,7 +146,7 @@ export const getAllEmployers = asyncHandler(async (req: AuthRequest, res: Respon
  * Get single employer by ID (public endpoint)
  * GET /api/employers/:id
  */
-export const getEmployerById = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getEmployerById = asyncHandler(async (req: any, res: Response) => {
   const { id } = req.params;
   
   const employerProfile = await EmployerProfile.findOne({ userId: id });
@@ -177,7 +177,7 @@ export const getEmployerById = asyncHandler(async (req: AuthRequest, res: Respon
  * Get employer's posted jobs
  * GET /api/employers/jobs
  */
-export const getMyJobs = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getMyJobs = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { page = 1, limit = 20, status } = req.query;
   
@@ -209,7 +209,7 @@ export const getMyJobs = asyncHandler(async (req: AuthRequest, res: Response) =>
  * Get applicants for a specific job
  * GET /api/employers/jobs/:jobId/applicants
  */
-export const getJobApplicants = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getJobApplicants = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { jobId } = req.params;
   
@@ -256,7 +256,7 @@ export const getJobApplicants = asyncHandler(async (req: AuthRequest, res: Respo
  * Accept a job application (hire worker)
  * POST /api/employers/applications/:applicationId/accept
  */
-export const acceptApplication = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const acceptApplication = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { applicationId } = req.params;
   
@@ -287,7 +287,7 @@ export const acceptApplication = asyncHandler(async (req: AuthRequest, res: Resp
  * Reject a job application
  * POST /api/employers/applications/:applicationId/reject
  */
-export const rejectApplication = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const rejectApplication = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { applicationId } = req.params;
   
@@ -314,7 +314,7 @@ export const rejectApplication = asyncHandler(async (req: AuthRequest, res: Resp
  * Get employer dashboard stats
  * GET /api/employers/dashboard
  */
-export const getDashboardStats = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getDashboardStats = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   // Get all jobs

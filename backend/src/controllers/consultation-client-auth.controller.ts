@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'default-secret';
  * Register a new consultation client (anonymous account)
  * POST /api/consultation/auth/register
  */
-export const registerConsultationClient = async (req: Request, res: Response) => {
+export const registerConsultationClient = async (req: any, res: any) => {
   try {
     const { username, password, email, displayName } = req.body;
 
@@ -113,7 +113,7 @@ export const registerConsultationClient = async (req: Request, res: Response) =>
  * Login consultation client
  * POST /api/consultation/auth/login
  */
-export const loginConsultationClient = async (req: Request, res: Response) => {
+export const loginConsultationClient = async (req: any, res: any) => {
   try {
     const { username, password } = req.body;
 
@@ -197,7 +197,7 @@ export const loginConsultationClient = async (req: Request, res: Response) => {
  * Get client profile
  * GET /api/consultation/auth/profile
  */
-export const getConsultationClientProfile = async (req: Request, res: Response) => {
+export const getConsultationClientProfile = async (req: any, res: any) => {
   try {
     // Get token from header
     const token = req.headers.authorization?.replace('Bearer ', '');
@@ -266,7 +266,7 @@ export const getConsultationClientProfile = async (req: Request, res: Response) 
  * Update client profile
  * PUT /api/consultation/auth/profile
  */
-export const updateConsultationClientProfile = async (req: Request, res: Response) => {
+export const updateConsultationClientProfile = async (req: any, res: any) => {
   try {
     const token = req.headers.authorization?.replace('Bearer ', '');
 
@@ -321,7 +321,7 @@ export const updateConsultationClientProfile = async (req: Request, res: Respons
  * Check username availability
  * GET /api/consultation/auth/check-username/:username
  */
-export const checkUsernameAvailability = async (req: Request, res: Response) => {
+export const checkUsernameAvailability = async (req: any, res: any) => {
   try {
     const { username } = req.params;
 

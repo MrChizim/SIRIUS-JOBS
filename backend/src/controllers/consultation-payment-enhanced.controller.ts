@@ -31,7 +31,7 @@ interface PaystackVerifyResponse {
  * Get professional's pricing
  * GET /api/consultation/pricing/:professionalId
  */
-export const getProfessionalPricing = async (req: Request, res: Response) => {
+export const getProfessionalPricing = async (req: any, res: any) => {
   try {
     const { professionalId } = req.params;
 
@@ -70,7 +70,7 @@ export const getProfessionalPricing = async (req: Request, res: Response) => {
  * Initialize payment for consultation session with flexible duration
  * POST /api/consultation/payment/initialize
  */
-export const initializeConsultationPayment = async (req: Request, res: Response) => {
+export const initializeConsultationPayment = async (req: any, res: any) => {
   try {
     const { professionalId, clientId, durationHours, email } = req.body;
 
@@ -209,7 +209,7 @@ export const initializeConsultationPayment = async (req: Request, res: Response)
  * Initialize session extension payment
  * POST /api/consultation/payment/extend
  */
-export const initializeSessionExtension = async (req: Request, res: Response) => {
+export const initializeSessionExtension = async (req: any, res: any) => {
   try {
     const { sessionId, additionalHours, email } = req.body;
 
@@ -312,7 +312,7 @@ export const initializeSessionExtension = async (req: Request, res: Response) =>
  * Verify payment and activate/extend session
  * GET /api/consultation/payment/verify/:reference
  */
-export const verifyConsultationPayment = async (req: Request, res: Response) => {
+export const verifyConsultationPayment = async (req: any, res: any) => {
   try {
     const { reference } = req.params;
 
@@ -436,7 +436,7 @@ export const verifyConsultationPayment = async (req: Request, res: Response) => 
  * Get session status
  * GET /api/consultation/payment/session/:sessionId
  */
-export const getSessionStatus = async (req: Request, res: Response) => {
+export const getSessionStatus = async (req: any, res: any) => {
   try {
     const { sessionId } = req.params;
     const sessionToken = req.headers.authorization?.replace('Bearer ', '');

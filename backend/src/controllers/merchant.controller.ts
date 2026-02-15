@@ -17,7 +17,7 @@ import { getMerchantSubscription } from '../services/subscription.service';
  * Get merchant profile
  * GET /api/merchants/profile
  */
-export const getProfile = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getProfile = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const user = await User.findById(userId);
@@ -37,7 +37,7 @@ export const getProfile = asyncHandler(async (req: AuthRequest, res: Response) =
  * Update merchant profile
  * PUT /api/merchants/profile
  */
-export const updateProfile = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const updateProfile = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const updateSchema = z.object({
@@ -75,7 +75,7 @@ export const updateProfile = asyncHandler(async (req: AuthRequest, res: Response
  * Subscribe to merchant package
  * POST /api/merchants/subscribe
  */
-export const subscribe = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const subscribe = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const subscribeSchema = z.object({
@@ -146,7 +146,7 @@ export const subscribe = asyncHandler(async (req: AuthRequest, res: Response) =>
  * Upload business images
  * POST /api/merchants/upload-images
  */
-export const uploadBusinessImages = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const uploadBusinessImages = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const uploadSchema = z.object({
@@ -194,7 +194,7 @@ export const uploadBusinessImages = asyncHandler(async (req: AuthRequest, res: R
  * Delete business image
  * DELETE /api/merchants/images/:imageIndex
  */
-export const deleteBusinessImage = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const deleteBusinessImage = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { imageIndex } = req.params;
   
@@ -221,7 +221,7 @@ export const deleteBusinessImage = asyncHandler(async (req: AuthRequest, res: Re
  * Get merchant subscription details
  * GET /api/merchants/subscription
  */
-export const getSubscription = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getSubscription = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const subscription = await getMerchantSubscription(userId);
@@ -233,7 +233,7 @@ export const getSubscription = asyncHandler(async (req: AuthRequest, res: Respon
  * Get merchant analytics
  * GET /api/merchants/analytics
  */
-export const getAnalytics = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getAnalytics = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const analytics = await analyticsService.getMerchantAnalytics(userId);
@@ -245,7 +245,7 @@ export const getAnalytics = asyncHandler(async (req: AuthRequest, res: Response)
  * Get all merchants (public endpoint)
  * GET /api/merchants
  */
-export const getMerchants = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getMerchants = asyncHandler(async (req: any, res: Response) => {
   const { page = 1, limit = 20, category, location, search } = req.query;
   
   const query: any = {
@@ -300,7 +300,7 @@ export const getMerchants = asyncHandler(async (req: AuthRequest, res: Response)
  * Get single merchant by ID (public endpoint)
  * GET /api/merchants/:id
  */
-export const getMerchantById = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getMerchantById = asyncHandler(async (req: any, res: Response) => {
   const { id } = req.params;
   
   const merchantProfile = await MerchantProfile.findOne({ userId: id });
@@ -324,7 +324,7 @@ export const getMerchantById = asyncHandler(async (req: AuthRequest, res: Respon
  * Track social link click (public endpoint)
  * POST /api/merchants/:id/track-click
  */
-export const trackSocialClick = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const trackSocialClick = asyncHandler(async (req: any, res: Response) => {
   const { id } = req.params;
   const { platform } = req.body; // whatsapp, instagram, email, website
   
@@ -348,7 +348,7 @@ export const trackSocialClick = asyncHandler(async (req: AuthRequest, res: Respo
  * Track image click (public endpoint)
  * POST /api/merchants/:id/track-image
  */
-export const trackImageClick = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const trackImageClick = asyncHandler(async (req: any, res: Response) => {
   const { id } = req.params;
   const { imageIndex } = req.body;
   
@@ -366,7 +366,7 @@ export const trackImageClick = asyncHandler(async (req: AuthRequest, res: Respon
  * Get merchant dashboard stats
  * GET /api/merchants/dashboard
  */
-export const getDashboardStats = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getDashboardStats = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const merchantProfile = await MerchantProfile.findOne({ userId });

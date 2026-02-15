@@ -20,7 +20,7 @@ import { sendConsultationSessionEmail } from '../services/email.service';
  * Get professional profile
  * GET /api/professionals/profile
  */
-export const getProfile = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getProfile = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const user = await User.findById(userId);
@@ -40,7 +40,7 @@ export const getProfile = asyncHandler(async (req: AuthRequest, res: Response) =
  * Update professional profile
  * PUT /api/professionals/profile
  */
-export const updateProfile = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const updateProfile = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const updateSchema = z.object({
@@ -73,7 +73,7 @@ export const updateProfile = asyncHandler(async (req: AuthRequest, res: Response
  * Upload license document
  * POST /api/professionals/upload-license
  */
-export const uploadLicense = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const uploadLicense = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const licenseSchema = z.object({
@@ -112,7 +112,7 @@ export const uploadLicense = asyncHandler(async (req: AuthRequest, res: Response
  * Get professional analytics
  * GET /api/professionals/analytics
  */
-export const getAnalytics = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getAnalytics = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const analytics = await analyticsService.getProfessionalAnalytics(userId);
@@ -124,7 +124,7 @@ export const getAnalytics = asyncHandler(async (req: AuthRequest, res: Response)
  * Get all professionals (public endpoint)
  * GET /api/professionals
  */
-export const getProfessionals = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getProfessionals = asyncHandler(async (req: any, res: Response) => {
   const { page = 1, limit = 20, professionalType, specialization, minRating } = req.query;
   
   const query: any = { isVerified: true };
@@ -180,7 +180,7 @@ export const getProfessionals = asyncHandler(async (req: AuthRequest, res: Respo
  * Get single professional by ID (public endpoint)
  * GET /api/professionals/:id
  */
-export const getProfessionalById = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getProfessionalById = asyncHandler(async (req: any, res: Response) => {
   const { id } = req.params;
   
   const professionalProfile = await ProfessionalProfile.findOne({ userId: id });
@@ -210,7 +210,7 @@ export const getProfessionalById = asyncHandler(async (req: AuthRequest, res: Re
  * Book consultation (client endpoint - no auth required)
  * POST /api/professionals/:id/book
  */
-export const bookConsultation = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const bookConsultation = asyncHandler(async (req: any, res: Response) => {
   const { id: professionalId } = req.params;
   
   const bookingSchema = z.object({
@@ -277,7 +277,7 @@ export const bookConsultation = asyncHandler(async (req: AuthRequest, res: Respo
  * Get professional's active sessions
  * GET /api/professionals/sessions
  */
-export const getMySessions = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getMySessions = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { status = 'active' } = req.query;
   
@@ -293,7 +293,7 @@ export const getMySessions = asyncHandler(async (req: AuthRequest, res: Response
  * Get session messages
  * GET /api/professionals/sessions/:sessionId/messages
  */
-export const getSessionMessages = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getSessionMessages = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { sessionId } = req.params;
   
@@ -317,7 +317,7 @@ export const getSessionMessages = asyncHandler(async (req: AuthRequest, res: Res
  * Submit review for professional (client endpoint - no auth required)
  * POST /api/professionals/:id/review
  */
-export const submitReview = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const submitReview = asyncHandler(async (req: any, res: Response) => {
   const { id: professionalId } = req.params;
   
   const reviewSchema = z.object({
@@ -380,7 +380,7 @@ export const submitReview = asyncHandler(async (req: AuthRequest, res: Response)
  * Get professional dashboard stats
  * GET /api/professionals/dashboard
  */
-export const getDashboardStats = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getDashboardStats = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const totalSessions = await ConsultationSession.countDocuments({ professionalId: userId });

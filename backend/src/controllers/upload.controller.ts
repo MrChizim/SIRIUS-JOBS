@@ -14,7 +14,7 @@ import { getFileUrl } from '../utils/upload.util';
  * Upload profile photo
  * POST /api/upload/profile-photo
  */
-export const uploadProfilePhoto = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const uploadProfilePhoto = asyncHandler(async (req: any, res: Response) => {
   if (!req.file) {
     return sendError(res, 'No file uploaded', 400);
   }
@@ -35,7 +35,7 @@ export const uploadProfilePhoto = asyncHandler(async (req: AuthRequest, res: Res
  * Upload business images (multiple)
  * POST /api/upload/business-images
  */
-export const uploadBusinessImages = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const uploadBusinessImages = asyncHandler(async (req: any, res: Response) => {
   const files = req.files as Express.Multer.File[];
 
   if (!files || files.length === 0) {
@@ -63,7 +63,7 @@ export const uploadBusinessImages = asyncHandler(async (req: AuthRequest, res: R
  * Upload license document
  * POST /api/upload/license-document
  */
-export const uploadLicenseDocument = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const uploadLicenseDocument = asyncHandler(async (req: any, res: Response) => {
   if (!req.file) {
     return sendError(res, 'No file uploaded', 400);
   }
@@ -84,7 +84,7 @@ export const uploadLicenseDocument = asyncHandler(async (req: AuthRequest, res: 
  * Upload job attachments (multiple)
  * POST /api/upload/job-attachments
  */
-export const uploadJobAttachments = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const uploadJobAttachments = asyncHandler(async (req: any, res: Response) => {
   const files = req.files as Express.Multer.File[];
 
   if (!files || files.length === 0) {

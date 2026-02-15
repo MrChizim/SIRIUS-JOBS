@@ -36,7 +36,7 @@ export const getServiceCategories = asyncHandler(async (_req, res: Response) => 
  * Get providers by skill and optional location
  * GET /api/v2/services/providers?skill=plumber&location=Lagos
  */
-export const getProviders = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getProviders = asyncHandler(async (req: any, res: Response) => {
   const querySchema = z.object({
     skill: z.string().min(2),
     location: z.string().optional(),

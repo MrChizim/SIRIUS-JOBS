@@ -17,7 +17,7 @@ import { getWorkerSubscription } from '../services/subscription.service';
  * Get worker profile
  * GET /api/workers/profile
  */
-export const getProfile = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getProfile = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const user = await User.findById(userId);
@@ -37,7 +37,7 @@ export const getProfile = asyncHandler(async (req: AuthRequest, res: Response) =
  * Update worker profile
  * PUT /api/workers/profile
  */
-export const updateProfile = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const updateProfile = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const updateSchema = z.object({
@@ -70,7 +70,7 @@ export const updateProfile = asyncHandler(async (req: AuthRequest, res: Response
  * Upload government ID
  * POST /api/workers/upload-id
  */
-export const uploadGovernmentId = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const uploadGovernmentId = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const idSchema = z.object({
@@ -105,7 +105,7 @@ export const uploadGovernmentId = asyncHandler(async (req: AuthRequest, res: Res
  * Upload profile photo
  * POST /api/workers/upload-photo
  */
-export const uploadProfilePhoto = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const uploadProfilePhoto = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { photoUrl } = req.body;
   
@@ -129,7 +129,7 @@ export const uploadProfilePhoto = asyncHandler(async (req: AuthRequest, res: Res
  * Get worker subscription details
  * GET /api/workers/subscription
  */
-export const getSubscription = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getSubscription = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const subscription = await getWorkerSubscription(userId);
@@ -141,7 +141,7 @@ export const getSubscription = asyncHandler(async (req: AuthRequest, res: Respon
  * Check if worker can appear publicly
  * GET /api/workers/can-appear-publicly
  */
-export const canAppearPublicly = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const canAppearPublicly = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const workerProfile = await WorkerProfile.findOne({ userId });
@@ -163,7 +163,7 @@ export const canAppearPublicly = asyncHandler(async (req: AuthRequest, res: Resp
  * Get worker analytics
  * GET /api/workers/analytics
  */
-export const getAnalytics = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getAnalytics = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const analytics = await analyticsService.getWorkerAnalytics(userId);
@@ -175,7 +175,7 @@ export const getAnalytics = asyncHandler(async (req: AuthRequest, res: Response)
  * Get all workers (public endpoint)
  * GET /api/workers
  */
-export const getAllWorkers = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getAllWorkers = asyncHandler(async (req: any, res: Response) => {
   const { page = 1, limit = 20, skills, location } = req.query;
   
   const query: any = {
@@ -225,7 +225,7 @@ export const getAllWorkers = asyncHandler(async (req: AuthRequest, res: Response
  * Get single worker by ID (public endpoint)
  * GET /api/workers/:id
  */
-export const getWorkerById = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getWorkerById = asyncHandler(async (req: any, res: Response) => {
   const { id } = req.params;
   
   const workerProfile = await WorkerProfile.findOne({ userId: id });
@@ -249,7 +249,7 @@ export const getWorkerById = asyncHandler(async (req: AuthRequest, res: Response
  * Add guarantor for recommended badge
  * POST /api/workers/guarantor
  */
-export const addGuarantor = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const addGuarantor = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const guarantorSchema = z.object({

@@ -17,7 +17,7 @@ import { env } from '../config/environment';
  * Initialize worker subscription payment
  * POST /api/payments/worker/subscription
  */
-export const initializeWorkerSubscription = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const initializeWorkerSubscription = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const email = req.user!.email;
   
@@ -30,7 +30,7 @@ export const initializeWorkerSubscription = asyncHandler(async (req: AuthRequest
  * Initialize recommended badge payment
  * POST /api/payments/worker/recommended-badge
  */
-export const initializeRecommendedBadge = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const initializeRecommendedBadge = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const email = req.user!.email;
   
@@ -63,7 +63,7 @@ export const initializeRecommendedBadge = asyncHandler(async (req: AuthRequest, 
  * Initialize consultation payment (no auth required - client booking)
  * POST /api/payments/consultation
  */
-export const initializeConsultation = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const initializeConsultation = asyncHandler(async (req: any, res: Response) => {
   const consultationSchema = z.object({
     professionalId: z.string().min(1),
     clientEmail: z.string().email(),
@@ -89,7 +89,7 @@ export const initializeConsultation = asyncHandler(async (req: AuthRequest, res:
  * Initialize merchant package payment
  * POST /api/payments/merchant/package
  */
-export const initializeMerchantPackage = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const initializeMerchantPackage = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const email = req.user!.email;
   
@@ -116,7 +116,7 @@ export const initializeMerchantPackage = asyncHandler(async (req: AuthRequest, r
  * Initialize job post payment (all user types)
  * POST /api/payments/job-post
  */
-export const initializeJobPost = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const initializeJobPost = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const email = req.user!.email;
   const accountType = req.user!.accountType;
@@ -130,7 +130,7 @@ export const initializeJobPost = asyncHandler(async (req: AuthRequest, res: Resp
  * Verify payment
  * GET /api/payments/verify/:reference
  */
-export const verifyPayment = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const verifyPayment = asyncHandler(async (req: any, res: Response) => {
   const { reference } = req.params;
   
   if (!reference) {
@@ -153,7 +153,7 @@ export const verifyPayment = asyncHandler(async (req: AuthRequest, res: Response
  * IMPORTANT: This endpoint receives payment notifications from Paystack
  * It must be publicly accessible (no auth middleware)
  */
-export const paystackWebhook = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const paystackWebhook = asyncHandler(async (req: any, res: Response) => {
   // Verify webhook signature
   const signature = req.headers['x-paystack-signature'] as string;
   
@@ -208,7 +208,7 @@ export const paystackWebhook = asyncHandler(async (req: AuthRequest, res: Respon
  * Get payment history for authenticated user
  * GET /api/payments/history
  */
-export const getPaymentHistory = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getPaymentHistory = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { page = 1, limit = 20, status, paymentType } = req.query;
   
@@ -244,7 +244,7 @@ export const getPaymentHistory = asyncHandler(async (req: AuthRequest, res: Resp
  * Get single payment by ID
  * GET /api/payments/:id
  */
-export const getPaymentById = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getPaymentById = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { id } = req.params;
   
@@ -266,7 +266,7 @@ export const getPaymentById = asyncHandler(async (req: AuthRequest, res: Respons
  * Get payment by reference
  * GET /api/payments/reference/:reference
  */
-export const getPaymentByReference = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getPaymentByReference = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { reference } = req.params;
   
@@ -288,7 +288,7 @@ export const getPaymentByReference = asyncHandler(async (req: AuthRequest, res: 
  * Get payment statistics for user
  * GET /api/payments/stats
  */
-export const getPaymentStats = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getPaymentStats = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   
   const totalPayments = await Payment.countDocuments({ userId });
@@ -331,7 +331,7 @@ export const getPaymentStats = asyncHandler(async (req: AuthRequest, res: Respon
  * NOTE: This would require admin authentication middleware
  * Currently a placeholder for future implementation
  */
-export const refundPayment = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const refundPayment = asyncHandler(async (req: any, res: Response) => {
   const { id } = req.params;
   
   const payment = await Payment.findById(id);
@@ -355,7 +355,7 @@ export const refundPayment = asyncHandler(async (req: AuthRequest, res: Response
  * Get payment summary for dashboard
  * GET /api/payments/dashboard/summary
  */
-export const getDashboardSummary = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getDashboardSummary = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const accountType = req.user!.accountType;
   

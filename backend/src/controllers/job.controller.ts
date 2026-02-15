@@ -22,7 +22,7 @@ import { events } from '../services/event-bus';
  * Create a new job (all user types - pay ₦1,000 per post)
  * POST /api/jobs
  */
-export const createJob = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const createJob = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
 
   const jobSchema = z.object({
@@ -69,7 +69,7 @@ export const createJob = asyncHandler(async (req: AuthRequest, res: Response) =>
  * Update a job (employer only)
  * PUT /api/jobs/:id
  */
-export const updateJob = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const updateJob = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { id } = req.params;
   
@@ -114,7 +114,7 @@ export const updateJob = asyncHandler(async (req: AuthRequest, res: Response) =>
  * Delete a job (employer only)
  * DELETE /api/jobs/:id
  */
-export const deleteJob = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const deleteJob = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { id } = req.params;
   
@@ -142,7 +142,7 @@ export const deleteJob = asyncHandler(async (req: AuthRequest, res: Response) =>
  * Get single job by ID (public)
  * GET /api/jobs/:id
  */
-export const getJobById = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getJobById = asyncHandler(async (req: any, res: Response) => {
   const { id } = req.params;
   
   const job = await Job.findById(id);
@@ -167,7 +167,7 @@ export const getJobById = asyncHandler(async (req: AuthRequest, res: Response) =
  * Get all jobs (public with filters)
  * GET /api/jobs
  */
-export const getAllJobs = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getAllJobs = asyncHandler(async (req: any, res: Response) => {
   const { 
     page = 1, 
     limit = 20, 
@@ -244,7 +244,7 @@ export const getAllJobs = asyncHandler(async (req: AuthRequest, res: Response) =
  * Apply to a job (worker only)
  * POST /api/jobs/:id/apply
  */
-export const applyToJob = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const applyToJob = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { id: jobId } = req.params;
   
@@ -325,7 +325,7 @@ export const applyToJob = asyncHandler(async (req: AuthRequest, res: Response) =
  * Withdraw job application (worker only)
  * DELETE /api/jobs/applications/:applicationId
  */
-export const withdrawApplication = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const withdrawApplication = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { applicationId } = req.params;
   
@@ -350,7 +350,7 @@ export const withdrawApplication = asyncHandler(async (req: AuthRequest, res: Re
  * Get worker's job applications
  * GET /api/jobs/my-applications
  */
-export const getMyApplications = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getMyApplications = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { status, page = 1, limit = 20 } = req.query;
   
@@ -396,7 +396,7 @@ export const getMyApplications = asyncHandler(async (req: AuthRequest, res: Resp
  * Get application by ID
  * GET /api/jobs/applications/:applicationId
  */
-export const getApplicationById = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getApplicationById = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { applicationId } = req.params;
   
@@ -439,7 +439,7 @@ export const getApplicationById = asyncHandler(async (req: AuthRequest, res: Res
  * Get jobs by employer
  * GET /api/jobs/employer/:employerId
  */
-export const getJobsByEmployer = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getJobsByEmployer = asyncHandler(async (req: any, res: Response) => {
   const { employerId } = req.params;
   const { status, page = 1, limit = 20 } = req.query;
   
@@ -471,7 +471,7 @@ export const getJobsByEmployer = asyncHandler(async (req: AuthRequest, res: Resp
  * Get all applicants for a specific job (job poster only)
  * GET /api/applications/job/:jobId
  */
-export const getJobApplicants = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getJobApplicants = asyncHandler(async (req: any, res: Response) => {
   const userId = req.user!.userId;
   const { jobId } = req.params;
 

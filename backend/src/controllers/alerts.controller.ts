@@ -20,7 +20,7 @@ const subscriptionSchema = z.object({
  * Subscribe to a job alert
  * POST /api/v2/alerts/subscriptions
  */
-export const subscribe = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const subscribe = asyncHandler(async (req: any, res: Response) => {
   if (!req.user) {
     return sendError(res, 'Authentication required', 401);
   }
@@ -52,7 +52,7 @@ export const subscribe = asyncHandler(async (req: AuthRequest, res: Response) =>
  * Get current user subscriptions
  * GET /api/v2/alerts/subscriptions
  */
-export const getSubscriptions = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getSubscriptions = asyncHandler(async (req: any, res: Response) => {
   if (!req.user) {
     return sendError(res, 'Authentication required', 401);
   }
@@ -65,7 +65,7 @@ export const getSubscriptions = asyncHandler(async (req: AuthRequest, res: Respo
  * Delete subscription
  * DELETE /api/v2/alerts/subscriptions/:id
  */
-export const deleteSubscription = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const deleteSubscription = asyncHandler(async (req: any, res: Response) => {
   if (!req.user) {
     return sendError(res, 'Authentication required', 401);
   }
@@ -85,7 +85,7 @@ export const deleteSubscription = asyncHandler(async (req: AuthRequest, res: Res
  * Get notifications for current user
  * GET /api/v2/alerts/notifications
  */
-export const getNotifications = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getNotifications = asyncHandler(async (req: any, res: Response) => {
   if (!req.user) {
     return sendError(res, 'Authentication required', 401);
   }
@@ -101,7 +101,7 @@ export const getNotifications = asyncHandler(async (req: AuthRequest, res: Respo
  * Mark notification read
  * PATCH /api/v2/alerts/notifications/:id/read
  */
-export const markNotificationRead = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const markNotificationRead = asyncHandler(async (req: any, res: Response) => {
   if (!req.user) {
     return sendError(res, 'Authentication required', 401);
   }
