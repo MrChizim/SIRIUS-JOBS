@@ -330,7 +330,7 @@ const processMerchantPackage = async (payment: any) => {
   merchantProfile.subscription.startDate = startDate;
   merchantProfile.subscription.endDate = endDate;
   merchantProfile.subscription.maxImages = packageDetails.maxImages;
-  merchantProfile.subscription.newsletterEligible = packageDetails.newsletterEligible;
+  // merchantProfile.subscription.newsletterEligible = packageDetails.newsletterEligible;
   
   await merchantProfile.save();
 };

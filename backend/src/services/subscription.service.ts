@@ -79,7 +79,7 @@ export const getMerchantSubscription = async (merchantId: string) => {
     endDate: merchantProfile.subscription.endDate,
     amount: merchantProfile.subscription.amount,
     maxImages: merchantProfile.subscription.maxImages,
-    newsletterEligible: merchantProfile.subscription.newsletterEligible,
+    // newsletterEligible: merchantProfile.subscription.newsletterEligible,
     isActive: merchantProfile.isSubscriptionActive(),
     daysRemaining: merchantProfile.subscription.endDate 
       ? Math.ceil((merchantProfile.subscription.endDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
