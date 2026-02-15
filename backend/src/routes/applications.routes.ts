@@ -25,7 +25,7 @@ interface AuthRequest extends express.Request {
  * @desc    Get application by ID
  * @access  Private
  */
-router.get('/:applicationId', authenticate, async (req: AuthRequest, res) => {
+router.get('/:applicationId', authenticate, async (req: any, res) => {
   try {
     const { applicationId } = req.params;
     const userId = req.user?.userId;
@@ -64,7 +64,7 @@ router.get('/:applicationId', authenticate, async (req: AuthRequest, res) => {
  * @desc    Withdraw application
  * @access  Private (Applicant only)
  */
-router.delete('/:applicationId/withdraw', authenticate, async (req: AuthRequest, res) => {
+router.delete('/:applicationId/withdraw', authenticate, async (req: any, res) => {
   try {
     const { applicationId } = req.params;
     const userId = req.user?.userId;
@@ -108,7 +108,7 @@ const decisionSchema = z.object({
  * @desc    Accept or reject job application
  * @access  Private (Employer only)
  */
-router.post('/:applicationId/decision', authenticate, async (req: AuthRequest, res) => {
+router.post('/:applicationId/decision', authenticate, async (req: any, res) => {
   try {
     const { applicationId } = req.params;
     const userId = req.user?.userId;
@@ -160,7 +160,7 @@ router.post('/:applicationId/decision', authenticate, async (req: AuthRequest, r
  * @desc    Get all applications for current user (worker or employer)
  * @access  Private
  */
-router.get('/', authenticate, async (req: AuthRequest, res) => {
+router.get('/', authenticate, async (req: any, res) => {
   try {
     const userId = req.user?.userId;
     const accountType = req.user?.accountType;

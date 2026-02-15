@@ -87,7 +87,7 @@ const workerProfileSchema = z.object({
  * @desc    Update worker/artisan profile
  * @access  Private (Worker)
  */
-router.put('/artisan/me', authenticate, async (req: AuthRequest, res) => {
+router.put('/artisan/me', authenticate, async (req: any, res) => {
   try {
     const userId = req.user?.userId;
     if (!userId) {
@@ -149,7 +149,7 @@ const professionalProfileSchema = z.object({
  * @desc    Update professional profile
  * @access  Private (Professional)
  */
-router.put('/professional/me', authenticate, async (req: AuthRequest, res) => {
+router.put('/professional/me', authenticate, async (req: any, res) => {
   try {
     const userId = req.user?.userId;
     if (!userId) {
@@ -182,7 +182,7 @@ router.put('/professional/me', authenticate, async (req: AuthRequest, res) => {
  * @desc    Get professional profile completion status
  * @access  Private (Professional)
  */
-router.get('/professional/completion', authenticate, async (req: AuthRequest, res) => {
+router.get('/professional/completion', authenticate, async (req: any, res) => {
   try {
     const userId = req.user?.userId;
     if (!userId) {
@@ -228,7 +228,7 @@ const employerProfileSchema = z.object({
  * @desc    Update employer profile
  * @access  Private (Employer)
  */
-router.put('/employer/me', authenticate, async (req: AuthRequest, res) => {
+router.put('/employer/me', authenticate, async (req: any, res) => {
   try {
     const userId = req.user?.userId;
     if (!userId) {

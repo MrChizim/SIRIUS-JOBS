@@ -30,7 +30,7 @@ interface AuthRequest extends express.Request {
  * @desc    Get professional dashboard data
  * @access  Private (Professional)
  */
-router.get('/professional', authenticate, async (req: AuthRequest, res) => {
+router.get('/professional', authenticate, async (req: any, res) => {
   try {
     const userId = req.user?.userId;
     if (!userId) {
@@ -105,7 +105,7 @@ const payoutSchema = z.object({
  * @desc    Update professional payout account
  * @access  Private (Professional)
  */
-router.post('/professional/payout-account', authenticate, async (req: AuthRequest, res) => {
+router.post('/professional/payout-account', authenticate, async (req: any, res) => {
   try {
     const userId = req.user?.userId;
     if (!userId) {
@@ -143,7 +143,7 @@ router.post('/professional/payout-account', authenticate, async (req: AuthReques
  * @desc    Get employer dashboard data
  * @access  Private (Employer)
  */
-router.get('/employer', authenticate, async (req: AuthRequest, res) => {
+router.get('/employer', authenticate, async (req: any, res) => {
   try {
     const userId = req.user?.userId;
     if (!userId) {
@@ -235,7 +235,7 @@ router.get('/employer', authenticate, async (req: AuthRequest, res) => {
  * @desc    Get worker/artisan dashboard data
  * @access  Private (Worker)
  */
-router.get('/artisan', authenticate, async (req: AuthRequest, res) => {
+router.get('/artisan', authenticate, async (req: any, res) => {
   try {
     const userId = req.user?.userId;
     if (!userId) {

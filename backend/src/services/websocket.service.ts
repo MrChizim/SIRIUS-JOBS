@@ -32,14 +32,14 @@ export const initializeWebSocket = (io: SocketIOServer) => {
         }
         
         // Check if session is active
-        if (session.isExpired()) {
+        if (session.expiresAt && new Date() > session.expiresAt) {
           socket.emit('error', { message: 'Session has expired' });
           return;
         }
         
         // Activate session if pending
         if (session.status === 'pending') {
-          await session.activate();
+          session.status = 'active'; session.startedAt = new Date(); session.expiresAt = new Date(Date.now() + session.currentDuration); await session.save();
         }
         
         // Join the consultation room
@@ -77,7 +77,7 @@ export const initializeWebSocket = (io: SocketIOServer) => {
           return;
         }
         
-        if (session.isExpired()) {
+        if (session.expiresAt && new Date() > session.expiresAt) {
           socket.emit('error', { message: 'Session has expired' });
           return;
         }
