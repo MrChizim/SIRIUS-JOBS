@@ -1,5 +1,5 @@
 (function () {
-  const DEFAULT_BASE = 'http://localhost:4000';
+  const DEFAULT_BASE = 'https://siriusjobs-backend.onrender.com';
   const explicitBase =
     typeof window !== 'undefined'
       ? window.SIRIUS_API_BASE || window.__ENV?.API_BASE
