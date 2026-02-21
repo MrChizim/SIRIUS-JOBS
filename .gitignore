@@ -17,3 +17,4 @@ uploads/
 
 # Prisma engines and generated clients will be re-created on install
 backend/node_modules/.prisma/
+.DS_Store
