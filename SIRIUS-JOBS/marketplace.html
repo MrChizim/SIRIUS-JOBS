@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sirius Marketplace – Advertise Your Business</title>
+  <meta name="description" content="Discover verified Nigerian merchants and premium marketplace listings. Connect instantly via WhatsApp or Instagram.">
+  <meta name="keywords" content="Sirius Marketplace, Nigerian merchants, marketplace listings, shop local, WhatsApp business">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://example.com/marketplace.html">
+  <meta property="og:title" content="Sirius Marketplace – Advertise Your Business">
+  <meta property="og:description" content="Discover verified Nigerian merchants and premium marketplace listings. Connect instantly via WhatsApp or Instagram.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://example.com/marketplace.html">
+  <meta property="og:image" content="https://example.com/images/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sirius Marketplace – Advertise Your Business">
+  <meta name="twitter:description" content="Discover verified Nigerian merchants and premium marketplace listings. Connect instantly via WhatsApp or Instagram.">
+  <meta name="twitter:image" content="https://example.com/images/logo.png">
+  <meta name="description" content="Showcase your business to Sirius Jobs clients. Upload photos & videos, share WhatsApp/Instagram links, and let buyers browse your profile." />
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" sizes="32x32" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0056b3',
+            midnight: '#0f172a',
+            accent: {
+              whatsapp: '#25D366',
+              instagram: '#F56040',
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+
+    .gradient-hero {
+      background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.25), transparent 60%),
+        radial-gradient(circle at top right, rgba(59, 130, 246, 0.25), transparent 55%),
+        linear-gradient(120deg, #0f172a, #0a63c3 60%, #3b82f6);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .merchant-card {
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s;}
+    .merchant-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12);
+    }
+
+    .media-thumb-active {
+      border-color: #0056b3;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <!-- NAVIGATION -->
+  <nav data-sirius-shell="skip" class="fixed top-0 inset-x-0 z-40 bg-white/90 backdrop-blur shadow-sm border-b border-gray-200/70">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center gap-3 group">
+          <img src="images/logo.png" alt="SiriusJobs logo" class="h-10 sm:h-12 md:h-14 w-auto drop-shadow-2xl transition-transform group-hover:scale-105" />
+          </a>
+        <div class="hidden lg:flex items-center gap-6 text-sm font-semibold">
+          <a href="index.html" class="text-gray-600 hover:text-primary">Home</a>
+          <a href="services.html" class="text-gray-600 hover:text-primary">Services</a>
+          <a href="jobs.html" class="text-gray-600 hover:text-primary">Jobs</a>
+          <a href="consultations.html" class="text-gray-600 hover:text-primary">Consultations</a>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="login.html#merchant-login" class="hidden lg:inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-4 py-2.5 rounded-full hover:bg-primary/90 shadow-lg shadow-primary/20 text-center">
+            <i data-feather="log-in" class="w-4 h-4"></i>
+            Merchant Login
+          </a>
+          <button class="menu-toggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <nav class="nav-menu-mobile">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="consultations.html">Consultations</a>
+    <a href="marketplace.html" class="active">Marketplace</a>
+    <a href="findworker.html">Find Workers</a>
+    <a href="faq.html">FAQs</a>
+    <a href="about.html">About</a>
+    <a href="login.html#merchant-login">Merchant Login</a>
+    <a href="marketplace-register.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-full">Register as Merchant</a>
+  </nav>
+
+  <!-- HERO SECTION - Dynamic & Eye-Catching -->
+  <header class="pt-24 pb-20 md:pt-32 md:pb-28 bg-gradient-to-br from-primary via-blue-600 to-purple-600 animated-gradient text-white overflow-hidden relative">
+    <div class="absolute inset-0 z-[1] bg-center bg-cover opacity-20 pointer-events-none" style="background-image: url('images/markethero.JPG');"></div>
+    <!-- Decorative Elements -->
+    <div class="absolute top-20 right-10 w-72 h-72 bg-white/10 rounded-full blur-3xl z-[2]"></div>
+    <div class="absolute bottom-10 left-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl z-[2]"></div>
+
+    <div class="container mx-auto px-4 lg:px-6 relative z-[5]">
+      <div class="grid gap-12 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,480px)] items-center">
+        <!-- Left Side - Headlines & CTAs -->
+        <div class="space-y-8 text-center md:text-left">
+          <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white text-sm font-bold uppercase tracking-wider shimmer-container">
+            <i data-feather="zap" class="w-5 h-5"></i>
+            Premium Marketplace
+          </span>
+
+          <h1 class="text-4xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight">
+            Discover trusted Nigerian merchants.<br/>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-300 to-pink-300">Shop what you love.</span>
+          </h1>
+
+          <p class="text-xl md:text-2xl text-white/95 max-w-2xl mx-auto md:mx-0 font-medium leading-relaxed">
+            Scroll through real businesses sharing their own photos, reels, and price highlights, then message them instantly on WhatsApp or Instagram.
+          </p>
+
+          <!-- Trust Indicators -->
+          <div class="flex flex-wrap items-center gap-6 justify-center md:justify-start">
+            <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+              <i data-feather="shield" class="w-5 h-5 text-green-300"></i>
+              <span class="font-bold text-sm">Verified Businesses</span>
+            </div>
+            <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+              <i data-feather="image" class="w-5 h-5 text-blue-300"></i>
+              <span class="font-bold text-sm">Real Media</span>
+            </div>
+            <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+              <i data-feather="message-circle" class="w-5 h-5 text-yellow-300"></i>
+              <span class="font-bold text-sm">Direct Chats</span>
+            </div>
+          </div>
+
+          <!-- CTA Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+            <a href="#merchant-wall" class="inline-flex items-center justify-center gap-3 bg-white text-primary font-black text-lg px-8 py-4 rounded-2xl hover:bg-white/90 hover:scale-105 transition-all shadow-2xl shadow-black/30 btn-ripple">
+              <i data-feather="shopping-bag" class="w-6 h-6"></i>
+              Browse merchants
+            </a>
+            <a href="marketplace-register.html" class="inline-flex items-center justify-center gap-3 border-2 border-white text-white font-bold text-lg px-8 py-4 rounded-2xl hover:bg-white hover:text-primary transition-all">
+              <i data-feather="user-plus" class="w-6 h-6"></i>
+              Register as a merchant
+            </a>
+          </div>
+
+          <p class="text-sm text-white/80">
+            <span class="font-bold text-yellow-300" id="productCount">...</span> from
+            <span class="font-bold text-green-300" id="merchantCount">...</span> verified merchants nationwide
+          </p>
+        </div>
+
+        <!-- Right Side - Featured Merchant (Dynamic) -->
+        <div class="relative h-[420px] hidden xl:flex items-center justify-center">
+          <div id="featuredMerchantCard" class="w-72 float-animation">
+            <!-- Featured merchant will be loaded dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+
+  <!-- POPULAR CATEGORIES -->
+  <section class="py-12 bg-white border-b border-gray-100">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
+        <div>
+          <p class="text-sm font-semibold text-primary uppercase tracking-[0.3em]">Browse by need</p>
+          <h2 class="text-3xl font-black text-gray-900">Popular Nigerian business categories</h2>
+          <p class="text-sm text-gray-600">Grouped from the most requested sectors on Sirius Jobs and customer enquiries.</p>
+        </div>
+        <a href="#merchant-wall" class="inline-flex items-center gap-2 text-primary font-semibold text-sm">
+          See all merchants
+          <i data-feather="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+      <div class="grid gap-4 md:grid-cols-4 sm:grid-cols-2">
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Tech & Gadgets" tabindex="0" role="button" aria-label="View Tech & Gadgets merchants">
+          <h3 class="text-sm font-black text-gray-900">Tech & Gadgets</h3><p class="text-xs text-gray-600">Phones, laptops, smart accessories.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Beauty & Wellness" tabindex="0" role="button" aria-label="View Beauty & Wellness merchants">
+          <h3 class="text-sm font-black text-gray-900">Beauty & Wellness</h3><p class="text-xs text-gray-600">Spa, skincare labs, salon suppliers.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Food & Catering" tabindex="0" role="button" aria-label="View Food & Catering merchants">
+          <h3 class="text-sm font-black text-gray-900">Food & Catering</h3><p class="text-xs text-gray-600">Restaurants, grills, outdoor caterers.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Agro & Commodities" tabindex="0" role="button" aria-label="View Agro & Commodities merchants">
+          <h3 class="text-sm font-black text-gray-900">Agro & Commodities</h3><p class="text-xs text-gray-600">Palm produce, grains, farm inputs.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Construction & Finishing" tabindex="0" role="button" aria-label="View Construction & Finishing merchants">
+          <h3 class="text-sm font-black text-gray-900">Construction & Finishing</h3><p class="text-xs text-gray-600">Paints, sanitary ware, POP & lighting.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Logistics & Mobility" tabindex="0" role="button" aria-label="View Logistics & Mobility merchants">
+          <h3 class="text-sm font-black text-gray-900">Logistics & Mobility</h3><p class="text-xs text-gray-600">Dispatch bikes, fleets, auto dealers.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Fashion & Apparel" tabindex="0" role="button" aria-label="View Fashion & Apparel merchants">
+          <h3 class="text-sm font-black text-gray-900">Fashion & Apparel</h3><p class="text-xs text-gray-600">Ready-to-wear, sneakers, fabrics.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Events & Lifestyle" tabindex="0" role="button" aria-label="View Events & Lifestyle merchants">
+          <h3 class="text-sm font-black text-gray-900">Events & Lifestyle</h3><p class="text-xs text-gray-600">Decor, rentals, experiential gifting.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Home & Interior" tabindex="0" role="button" aria-label="View Home & Interior merchants">
+          <h3 class="text-sm font-black text-gray-900">Home & Interior</h3><p class="text-xs text-gray-600">Furniture, decor, lighting & scent brands.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Renewable Energy & Solar" tabindex="0" role="button" aria-label="View Renewable Energy & Solar merchants">
+          <h3 class="text-sm font-black text-gray-900">Renewable Energy & Solar</h3><p class="text-xs text-gray-600">Solar installers, inverter and battery dealers.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Professional Services" tabindex="0" role="button" aria-label="View Professional Services merchants">
+          <h3 class="text-sm font-black text-gray-900">Professional Services</h3><p class="text-xs text-gray-600">Accountants, legal, branding & consulting shops.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Baby, Kids & Parenting" tabindex="0" role="button" aria-label="View Baby, Kids & Parenting merchants">
+          <h3 class="text-sm font-black text-gray-900">Baby, Kids & Parenting</h3><p class="text-xs text-gray-600">Kids fashion, toys, educational supplies.</p>
+        </article>
+        <article class="category-card bg-gray-50 border border-gray-100 rounded-2xl p-4 cursor-pointer transition transform hover:-translate-y-1"
+          data-category-card="Health & Pharma" tabindex="0" role="button" aria-label="View Health & Pharma merchants">
+          <h3 class="text-sm font-black text-gray-900">Health & Pharma</h3><p class="text-xs text-gray-600">Pharmacies, diagnostics, wellness clinics.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+  <!-- SEARCH + MERCHANT WALL -->
+  <section id="merchant-wall" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex flex-col md:flex-row gap-6 md:items-center md:justify-between mb-10">
+        <div>
+          <p class="text-sm font-semibold text-primary uppercase tracking-[0.3em] mb-2">Merchant Wall</p>
+          <h2 class="text-3xl md:text-4xl font-black text-gray-900">Real businesses. Real media.</h2>
+          <p class="text-sm text-gray-600">These vendors are actively advertising with Sirius. Tap to view full profile.</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+          <div class="flex-1 bg-white border border-gray-200 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm">
+            <i data-feather="search" class="w-4 h-4 text-gray-400"></i>
+            <input id="search-merchants" type="search" placeholder="Search businesses, categories, locations" class="w-full outline-none text-sm" />
+          </div>
+          <select id="filter-category" class="bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm shadow-sm">
+            <option value="">All categories</option>
+            <option value="Tech & Gadgets">Tech & Gadgets</option>
+            <option value="Surface Care">Surface Care</option>
+            <option value="Food & Catering">Food & Catering</option>
+            <option value="Food & Agriculture">Food & Agriculture</option>
+            <option value="Beauty & Wellness">Beauty & Wellness</option>
+            <option value="Logistics & Mobility">Logistics & Mobility</option>
+            <option value="Fashion & Apparel">Fashion & Apparel</option>
+            <option value="Events & Lifestyle">Events & Lifestyle</option>
+            <option value="Construction & Finishing">Construction & Finishing</option>
+          </select>
+        </div>
+      </div>
+      <div id="vendorGrid" class="grid gap-8 md:grid-cols-2 xl:grid-cols-3"></div>
+    </div>
+  </section>
+
+  <!-- MEDIA READY SECTION -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4 lg:px-6 grid md:grid-cols-2 gap-8 items-center">
+      <div class="space-y-4">
+        <p class="text-sm font-semibold text-primary uppercase">Media-ready dashboards</p>
+        <h3 class="text-3xl font-black text-gray-900">Your marketing folder lives inside Sirius.</h3>
+        <p class="text-gray-600">Once you create a merchant account, the dashboard becomes your control room: upload photos or 60-second clips, add captions, and decide what shows on your public page. Customers browse everything before hitting your WhatsApp or Instagram buttons.</p>
+        <p class="text-gray-600">It is designed for advertising, not e-commerce. Share proofs, videos, or price notes so buyers already know what to expect when they message you.</p>
+        <ul class="space-y-3 text-sm text-gray-700">
+          <li class="flex gap-2"><i data-feather="check-circle" class="w-4 h-4 text-primary"></i>Upload JPG, PNG, and MP4 clips (under 60s) straight from the dashboard.</li>
+          <li class="flex gap-2"><i data-feather="check-circle" class="w-4 h-4 text-primary"></i>Drag, drop, and caption each tile before it hits your public profile.</li>
+          <li class="flex gap-2"><i data-feather="check-circle" class="w-4 h-4 text-primary"></i>Pin price sheets, promo flyers, or behind-the-scenes reels any time.</li>
+        </ul>
+      </div>
+      <div class="bg-gray-900 text-white rounded-3xl p-8 space-y-6 shadow-2xl">
+        <div class="flex items-center gap-3">
+          <i data-feather="smartphone" class="w-5 h-5"></i>
+          <p class="text-sm font-semibold tracking-widest uppercase">Live profile preview</p>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="col-span-2 bg-white/10 rounded-2xl h-36 flex items-center justify-center"><i data-feather="image" class="w-10 h-10"></i></div>
+          <div class="bg-white/10 rounded-2xl h-36 flex items-center justify-center"><i data-feather="video" class="w-8 h-8"></i></div>
+          <div class="bg-white/10 rounded-2xl h-36 flex items-center justify-center"><i data-feather="image" class="w-8 h-8"></i></div>
+          <div class="col-span-2 bg-white/10 rounded-2xl h-36 flex items-center justify-center"><i data-feather="play-circle" class="w-10 h-10"></i></div>
+        </div>
+        <p class="text-sm text-white/70">Everything publishes to your public profile instantly.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISUAL TOOLS MOVED BELOW FOR MERCHANT FOCUS -->
+  <section class="py-14 bg-white border-t border-gray-100">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="max-w-2xl text-center mx-auto mb-10 space-y-2">
+        <p class="text-sm font-semibold text-primary uppercase tracking-[0.3em]">Included tools</p>
+        <h3 class="text-3xl font-black text-gray-900">Every merchant page gets the same visual firepower.</h3>
+        <p class="text-sm text-gray-600">We only changed where it lives on the page so customers still see the gallery first and merchants still manage it from the dashboard.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4"><i data-feather="monitor" class="w-5 h-5"></i></div>
+          <h3 class="text-lg font-black mb-2">Visual storefront</h3>
+          <p class="text-sm text-gray-600">Every merchant gets a media wall where prospects can watch clips, swipe photos, and feel your brand before chatting.</p>
+        </article>
+        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4"><i data-feather="message-circle" class="w-5 h-5"></i></div>
+          <h3 class="text-lg font-black mb-2">Social-first contact</h3>
+          <p class="text-sm text-gray-600">WhatsApp and Instagram buttons stay bold so buyers can DM you instantly without a complicated checkout.</p>
+        </article>
+        <article class="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4"><i data-feather="bar-chart-2" class="w-5 h-5"></i></div>
+          <h3 class="text-lg font-black mb-2">Dashboard control</h3>
+          <p class="text-sm text-gray-600">Upload new media, reorder galleries, and pin campaigns from your merchant dashboard any time.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOR MERCHANTS -->
+  <section class="py-16 bg-gray-50 border-t border-gray-100">
+    <div class="container mx-auto px-4 lg:px-6 space-y-10">
+      <div class="space-y-4 text-center md:text-left max-w-3xl mx-auto">
+        <p class="text-sm font-semibold text-primary uppercase tracking-[0.3em]">For merchants</p>
+        <h3 class="text-3xl font-black text-gray-900">Want your business featured here?</h3>
+        <p class="text-gray-600">Create an account, pick a plan, upload your media, and we publish your public profile so customers can find you on the marketplace wall.</p>
+      </div>
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-10 max-w-3xl mx-auto space-y-6 text-gray-700">
+        <div class="text-center space-y-2">
+          <p class="text-sm font-semibold text-primary uppercase tracking-[0.3em]">Onboarding steps</p>
+          <p class="text-base text-gray-600">Same playbook we use with every merchant.</p>
+        </div>
+        <ol class="space-y-5 text-sm text-gray-700">
+          <li class="flex gap-4 items-start">
+            <span class="w-10 h-10 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center">1</span>
+            <p><strong>Create your merchant login.</strong> Enter business name, email, and secure password.</p>
+          </li>
+          <li class="flex gap-4 items-start">
+            <span class="w-10 h-10 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center">2</span>
+            <p><strong>Choose your plan.</strong> Pick a 3, 6, or 12-month spot and lock it in from the dashboard.</p>
+          </li>
+          <li class="flex gap-4 items-start">
+            <span class="w-10 h-10 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center">3</span>
+            <p><strong>Upload media + details.</strong> Photos, videos, price notes, WhatsApp and Instagram links.</p>
+          </li>
+          <li class="flex gap-4 items-start">
+            <span class="w-10 h-10 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center">4</span>
+            <p><strong>Go live.</strong> Sirius publishes your public profile and promotes it across the marketplace.</p>
+          </li>
+        </ol>
+        <div class="text-center">
+          <a href="marketplace-register.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-full shadow-lg hover:bg-primary/90 transition">
+            Click here to register
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADVERTISING PLANS - Premium Cards -->
+  <section id="plans" class="py-20 bg-gradient-to-br from-gray-900 via-primary to-blue-900 text-white">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="max-w-4xl text-center mx-auto mb-16">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 text-white text-sm font-bold uppercase tracking-wider mb-4 backdrop-blur-sm">
+          <i data-feather="trending-up" class="w-4 h-4"></i>
+          Merchant Plans
+        </span>
+        <h2 class="text-4xl md:text-6xl font-black mb-6">Start Selling in 3 Days</h2>
+        <p class="text-xl text-white/90 mb-4">Choose a plan that works for your business. We handle marketing, you handle sales.</p>
+        <p class="text-sm text-white/70">All plans include onboarding help, creative assets, and performance analytics</p>
+      </div>
+
+      <div class="grid gap-8 lg:grid-cols-3 max-w-7xl mx-auto">
+        <!-- Starter Plan -->
+        <article class="product-card bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-3xl p-8 shadow-2xl hover:bg-white/15">
+          <div class="space-y-6">
+            <div>
+              <p class="text-sm font-bold uppercase tracking-wider text-white/70 mb-2">Starter</p>
+              <h3 class="text-3xl font-black text-white">3-Month Launch</h3>
+            </div>
+
+            <div>
+              <div class="flex items-baseline gap-2">
+                <p class="text-5xl font-black text-white">₦30,000</p>
+              </div>
+              <p class="text-sm text-white/70 font-medium mt-2">₦10,000 per month, billed upfront</p>
+            </div>
+
+            <ul class="space-y-4 text-sm text-white/90">
+              <li class="flex items-start gap-3">
+                <i data-feather="check-circle" class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0"></i>
+                <span>Listed on the public marketplace for 3 months</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i data-feather="check-circle" class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0"></i>
+                <span>Upload up to 5 product/service photos</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i data-feather="check-circle" class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0"></i>
+                <span>Clicks & views analytics on the dashboard</span>
+              </li>
+            </ul>
+
+            <a href="marketplace-register.html" class="inline-flex items-center justify-center gap-2 bg-white text-primary font-bold px-6 py-4 rounded-xl hover:bg-white/90 transition-all w-full text-lg btn-ripple">
+              <i data-feather="user-plus" class="w-5 h-5"></i>
+              Get Started
+            </a>
+          </div>
+        </article>
+
+        <!-- Growth Plan - Most Popular -->
+        <article class="product-card bg-white text-gray-900 border-4 border-yellow-400 rounded-3xl p-8 shadow-2xl relative transform scale-105">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2 inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 text-sm font-black uppercase tracking-wider pulse-glow">
+            <i data-feather="star" class="w-4 h-4 fill-current"></i>
+            Most popular
+          </div>
+          <div class="space-y-6">
+            <div>
+              <p class="text-sm font-bold uppercase tracking-wider text-gray-500 mb-2">Growth</p>
+              <h3 class="text-3xl font-black text-gray-900">6-Month Spotlight</h3>
+            </div>
+
+            <div>
+              <div class="flex items-baseline gap-2">
+                <p class="text-5xl font-black text-gray-900">₦57,000</p>
+              </div>
+              <p class="text-sm text-gray-500 font-medium mt-2">Save 5% when you pay upfront</p>
+            </div>
+
+            <ul class="space-y-4 text-sm text-gray-700">
+              <li class="flex items-start gap-3">
+                <i data-feather="check-circle" class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"></i>
+                <span>Listed on the marketplace for 6 months</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i data-feather="check-circle" class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"></i>
+                <span>Up to 5 photos plus 1 video slot</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i data-feather="check-circle" class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"></i>
+                <span>Clicks & views analytics on the dashboard</span>
+              </li>
+            </ul>
+
+          <a href="marketplace-register.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-4 rounded-2xl shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all w-full text-lg btn-ripple">
+              <i data-feather="user-plus" class="w-5 h-5"></i>
+             Pick Me
+            </a>
+          </div>
+        </article>
+
+        <!-- Premium Plan -->
+        <article class="product-card bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-3xl p-8 shadow-2xl hover:bg-white/15">
+          <div class="space-y-6">
+            <div>
+              <p class="text-sm font-bold uppercase tracking-wider text-white/70 mb-2">Premium +</p>
+              <h3 class="text-3xl font-black text-white">12-Month Residency</h3>
+            </div>
+
+            <div>
+              <div class="flex items-baseline gap-2">
+                <p class="text-5xl font-black text-white">₦108,000</p>
+              </div>
+              <p class="text-sm text-white/70 font-medium mt-2">Save 10% when you stay all year</p>
+            </div>
+
+            <ul class="space-y-4 text-sm text-white/90">
+              <li class="flex items-start gap-3">
+                <i data-feather="check-circle" class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0"></i>
+                <span>Listed on the marketplace for 12 months</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i data-feather="check-circle" class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0"></i>
+                <span>Up to 5 photos plus 2 video slots</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i data-feather="check-circle" class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0"></i>
+                <span>Clicks & views analytics on the dashboard</span>
+              </li>
+            </ul>
+
+            <a href="marketplace-register.html" class="inline-flex items-center justify-center gap-2 bg-white text-primary font-bold px-6 py-4 rounded-xl hover:bg-white/90 transition-all w-full text-lg btn-ripple">
+              <i data-feather="user-plus" class="w-5 h-5"></i>
+              Get Started
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4 lg:px-6 text-center space-y-6">
+      <p class="text-sm font-semibold text-primary uppercase tracking-[0.3em]">Ready?</p>
+      <h2 class="text-3xl font-black text-gray-900">Open a Sirius marketplace profile in 72 hours or less.</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">Our team will help you choose photos, film short clips, and add WhatsApp / Instagram buttons so buyers can reach you immediately.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="marketplace-register.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-2xl">Register now</a>
+      </div>
+    </div>
+  </section>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="images/logo.png" alt="Sirius logo" class="h-12 sm:h-14 md:h-16 w-auto drop-shadow-2xl">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2026 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <!-- Vendor Modal -->
+  <div id="vendorModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden">
+    <div class="w-full max-w-5xl mx-auto my-10 bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <p class="text-sm font-bold text-primary uppercase tracking-[0.3em]">Merchant profile</p>
+        <button id="closeVendorModal" class="p-2 text-gray-500 hover:text-primary" aria-label="Close profile">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="vendorModalContent" class="p-6 space-y-6 overflow-y-auto max-h-[80vh]"></div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu-mobile');
+
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+      });
+
+      document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        }
+      });
+    }
+
+    (function () {
+      const vendorGrid = document.getElementById('vendorGrid');
+      const searchInput = document.getElementById('search-merchants');
+      const categoryFilter = document.getElementById('filter-category');
+      const categoryCards = document.querySelectorAll('[data-category-card]');
+      let vendors = [];
+
+      function buildWhatsAppLink(phone) {
+        if (!phone) return '';
+        const digits = phone.replace(/\D/g, '');
+        if (!digits) return '';
+        if (digits.startsWith('0')) return `https://wa.me/234${digits.slice(1)}`;
+        if (digits.startsWith('234')) return `https://wa.me/${digits}`;
+        return `https://wa.me/${digits}`;
+      }
+
+      function normaliseListing(listing) {
+        const highlights = Array.isArray(listing.highlights) ? listing.highlights : [];
+        const images = Array.isArray(listing.images) ? listing.images : [];
+        return {
+          id: listing.id,
+          name: listing.businessName,
+          owner: listing.owner,
+          location: listing.location,
+          summary: listing.description || '',
+          headline: listing.headline,
+          delivery: listing.delivery,
+          highlights,
+          categories: listing.category ? [listing.category] : [],
+          instagram: listing.instagram,
+          whatsapp: listing.whatsapp,
+          whatsappLink: buildWhatsAppLink(listing.whatsapp),
+          hero: Boolean(listing.hero),
+          media: images.map(url => ({ type: 'image', url, thumbnail: url })),
+        };
+      }
+
+      function formatHighlights(highlights = []) {
+        if (!highlights.length) return '';
+        return `<ul class="space-y-2 text-sm text-gray-700 mt-3">${highlights
+          .map(item => `<li class="flex gap-2"><i data-feather="check" class="w-4 h-4 text-primary"></i><span>${item}</span></li>`)
+          .join('')}</ul>`;
+      }
+
+      function primaryMedia(vendor) {
+        const media = vendor.media || [];
+        if (!media.length) return '';
+        const first = media.find(item => item.type === 'image') || media[0];
+        return first?.thumbnail || first?.url || '';
+      }
+
+      function renderVendorCard(vendor) {
+        const mediaUrl = primaryMedia(vendor);
+        const bgStyle = mediaUrl ? `style="background-image:url('${mediaUrl}');"` : '';
+        const heroBadge = vendor.hero
+          ? '<span class="absolute top-4 right-4 bg-white text-primary text-xs font-black px-3 py-1 rounded-full shadow">Featured</span>'
+          : '';
+        const socialChunks = [];
+        if (vendor.whatsappLink) {
+          socialChunks.push(
+            `<a href="${vendor.whatsappLink}" target="_blank" rel="noopener" class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 text-white font-bold px-4 py-2.5 rounded-2xl shadow" style="background-color:#25D366" data-vendor-social="whatsapp" data-vendor="${vendor.id}"><i data-feather="message-circle" class="w-4 h-4"></i>WhatsApp</a>`,
+          );
+        }
+        if (vendor.instagram) {
+          socialChunks.push(
+            `<a href="${vendor.instagram}" target="_blank" rel="noopener" class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 text-white font-bold px-4 py-2.5 rounded-2xl shadow hover:scale-[1.02]" style="background-color:#F56040" data-vendor-social="instagram" data-vendor="${vendor.id}"><i data-feather="instagram" class="w-4 h-4"></i>Instagram</a>`,
+          );
+        }
+        const socialButtons = socialChunks.join('');
+
+        return `
+        <article class="merchant-card bg-white border border-gray-100 rounded-3xl overflow-hidden flex flex-col">
+          <div class="relative h-48 bg-gray-200 bg-cover bg-center" ${bgStyle}>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            ${heroBadge}
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <p class="text-xs uppercase tracking-[0.3em] text-white/70">${vendor.categories?.[0] || 'Marketplace Merchant'}</p>
+              <h3 class="text-2xl font-black">${vendor.name}</h3>
+              <p class="text-sm text-white/80 flex items-center gap-2"><i data-feather="map-pin" class="w-4 h-4"></i>${vendor.location || 'Nigeria'}</p>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col gap-4 flex-1">
+            <p class="text-sm text-gray-600">${vendor.summary || vendor.headline || ''}</p>
+            ${formatHighlights(vendor.highlights)}
+            <div class="space-y-3 mt-auto">
+              ${socialButtons ? `<div class="flex flex-wrap gap-3">${socialButtons}</div>` : ''}
+              <button class="w-full inline-flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-900 font-semibold px-4 py-3 rounded-2xl hover:border-primary hover:text-primary transition-colors" data-vendor-profile="${vendor.id}">
+                <i data-feather="eye" class="w-4 h-4"></i>View profile
+              </button>
+            </div>
+          </div>
+        </article>
+      `;
+      }
+
+      function renderVendors(list) {
+        if (!vendorGrid) return;
+        if (!list.length) {
+          vendorGrid.innerHTML = '<p class="text-center text-gray-500 col-span-full">No merchants match your filters yet.</p>';
+          return;
+        }
+        vendorGrid.innerHTML = list.map(renderVendorCard).join('');
+        feather.replace();
+      }
+
+      async function loadListings() {
+        if (!vendorGrid) return;
+        vendorGrid.innerHTML = '<p class="text-center text-gray-500 col-span-full">Loading marketplace listings...</p>';
+        try {
+          const response = await fetch('/api/public/listings');
+          if (!response.ok) throw new Error('Request failed');
+          const data = await response.json();
+          vendors = (data.listings || []).map(normaliseListing);
+          if (!vendors.length) {
+            vendorGrid.innerHTML = '<p class="text-center text-gray-500 col-span-full">Marketplace listings will appear here soon.</p>';
+            return;
+          }
+          const uniqueCategories = new Set(vendors.flatMap(v => v.categories || []));
+          uniqueCategories.forEach(category => ensureCategoryOption(category));
+          renderVendors(vendors);
+        } catch (error) {
+          console.error('Unable to load listings', error);
+          vendorGrid.innerHTML = '<p class="text-center text-gray-500 col-span-full">Unable to load marketplace listings right now.</p>';
+        }
+      }
+
+      function filterVendors() {
+        const query = searchInput?.value?.toLowerCase() || '';
+        const category = categoryFilter?.value || '';
+        const filtered = vendors.filter(v => {
+          const matchesQuery = [v.name, v.summary, v.headline, v.location, ...(v.categories || [])]
+            .filter(Boolean)
+            .some(field => field.toLowerCase().includes(query));
+          const matchesCategory = category ? (v.categories || []).includes(category) : true;
+          return matchesQuery && matchesCategory;
+        });
+        renderVendors(filtered);
+      }
+
+      function ensureCategoryOption(category) {
+        if (!categoryFilter || !category) return;
+        const exists = Array.from(categoryFilter.options).some(option => option.value === category);
+        if (!exists) {
+          const opt = document.createElement('option');
+          opt.value = category;
+          opt.textContent = category;
+          categoryFilter.appendChild(opt);
+        }
+      }
+
+      function handleCategoryCard(category) {
+        if (!category) return;
+        ensureCategoryOption(category);
+        if (categoryFilter) {
+          categoryFilter.value = category;
+        }
+        filterVendors();
+        document.getElementById('merchant-wall')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      categoryCards.forEach(card => {
+        const category = card.getAttribute('data-category-card');
+        card.addEventListener('click', () => handleCategoryCard(category));
+        card.addEventListener('keypress', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            handleCategoryCard(category);
+          }
+        });
+      });
+
+      searchInput?.addEventListener('input', debounce(filterVendors, 200));
+      categoryFilter?.addEventListener('change', filterVendors);
+
+      function debounce(fn, delay) {
+        let timeout;
+        return (...args) => {
+          clearTimeout(timeout);
+          timeout = setTimeout(() => fn.apply(null, args), delay);
+        };
+      }
+
+      loadListings();
+    })();
+  </script>
+
+  <script src="assistant.js" defer></script>
+  <script src="assets/site-shell.js" defer></script>
+</body>
+</html>

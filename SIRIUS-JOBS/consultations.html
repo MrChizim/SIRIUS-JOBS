@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Consultations – Sirius Jobs</title>
+    <meta name="description" content="Book verified doctors, lawyers, and therapists for secure consultations. Affordable sessions with Sirius Jobs.">
+    <meta name="keywords" content="Sirius Jobs consultations, doctors, lawyers, therapists, professional services Nigeria">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="https://example.com/consultations.html">
+    <meta property="og:title" content="Professional Consultations – Sirius Jobs">
+    <meta property="og:description" content="Book verified doctors, lawyers, and therapists for secure consultations. Affordable sessions with Sirius Jobs.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://example.com/consultations.html">
+    <meta property="og:image" content="https://example.com/images/logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Professional Consultations – Sirius Jobs">
+    <meta name="twitter:description" content="Book verified doctors, lawyers, and therapists for secure consultations. Affordable sessions with Sirius Jobs.">
+    <meta name="twitter:image" content="https://example.com/images/logo.png">
+    <meta name="description" content="Get expert consultations from verified doctors, lawyers, and therapists. From ₦3,000 for 1-hour secure sessions with flexible extensions.">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" sizes="32x32" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0056b3',
+                        secondary: '#808080',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #0056b3;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .professional-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .professional-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 86, 179, 0.15);
+        }
+
+        .filter-tab {
+            transition: all 0.3s;
+        }
+
+        .filter-tab.active {
+            background: #0056b3;
+            color: white;
+        }
+
+        .star-rating {
+            color: #fbbf24;
+        }
+    </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+    <!-- Navigation -->
+    <nav data-sirius-shell="skip" class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <img src="images/logo.png" alt="SiriusJobs logo" class="h-10 sm:h-12 md:h-14 w-auto drop-shadow-2xl transition-transform group-hover:scale-105" />
+                    <span class="sr-only">SiriusJobs home</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center gap-8 flex-1 justify-center">
+                    <a href="index.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Home</a>
+                    <a href="services.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Services</a>
+                    <a href="jobs.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Jobs</a>
+                    <a href="consultations.html" class="nav-link text-sm font-semibold text-primary transition-colors">Consultations</a>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <a href="login.html" class="text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Sign in</a>
+                    <a href="consultation-pro-register.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-6 py-3 rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl">
+                        Register as Professional
+                        <i data-feather="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="menu-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <nav class="nav-menu-mobile">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="jobs.html">Jobs</a>
+        <a href="consultations.html" class="active">Consultations</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="findworker.html">Find Workers</a>
+        <a href="faq.html">FAQs</a>
+        <a href="about.html">About</a>
+        <a href="login.html">Sign In</a>
+        <a href="consultation-pro-register.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-full">Register as Professional</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-12 bg-gradient-to-br from-blue-50 to-white">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center space-y-6">
+                <div class="inline-flex items-center gap-2 bg-blue-100 text-primary px-4 py-2 rounded-full text-sm font-semibold">
+                    <i data-feather="shield-check" class="w-4 h-4"></i>
+                    <span>Verified Professionals Only</span>
+                </div>
+
+                <h1 class="text-4xl lg:text-6xl font-black leading-tight">
+                    Get Expert <span class="text-primary">Consultations</span> Anytime
+                </h1>
+
+                <p class="text-xl text-gray-600 leading-relaxed">
+                    Book verified doctors, lawyers, and therapists. Sessions start at 1 hour and can be extended in 30‑minute blocks.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                    <div class="text-center bg-white border border-gray-200 rounded-2xl py-4">
+                        <div class="text-2xl font-black text-gray-900">₦3,000</div>
+                        <div class="text-sm text-gray-600">1 hour base</div>
+                    </div>
+                    <div class="text-center bg-white border border-gray-200 rounded-2xl py-4">
+                        <div class="text-2xl font-black text-gray-900">+₦1,500</div>
+                        <div class="text-sm text-gray-600">per extra 30 min</div>
+                    </div>
+                    <div class="text-center bg-white border border-gray-200 rounded-2xl py-4">
+                        <div class="text-2xl font-black text-gray-900">Anonymous</div>
+                        <div class="text-sm text-gray-600">client usernames</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+                    <a href="login.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl hover:bg-primary/90 transition">
+                        Sign In
+                    </a>
+                    <a href="register.html?account=client" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary hover:text-white transition">
+                        Create Client Account
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-16">
+        <div class="container mx-auto px-4 lg:px-8">
+            <!-- Filter Tabs -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="filter-tab active px-8 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300" data-filter="all">
+                    All Professionals
+                </button>
+                <button class="filter-tab px-8 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300" data-filter="DOCTOR">
+                    Doctors
+                </button>
+                <button class="filter-tab px-8 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300" data-filter="LAWYER">
+                    Lawyers
+                </button>
+                <button class="filter-tab px-8 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300" data-filter="THERAPIST">
+                    Therapists
+                </button>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading" class="text-center py-20">
+                <div class="inline-block w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <p class="mt-4 text-gray-600">Loading professionals...</p>
+            </div>
+            <div id="auth-gate" class="hidden text-center py-16 bg-white rounded-2xl border border-gray-200">
+                <div class="max-w-xl mx-auto px-6">
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Create an account to view professionals</h3>
+                    <p class="text-gray-600 mb-6">Consultations require a client account so your username stays anonymous.</p>
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                        <a href="login.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl hover:bg-primary/90 transition">Sign In</a>
+                        <a href="register.html?account=client" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary hover:text-white transition">Create Client Account</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professionals Grid -->
+            <div id="professionals-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
+                <!-- Professional cards will be inserted here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="text-center py-20 hidden">
+                <i data-feather="user-x" class="w-16 h-16 mx-auto text-gray-400 mb-4"></i>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">No Professionals Found</h3>
+                <p class="text-gray-600">Try adjusting your filters or check back later.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-primary to-blue-700">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="max-w-3xl mx-auto text-center space-y-6">
+                <h2 class="text-4xl font-black text-white">
+                    Are You a Professional?
+                </h2>
+                <p class="text-xl text-blue-100">
+                    Join our platform and earn ₦2,500 per hour (₦1,250 per extra 30 minutes). The more sessions you take, the more you earn.
+                </p>
+                <a href="consultation-pro-register.html" class="inline-flex items-center gap-3 bg-white text-primary font-bold px-10 py-5 rounded-full hover:bg-blue-50 transition-all shadow-xl text-lg">
+                    <i data-feather="user-plus" class="w-6 h-6"></i>
+                    Register as Professional
+                </a>
+            </div>
+        </div>
+    </section>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="images/logo.png" alt="Sirius logo" class="h-12 sm:h-14 md:h-16 w-auto drop-shadow-2xl">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2026 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+
+
+    <script>
+        const API_URL = 'https://siriusjobs-backend.onrender.com/api';
+        let allProfessionals = [];
+        let currentFilter = 'all';
+
+        const fallbackProfessionals = [
+            {
+                _id: 'consult-aliyupokiman',
+                firstName: 'Aliyu',
+                lastName: 'Pokiman',
+                profession: 'LAWYER',
+                specialization: 'Property, contracts & SME compliance',
+                yearsOfExperience: 9,
+                totalSessions: 142,
+                totalReviews: 48,
+                averageRating: 4.9,
+                bio: 'Barrister Aliyu advises estate developers and SMEs on contracts, property closings and dispute resolution.',
+                phone: '+2348035528710',
+                whatsapp: 'https://wa.me/2348035528710',
+                email: 'aliyupokiman@siriusjobs.ng'
+            },
+            {
+                _id: 'consult-joshuaogaraku',
+                firstName: 'Joshua',
+                lastName: 'Ogaraku',
+                profession: 'DOCTOR',
+                specialization: 'Family medicine & wellness planning',
+                yearsOfExperience: 11,
+                totalSessions: 188,
+                totalReviews: 61,
+                averageRating: 4.8,
+                bio: 'Dr. Joshua supports families with general consultations, follow-ups and personalised wellness plans.',
+                phone: '+2348112233445',
+                whatsapp: 'https://wa.me/2348112233445',
+                email: 'joshua.ogaraku@siriusjobs.ng'
+            },
+            {
+                _id: 'consult-obinnachukwuocha',
+                firstName: 'Obinna',
+                lastName: 'Chukwuocha',
+                profession: 'DOCTOR',
+                specialization: 'Internal medicine & diagnostics',
+                yearsOfExperience: 13,
+                totalSessions: 205,
+                totalReviews: 74,
+                averageRating: 4.9,
+                bio: 'Dr. Obinna focuses on diagnostics, chronic care management and complex case reviews for adults.',
+                phone: '+2348079901122',
+                whatsapp: 'https://wa.me/2348079901122',
+                email: 'obinna.chukwuocha@siriusjobs.ng'
+            },
+            {
+                _id: 'consult-arthuriyanu',
+                firstName: 'Arthur Onishe',
+                lastName: 'Iyanu',
+                profession: 'DOCTOR',
+                specialization: 'Emergency & critical care',
+                yearsOfExperience: 12,
+                totalSessions: 176,
+                totalReviews: 58,
+                averageRating: 4.9,
+                bio: 'Dr. Arthur delivers urgent response support, clinic triage training and telehealth follow-ups.',
+                phone: '+2348097765432',
+                whatsapp: 'https://wa.me/2348097765432',
+                email: 'arthur.iyanu@siriusjobs.ng'
+            },
+            {
+                _id: 'consult-amandaokoro',
+                firstName: 'Amanda',
+                lastName: 'Okoro',
+                profession: 'THERAPIST',
+                specialization: 'Anxiety, depression & trauma counseling',
+                yearsOfExperience: 7,
+                totalSessions: 129,
+                totalReviews: 42,
+                averageRating: 4.9,
+                bio: 'Amanda provides compassionate counseling for mental health issues, stress management and personal growth.',
+                phone: '+2348156789012',
+                whatsapp: 'https://wa.me/2348156789012',
+                email: 'amanda.okoro@siriusjobs.ng'
+            },
+            {
+                _id: 'consult-davidchisom',
+                firstName: 'David',
+                lastName: 'Chisom',
+                profession: 'THERAPIST',
+                specialization: 'Relationship & family therapy',
+                yearsOfExperience: 9,
+                totalSessions: 154,
+                totalReviews: 51,
+                averageRating: 4.8,
+                bio: 'David specializes in relationship counseling, family dynamics and conflict resolution with evidence-based approaches.',
+                phone: '+2348234567890',
+                whatsapp: 'https://wa.me/2348234567890',
+                email: 'david.chisom@siriusjobs.ng'
+            }
+        ];
+
+        function normalisePhone(value) {
+            if (!value) return '';
+            const digits = value.toString().replace(/\D/g, '');
+            if (!digits) return '';
+            if (digits.startsWith('234')) return `+${digits}`;
+            if (digits.startsWith('0')) return `+234${digits.slice(1)}`;
+            if (value.toString().trim().startsWith('+')) return `+${digits}`;
+            return `+${digits}`;
+        }
+
+        function buildWhatsappUrl(value) {
+            if (!value) return '';
+            if (value.startsWith('http')) return value;
+            const digits = value.replace(/\D/g, '');
+            if (!digits) return '';
+            if (digits.startsWith('234')) return `https://wa.me/${digits}`;
+            if (digits.startsWith('0')) return `https://wa.me/234${digits.slice(1)}`;
+            return `https://wa.me/${digits}`;
+        }
+
+        function formatRating(value) {
+            const numeric = typeof value === 'number' && !Number.isNaN(value) ? value : 0;
+            return numeric.toFixed(1);
+        }
+
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hamburger menu functionality
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('.nav-menu-mobile');
+
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', () => {
+                    menuToggle.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                });
+
+                document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+                    link.addEventListener('click', () => {
+                        menuToggle.classList.remove('active');
+                        navMenu.classList.remove('active');
+                    });
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                        menuToggle.classList.remove('active');
+                        navMenu.classList.remove('active');
+                    }
+                });
+            }
+
+            // Filter tabs
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Update active state
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Filter professionals
+                    currentFilter = tab.dataset.filter;
+                    renderProfessionals();
+                });
+            });
+
+            const authGate = document.getElementById('auth-gate');
+            const sessionKeys = ['siriusWorkerAuth', 'siriusClientAuth', 'siriusProAuth', 'siriusEmployerAuth'];
+            const hasSession = () =>
+                sessionKeys.some((key) => window.SiriusSession?.parse(key)) ||
+                Boolean(localStorage.getItem('siriusMarketplaceSession'));
+
+            function showAuthGate() {
+                const grid = document.getElementById('professionals-grid');
+                const loading = document.getElementById('loading');
+                const emptyState = document.getElementById('empty-state');
+                loading.classList.add('hidden');
+                grid.classList.add('hidden');
+                emptyState.classList.add('hidden');
+                authGate?.classList.remove('hidden');
+            }
+
+            // Fetch professionals
+            async function fetchProfessionals() {
+                if (!hasSession()) {
+                    showAuthGate();
+                    return;
+                }
+                try {
+                    const response = await fetch(`${API_URL}/consultation/professionals`);
+                    if (!response.ok) throw new Error('Failed to fetch professionals');
+                    const data = await response.json();
+                    allProfessionals = Array.isArray(data) && data.length ? data : fallbackProfessionals;
+                    renderProfessionals();
+                } catch (error) {
+                    console.error('Error fetching professionals:', error);
+                    allProfessionals = fallbackProfessionals;
+                    renderProfessionals();
+                }
+            }
+
+            // Render professionals
+            function renderProfessionals() {
+                if (!hasSession()) {
+                    showAuthGate();
+                    return;
+                }
+                const grid = document.getElementById('professionals-grid');
+                const loading = document.getElementById('loading');
+                const emptyState = document.getElementById('empty-state');
+                authGate?.classList.add('hidden');
+
+                // Filter professionals
+                let filtered = allProfessionals;
+                if (currentFilter !== 'all') {
+                    filtered = allProfessionals.filter(p => p.profession === currentFilter);
+                }
+
+                // Hide loading
+                loading.classList.add('hidden');
+
+                // Show empty state if no results
+                if (filtered.length === 0) {
+                    grid.classList.add('hidden');
+                    emptyState.classList.remove('hidden');
+                    return;
+                }
+
+                // Show grid
+                emptyState.classList.add('hidden');
+                grid.classList.remove('hidden');
+
+                // Render cards
+                grid.innerHTML = filtered.map(pro => `
+                <div class="professional-card bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                    <!-- Header -->
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900">${pro.firstName} ${pro.lastName}</h3>
+                            <span class="inline-block mt-2 px-3 py-1 bg-blue-50 text-primary text-sm font-semibold rounded-full">
+                                ${pro.profession}
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-1 star-rating">
+                            ${renderStars(pro.averageRating)}
+                            <span class="ml-1 text-sm text-gray-600">${formatRating(pro.averageRating)}</span>
+                        </div>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-feather="briefcase" class="w-4 h-4"></i>
+                            <span>${pro.specialization}</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-feather="award" class="w-4 h-4"></i>
+                            <span>${pro.yearsOfExperience} years experience</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-feather="message-circle" class="w-4 h-4"></i>
+                            <span>${pro.totalSessions} sessions completed</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-feather="star" class="w-4 h-4"></i>
+                            <span>${pro.totalReviews} reviews</span>
+                        </div>
+                    </div>
+
+                    ${renderContactActions()}
+
+                    <!-- Bio Preview -->
+                    <p class="text-sm text-gray-600 mb-6 line-clamp-2">
+                        ${pro.bio}
+                    </p>
+
+                    <!-- Action Button -->
+                    <a href="consultation-profile.html?id=${pro._id}" class="block w-full text-center bg-primary text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition-colors">
+                        View Profile & Book
+                    </a>
+                </div>
+            `).join('');
+
+                // Reinitialize feather icons
+                feather.replace();
+            }
+
+            function renderContactActions() {
+                return `
+                <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 mb-4">
+                    <p class="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                        <i data-feather="lock" class="w-4 h-4"></i>
+                        Chat & calls stay inside Sirius
+                    </p>
+                    <p class="text-xs text-slate-500 mt-2">
+                        Personal WhatsApp, phone, and email details are hidden. Book this professional to unlock our in-app chat and call tools.
+                    </p>
+                </div>
+            `;
+            }
+
+            // Render star rating
+            function renderStars(rating) {
+                const safeRating = typeof rating === 'number' ? rating : 0;
+                const fullStars = Math.floor(safeRating);
+                const hasHalfStar = safeRating % 1 >= 0.5;
+                const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                let stars = '';
+                for (let i = 0; i < fullStars; i++) {
+                    stars += '<i data-feather="star" class="w-4 h-4 fill-current"></i>';
+                }
+                if (hasHalfStar) {
+                    stars += '<i data-feather="star" class="w-4 h-4"></i>';
+                }
+                for (let i = 0; i < emptyStars; i++) {
+                    stars += '<i data-feather="star" class="w-4 h-4 text-gray-300"></i>';
+                }
+                return stars;
+            }
+
+            // Initialize
+            feather.replace();
+            fetchProfessionals();
+        }); // End DOMContentLoaded
+    </script>
+    <script src="assistant.js"></script>
+  <script src="assets/site-shell.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sirius Jobs – Verified Skilled Workers in Nigeria</title>
+    <meta name="description" content="Find verified workers, professional consultations, and marketplace vendors across Nigeria. Hire faster with Sirius Jobs.">
+    <meta name="keywords" content="Sirius Jobs, Nigeria jobs, hire workers, artisans, consultations, marketplace, verified professionals">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="https://example.com/index.html">
+    <meta property="og:title" content="Sirius Jobs – Verified Skilled Workers in Nigeria">
+    <meta property="og:description" content="Find verified workers, professional consultations, and marketplace vendors across Nigeria. Hire faster with Sirius Jobs.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://example.com/index.html">
+    <meta property="og:image" content="https://example.com/images/logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sirius Jobs – Verified Skilled Workers in Nigeria">
+    <meta name="twitter:description" content="Find verified workers, professional consultations, and marketplace vendors across Nigeria. Hire faster with Sirius Jobs.">
+    <meta name="twitter:image" content="https://example.com/images/logo.png">
+    <meta name="description" content="Connecting verified Nigerian blue-collar workers with individuals and businesses. Find reliable electricians, plumbers, cleaners, and artisans.">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" sizes="32x32" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0056b3',
+                        secondary: '#808080',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes slide-in {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .gradient-mesh {
+            background: radial-gradient(at 0% 0%, rgba(0, 86, 179, 0.15) 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, rgba(0, 86, 179, 0.2) 0px, transparent 50%),
+                        radial-gradient(at 50% 50%, rgba(0, 86, 179, 0.1) 0px, transparent 50%);
+        }
+
+        .bento-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .bento-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 86, 179, 0.2);
+        }
+
+        .service-badge {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Modern Navigation */
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #0056b3;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: #0056b3 !important;
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .mobile-menu-link.active {
+            color: #0056b3 !important;
+        }
+    </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
+</head>
+<body class="bg-white text-gray-900 antialiased">
+    <!-- Modern Navigation with Transparency -->
+    <nav data-sirius-shell="skip" class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <img src="images/logo.png" alt="SiriusJobs logo" class="h-10 sm:h-12 md:h-14 w-auto drop-shadow-2xl transition-transform group-hover:scale-105" />
+                    <span class="sr-only">SiriusJobs home</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Home</a>
+                    <a href="services.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Services</a>
+                    <a href="jobs.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Jobs</a>
+                    <a href="consultations.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Consultations</a>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <a href="login.html" class="text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Sign in</a>
+                    <a href="register.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-6 py-3 rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl">
+                        Get Started
+                        <i data-feather="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="menu-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <nav class="nav-menu-mobile">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="jobs.html">Jobs</a>
+        <a href="consultations.html">Consultations</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="findworker.html">Find Workers</a>
+        <a href="faq.html">FAQs</a>
+        <a href="about.html">About</a>
+        <a href="login.html">Sign In</a>
+        <a href="register.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-full hover:bg-blue-700 transition-all">Get Started</a>
+    </nav>
+
+    <!-- Split Hero Section with Image -->
+    <section class="pt-32 pb-20 lg:pb-32 overflow-hidden">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <!-- Left Content -->
+                <div class="space-y-8">
+                    <!-- Trust Badge -->
+                    <div class="inline-flex items-center gap-2 bg-blue-50 text-primary px-4 py-2 rounded-full text-sm font-semibold">
+                        <div class="flex -space-x-2">
+                            <div class="w-6 h-6 rounded-full bg-primary/20 border-2 border-white"></div>
+                            <div class="w-6 h-6 rounded-full bg-primary/30 border-2 border-white"></div>
+                            <div class="w-6 h-6 rounded-full bg-primary/40 border-2 border-white"></div>
+                        </div>
+                        <span>Trusted by 100+ Nigerians</span>
+                    </div>
+
+                    <!-- Main Headline -->
+                    <h1 class="text-5xl lg:text-7xl font-black leading-tight">
+                        Find <span class="text-primary">Verified</span> Workers in Minutes
+                    </h1>
+
+                    <p class="text-xl text-gray-600 leading-relaxed">
+                        Connect with trusted artisans, professionals, and service providers across Nigeria. From plumbers to doctors, we've got you covered.
+                    </p>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="findworker.html" class="group inline-flex items-center justify-center gap-3 bg-primary text-white font-bold px-8 py-4 rounded-full hover:bg-blue-700 transition-all shadow-xl hover:shadow-2xl">
+                            <i data-feather="search" class="w-5 h-5"></i>
+                            Find Workers
+                            <i data-feather="arrow-right" class="w-5 h-5 transform group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="register.html" class="inline-flex items-center justify-center gap-3 bg-gray-100 text-gray-900 font-bold px-8 py-4 rounded-full hover:bg-gray-200 transition-all">
+                            <i data-feather="user-plus" class="w-5 h-5"></i>
+                            Join as Worker
+                        </a>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="grid grid-cols-3 gap-8 pt-8">
+                        <div>
+                            <div class="text-3xl font-black text-gray-900">0</div>
+                            <div class="text-sm text-gray-600">Active Workers</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-black text-gray-900">0</div>
+                            <div class="text-sm text-gray-600">Jobs Done</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-black text-gray-900">0</div>
+                            <div class="text-sm text-gray-600">Satisfaction</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Image/Visual -->
+                <div class="relative">
+                    <!-- Decorative Elements -->
+                    <div class="absolute -top-10 -right-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-10 -left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
+
+                    <!-- Main Image Card -->
+                    <div class="relative bg-gradient-to-br from-primary to-blue-700 rounded-3xl p-8 shadow-2xl overflow-hidden">
+                        <div class="absolute inset-0 bg-black/10"></div>
+                        <div class="relative space-y-6">
+                            <!-- Hero quick paths -->
+                            <div class="flex flex-col gap-4">
+                                <a href="marketplace.html" class="flex-1 bg-white/95 backdrop-blur-sm rounded-2xl px-5 py-4 flex items-center gap-4 shadow-xl animate-float hover:-translate-y-1 transition">
+                                    <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+                                        <i data-feather="shopping-bag" class="w-6 h-6 text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-900">Marketplace</h3>
+                                        <p class="text-xs text-gray-600">Shop trusted vendors & deals</p>
+                                    </div>
+                                </a>
+                                <a href="consultations.html" class="flex-1 bg-white/95 backdrop-blur-sm rounded-2xl px-5 py-4 flex items-center gap-4 shadow-xl animate-float hover:-translate-y-1 transition">
+                                    <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+                                        <i data-feather="activity" class="w-6 h-6 text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-900">Consultations</h3>
+                                        <p class="text-xs text-gray-600">Doctors, lawyers & therapists</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trusted By Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="text-center mb-12">
+                <p class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Featured Services</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="flex flex-col items-center justify-center p-6 bg-white rounded-2xl">
+                    <i data-feather="briefcase" class="w-8 h-8 text-primary mb-2"></i>
+                    <p class="font-semibold text-gray-900">Job Listings</p>
+                </div>
+                <div class="flex flex-col items-center justify-center p-6 bg-white rounded-2xl">
+                    <i data-feather="users" class="w-8 h-8 text-primary mb-2"></i>
+                    <p class="font-semibold text-gray-900">Find Workers</p>
+                </div>
+                <div class="flex flex-col items-center justify-center p-6 bg-white rounded-2xl">
+                    <i data-feather="video" class="w-8 h-8 text-primary mb-2"></i>
+                    <p class="font-semibold text-gray-900">Consultations</p>
+                </div>
+                <div class="flex flex-col items-center justify-center p-6 bg-white rounded-2xl">
+                    <i data-feather="shopping-bag" class="w-8 h-8 text-primary mb-2"></i>
+                    <p class="font-semibold text-gray-900">Marketplace</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bento Grid Services Section -->
+    <section class="py-24 lg:py-32">
+        <div class="container mx-auto px-4 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="inline-block bg-primary/10 text-primary text-sm font-bold uppercase tracking-wider px-4 py-2 rounded-full mb-4">
+                    Our Services
+                </span>
+                <h2 class="text-4xl lg:text-6xl font-black mb-6">
+                    Everything You Need,<br/>
+                    <span class="text-primary">All In One Place</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    From finding workers to professional consultations and marketplace shopping
+                </p>
+            </div>
+
+            <!-- Bento Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-6 auto-rows-fr">
+                <!-- Large Card - Find Workers -->
+                <div class="md:col-span-4 md:row-span-2 bento-card bg-gradient-to-br from-primary to-blue-700 rounded-3xl p-8 lg:p-12 text-white relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+                    <div class="relative z-10 h-full flex flex-col justify-between">
+                        <div class="space-y-6">
+                            <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                                <i data-feather="search" class="w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-3xl lg:text-4xl font-black mb-4">Find Verified Workers</h3>
+                                <p class="text-white/80 text-lg leading-relaxed mb-6">
+                                    Search through verified artisans, plumbers, electricians, and more. Background-checked and rated by real clients.
+                                </p>
+                                <ul class="space-y-3">
+                                    <li class="flex items-center gap-3">
+                                        <i data-feather="check-circle" class="w-5 h-5"></i>
+                                        <span>Verified identities & credentials</span>
+                                    </li>
+                                    <li class="flex items-center gap-3">
+                                        <i data-feather="check-circle" class="w-5 h-5"></i>
+                                        <span>Real client reviews & ratings</span>
+                                    </li>
+                                    <li class="flex items-center gap-3">
+                                        <i data-feather="check-circle" class="w-5 h-5"></i>
+                                        <span>24/7 support & protection</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <a href="findworker.html" class="inline-flex items-center gap-2 bg-white text-primary font-bold px-8 py-4 rounded-full hover:bg-gray-100 transition-all">
+                                Browse Workers
+                                <i data-feather="arrow-right" class="w-5 h-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Consultations Card -->
+                <div class="md:col-span-2 bento-card bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-8 text-white relative overflow-hidden">
+                    <div class="absolute bottom-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-2xl"></div>
+                    <div class="relative z-10 h-full flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div class="w-14 h-14 bg-primary/20 rounded-2xl flex items-center justify-center">
+                                <i data-feather="video" class="w-7 h-7 text-primary"></i>
+                            </div>
+                            <h3 class="text-2xl font-black">Professional Consultations</h3>
+                            <p class="text-white/70 leading-relaxed">
+                                Connect with doctors, lawyers & therapists via secure chat and calls from just ₦3000
+                            </p>
+                        </div>
+                        <a href="consultations.html" class="inline-flex items-center gap-2 text-primary font-semibold mt-4 group">
+                            Book Now
+                            <i data-feather="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Jobs Card -->
+                <div class="md:col-span-2 bento-card bg-blue-50 rounded-3xl p-8 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/5 to-transparent"></div>
+                    <div class="relative z-10 h-full flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center">
+                                <i data-feather="briefcase" class="w-7 h-7 text-primary"></i>
+                            </div>
+                            <h3 class="text-2xl font-black text-gray-900">Job Listings</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Browse or post job opportunities for skilled professionals
+                            </p>
+                        </div>
+                        <a href="jobs.html" class="inline-flex items-center gap-2 text-primary font-semibold mt-4 group">
+                            View Jobs
+                            <i data-feather="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Marketplace Card -->
+                <div class="md:col-span-4 bento-card bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 rounded-3xl p-8 lg:p-12 relative overflow-hidden">
+                    <div class="absolute -bottom-10 -right-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+                    <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                        <div class="space-y-4 max-w-2xl">
+                            <div class="flex items-center gap-3">
+                                <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center">
+                                    <i data-feather="shopping-bag" class="w-7 h-7 text-primary"></i>
+                                </div>
+                                <span class="inline-block bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                                    New
+                                </span>
+                            </div>
+                            <h3 class="text-3xl font-black text-gray-900">Sirius Marketplace</h3>
+                            <p class="text-gray-600 text-lg leading-relaxed">
+                                Shop premium supplies from verified vendors. Palm oil, paint, building materials & more delivered across Nigeria.
+                            </p>
+                            <div class="flex flex-wrap gap-4 pt-2">
+                                <div class="flex items-center gap-2 text-sm text-gray-700">
+                                    <i data-feather="check" class="w-4 h-4 text-primary"></i>
+                                    <span>Verified Vendors</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-gray-700">
+                                    <i data-feather="check" class="w-4 h-4 text-primary"></i>
+                                    <span>Quality Guaranteed</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-gray-700">
+                                    <i data-feather="check" class="w-4 h-4 text-primary"></i>
+                                    <span>Fast Delivery</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="marketplace.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-full hover:bg-blue-700 transition-all shadow-lg whitespace-nowrap">
+                            Explore
+                            <i data-feather="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-24 lg:py-32 bg-gray-50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="text-center mb-20">
+                <span class="inline-block bg-primary/10 text-primary text-sm font-bold uppercase tracking-wider px-4 py-2 rounded-full mb-4">
+                    How It Works
+                </span>
+                <h2 class="text-4xl lg:text-6xl font-black mb-6">
+                    Get Started In <span class="text-primary">3 Simple Steps</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Finding trusted workers has never been easier
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
+                <!-- Step 1 -->
+                <div class="relative">
+                    <div class="absolute -top-4 -left-4 w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
+                        <span class="text-3xl font-black text-primary">1</span>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 pt-12 shadow-lg hover:shadow-2xl transition-shadow">
+                        <div class="w-16 h-16 bg-gradient-to-br from-primary to-blue-700 rounded-2xl flex items-center justify-center mb-6">
+                            <i data-feather="search" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-black mb-4">Search & Browse</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Search our database of verified workers by skill, location, and ratings. Filter by availability and experience level.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative lg:mt-12">
+                    <div class="absolute -top-4 -left-4 w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
+                        <span class="text-3xl font-black text-primary">2</span>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 pt-12 shadow-lg hover:shadow-2xl transition-shadow">
+                        <div class="w-16 h-16 bg-gradient-to-br from-primary to-blue-700 rounded-2xl flex items-center justify-center mb-6">
+                            <i data-feather="message-circle" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-black mb-4">Connect & Chat</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Review profiles, check ratings, and contact workers directly. Chat to discuss your project details and get quotes.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative lg:mt-24">
+                    <div class="absolute -top-4 -left-4 w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
+                        <span class="text-3xl font-black text-primary">3</span>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 pt-12 shadow-lg hover:shadow-2xl transition-shadow">
+                        <div class="w-16 h-16 bg-gradient-to-br from-primary to-blue-700 rounded-2xl flex items-center justify-center mb-6">
+                            <i data-feather="check-circle" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-black mb-4">Hire & Review</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Book the worker, get your job done, and leave a review. Help others make informed decisions with your feedback.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Stats -->
+    <section class="py-12 lg:py-16 bg-white">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-100 rounded-3xl p-6">
+                    <p class="text-4xl font-black text-primary" id="live-user-count">0</p>
+                    <p class="text-sm text-gray-600 uppercase tracking-wider mt-2">Verified Users</p>
+                </div>
+                <div class="bg-gradient-to-br from-gray-50 to-white border border-gray-100 rounded-3xl p-6">
+                    <p class="text-4xl font-black text-gray-900" id="live-worker-count">0</p>
+                    <p class="text-sm text-gray-600 uppercase tracking-wider mt-2">Active Workers</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-50 to-white border border-blue-100 rounded-3xl p-6">
+                    <p class="text-4xl font-black text-primary" id="live-job-count">0</p>
+                    <p class="text-sm text-gray-600 uppercase tracking-wider mt-2">Open Jobs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof / Testimonials -->
+    <section class="py-24 lg:py-32">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block bg-primary/10 text-primary text-sm font-bold uppercase tracking-wider px-4 py-2 rounded-full mb-4">
+                    Testimonials
+                </span>
+                <h2 class="text-4xl lg:text-6xl font-black mb-6">
+                    Trusted By<br/>
+                    <span class="text-primary">Nigerians</span>
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white rounded-3xl p-8 shadow-lg">
+                    <div class="flex items-center gap-1 mb-4">
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed">
+                        "Found an excellent electrician through Sirius Jobs. Professional, verified, and did amazing work. Highly recommend!"
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                            <span class="font-bold text-primary">AO</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-900">Adebayo O.</p>
+                            <p class="text-sm text-gray-500">Lagos, Nigeria</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-white rounded-3xl p-8 shadow-lg">
+                    <div class="flex items-center gap-1 mb-4">
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed">
+                        "The consultation feature is a game-changer. Spoke to a doctor within minutes. Very affordable and convenient."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                            <span class="font-bold text-primary">CN</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-900">Chioma N.</p>
+                            <p class="text-sm text-gray-500">Port Harcourt, Nigeria</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-white rounded-3xl p-8 shadow-lg">
+                    <div class="flex items-center gap-1 mb-4">
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-feather="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed">
+                        "As a worker, Sirius Jobs has connected me with so many clients. The platform is easy to use and payments are secure."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                            <span class="font-bold text-primary">ET</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-900">Emmanuel T.</p>
+                            <p class="text-sm text-gray-500">Abuja, Nigeria</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 lg:py-32 bg-gradient-to-br from-primary via-blue-600 to-blue-800 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="container mx-auto px-4 lg:px-8 relative z-10">
+            <div class="max-w-4xl mx-auto text-center space-y-8">
+                <h2 class="text-4xl lg:text-6xl font-black leading-tight">
+                    Ready To Find Your<br/>Perfect Match?
+                </h2>
+                <p class="text-xl text-white/90 max-w-2xl mx-auto">
+                    Join thousands of satisfied clients and workers. Get started for free today.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                    <a href="register.html" class="inline-flex items-center justify-center gap-3 bg-white text-primary font-bold px-10 py-5 rounded-full hover:bg-gray-100 transition-all shadow-2xl text-lg">
+                        <i data-feather="user-plus" class="w-6 h-6"></i>
+                        Create Free Account
+                    </a>
+                    <a href="findworker.html" class="inline-flex items-center justify-center gap-3 bg-white/10 backdrop-blur-sm border-2 border-white text-white font-bold px-10 py-5 rounded-full hover:bg-white/20 transition-all text-lg">
+                        <i data-feather="search" class="w-6 h-6"></i>
+                        Browse Workers
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="images/logo.png" alt="Sirius logo" class="h-12 sm:h-14 md:h-16 w-auto drop-shadow-2xl">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2026 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+
+
+    <script>
+        const formatCount = (value) => new Intl.NumberFormat('en-NG', { maximumFractionDigits: 0 }).format(value ?? 0);
+
+        const statNodes = {
+            users: document.getElementById('live-user-count'),
+            workers: document.getElementById('live-worker-count'),
+            jobs: document.getElementById('live-job-count'),
+        };
+
+        const artisanCount = document.getElementById('artisan-count');
+
+        const updateStat = (node, value) => {
+            if (node) {
+                node.textContent = formatCount(value);
+            }
+        };
+
+        async function fetchLiveStats() {
+            try {
+                const response = await fetch('/api/v2/public/stats');
+                if (!response.ok) throw new Error('Live stats unavailable');
+                const payload = await response.json();
+                const stats = payload.data ?? {};
+                updateStat(statNodes.users, stats.users);
+                updateStat(statNodes.workers, stats.activeWorkers ?? stats.workers);
+                updateStat(statNodes.jobs, stats.jobs);
+                updateStat(artisanCount, stats.workers);
+            } catch (error) {
+                console.warn('Live stats unavailable', error);
+            }
+        }
+
+        fetchLiveStats();
+
+        // Hamburger menu functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu-mobile');
+
+        if (menuToggle && navMenu) {
+            // Toggle menu on button click
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // Close menu when clicking a nav link
+            document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            });
+        }
+
+        const highlightActiveLinks = () => {
+            const currentPage = window.location.pathname.replace(/^\/+/, '') || 'index.html';
+            const linkCollections = [
+                ...document.querySelectorAll('.nav-link'),
+                ...document.querySelectorAll('.mobile-menu-link'),
+            ];
+
+            linkCollections.forEach(link => {
+                const href = link.getAttribute('href');
+                if (!href) return;
+                const resolved = new URL(href, window.location.href);
+                const linkPath = resolved.pathname.replace(/^\/+/, '') || 'index.html';
+                link.classList.toggle('active', linkPath === currentPage);
+            });
+        };
+
+        highlightActiveLinks();
+
+        window.feather?.replace?.();
+    </script>
+    <script src="assistant.js"></script>
+  <script src="assets/site-shell.js" defer></script>
+</body>
+</html>

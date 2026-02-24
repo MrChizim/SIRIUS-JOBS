@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Find Artisans — Sirius Jobs</title>
+  <meta name="description" content="Search verified artisans and skilled workers across Nigeria. Filter by category, skill, and location.">
+  <meta name="keywords" content="Sirius Jobs, find workers, artisans, Nigeria, verified workers, hire artisans">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://example.com/findworker.html">
+  <meta property="og:title" content="Find Artisans — Sirius Jobs">
+  <meta property="og:description" content="Search verified artisans and skilled workers across Nigeria. Filter by category, skill, and location.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://example.com/findworker.html">
+  <meta property="og:image" content="https://example.com/images/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Find Artisans — Sirius Jobs">
+  <meta name="twitter:description" content="Search verified artisans and skilled workers across Nigeria. Filter by category, skill, and location.">
+  <meta name="twitter:image" content="https://example.com/images/logo.png">
+  <meta name="description" content="Find verified artisans by skill and location on Sirius Jobs." />
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" sizes="32x32" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0056b3',
+            secondary: '#808080',
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    
+    body { font-family: 'Inter', sans-serif; }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .animated-gradient {
+      background-size: 200% 200%;
+      animation: gradient-shift 15s ease infinite;
+    }
+
+    .worker-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .worker-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 86, 179, 0.15);
+    }
+  </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50/30 text-gray-900">
+
+  <!-- NAVIGATION -->
+  <nav data-sirius-shell="skip" class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-200/50 z-50">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center gap-3">
+          <img src="images/logo.png" alt="SiriusJobs logo" class="h-10 sm:h-12 md:h-14 w-auto drop-shadow-2xl transition-transform group-hover:scale-105">
+          </a>
+
+        <div class="hidden lg:flex items-center gap-8 text-sm font-semibold">
+          <a href="index.html" class="text-gray-600 hover:text-primary transition-colors">Home</a>
+          <a href="services.html" class="text-gray-600 hover:text-primary transition-colors">Services</a>
+          <a href="jobs.html" class="text-gray-600 hover:text-primary transition-colors">Jobs</a>
+          <a href="consultations.html" class="text-gray-600 hover:text-primary transition-colors">Consultations</a>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a href="login.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-2.5 rounded-full hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+            <i data-feather="log-in" class="w-4 h-4"></i>
+            Login
+          </a>
+          <button class="menu-toggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <nav class="nav-menu-mobile">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="consultations.html">Consultations</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="findworker.html" class="active">Find Workers</a>
+    <a href="faq.html">FAQs</a>
+    <a href="about.html">About</a>
+    <a href="login.html">Login</a>
+  </nav>
+
+  <!-- HERO WITH SEARCH -->
+  <header class="pt-24 pb-16 hero-gradient text-white animated-gradient">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="text-center max-w-4xl mx-auto mb-10">
+        <h1 class="text-4xl md:text-6xl font-black mb-4 leading-tight">Find Trusted, Verified Artisans</h1>
+        <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">Browse top-rated plumbers, electricians, carpenters and more — filtered by skill and location. Only verified artisans are shown.</p>
+      </div>
+
+      <!-- Advanced Search Card -->
+      <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-8 border border-gray-100">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <!-- Search -->
+            <div class="lg:col-span-1">
+              <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Search</label>
+              <div class="relative">
+                <i data-feather="search" class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input
+                  id="searchInput"
+                  type="search"
+                  placeholder="Search artisan"
+                  class="w-full rounded-2xl bg-gray-50 border-2 border-transparent py-3 pl-11 pr-4 text-gray-700 font-medium placeholder:text-gray-400 focus:border-primary focus:bg-white transition-all"
+                />
+              </div>
+            </div>
+
+            <!-- Category -->
+            <div class="lg:col-span-1">
+              <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Category</label>
+              <select id="categoryFilter" class="w-full rounded-2xl bg-gray-50 border-2 border-transparent py-3 px-4 text-gray-700 font-medium focus:border-primary focus:bg-white transition-all">
+                <option value="">All Categories</option>
+              </select>
+            </div>
+
+            <!-- Services -->
+            <div class="lg:col-span-1">
+              <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Services</label>
+              <select id="skillFilter" class="w-full rounded-2xl bg-gray-50 border-2 border-transparent py-3 px-4 text-gray-700 font-medium focus:border-primary focus:bg-white transition-all">
+                <option value="">All Services</option>
+              </select>
+            </div>
+
+            <!-- Location -->
+            <div class="lg:col-span-1">
+              <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Location</label>
+              <select id="locationFilter" class="w-full rounded-2xl bg-gray-50 border-2 border-transparent py-3 px-4 text-gray-700 font-medium focus:border-primary focus:bg-white transition-all">
+                <option value="">All Locations</option>
+              </select>
+            </div>
+
+            <!-- Sort -->
+            <div class="lg:col-span-1">
+              <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Sort</label>
+              <select id="sortBy" class="w-full rounded-2xl bg-gray-50 border-2 border-transparent py-3 px-4 text-gray-700 font-medium focus:border-primary focus:bg-white transition-all">
+                <option value="relevance">Relevance</option>
+                <option value="rating_desc">Highest Rated</option>
+                <option value="reviews_desc">Most Reviews</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <p class="mt-5 text-sm text-center text-white/80">Can't find the specialist you need? <a href="contact.html" class="text-white font-bold underline hover:no-underline">Contact us</a> and we'll match you manually.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="py-12 md:py-16">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div id="resultsInfo" class="mb-6 flex items-center justify-between flex-wrap gap-3">
+        <span id="resultsCountText" class="text-sm font-bold text-gray-700">&nbsp;</span>
+        <span class="text-xs text-gray-600">👩‍⚕️ Want your medical, legal or mental health practice listed? <a href="consultations.html#join" class="text-primary font-bold hover:underline">Apply via our partner program</a>.</span>
+      </div>
+      <div id="auth-gate" class="hidden text-center py-16 bg-white rounded-2xl border border-gray-200 mb-10">
+        <div class="max-w-xl mx-auto px-6">
+          <h3 class="text-2xl font-black text-gray-900 mb-4">Create an account to view workers</h3>
+          <p class="text-gray-600 mb-6">Sign in to view full profiles, contact workers, and leave verified reviews.</p>
+          <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="login.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl hover:bg-primary/90 transition">Sign In</a>
+            <a href="register.html" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary hover:text-white transition">Create Account</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured Services -->
+      <div class="bg-gradient-to-br from-primary/5 to-blue-50 border border-primary/10 rounded-3xl p-8 md:p-10 mb-10 shadow-xl">
+        <h2 class="text-3xl font-black text-gray-900 mb-6">Need Something Extra Fast?</h2>
+        <div class="grid gap-6 md:grid-cols-3">
+          <div class="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div class="mb-6">
+              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                <i data-feather="heart" class="w-6 h-6 text-primary"></i>
+              </div>
+              <h3 class="text-xl font-black text-gray-900 mb-2">Consult a Doctor (Affordable)</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">Speak with licensed doctors for budget-friendly telehealth or clinic visits tailored to your schedule. Contacts unlock after a ₦3,000 payment.</p>
+            </div>
+            <a href="consultations.html#doctors" class="block w-full text-center rounded-xl border-2 border-primary text-primary py-3 font-bold hover:bg-primary hover:text-white transition-all">Meet Doctors</a>
+          </div>
+          <div class="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div class="mb-6">
+              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                <i data-feather="shield" class="w-6 h-6 text-primary"></i>
+              </div>
+              <h3 class="text-xl font-black text-gray-900 mb-2">Consult a Lawyer (Affordable)</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">Trusted legal guidance for contracts, property, employment issues and more without breaking the bank. Contacts unlock after a ₦3,000 payment.</p>
+            </div>
+            <a href="consultations.html#lawyers" class="block w-full text-center rounded-xl border-2 border-primary text-primary py-3 font-bold hover:bg-primary hover:text-white transition-all">Meet Lawyers</a>
+          </div>
+          <div class="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+            <div class="mb-6">
+              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                <i data-feather="smile" class="w-6 h-6 text-primary"></i>
+              </div>
+              <h3 class="text-xl font-black text-gray-900 mb-2">Consult a Therapist (Affordable)</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">Get professional mental health support, counseling, and therapy from licensed therapists. Confidential and affordable sessions for just ₦3,000.</p>
+            </div>
+            <a href="consultations.html#therapists" class="block w-full text-center rounded-xl border-2 border-primary text-primary py-3 font-bold hover:bg-primary hover:text-white transition-all">Meet Therapists</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Artisans Grid -->
+      <div id="artisanGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- JS will render artisan cards here -->
+      </div>
+
+      <!-- Pagination placeholder -->
+      <div id="pagination" class="mt-10 flex justify-center"></div>
+    </div>
+  </main>
+
+  <!-- ARTISAN MODAL -->
+  <div id="artisanModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-3xl relative max-h-[90vh] overflow-y-auto">
+      <button id="modalClose" class="sticky top-4 float-right mr-4 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-900 transition-all z-10">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+      <div id="modalContent" class="p-8 md:p-10"></div>
+    </div>
+  </div>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="images/logo.png" alt="Sirius logo" class="h-12 sm:h-14 md:h-16 w-auto drop-shadow-2xl">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2026 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <!-- SCRIPTS -->
+  <script>
+    (function () {
+      // Hamburger menu functionality
+      const menuToggle = document.querySelector('.menu-toggle');
+      const navMenu = document.querySelector('.nav-menu-mobile');
+
+      if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => {
+          menuToggle.classList.toggle('active');
+          navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+          link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+          });
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+            menuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+          }
+        });
+      }
+
+      function toggleModal(modal, open = true) {
+        if (!modal) return;
+        modal.classList.toggle('hidden', !open);
+        modal.classList.toggle('flex', open);
+      }
+
+      const consultationModal = document.getElementById('artisanModal');
+      const modalContent = document.getElementById('modalContent');
+      const modalClose = document.getElementById('modalClose');
+      const workerGrid = document.getElementById('artisanGrid');
+      const resultsCountText = document.getElementById('resultsCountText');
+      const authGate = document.getElementById('auth-gate');
+      const searchInput = document.getElementById('searchInput');
+      const categorySelect = document.getElementById('categoryFilter');
+      const skillSelect = document.getElementById('skillFilter');
+      const locationSelect = document.getElementById('locationFilter');
+      const sortBy = document.getElementById('sortBy');
+
+      const sessionKeys = ['siriusWorkerAuth', 'siriusClientAuth', 'siriusProAuth', 'siriusEmployerAuth'];
+      const hasSession = () =>
+        sessionKeys.some((key) => window.SiriusSession?.parse(key)) ||
+        Boolean(localStorage.getItem('siriusMarketplaceSession'));
+
+      let artisans = [];
+
+      const formatPhoneLink = (value) => {
+        if (!value) return '';
+        const digits = value.replace(/[^\d]/g, '');
+        return digits ? `https://wa.me/${digits}` : '';
+      };
+
+      function renderStars(rating) {
+        const full = Math.floor(rating);
+        let html = '';
+        for (let i = 0; i < 5; i += 1) {
+          if (i < full) {
+            html += '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.173c.969 0 1.371 1.24.588 1.81l-3.376 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118L10 15.347 6.409 18.75c-.785.57-1.84-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.415 9.093c-.783-.57-.38-1.81.588-1.81h4.173a1 1 0 00.95-.69L9.049 2.927z"/></svg>';
+          } else {
+            html += '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-300" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.173c.969 0 1.371 1.24.588 1.81l-3.376 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118L10 15.347 6.409 18.75c-.785.57-1.84-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.415 9.093c-.783-.57-.38-1.81.588-1.81h4.173a1 1 0 00.95-.69L9.049 2.927z"/></svg>';
+          }
+        }
+        return html;
+      }
+
+      function formatDate(dateValue) {
+        if (!dateValue) return '';
+        const date = new Date(dateValue);
+        if (Number.isNaN(date.getTime())) return '';
+        return date.toLocaleDateString('en-NG', { year: 'numeric', month: 'short', day: 'numeric' });
+      }
+
+      function mapWorker(worker) {
+        const name = worker.user?.name || 'Sirius Artisan';
+        const skills = Array.isArray(worker.skills) ? worker.skills : [];
+        const rating = typeof worker.averageRating === 'number'
+          ? worker.averageRating
+          : Math.min(5, 3 + (skills.length || 1) * 0.25);
+        const reviews = typeof worker.totalReviews === 'number'
+          ? worker.totalReviews
+          : Math.max(1, (skills.length || 1) * 4);
+        const primarySkill = skills[0] || worker.experience || 'General services';
+        const location = worker.location || worker.user?.location || 'Nigeria';
+        return {
+          id: worker.userId,
+          name,
+          skill: primarySkill,
+          category: worker.category || primarySkill,
+          location,
+          rating,
+          reviews,
+          photo: worker.profilePhoto || `https://ui-avatars.com/api/?background=0056b3&color=fff&name=${encodeURIComponent(name)}`,
+          verified: worker.subscription?.status === 'active',
+          subscriptionActive: worker.subscription?.status === 'active',
+          bio: worker.bio || worker.experience || 'Talented professional ready to help you.',
+          phone: worker.user?.phone,
+          whatsapp: worker.user?.whatsapp || formatPhoneLink(worker.user?.phone || ''),
+          email: worker.user?.email,
+          skills,
+          reviewsList: Array.isArray(worker.reviews) ? worker.reviews : [],
+        };
+      }
+
+      function populateSelect(select, label, values) {
+        if (!select) return;
+        const options = values.filter(Boolean).map((value) => `<option value="${value}">${value}</option>`).join('');
+        select.innerHTML = `<option value="">${label}</option>${options}`;
+      }
+
+      function populateFilters() {
+        const categories = Array.from(new Set(artisans.map((a) => a.category))).sort();
+        const skillSet = Array.from(new Set(artisans.flatMap((a) => a.skills))).sort();
+        const locations = Array.from(new Set(artisans.map((a) => a.location))).sort();
+        populateSelect(categorySelect, 'All Categories', categories);
+        populateSelect(skillSelect, 'All Services', skillSet);
+        populateSelect(locationSelect, 'All Locations', locations);
+      }
+
+      function renderArtisans(filter = {}) {
+        if (!hasSession()) {
+          workerGrid.classList.add('hidden');
+          resultsCountText.textContent = '';
+          authGate?.classList.remove('hidden');
+          return;
+        }
+        authGate?.classList.add('hidden');
+        workerGrid.classList.remove('hidden');
+        const { search = '', category = '', skill = '', location = '', sort = 'relevance' } = filter;
+        let list = artisans.filter((a) => a.subscriptionActive);
+        if (search) {
+          const query = search.toLowerCase();
+          list = list.filter((a) => `${a.name} ${a.skill} ${a.skills.join(' ')}`.toLowerCase().includes(query));
+        }
+        if (category) {
+          list = list.filter((a) => a.category.toLowerCase().includes(category.toLowerCase()));
+        }
+        if (skill) {
+          list = list.filter((a) => a.skills.some((s) => s.toLowerCase().includes(skill.toLowerCase())));
+        }
+        if (location) {
+          list = list.filter((a) => a.location.toLowerCase().includes(location.toLowerCase()));
+        }
+        if (sort === 'rating_desc') {
+          list.sort((a, b) => b.rating - a.rating);
+        } else if (sort === 'reviews_desc') {
+          list.sort((a, b) => b.reviews - a.reviews);
+        }
+        resultsCountText.textContent = `${list.length} artisan(s) found`;
+        if (!list.length) {
+          workerGrid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-16"><i data-feather="search" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i><p class="text-lg font-bold">No verified artisans found for your filters.</p></div>`;
+          feather.replace();
+          return;
+        }
+        const cards = list
+          .map((a) => {
+            const consultationTag = /doctor|lawyer|therapist|medical|legal|mental/i.test(a.category)
+              ? '<span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full">From ₦3,000</span>'
+              : '';
+            return `
+            <div class="worker-card bg-white rounded-3xl shadow-xl p-6 border-2 border-gray-100 hover:border-primary">
+              <div class="flex gap-4 mb-4">
+                <img src="${a.photo}" alt="${a.name}" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0" onerror="this.src='https://via.placeholder.com/140x140?text=Photo'"/>
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-lg font-black text-gray-900 mb-1 truncate">${a.name}</h3>
+                  <p class="text-sm text-gray-600 font-medium mb-2">${a.skill}</p>
+                  <div class="flex items-center gap-2 text-xs text-gray-500">
+                    <i data-feather="map-pin" class="w-3.5 h-3.5"></i>
+                    <span class="truncate">${a.location}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <div class="flex items-center text-yellow-400">${renderStars(a.rating)}</div>
+                  <span class="text-sm font-bold text-gray-700">${a.rating.toFixed(1)}</span>
+                  <span class="text-xs text-gray-500">(${a.reviews})</span>
+                </div>
+                ${a.verified ? '<span class="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full"><i data-feather="check-circle" class="w-3.5 h-3.5"></i>Verified</span>' : ''}
+              </div>
+              <div class="flex items-center justify-between gap-3">
+                ${consultationTag}
+                <button data-id="${a.id}" class="open-profile flex-1 bg-primary text-white text-sm font-bold py-2.5 px-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">View Profile</button>
+              </div>
+            </div>`;
+          })
+          .join('');
+        workerGrid.innerHTML = cards;
+        feather.replace();
+        document.querySelectorAll('.open-profile').forEach((btn) => {
+          btn.addEventListener('click', (event) => {
+            const id = event.currentTarget.getAttribute('data-id');
+            openProfileModal(id);
+          });
+        });
+      }
+
+      function applyFilters() {
+        renderArtisans({
+          search: searchInput?.value || '',
+          category: categorySelect?.value || '',
+          skill: skillSelect?.value || '',
+          location: locationSelect?.value || '',
+          sort: sortBy?.value || 'relevance',
+        });
+      }
+
+      function openProfileModal(id) {
+        if (!hasSession()) {
+          modalContent.innerHTML = `
+            <div class="text-center py-10">
+              <h2 class="text-2xl font-black text-gray-900 mb-4">Sign in to view full profiles</h2>
+              <p class="text-gray-600 mb-6">Create an account to view details, contact workers, and leave reviews.</p>
+              <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="login.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl hover:bg-primary/90 transition">Sign In</a>
+                <a href="register.html" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary hover:text-white transition">Create Account</a>
+              </div>
+            </div>`;
+          toggleModal(consultationModal, true);
+          return;
+        }
+        const artisan = artisans.find((a) => a.id === id);
+        if (!artisan || !consultationModal || !modalContent) return;
+        const reviewsList = Array.isArray(artisan.reviewsList) ? artisan.reviewsList : [];
+        const reviewsMarkup = reviewsList.length
+          ? `<div class="space-y-4 mt-6">${reviewsList.map((review) => `
+              <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100">
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center text-yellow-400">${renderStars(review.rating || 0)}</div>
+                  <span class="text-xs text-gray-500">${review.createdAt ? formatDate(review.createdAt) : ''}</span>
+                </div>
+                <p class="text-sm text-gray-700">${review.reviewText || 'No review text provided.'}</p>
+              </div>
+            `).join('')}</div>`
+          : `<p class="mt-4 text-sm text-gray-500">No reviews yet. Complete a job to leave the first review.</p>`;
+        const consultationCTA = /doctor|lawyer|therapist|medical|legal|mental/i.test(artisan.category)
+          ? '<div class="flex flex-col sm:flex-row gap-3 mt-6"><a href="consultations.html" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"><i data-feather="lock" class="w-4 h-4"></i>Book secure consultation</a><a href="client-dashboard.html" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary hover:text-white transition-all"><i data-feather="layout" class="w-4 h-4"></i>Consultation dashboard</a></div><p class="mt-4 text-xs text-gray-500 bg-gray-50 rounded-xl p-4">Doctors, lawyers and therapists serve clients through our protected consultations platform.</p>'
+          : '';
+        const contactButtons = artisan.phone || artisan.whatsapp
+          ? `<div class="grid gap-3 sm:grid-cols-2 mt-6">${artisan.phone ? `<a href="tel:${artisan.phone.replace(/[^+\d]/g,'')}" class="inline-flex items-center justify-center gap-3 bg-primary text-white text-base font-black tracking-wide py-3.5 px-6 rounded-2xl whitespace-nowrap flex-shrink-0 shadow-lg shadow-primary/25 hover:bg-primary/95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all"><span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/15"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5c0-1.105.895-2 2-2h2.28a1 1 0 01.98.804l.72 3.6a1 1 0 01-.54 1.09l-1.568.784a13.042 13.042 0 006.146 6.146l.784-1.568a1 1 0 011.09-.54l3.6.72a1 1 0 01.804.98V19a2 2 0 01-2 2h-1C9.163 21 3 14.837 3 7V5z"/></svg></span><span>${artisan.phone}</span></a>` : ''}${artisan.whatsapp ? `<a href="${artisan.whatsapp}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold py-3 px-5 rounded-2xl hover:bg-primary hover:text-white transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40"><i data-feather="message-circle" class="w-4 h-4"></i>WhatsApp</a>` : ''}</div>`
+          : '';
+        modalContent.innerHTML = `
+          <div class="md:flex gap-8">
+            <div class="md:w-1/3 text-center mb-6 md:mb-0">
+              <img src="${artisan.photo}" alt="${artisan.name}" class="w-48 h-48 rounded-3xl object-cover mx-auto mb-4 shadow-xl" onerror="this.src='https://via.placeholder.com/240x240?text=Photo'"/>
+              <div class="flex items-center justify-center gap-2">
+                ${artisan.verified ? '<span class="inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full"><i data-feather="check-circle" class="w-3.5 h-3.5"></i>Verified</span>' : ''}
+              </div>
+            </div>
+            <div class="md:flex-1">
+              <h2 class="text-3xl font-black text-gray-900 mb-2">${artisan.name}</h2>
+              <p class="text-base text-gray-600 font-medium mb-4">${artisan.skill} • ${artisan.location}</p>
+              <div class="flex items-center gap-3 mb-6">
+                <div class="flex items-center text-yellow-400">${renderStars(artisan.rating)}</div>
+                <div class="text-base font-bold text-gray-700">${artisan.rating.toFixed(1)}</div>
+                <div class="text-sm text-gray-500">(${artisan.reviews} reviews)</div>
+              </div>
+              <p class="text-gray-700 leading-relaxed mb-6">${artisan.bio}</p>
+              ${consultationCTA || contactButtons || '<p class="mt-6 text-xs text-green-700 bg-green-50 rounded-xl p-4 font-medium">Interested in an artisan? Send a request through our contact form and we will confirm availability.</p>'}
+              <div class="mt-8">
+                <h3 class="text-lg font-black text-gray-900 mb-3">Reviews</h3>
+                ${reviewsMarkup}
+              </div>
+            </div>
+          </div>`;
+        toggleModal(consultationModal, true);
+        feather.replace();
+      }
+
+      modalClose?.addEventListener('click', () => toggleModal(consultationModal, false));
+      consultationModal?.addEventListener('click', (event) => {
+        if (event.target === consultationModal) {
+          toggleModal(consultationModal, false);
+        }
+      });
+
+      searchInput?.addEventListener('input', () => applyFilters());
+      categorySelect?.addEventListener('change', () => applyFilters());
+      skillSelect?.addEventListener('change', () => applyFilters());
+      locationSelect?.addEventListener('change', () => applyFilters());
+      sortBy?.addEventListener('change', () => applyFilters());
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          toggleModal(consultationModal, false);
+        }
+      });
+
+      async function fetchArtisans() {
+        if (!hasSession()) {
+          renderArtisans();
+          return;
+        }
+        try {
+          const response = await fetch('/api/v2/workers?limit=60');
+          if (!response.ok) {
+            throw new Error('Unable to fetch artisans');
+          }
+          const payload = await response.json();
+          artisans = (payload.data?.workers ?? []).map(mapWorker);
+        } catch (error) {
+          console.warn('Unable to load artisans', error);
+          artisans = [];
+        }
+        populateFilters();
+        renderArtisans();
+      }
+
+      fetchArtisans();
+    })();
+  </script>
+  <script src="assistant.js"></script>
+  <script src="assets/site-shell.js" defer></script>
+</body>
+</html>

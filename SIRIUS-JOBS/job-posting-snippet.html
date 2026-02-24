@@ -1,0 +1,328 @@
+<!-- JOB POSTING SECTION - Add this to main content area -->
+<div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="text-2xl font-black text-gray-900">Hire Someone</h2>
+      <p class="text-sm text-gray-600 mt-1">Post a job for ₦1,000 and manage applicants</p>
+    </div>
+    <button id="postJobBtn" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+      <i data-feather="plus" class="w-4 h-4"></i>
+      Post Job
+    </button>
+  </div>
+
+  <!-- My Posted Jobs -->
+  <div id="postedJobsSection">
+    <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">My Posted Jobs</h3>
+    <ul id="postedJobsList" class="space-y-4"></ul>
+    <p id="postedJobsEmpty" class="text-sm text-gray-500 border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center">No jobs posted yet. Click "Post Job" to get started.</p>
+  </div>
+</div>
+
+<!-- JOB POST PAYMENT MODAL -->
+<div id="jobPostModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+  <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full relative overflow-hidden">
+    <button id="closeJobPostModal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition z-10">
+      <i data-feather="x" class="w-5 h-5"></i>
+    </button>
+
+    <div class="p-12">
+      <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
+        <i data-feather="briefcase" class="w-8 h-8 text-white"></i>
+      </div>
+      <h2 class="text-3xl font-black text-gray-900 mb-4 text-center">Post a Job</h2>
+      <p class="text-gray-600 mb-8 leading-relaxed text-center">Pay ₦1,000 to publish your job listing and receive applications.</p>
+
+      <div class="border-2 border-primary/30 rounded-2xl p-6 mb-6">
+        <p class="text-5xl font-black text-gray-900 mb-1 text-center">₦1,000</p>
+        <p class="text-center text-gray-500 mb-6">One-time payment per job</p>
+        <ul class="space-y-3 text-sm text-gray-600">
+          <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Reach active job seekers</span></li>
+          <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Manage all applications</span></li>
+          <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>No hidden fees</span></li>
+        </ul>
+      </div>
+
+      <button id="jobPostPayBtn" class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Pay ₦1,000 & Post Job</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW APPLICANTS MODAL -->
+<div id="viewApplicantsModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+  <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full relative overflow-hidden max-h-[90vh] overflow-y-auto">
+    <div class="flex items-center justify-between px-8 py-6 border-b-2 border-gray-100 sticky top-0 bg-white z-10">
+      <div>
+        <h3 id="applicantsJobTitle" class="text-2xl font-black text-gray-900">Job Applicants</h3>
+        <p class="text-sm text-gray-500">Review and manage applications for this job</p>
+      </div>
+      <button id="closeApplicantsModal" class="text-gray-500 hover:text-primary transition">
+        <i data-feather="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    <div id="applicantsBody" class="p-8">
+      <ul id="applicantsList" class="space-y-4"></ul>
+      <p id="applicantsEmpty" class="text-sm text-gray-500 border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center">No applications yet. Candidates will appear here once they apply.</p>
+    </div>
+  </div>
+</div>
+
+<!-- APPLICANT PROFILE MODAL -->
+<div id="applicantProfileModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 hidden z-50">
+  <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden">
+    <div class="flex items-center justify-between px-8 py-6 border-b-2 border-gray-100">
+      <div>
+        <h3 id="applicantProfileName" class="text-2xl font-black text-gray-900">Applicant Profile</h3>
+        <p class="text-sm text-gray-500">Review candidate details before making a decision</p>
+      </div>
+      <button id="closeApplicantProfile" class="text-gray-500 hover:text-primary transition">
+        <i data-feather="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    <div id="applicantProfileBody" class="p-8 space-y-4">
+      <div class="flex items-center justify-center py-12 text-gray-400">
+        <i data-feather="loader" class="animate-spin mr-2"></i>
+        Loading profile...
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// JOB POSTING JAVASCRIPT - Add this to your existing script section
+(function() {
+  let postedJobs = [];
+  let currentJobApplicants = [];
+  let currentJobId = null;
+
+  async function loadPostedJobs() {
+    try {
+      const sessionPayload = JSON.parse(sessionStorage.getItem('siriusSession') || '{}');
+      const res = await fetch(`/api/jobs/employer/${sessionPayload?.userId}`, {
+        headers: { Authorization: `Bearer ${sessionPayload?.token ?? ''}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        postedJobs = data.data?.jobs || [];
+        renderPostedJobs();
+      }
+    } catch (error) {
+      console.error('Failed to load posted jobs:', error);
+    }
+  }
+
+  function renderPostedJobs() {
+    const list = document.getElementById('postedJobsList');
+    const empty = document.getElementById('postedJobsEmpty');
+    if (!list) return;
+
+    list.innerHTML = '';
+    if (postedJobs.length === 0) {
+      if (empty) empty.classList.remove('hidden');
+      return;
+    }
+    if (empty) empty.classList.add('hidden');
+
+    postedJobs.forEach(job => {
+      const li = document.createElement('li');
+      li.className = 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-6 hover:border-primary/30 hover:shadow-lg transition-all';
+      const statusClass = job.status === 'open' ? 'text-green-600 bg-green-50' : 'text-gray-600 bg-gray-50';
+      li.innerHTML = `
+        <div class="flex justify-between items-start gap-4">
+          <div>
+            <h4 class="text-base font-black text-gray-900">${job.title || 'Untitled Job'}</h4>
+            <p class="text-sm text-gray-500 font-medium mt-1">${job.location || 'Location TBC'} • ${job.applicationCount || 0} applicant(s)</p>
+          </div>
+          <span class="text-xs ${statusClass} font-bold px-3 py-1.5 rounded-full border-2">${job.status?.toUpperCase() || 'DRAFT'}</span>
+        </div>
+        <button class="viewJobApplicantsBtn mt-4 w-full inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-4 py-2 rounded-xl hover:bg-primary hover:text-white transition-all text-sm" data-job-id="${job._id}">
+          <i data-feather="users" class="w-4 h-4"></i>
+          View Applicants (${job.applicationCount || 0})
+        </button>
+      `;
+      list.appendChild(li);
+    });
+
+    list.querySelectorAll('.viewJobApplicantsBtn').forEach(btn => {
+      btn.addEventListener('click', () => openApplicantsModal(btn.dataset.jobId));
+    });
+
+    feather.replace();
+  }
+
+  async function openApplicantsModal(jobId) {
+    currentJobId = jobId;
+    const job = postedJobs.find(j => j._id === jobId);
+    const modal = document.getElementById('viewApplicantsModal');
+    const title = document.getElementById('applicantsJobTitle');
+    if (title && job) title.textContent = `${job.title} - Applicants`;
+
+    modal.classList.remove('hidden');
+    await loadJobApplicants(jobId);
+  }
+
+  async function loadJobApplicants(jobId) {
+    try {
+      const sessionPayload = JSON.parse(sessionStorage.getItem('siriusSession') || '{}');
+      const res = await fetch(`/api/applications/job/${jobId}`, {
+        headers: { Authorization: `Bearer ${sessionPayload?.token ?? ''}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        currentJobApplicants = data.data?.applications || [];
+        renderJobApplicants();
+      }
+    } catch (error) {
+      console.error('Failed to load applicants:', error);
+    }
+  }
+
+  function renderJobApplicants() {
+    const list = document.getElementById('applicantsList');
+    const empty = document.getElementById('applicantsEmpty');
+    if (!list) return;
+
+    list.innerHTML = '';
+    if (currentJobApplicants.length === 0) {
+      if (empty) empty.classList.remove('hidden');
+      return;
+    }
+    if (empty) empty.classList.add('hidden');
+
+    currentJobApplicants.forEach(app => {
+      const li = document.createElement('li');
+      li.className = 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-6 text-sm space-y-4 hover:border-primary/30 hover:shadow-lg transition-all';
+      const statusClass = app.status === 'accepted' ? 'text-green-600' : app.status === 'rejected' ? 'text-red-600' : 'text-gray-600';
+      li.innerHTML = `
+        <div class="flex justify-between items-start gap-4">
+          <div>
+            <div class="text-base font-black text-gray-900">${app.worker?.name || 'Anonymous'}</div>
+            <div class="text-xs text-gray-500 font-medium mt-1">${app.worker?.email || ''}</div>
+          </div>
+          <span class="text-xs ${statusClass} font-bold">${app.status?.toUpperCase() || 'PENDING'}</span>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button class="viewProfileBtn inline-flex items-center gap-1 border-2 border-primary text-primary px-4 py-2 rounded-xl hover:bg-primary hover:text-white transition-all text-xs font-bold" data-worker-id="${app.workerId}">
+            <i data-feather="user"></i> View Profile
+          </button>
+          ${app.status === 'pending' ? `
+            <button class="acceptBtn inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-green-600/25 transition-all" data-application-id="${app._id}">
+              <i data-feather="check"></i> Accept
+            </button>
+            <button class="rejectBtn inline-flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-red-500/25 transition-all" data-application-id="${app._id}">
+              <i data-feather="x-circle"></i> Reject
+            </button>
+          ` : ''}
+        </div>
+      `;
+      list.appendChild(li);
+    });
+
+    list.querySelectorAll('.viewProfileBtn').forEach(btn => {
+      btn.addEventListener('click', () => openProfileModal(btn.dataset.workerId));
+    });
+
+    list.querySelectorAll('.acceptBtn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!confirm('Accept this applicant?')) return;
+        await updateApplicationStatus(btn.dataset.applicationId, 'ACCEPT');
+      });
+    });
+
+    list.querySelectorAll('.rejectBtn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!confirm('Reject this applicant?')) return;
+        await updateApplicationStatus(btn.dataset.applicationId, 'REJECT');
+      });
+    });
+
+    feather.replace();
+  }
+
+  async function updateApplicationStatus(applicationId, decision) {
+    try {
+      const sessionPayload = JSON.parse(sessionStorage.getItem('siriusSession') || '{}');
+      const res = await fetch(`/api/applications/${applicationId}/decision`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${sessionPayload?.token ?? ''}`,
+        },
+        body: JSON.stringify({ decision }),
+      });
+      if (!res.ok) throw new Error('Failed to update application');
+      alert(decision === 'ACCEPT' ? 'Applicant accepted!' : 'Applicant rejected.');
+      await loadJobApplicants(currentJobId);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  async function openProfileModal(workerId) {
+    const modal = document.getElementById('applicantProfileModal');
+    const body = document.getElementById('applicantProfileBody');
+    modal.classList.remove('hidden');
+
+    try {
+      const res = await fetch(`/api/profiles/${workerId}`);
+      if (!res.ok) throw new Error('Profile not found');
+      const profile = await res.json();
+
+      body.innerHTML = `
+        <section class="space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex items-center gap-1 text-xs ${profile.data.verificationStatus === 'VERIFIED' ? 'text-green-600 bg-green-100' : 'text-amber-600 bg-amber-100'} px-2 py-1 rounded-full uppercase tracking-wide font-semibold">
+              <i data-feather="${profile.data.verificationStatus === 'VERIFIED' ? 'shield' : 'alert-triangle'}" class="w-3.5 h-3.5"></i>
+              ${profile.data.verificationStatus === 'VERIFIED' ? 'Verified' : 'Verification Pending'}
+            </span>
+          </div>
+          ${profile.data.artisanProfile ? `
+            <div class="border rounded-lg p-4 bg-gray-50">
+              <p class="text-sm text-gray-600 mb-2">${profile.data.artisanProfile.bio || 'No bio provided yet.'}</p>
+              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-gray-500">
+                <li class="flex items-center gap-1"><i data-feather="briefcase" class="w-4 h-4"></i> ${profile.data.artisanProfile.serviceCategory?.label || 'General'}</li>
+                <li class="flex items-center gap-1"><i data-feather="clock" class="w-4 h-4"></i> ${profile.data.artisanProfile.yearsExperience || 0} yrs experience</li>
+              </ul>
+            </div>
+          ` : ''}
+        </section>
+      `;
+      feather.replace();
+    } catch (error) {
+      body.innerHTML = `
+        <div class="text-center py-12">
+          <i data-feather="alert-circle" class="mx-auto mb-3 text-red-500"></i>
+          <p class="text-sm text-gray-600">Could not load this profile.</p>
+        </div>
+      `;
+      feather.replace();
+    }
+  }
+
+  // Modal handlers
+  document.getElementById('postJobBtn')?.addEventListener('click', () => {
+    document.getElementById('jobPostModal').classList.remove('hidden');
+  });
+
+  document.getElementById('closeJobPostModal')?.addEventListener('click', () => {
+    document.getElementById('jobPostModal').classList.add('hidden');
+  });
+
+  document.getElementById('jobPostPayBtn')?.addEventListener('click', () => {
+    window.open('https://paystack.com/pay/siriusjobs-post', '_blank', 'noopener');
+    alert('Complete the ₦1,000 payment, then return to post your job.');
+    document.getElementById('jobPostModal').classList.add('hidden');
+  });
+
+  document.getElementById('closeApplicantsModal')?.addEventListener('click', () => {
+    document.getElementById('viewApplicantsModal').classList.add('hidden');
+  });
+
+  document.getElementById('closeApplicantProfile')?.addEventListener('click', () => {
+    document.getElementById('applicantProfileModal').classList.add('hidden');
+  });
+
+  // Load posted jobs on init
+  loadPostedJobs();
+})();
+</script>

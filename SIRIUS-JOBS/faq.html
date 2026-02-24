@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FAQs – Sirius Jobs</title>
+  <meta name="description" content="Find quick answers about hiring, verification, consultations, and marketplace services on Sirius Jobs.">
+  <meta name="keywords" content="Sirius Jobs FAQ, help center, hiring, verification, consultations">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://example.com/faq.html">
+  <meta property="og:title" content="FAQs – Sirius Jobs">
+  <meta property="og:description" content="Find quick answers about hiring, verification, consultations, and marketplace services on Sirius Jobs.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://example.com/faq.html">
+  <meta property="og:image" content="https://example.com/images/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FAQs – Sirius Jobs">
+  <meta name="twitter:description" content="Find quick answers about hiring, verification, consultations, and marketplace services on Sirius Jobs.">
+  <meta name="twitter:image" content="https://example.com/images/logo.png">
+  <meta name="description" content="Answers to common questions about hiring, verification, payouts, and consultations on Sirius Jobs." />
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" sizes="32x32" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: { colors: { primary: '#0056b3', secondary: '#0f172a' } }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    
+    body { font-family: 'Inter', sans-serif; }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .animated-gradient {
+      background-size: 200% 200%;
+      animation: gradient-shift 15s ease infinite;
+    }
+
+    .faq-item {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .faq-answer.open {
+      max-height: 1000px;
+    }
+
+    .rotate-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .rotate-icon.open {
+      transform: rotate(180deg);
+    }
+  </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
+</head>
+<body class="bg-white">
+  <!-- NAVIGATION -->
+  <nav data-sirius-shell="skip" class="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4 flex items-center">
+      <a href="index.html" class="inline-flex items-center gap-3">
+        <img src="images/logo.png" alt="SiriusJobs logo" class="h-10 sm:h-12 md:h-14 w-auto drop-shadow-2xl transition-transform group-hover:scale-105">
+        </a>
+      <div class="hidden md:flex items-center gap-6 text-sm font-bold text-gray-700 flex-1 justify-center">
+        <a href="index.html" class="hover:text-primary transition-colors">Home</a>
+        <a href="services.html" class="hover:text-primary transition-colors">Services</a>
+        <a href="jobs.html" class="hover:text-primary transition-colors">Jobs</a>
+        <a href="consultations.html" class="hover:text-primary transition-colors">Consultations</a>
+      </div>
+      <div class="hidden md:block w-20"></div>
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <nav class="nav-menu-mobile">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="consultations.html">Consultations</a>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="bg-gradient-to-br from-black via-primary to-blue-900 animated-gradient text-white py-20 px-4">
+    <div class="container mx-auto text-center max-w-4xl">
+      <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-5 py-2.5 mb-8">
+        <i data-feather="help-circle" class="w-5 h-5"></i>
+        <span class="text-sm font-bold uppercase tracking-wide">Help Center</span>
+      </div>
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">Frequently Asked Questions</h1>
+      <p class="text-xl text-white/90 font-medium max-w-2xl mx-auto">Quick answers about hiring, verification, professional earnings, and getting help on Sirius Jobs.</p>
+    </div>
+  </header>
+
+  <!-- SEARCH SECTION -->
+  <section class="container mx-auto px-4 -mt-8 relative z-10">
+    <div class="bg-white rounded-3xl shadow-2xl border-2 border-gray-100 p-6 max-w-3xl mx-auto">
+      <div class="flex items-center gap-4">
+        <i data-feather="search" class="w-6 h-6 text-gray-400"></i>
+        <input id="faqSearch" type="text" placeholder="Search for questions..." class="flex-1 text-lg font-medium text-gray-700 focus:outline-none" />
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTIONS -->
+  <main class="container mx-auto px-4 py-16 max-w-5xl space-y-16">
+
+    <!-- GENERAL QUESTIONS -->
+    <section>
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-[0.35em] text-primary/70 font-bold mb-2">General</p>
+        <h2 class="text-4xl font-black text-gray-900">Getting Started</h2>
+      </div>
+      <div class="space-y-4" id="general-faqs">
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">What is Sirius Jobs?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">Sirius Jobs is Nigeria's premier platform connecting skilled professionals (doctors, lawyers, therapists), frontline artisans (plumbers, electricians, carpenters), and the clients who need their services. We verify credentials, facilitate secure payments, and provide consultation tools for trusted professionals.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">How do I create an account?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">Click "Register" on the homepage and select your account type: Worker (artisan), Employer (hiring manager), Professional (doctor/lawyer/therapist), or Client (consultation seeker). Fill in your details and verify your email to get started.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">Is Sirius Jobs available nationwide?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">Yes! Sirius Jobs operates across all 36 states in Nigeria. You can find workers, post jobs, book consultations, and access marketplace campaigns from anywhere in the country.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOR WORKERS & EMPLOYERS -->
+    <section>
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-[0.35em] text-primary/70 font-bold mb-2">Jobs & Hiring</p>
+        <h2 class="text-4xl font-black text-gray-900">Workers & Employers</h2>
+      </div>
+      <div class="space-y-4">
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">How do I apply for jobs as a worker?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">Browse available jobs on the Jobs page, click "Apply Now" on any listing, and submit your application with your skills and experience. Employers will review your profile and contact you if you're a good fit.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">How much does it cost to post a job?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">Every job post costs ₦1,000 and must be paid for before it goes live. The “Post a Job” button only unlocks for logged-in employers with a verified government ID, an active payment receipt, and a confirmed phone number. We removed free posts so that only serious, traceable employers can contact workers.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">Can I have both worker and employer accounts?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">Yes! You can unlock dual roles from your dashboard. This allows you to apply for jobs as a worker and also post jobs as an employer, all from the same account.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOR PROFESSIONALS & CLIENTS -->
+    <section>
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-[0.35em] text-primary/70 font-bold mb-2">Consultations</p>
+        <h2 class="text-4xl font-black text-gray-900">Professionals & Clients</h2>
+      </div>
+      <div class="space-y-4">
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">How do consultations work?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">Clients pay to unlock 1-hour access to a verified professional (doctor, lawyer, or therapist). During this period, you can chat via secure messaging, start video/audio calls, and receive expert advice. Sessions expire after 1 hour or when marked complete.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">How much do professionals earn?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">Doctors, lawyers, and therapists choose their own consultation fee (minimum ₦3,000). When a 1-hour session is completed, Sirius keeps a 15% platform fee to cover support and infrastructure, while the balance moves to your wallet. You can request payouts once your available balance hits ₦5,000.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">What is the onboarding fee for professionals?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">Once your credentials are reviewed you pay a one-time ₦5,000 onboarding fee to push your professional profile live. During onboarding you can choose how to prove your license (document upload or regulator link). You only pay when you are ready to start receiving clients.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARKETPLACE -->
+    <section>
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-[0.35em] text-primary/70 font-bold mb-2">Advertising</p>
+        <h2 class="text-4xl font-black text-gray-900">Marketplace</h2>
+      </div>
+      <div class="space-y-4">
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">What is the Sirius Marketplace?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">It is our advertising wall where verified merchants showcase up to five photos (and videos on higher tiers), publish pricing info, and attach WhatsApp/Instagram buttons. Customers browse media, tap a profile, and contact the merchant directly—there is no cart or concierge in-between.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">How do the merchant plans work?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">The 3-month Launch plan (₦30,000) keeps you on the wall for 90 days with five photo tiles. The 6-month Spotlight plan (₦57,000) adds one featured video slot plus dashboard analytics for profile views, WhatsApp taps, and Instagram clicks. The 12-month Residency (₦108,000) unlocks two permanent video slots, advanced exports, and a monthly newsletter feature. Longer plans already include the shorter-plan benefits.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">How does marketplace analytics work?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">Every time a visitor opens your profile or taps WhatsApp/Instagram, the event is logged and surfaced inside the merchant dashboard analytics card. Metrics are tied to your vendor ID only, and you can export the totals (views, WhatsApp clicks, Instagram clicks) for any reporting period.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAYMENTS & SECURITY -->
+    <section>
+      <div class="mb-8">
+        <p class="text-xs uppercase tracking-[0.35em] text-primary/70 font-bold mb-2">Trust & Safety</p>
+        <h2 class="text-4xl font-black text-gray-900">Payments & Security</h2>
+      </div>
+      <div class="space-y-4">
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">Is my payment information secure?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">Absolutely! We use Paystack, a PCI-DSS compliant payment processor, to handle all transactions. Your card details are never stored on our servers and are encrypted end-to-end.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">How do I verify professional credentials?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">All professionals undergo manual verification. Visit our Verify page, enter the professional's registration number or email, and see their credentials, specialization, and verification status instantly.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border-2 border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+          <button class="faq-question w-full text-left px-8 py-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="text-lg font-black text-gray-900">What if I'm not satisfied with a service?</span>
+            <i data-feather="chevron-down" class="w-6 h-6 text-primary rotate-icon flex-shrink-0"></i>
+          </button>
+          <div class="faq-answer px-8 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed">Contact our support team at info@siriusjobs.com.ng or WhatsApp 0704 447 0559 within 48 hours. We review all disputes and work with both parties to reach a fair resolution.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STILL NEED HELP -->
+    <section class="bg-gradient-to-br from-black via-primary to-blue-900 rounded-3xl p-12 text-center text-white">
+      <div class="max-w-2xl mx-auto">
+        <div class="w-16 h-16 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <i data-feather="message-circle" class="w-8 h-8"></i>
+        </div>
+        <h2 class="text-3xl md:text-4xl font-black mb-4">Still need help?</h2>
+        <p class="text-lg text-white/90 mb-8">Our support team is ready to assist you with any questions or issues.</p>
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <a href="contact.html" class="inline-flex items-center gap-2 bg-white text-primary font-bold py-3.5 px-6 rounded-xl hover:bg-white/90 transition-all shadow-lg">
+            <i data-feather="mail" class="w-5 h-5"></i>
+            Contact Support
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="images/logo.png" alt="Sirius logo" class="h-12 sm:h-14 md:h-16 w-auto drop-shadow-2xl">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2026 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <script>
+    feather.replace();
+
+    // Mobile menu toggle
+    // Hamburger menu functionality
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu-mobile');
+
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+      });
+
+      document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        }
+      });
+    }
+
+    // FAQ accordion functionality
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const answer = button.nextElementSibling;
+        const icon = button.querySelector('.rotate-icon');
+        const isOpen = answer.classList.contains('open');
+
+        // Close all other answers
+        document.querySelectorAll('.faq-answer').forEach(a => {
+          if (a !== answer) {
+            a.classList.remove('open');
+          }
+        });
+        document.querySelectorAll('.rotate-icon').forEach(i => {
+          if (i !== icon) {
+            i.classList.remove('open');
+          }
+        });
+
+        // Toggle current answer
+        answer.classList.toggle('open');
+        icon.classList.toggle('open');
+
+        // Re-render feather icons after DOM changes
+        feather.replace();
+      });
+    });
+
+    // Search functionality
+    const searchInput = document.getElementById('faqSearch');
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question span').textContent.toLowerCase();
+        const answer = item.querySelector('.faq-answer p').textContent.toLowerCase();
+
+        if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  </script>
+  <script src="assistant.js"></script>
+  <script src="assets/site-shell.js" defer></script>
+</body>
+</html>

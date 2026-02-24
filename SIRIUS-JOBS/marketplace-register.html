@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merchant Registration – Sirius Marketplace</title>
+  <meta name="description" content="Create a Sirius Marketplace merchant account and start showcasing your business to verified Sirius clients.">
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" sizes="32x32" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0d5ef4',
+            slate: {
+              950: '#020617'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="error-handler.js"></script>
+  <style>
+    
+    body { font-family: 'Inter', sans-serif; }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 25px 60px rgba(15, 23, 42, 0.12);
+      backdrop-filter: blur(18px);
+    }
+    .label {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 900;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 0.5rem;
+    }
+    .input {
+      width: 100%;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      border-radius: 1.25rem;
+      padding: 0.85rem 1rem;
+      font-weight: 500;
+      background-color: #fff;
+      color: #0f172a;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .input:focus {
+      outline: none;
+      border-color: #0d5ef4;
+      box-shadow: 0 0 0 3px rgba(13, 94, 244, 0.15);
+    }
+    .password-toggle {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.65rem;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #0d5ef4;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased">
+  <!-- NAV -->
+  <nav data-sirius-shell="skip" class="fixed top-0 inset-x-0 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 z-50">
+    <div class="container mx-auto px-4 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center space-x-3 group">
+          <img src="images/logo.png" alt="SiriusJobs logo" class="h-10 sm:h-12 md:h-14 w-auto drop-shadow-2xl transition-transform group-hover:scale-105">
+          <span class="sr-only">Sirius Jobs</span>
+        </a>
+        <div class="flex items-center gap-4 text-sm font-semibold text-slate-600">
+          <a href="login.html#merchant-login" class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-slate-200 hover:border-primary hover:text-primary transition-all">
+            <i data-feather="log-in" class="w-4 h-4"></i>
+            Merchant login
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO + FORM -->
+  <section class="pt-32 pb-16">
+    <div class="container mx-auto px-4 lg:px-8">
+      <div class="grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1.05fr)] items-start">
+        <!-- Copy -->
+        <div class="space-y-10">
+          <div class="space-y-5">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-[0.2em]">
+              <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+              Live within 24H
+            </span>
+            <h1 class="text-4xl lg:text-5xl font-black leading-tight text-slate-950">Register your business, upload media, and start getting marketplace leads.</h1>
+            <p class="text-lg text-slate-600 max-w-2xl">Fast, clean onboarding built to get your storefront in front of Sirius buyers within minutes.</p>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="glass-card rounded-2xl p-5">
+              <p class="text-sm uppercase text-slate-500 font-bold mb-2 tracking-wide">Media-ready profile</p>
+              <p class="text-2xl font-black text-slate-900">Photo + video uploads</p>
+              <p class="text-sm text-slate-600 mt-1">Share product shots, reels, and price cards from your dashboard.</p>
+            </div>
+            <div class="glass-card rounded-2xl p-5">
+              <p class="text-sm uppercase text-slate-500 font-bold mb-2 tracking-wide">Insights & tracking</p>
+              <p class="text-2xl font-black text-slate-900">Live clicks & views</p>
+              <p class="text-sm text-slate-600 mt-1">Analytics come with every paid cycle.</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-4 text-sm text-slate-600">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border border-slate-200">
+              <i data-feather="zap" class="w-4 h-4 text-primary"></i>
+              Setup takes under five minutes
+            </div>
+          </div>
+
+          <div class="bg-white border border-gray-100 rounded-3xl p-6 shadow-lg space-y-5">
+            <p class="text-sm font-semibold text-gray-500 uppercase tracking-[0.3em]">Onboarding steps</p>
+            <ol class="space-y-4 text-sm text-gray-700">
+              <li class="flex gap-3">
+                <span class="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center">1</span>
+                Create your merchant account and confirm your business contacts.
+              </li>
+              <li class="flex gap-3">
+                <span class="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center">2</span>
+                Pick a 3, 6, or 12 month plan inside the dashboard and lock in your slot.
+              </li>
+              <li class="flex gap-3">
+                <span class="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center">3</span>
+                Upload photos, videos, descriptions, and price notes from the dashboard.
+              </li>
+              <li class="flex gap-3">
+                <span class="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center">4</span>
+                Sirius publishes your profile so buyers can browse and message you.
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="bg-white rounded-[40px] p-10 lg:p-12 shadow-2xl border border-slate-100 w-full">
+          <div class="space-y-1 mb-8">
+            <p class="text-xs font-black tracking-[0.3em] text-slate-500 uppercase">Start here</p>
+            <h2 class="text-2xl font-black text-slate-950">Merchant account setup</h2>
+            <p class="text-sm text-slate-500">Create your login now, choose a plan inside the dashboard later.</p>
+          </div>
+
+          <form id="merchantRegisterForm" class="space-y-8">
+            <div class="space-y-5">
+              <div>
+                <label for="businessName" class="label">Business name</label>
+                <input id="businessName" name="businessName" type="text" required class="input" placeholder="e.g. Dewiss Gadget Hub">
+              </div>
+              <div>
+                <label for="businessCategory" class="label">Business category</label>
+                <select id="businessCategory" name="businessCategory" class="input">
+                  <option value="">Select category</option>
+                  <option value="Tech & Gadgets">Tech & Gadgets</option>
+                  <option value="Beauty & Wellness">Beauty & Wellness</option>
+                  <option value="Food & Catering">Food & Catering</option>
+                  <option value="Agro & Commodities">Agro & Commodities</option>
+                  <option value="Food & Agriculture">Food & Agriculture</option>
+                  <option value="Construction & Finishing">Construction & Finishing</option>
+                  <option value="Home & Interior">Home & Interior</option>
+                  <option value="Fashion & Apparel">Fashion & Apparel</option>
+                  <option value="Events & Lifestyle">Events & Lifestyle</option>
+                  <option value="Logistics & Mobility">Logistics & Mobility</option>
+                  <option value="Renewable Energy & Solar">Renewable Energy & Solar</option>
+                  <option value="Professional Services">Professional Services</option>
+                  <option value="Surface Care">Surface Care</option>
+                  <option value="Baby, Kids & Parenting">Baby, Kids & Parenting</option>
+                  <option value="Health & Pharma">Health & Pharma</option>
+                  <option value="Other / Mixed">Other / Mixed</option>
+                </select>
+              </div>
+              <div>
+                <label for="merchantEmail" class="label">Work email</label>
+                <input id="merchantEmail" name="merchantEmail" type="email" required class="input" placeholder="name@business.com">
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="grid gap-4 md:grid-cols-2">
+                <div>
+                  <label for="merchantPassword" class="label">Password</label>
+                  <div class="relative">
+                    <input id="merchantPassword" name="merchantPassword" type="password" required minlength="8" class="input pr-28" placeholder="Minimum 8 characters">
+                    <button type="button" class="password-toggle" data-password-toggle data-target="merchantPassword">Show</button>
+                  </div>
+                </div>
+                <div>
+                  <label for="merchantPasswordConfirm" class="label">Confirm password</label>
+                  <div class="relative">
+                    <input id="merchantPasswordConfirm" name="merchantPasswordConfirm" type="password" required minlength="8" class="input pr-28" placeholder="Repeat password">
+                    <button type="button" class="password-toggle" data-password-toggle data-target="merchantPasswordConfirm">Show</button>
+                  </div>
+                </div>
+              </div>
+              <p class="text-xs text-slate-500">Use a strong password with at least one number and an uppercase letter.</p>
+              <label class="flex items-start gap-3 text-sm text-slate-600">
+                <input type="checkbox" id="terms" class="mt-1 accent-primary" required>
+                <span>I agree to the <a href="terms.html" class="text-primary font-semibold hover:underline">terms of service</a>.</span>
+              </label>
+            </div>
+
+            <div class="space-y-4">
+              <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3.5 rounded-2xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+                <i data-feather="arrow-right" class="w-4 h-4"></i>
+                Create merchant account
+              </button>
+              <p id="registerFeedback" class="text-sm text-center font-bold"></p>
+              <p class="text-sm text-center text-slate-500">Already have an account? <a href="login.html#merchant-login" class="text-primary font-semibold hover:underline">Sign in here</a>.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="images/logo.png" alt="Sirius logo" class="h-12 sm:h-14 md:h-16 w-auto drop-shadow-2xl">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2026 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const form = document.getElementById('merchantRegisterForm');
+      const feedback = document.getElementById('registerFeedback');
+
+      const toggleButtons = document.querySelectorAll('[data-password-toggle]');
+      toggleButtons.forEach(button => {
+        const targetId = button.getAttribute('data-target');
+        const input = document.getElementById(targetId);
+        if (!input) return;
+        button.addEventListener('click', () => {
+          const showing = input.getAttribute('type') === 'text';
+          input.setAttribute('type', showing ? 'password' : 'text');
+          button.textContent = showing ? 'Show' : 'Hide';
+        });
+      });
+
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const password = form.merchantPassword.value;
+        const confirmPassword = form.merchantPasswordConfirm.value;
+
+        if (password.length < 8) {
+          feedback.textContent = 'Password must be at least 8 characters.';
+          feedback.className = 'text-sm text-center font-bold text-red-500';
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          feedback.textContent = 'Passwords do not match.';
+          feedback.className = 'text-sm text-center font-bold text-red-500';
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+        feedback.textContent = '';
+        feedback.className = 'text-sm text-center font-bold';
+
+        const category = form.businessCategory.value.trim();
+        if (!category) {
+          feedback.textContent = 'Please select a business category.';
+          feedback.className = 'text-sm text-center font-bold text-red-500';
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+          return;
+        }
+
+        const payload = {
+          firstName: form.businessName.value.trim(), // Use business name as first name
+          lastName: 'Merchant', // Default last name
+          businessName: form.businessName.value.trim(),
+          category,
+          email: form.merchantEmail.value.trim(),
+          password,
+        };
+
+        try {
+          const response = await fetch('/api/auth/register-merchant', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: 'Registration failed' }));
+            throw new Error(errorData.message || errorData.error || 'Unable to create merchant account');
+          }
+
+          const data = await response.json();
+
+          // Store session using SiriusSession utility
+          if (window.SiriusSession && data.data) {
+            const payload = window.SiriusSession.createPayload(data.data, {
+              activeRole: 'MERCHANT',
+              email: form.merchantEmail.value.trim(),
+              firstName: form.businessName.value.trim(),
+              lastName: 'Merchant',
+            });
+            window.SiriusSession.persist(payload);
+          }
+
+          feedback.textContent = 'Account created! Redirecting to your dashboard...';
+          feedback.className = 'text-sm text-center font-bold text-emerald-600';
+          setTimeout(() => {
+            window.location.href = 'marketplace-dashboard.html';
+          }, 800);
+        } catch (error) {
+          feedback.textContent = error.message || 'Unable to create merchant account right now.';
+          feedback.className = 'text-sm text-center font-bold text-red-500';
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+        }
+      });
+
+      feather.replace();
+    })();
+  </script>
+  <script src="assistant.js"></script>
+  <script src="assets/site-shell.js" defer></script>
+</body>
+</html>

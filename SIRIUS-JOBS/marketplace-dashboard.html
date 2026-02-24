@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketplace Merchant Dashboard – Sirius Jobs</title>
+  <meta name="description" content="Manage your Sirius Marketplace listing, update contact links, logos, highlights and hero spotlight in one place.">
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" sizes="32x32" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0056b3',
+            secondary: '#0f172a'
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="error-handler.js"></script>
+  <script src="loading-utils.js"></script>
+  <style>
+    
+    body { font-family: 'Inter', sans-serif; }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .animated-gradient {
+      background-size: 200% 200%;
+      animation: gradient-shift 15s ease infinite;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50/30 text-gray-900">
+  <!-- HEADER -->
+  <nav data-sirius-shell="skip" class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-200/50 z-50">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between h-20">
+        <a href="marketplace.html" class="flex items-center gap-3">
+          <img src="images/logo.png" alt="SiriusJobs logo" class="h-10 sm:h-12 md:h-14 w-auto drop-shadow-2xl transition-transform group-hover:scale-105">
+          </a>
+
+        <div class="flex items-center gap-4">
+          <a href="marketplace.html" class="hidden md:inline-flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-primary transition-colors">
+            <i data-feather="external-link" class="w-4 h-4"></i>
+            View Public Marketplace
+          </a>
+          <button id="logoutBtn" class="inline-flex items-center gap-2 border-2 border-gray-200 text-gray-700 font-bold px-4 py-2 rounded-full hover:border-red-500 hover:text-red-500 transition-all">
+            <i data-feather="log-out" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Logout</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="pt-24 pb-12 bg-gradient-to-br from-black via-primary to-blue-900 animated-gradient text-white">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="max-w-4xl space-y-4">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs font-bold uppercase tracking-wider">
+          <i data-feather="settings" class="w-4 h-4"></i>
+          Merchant Dashboard
+        </span>
+        <h1 class="text-4xl md:text-5xl font-black leading-tight">Manage Your Marketplace Listing</h1>
+        <p class="text-white/90 text-lg md:text-xl max-w-2xl">Edit business details, upload your logo, set Instagram and WhatsApp links, and decide who takes the hero spotlight on our marketplace homepage.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN DASHBOARD -->
+  <main class="py-12 md:py-16">
+    <div class="container mx-auto px-4 lg:px-6">
+      <!-- Job Posting Section -->
+      <section class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 mb-8">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-2xl font-black text-gray-900">Hire Someone</h2>
+            <p class="text-sm text-gray-600 mt-1">Post a job for ₦1,000 and manage applicants</p>
+          </div>
+          <button id="merchantPostJobBtn" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+            <i data-feather="plus" class="w-4 h-4"></i>
+            Post Job
+          </button>
+        </div>
+
+        <div id="merchantPostedJobsSection">
+          <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">My Posted Jobs</h3>
+          <ul id="merchantPostedJobsList" class="space-y-4"></ul>
+          <p id="merchantPostedJobsEmpty" class="text-sm text-gray-500 border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center">No jobs posted yet. Click "Post Job" to get started.</p>
+        </div>
+      </section>
+
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
+        <!-- SIDEBAR -->
+        <aside class="space-y-6">
+          <div class="bg-white border-2 border-gray-100 rounded-3xl shadow-xl p-6">
+            <h2 class="text-lg font-black text-gray-900 mb-4 flex items-center gap-2">
+              <i data-feather="briefcase" class="w-5 h-5 text-primary"></i>
+              Your Listings
+            </h2>
+            <button id="addListingBtn" class="w-full mb-4 inline-flex items-center justify-center gap-2 bg-primary text-white text-sm font-bold px-4 py-2.5 rounded-2xl hover:bg-primary/90 transition">
+              <i data-feather="plus-circle" class="w-4 h-4"></i>
+              Add new listing
+            </button>
+            <div id="vendorList" class="space-y-3"></div>
+          </div>
+
+          <div class="bg-gradient-to-br from-primary/5 to-blue-50 border-2 border-primary/10 rounded-3xl p-6">
+            <h3 class="text-sm font-black text-gray-900 uppercase tracking-wider mb-4">Quick Tips</h3>
+            <ul class="space-y-3 text-sm text-gray-700">
+              <li class="flex items-start gap-2">
+                <i data-feather="star" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+                <span>Only one business can be in the hero spotlight at a time</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-feather="zap" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+                <span>Use clear highlights that show what makes your offer unique</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-feather="image" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i>
+                <span>Upload square logos (at least 400×400) for best quality</span>
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <section class="space-y-8">
+          <!-- PLAN & BILLING -->
+          <div class="bg-white border-2 border-gray-100 rounded-3xl shadow-xl p-8 md:p-10">
+            <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between mb-8">
+              <div>
+                <p class="text-xs font-bold text-primary/80 uppercase tracking-[0.25em] mb-2">Plan & Billing</p>
+                <h2 class="text-2xl font-black text-gray-900">Pick a visibility plan</h2>
+                <p class="text-sm text-gray-600" id="planStatusLabel">Loading plan status…</p>
+              </div>
+              <div class="text-sm text-gray-500 bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 max-w-sm">
+                Paystack checkout is rolling out shortly. Select a plan now and our team will send the payment link to your email.
+              </div>
+            </div>
+
+            <div class="grid gap-6 md:grid-cols-3" id="planCards"></div>
+
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-8">
+              <button type="button" id="activatePlanBtn" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 disabled:opacity-60 disabled:cursor-not-allowed" disabled>
+                <i data-feather="credit-card" class="w-4 h-4"></i>
+                Activate Selected Plan
+              </button>
+              <p id="planMessage" class="text-sm text-gray-500 md:text-right">Select a plan to enable payment instructions.</p>
+            </div>
+          </div>
+
+          <!-- EDIT FORM -->
+          <div class="bg-white border-2 border-gray-100 rounded-3xl shadow-xl p-8 md:p-10">
+            <div class="mb-8">
+              <h2 class="text-2xl font-black text-gray-900 mb-2">Edit Business Details</h2>
+              <p class="text-base text-gray-600">Update your marketplace profile information and preview changes in real-time</p>
+            </div>
+
+            <form id="vendorForm" class="space-y-6">
+              <input type="hidden" id="vendorId">
+
+              <div class="grid gap-6 md:grid-cols-2">
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorName">Business Name</label>
+                  <input id="vendorName" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" required>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorOwner">Owner / Contact Person</label>
+                  <input id="vendorOwner" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="e.g. Israel Okwu">
+                </div>
+              </div>
+
+              <div class="grid gap-6 md:grid-cols-2">
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorHeadline">Headline</label>
+                  <input id="vendorHeadline" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="One sentence value proposition">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorLocation">Location</label>
+                  <input id="vendorLocation" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="City • service radius">
+                </div>
+              </div>
+
+              <div class="grid gap-6 md:grid-cols-2">
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorCategory">Category</label>
+                  <select id="vendorCategory" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                    <option value="">Select category</option>
+                    <option value="Tech & Gadgets">Tech & Gadgets</option>
+                    <option value="Beauty & Wellness">Beauty & Wellness</option>
+                    <option value="Food & Catering">Food & Catering</option>
+                    <option value="Agro & Commodities">Agro & Commodities</option>
+                    <option value="Home & Interior">Home & Interior</option>
+                    <option value="Fashion & Apparel">Fashion & Apparel</option>
+                    <option value="Events & Lifestyle">Events & Lifestyle</option>
+                    <option value="Logistics & Mobility">Logistics & Mobility</option>
+                    <option value="Renewable Energy & Solar">Renewable Energy & Solar</option>
+                    <option value="Professional Services">Professional Services</option>
+                    <option value="Surface Care">Surface Care</option>
+                    <option value="Baby, Kids & Parenting">Baby, Kids & Parenting</option>
+                    <option value="Health & Pharma">Health & Pharma</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorImages">Image URLs (one per line)</label>
+                  <textarea id="vendorImages" rows="3" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" placeholder="https://...jpg&#10;https://...png"></textarea>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorSummary">Short Summary</label>
+                <textarea id="vendorSummary" rows="3" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" placeholder="Describe what you sell and how you deliver"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorDelivery">Delivery / Fulfilment Note</label>
+                <textarea id="vendorDelivery" rows="2" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" placeholder="e.g. Same-day delivery within PH, nationwide dispatch within 48h"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorHighlights">Product Highlights (one per line)</label>
+                <textarea id="vendorHighlights" rows="4" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" placeholder="• Highlight 1&#10;• Highlight 2"></textarea>
+                <p class="text-xs text-gray-600 mt-2">These appear as bullet points on your public profile</p>
+              </div>
+
+              <div class="grid gap-6 md:grid-cols-2">
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorWhatsapp">WhatsApp Number</label>
+                  <input id="vendorWhatsapp" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="e.g. 08139669971">
+                  <p class="text-xs text-gray-600 mt-2">Numbers are converted to wa.me links automatically</p>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2" for="vendorInstagram">Instagram Link / Handle</label>
+                  <input id="vendorInstagram" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="https://www.instagram.com/...">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Company Logo</label>
+                <div class="flex flex-col sm:flex-row sm:items-center gap-6">
+                  <div class="w-32 h-32 rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden" id="logoPreviewWrapper">
+                    <span id="logoPreviewFallback" class="text-2xl font-black text-gray-400">SM</span>
+                    <img id="logoPreview" src="" alt="Logo preview" class="hidden w-full h-full object-cover">
+                  </div>
+                  <div class="space-y-3">
+                    <input id="vendorLogo" type="file" accept="image/*" class="text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-primary file:text-white hover:file:bg-primary/90 transition-all">
+                    <button type="button" id="removeLogoBtn" class="block text-sm text-red-600 font-bold hover:underline">Remove logo</button>
+                    <p class="text-xs text-gray-600">Upload a square image (JPG/PNG/SVG). If you skip this, initials will be shown.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3 bg-primary/5 border-2 border-primary/10 rounded-xl p-4">
+                <input id="heroSpotlight" type="checkbox" class="w-5 h-5 text-primary border-gray-300 rounded mt-0.5">
+                <label for="heroSpotlight" class="text-sm font-medium text-gray-700 cursor-pointer">Feature this business on the marketplace hero section</label>
+              </div>
+
+              <div class="flex flex-wrap gap-3 pt-4 border-t-2 border-gray-100">
+                <button type="submit" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-6 py-3.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+                  <i data-feather="save" class="w-4 h-4"></i>
+                  Save Changes
+                </button>
+                <button type="button" id="resetVendorBtn" class="inline-flex items-center gap-2 border-2 border-red-200 text-red-600 font-bold px-6 py-3.5 rounded-xl hover:bg-red-500 hover:text-white transition-all">
+                  <i data-feather="trash" class="w-4 h-4"></i>
+                  Delete listing
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- ANALYTICS CARD -->
+          <div class="bg-white border-2 border-gray-100 rounded-3xl shadow-xl p-8 md:p-10 space-y-6">
+            <div class="flex flex-col gap-2">
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-primary/10 text-primary">
+                  <i data-feather="activity" class="w-5 h-5"></i>
+                </span>
+                <div>
+                  <h3 class="text-xl font-black text-gray-900">Marketplace Analytics</h3>
+                  <p class="text-sm text-gray-500">Live clicks & views from the public marketplace</p>
+                </div>
+              </div>
+              <p id="analyticsStatus" class="text-sm text-gray-500">Select a business to load performance.</p>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2" id="analyticsGrid">
+              <article class="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+                <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Profile views</p>
+                <p id="analyticsViews" class="text-3xl font-black text-gray-900 mt-1">0</p>
+              </article>
+              <article class="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+                <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">WhatsApp clicks</p>
+                <p id="analyticsWhatsapp" class="text-3xl font-black text-gray-900 mt-1">0</p>
+              </article>
+              <article class="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+                <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Instagram clicks</p>
+                <p id="analyticsInstagram" class="text-3xl font-black text-gray-900 mt-1">0</p>
+              </article>
+              <article class="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+                <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Total contact clicks</p>
+                <p id="analyticsTotalClicks" class="text-3xl font-black text-gray-900 mt-1">0</p>
+              </article>
+            </div>
+          </div>
+
+          <!-- PREVIEW CARD -->
+          <div class="bg-white border-2 border-gray-100 rounded-3xl shadow-xl p-8 md:p-10">
+            <div class="mb-6">
+              <h3 class="text-2xl font-black text-gray-900 mb-2 flex items-center gap-2">
+                <i data-feather="eye" class="w-6 h-6 text-primary"></i>
+                Public Profile Preview
+              </h3>
+              <p class="text-base text-gray-600">This is how your listing will appear on the marketplace</p>
+            </div>
+            <div id="previewCard"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Merchant Job Post Payment Modal -->
+  <div id="merchantJobPostModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full relative overflow-hidden">
+      <button id="closeMerchantJobPostModal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition z-10">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+      <div class="p-12">
+        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
+          <i data-feather="briefcase" class="w-8 h-8 text-white"></i>
+        </div>
+        <h2 class="text-3xl font-black text-gray-900 mb-4 text-center">Post a Job</h2>
+        <p class="text-gray-600 mb-8 leading-relaxed text-center">Pay ₦1,000 to publish your job listing and receive applications.</p>
+        <div class="border-2 border-primary/30 rounded-2xl p-6 mb-6">
+          <p class="text-5xl font-black text-gray-900 mb-1 text-center">₦1,000</p>
+          <p class="text-center text-gray-500 mb-6">One-time payment per job</p>
+          <ul class="space-y-3 text-sm text-gray-600">
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Reach active job seekers</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Manage all applications</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>No hidden fees</span></li>
+          </ul>
+        </div>
+        <button id="merchantJobPostPayBtn" class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Pay ₦1,000 & Post Job</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Merchant Applicants Modal -->
+  <div id="merchantApplicantsModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full overflow-hidden max-h-[90vh] overflow-y-auto">
+      <div class="px-8 py-6 border-b-2 border-gray-100 flex items-center justify-between">
+        <div>
+          <h3 class="text-2xl font-black text-gray-900">Job Applicants</h3>
+          <p class="text-sm text-gray-500 mt-1">Review and manage candidates</p>
+        </div>
+        <button id="closeMerchantApplicantsModal" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div class="p-8">
+        <ul id="merchantApplicantsList" class="space-y-4"></ul>
+        <p id="merchantApplicantsEmpty" class="text-center text-gray-500 py-8">No applications yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Merchant Applicant Profile Modal -->
+  <div id="merchantProfileModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-8 py-6 border-b-2 border-gray-100">
+        <div>
+          <h3 id="merchantProfileModalName" class="text-2xl font-black text-gray-900">Applicant Profile</h3>
+          <p class="text-sm text-gray-500">Verify the worker's background before deciding.</p>
+        </div>
+        <button id="closeMerchantProfileModal" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="merchantProfileModalBody" class="p-8 max-h-[70vh] overflow-y-auto"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="images/logo.png" alt="Sirius logo" class="h-12 sm:h-14 md:h-16 w-auto drop-shadow-2xl">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2026 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <script>
+    (function () {
+      const marketplace = window.SiriusMarketplace;
+      if (!marketplace) return;
+
+      const SESSION_KEY = 'siriusMarketplaceSession';
+      const session = (() => {
+        try {
+          return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
+        } catch {
+          return null;
+        }
+      })();
+
+      if (!session?.token) {
+        window.location.href = 'login.html#merchant-login';
+        return;
+      }
+
+      const PLAN_OPTIONS = [
+        {
+          id: '3-month',
+          label: '3 Month Spotlight',
+          price: '₦35,000',
+          cycle: 'billed every 3 months',
+          perks: [
+            'Featured on marketplace homepage hero queue',
+            'Live analytics dashboard access',
+            'WhatsApp and Instagram call-to-action buttons',
+          ],
+        },
+        {
+          id: '6-month',
+          label: '6 Month Growth',
+          price: '₦60,000',
+          cycle: 'billed every 6 months',
+          perks: [
+            'Everything in 3 month plan',
+            'Priority hero consideration',
+            'Quarterly performance review session',
+          ],
+        },
+        {
+          id: '12-month',
+          label: '12 Month Partner',
+          price: '₦100,000',
+          cycle: 'billed every 12 months',
+          perks: [
+            'Always-on hero eligibility',
+            'Custom campaign slots with Sirius',
+            'Dedicated merchant success manager',
+          ],
+        },
+      ];
+
+      let vendors = [];
+      let activeVendor = null;
+      let currentMerchant = null;
+      let logoDataUrl = '';
+      let selectedPlan = 'PENDING_SELECTION';
+
+      const vendorListEl = document.getElementById('vendorList');
+      const previewEl = document.getElementById('previewCard');
+      const form = document.getElementById('vendorForm');
+      const heroSpotlight = document.getElementById('heroSpotlight');
+      const logoInput = document.getElementById('vendorLogo');
+      const removeLogoBtn = document.getElementById('removeLogoBtn');
+      const logoPreview = document.getElementById('logoPreview');
+      const logoPreviewFallback = document.getElementById('logoPreviewFallback');
+      const logoPreviewWrapper = document.getElementById('logoPreviewWrapper');
+      const resetBtn = document.getElementById('resetVendorBtn');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const analyticsStatus = document.getElementById('analyticsStatus');
+      const analyticsViewsEl = document.getElementById('analyticsViews');
+      const analyticsWhatsappEl = document.getElementById('analyticsWhatsapp');
+      const analyticsInstagramEl = document.getElementById('analyticsInstagram');
+      const analyticsTotalEl = document.getElementById('analyticsTotalClicks');
+      const planCardsEl = document.getElementById('planCards');
+      const planStatusLabel = document.getElementById('planStatusLabel');
+      const activatePlanBtn = document.getElementById('activatePlanBtn');
+      const planMessageEl = document.getElementById('planMessage');
+
+      logoutBtn?.addEventListener('click', () => {
+        localStorage.removeItem(SESSION_KEY);
+        window.location.href = 'login.html#merchant-login';
+      });
+
+      function initials(name) {
+        if (!name) return 'SM';
+        const parts = name.trim().split(/\s+/);
+        const first = parts[0]?.charAt(0) ?? '';
+        const last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : '';
+        return (first + last || first || 'SM').toUpperCase();
+      }
+
+      function sanitiseHighlights(value) {
+        if (!value) return [];
+        const lines = Array.isArray(value)
+          ? value
+          : value.split(/\r?\n+/);
+        return lines
+          .map(item => (typeof item === 'string' ? item : String(item)))
+          .map(item => item.replace(/^•\s*/, '').trim())
+          .filter(Boolean);
+      }
+
+      function sanitiseInstagram(value) {
+        if (!value) return '';
+        const trimmed = value.trim();
+        if (!trimmed) return '';
+        if (/^https?:\/\//i.test(trimmed)) return trimmed;
+        if (trimmed.startsWith('@')) {
+          return `https://www.instagram.com/${trimmed.slice(1)}`;
+        }
+        return `https://www.instagram.com/${trimmed}`;
+      }
+
+      function sanitisePhone(value) {
+        if (!value) return '';
+        const trimmed = value.trim();
+        if (!trimmed) return '';
+        const digits = trimmed.replace(/\D/g, '');
+        if (!digits) return '';
+        if (digits.startsWith('234')) return `+${digits}`;
+        if (digits.startsWith('0')) return `+234${digits.slice(1)}`;
+        if (trimmed.startsWith('+')) return `+${digits}`;
+        return digits.length === 10 ? `+234${digits}` : `+${digits}`;
+      }
+
+      function buildWhatsAppLink(phone) {
+        if (!phone) return '';
+        const digits = phone.replace(/\D/g, '');
+        if (!digits) return '';
+        if (digits.startsWith('234')) return `https://wa.me/${digits}`;
+        if (digits.startsWith('0')) return `https://wa.me/234${digits.slice(1)}`;
+        return `https://wa.me/${digits}`;
+      }
+
+      function formatPlanLabel(planId) {
+        if (planId === 'PENDING_SELECTION') return 'No plan selected';
+        const plan = PLAN_OPTIONS.find(option => option.id === planId);
+        return plan ? plan.label : planId;
+      }
+
+      function syncPlanButtonState() {
+        if (!activatePlanBtn) return;
+        const currentPlan = currentMerchant?.plan || 'PENDING_SELECTION';
+        const canActivate = Boolean(selectedPlan && selectedPlan !== currentPlan && selectedPlan !== 'PENDING_SELECTION');
+        activatePlanBtn.disabled = !canActivate;
+      }
+
+      function updatePlanStatus() {
+        if (!planStatusLabel) return;
+        const currentPlan = currentMerchant?.plan || 'PENDING_SELECTION';
+        if (currentPlan === 'PENDING_SELECTION') {
+          planStatusLabel.textContent = 'No active plan yet. Pick a plan to receive payment instructions.';
+        } else {
+          planStatusLabel.textContent = `${formatPlanLabel(currentPlan)} is active. Upgrade anytime by picking another plan.`;
+        }
+        syncPlanButtonState();
+      }
+
+      function renderPlanCards(activePlan) {
+        if (!planCardsEl) return;
+        if (!PLAN_OPTIONS.some(option => option.id === selectedPlan)) {
+          selectedPlan = activePlan && PLAN_OPTIONS.some(option => option.id === activePlan) ? activePlan : PLAN_OPTIONS[0]?.id || 'PENDING_SELECTION';
+        }
+
+        planCardsEl.innerHTML = PLAN_OPTIONS.map(option => {
+          const isCurrent = option.id === activePlan;
+          const isSelected = option.id === selectedPlan;
+          const classes = isSelected
+            ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10'
+            : 'border-gray-100 bg-gray-50 hover:border-primary/40 hover:bg-white transition-all';
+          const badge = isCurrent ? '<span class="text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">Current plan</span>' : '';
+          return `
+            <button type="button" class="text-left w-full rounded-2xl border-2 p-5 ${classes}" data-plan-id="${option.id}">
+              <div class="flex items-start justify-between gap-3 mb-4">
+                <div>
+                  <p class="text-sm font-bold text-primary/70 uppercase tracking-wide">${option.label}</p>
+                  <p class="text-3xl font-black text-gray-900">${option.price}</p>
+                  <p class="text-xs text-gray-500">${option.cycle}</p>
+                </div>
+                ${badge}
+              </div>
+              <ul class="space-y-2 text-sm text-gray-600">
+                ${option.perks
+                  .map(perk => `<li class="flex items-start gap-2"><i data-feather="check" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i><span>${perk}</span></li>`)
+                  .join('')}
+              </ul>
+            </button>
+          `;
+        }).join('');
+
+        planCardsEl.querySelectorAll('[data-plan-id]').forEach(button => {
+          button.addEventListener('click', () => {
+            selectedPlan = button.getAttribute('data-plan-id') || selectedPlan;
+            if (planMessageEl) {
+              planMessageEl.textContent = 'Click “Activate selected plan” to receive the payment link.';
+              planMessageEl.className = 'text-sm text-gray-600 md:text-right';
+            }
+            renderPlanCards(activePlan);
+            feather.replace();
+            syncPlanButtonState();
+          });
+        });
+
+        feather.replace();
+        syncPlanButtonState();
+      }
+
+      async function handlePlanActivation() {
+        if (!selectedPlan || selectedPlan === 'PENDING_SELECTION' || !activatePlanBtn) return;
+        const currentPlan = currentMerchant?.plan || 'PENDING_SELECTION';
+        if (selectedPlan === currentPlan) return;
+
+        if (planMessageEl) {
+          planMessageEl.textContent = 'Saving plan selection…';
+          planMessageEl.className = 'text-sm text-gray-500 md:text-right';
+        }
+        activatePlanBtn.disabled = true;
+        activatePlanBtn.classList.add('cursor-wait');
+
+        try {
+          const response = await fetch('/api/merchants/plan', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${session.token}`,
+            },
+            body: JSON.stringify({ plan: selectedPlan }),
+          });
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data?.message || 'Unable to update plan.');
+          }
+
+          currentMerchant = { ...(currentMerchant || {}), plan: data.plan };
+          if (planMessageEl) {
+            planMessageEl.textContent = data.message || 'Plan saved! Watch your email for payment instructions.';
+            planMessageEl.className = 'text-sm font-semibold text-green-600 md:text-right';
+          }
+          renderPlanCards(currentMerchant.plan);
+          updatePlanStatus();
+          const toast = window.SiriusUI?.showToast;
+          if (toast) toast('Plan updated successfully.', 'success');
+        } catch (error) {
+          if (planMessageEl) {
+            planMessageEl.textContent = error.message || 'Unable to save plan right now.';
+            planMessageEl.className = 'text-sm font-semibold text-red-600 md:text-right';
+          }
+        } finally {
+          activatePlanBtn.classList.remove('cursor-wait');
+          syncPlanButtonState();
+        }
+      }
+
+      function updateAnalyticsSummary(data) {
+        const views = data?.profileViews ?? 0;
+        const whatsapp = data?.whatsappClicks ?? 0;
+        const instagram = data?.instagramClicks ?? 0;
+        const total = data?.totalClicks ?? whatsapp + instagram;
+
+        if (analyticsViewsEl) analyticsViewsEl.textContent = views.toLocaleString();
+        if (analyticsWhatsappEl) analyticsWhatsappEl.textContent = whatsapp.toLocaleString();
+        if (analyticsInstagramEl) analyticsInstagramEl.textContent = instagram.toLocaleString();
+        if (analyticsTotalEl) analyticsTotalEl.textContent = total.toLocaleString();
+      }
+
+      async function loadAnalyticsForVendor(vendorId) {
+        if (!analyticsStatus) return;
+
+        if (!vendorId) {
+          analyticsStatus.textContent = 'Select a business to load performance.';
+          updateAnalyticsSummary({ profileViews: 0, whatsappClicks: 0, instagramClicks: 0, totalClicks: 0 });
+          return;
+        }
+
+        analyticsStatus.textContent = 'Loading analytics...';
+        updateAnalyticsSummary({ profileViews: 0, whatsappClicks: 0, instagramClicks: 0, totalClicks: 0 });
+
+        try {
+          const response = await fetch(`/api/marketplace/analytics/${vendorId}`);
+          if (!response.ok) throw new Error('Request failed');
+          const data = await response.json();
+          updateAnalyticsSummary(data);
+          if (data?.lastEventAt) {
+            const lastEvent = new Date(data.lastEventAt);
+            analyticsStatus.textContent = `Last activity: ${lastEvent.toLocaleString()}`;
+          } else {
+            analyticsStatus.textContent = 'Share your profile link to start receiving activity.';
+          }
+        } catch (error) {
+          analyticsStatus.textContent = 'Unable to load analytics right now.';
+          console.warn('Analytics fetch failed', error);
+        }
+      }
+
+      function createBlankVendor(merchant) {
+        const email = (merchant.email || '').toLowerCase();
+        return {
+          id: `merchant-${merchant.id}`,
+          name: merchant.businessName || 'Marketplace Listing',
+          owner: merchant.contactName || merchant.businessName || merchant.email,
+          ownerEmail: email,
+          ownerMerchantId: merchant.id,
+          headline: '',
+          summary: '',
+          location: '',
+          delivery: '',
+          highlights: [],
+          whatsapp: merchant.phone || '',
+          instagram: '',
+          hero: false,
+          logoUrl: '',
+          categories: [],
+          order: 99,
+        };
+      }
+
+      async function fetchCurrentMerchant() {
+        const response = await fetch('/api/merchants/me', {
+          headers: { Authorization: `Bearer ${session.token}` },
+        });
+        if (!response.ok) throw new Error('Unable to load merchant profile');
+        const data = await response.json();
+        return data.merchant;
+      }
+
+      function refreshMerchantVendors() {
+        const key = (currentMerchant?.email || '').toLowerCase();
+        if (!key) return [];
+        return marketplace.loadVendors().filter(v => (v.ownerEmail || '').toLowerCase() === key);
+      }
+
+      function ensureMerchantVendor() {
+        vendors = refreshMerchantVendors();
+        if (!vendors.length && currentMerchant) {
+          marketplace.upsertVendor(createBlankVendor(currentMerchant));
+          vendors = refreshMerchantVendors();
+        }
+      }
+
+      function renderVendorList() {
+        vendorListEl.innerHTML = vendors
+          .map(v => {
+            const heroBadge = v.hero
+              ? '<span class="text-xs font-black uppercase tracking-wide text-white bg-primary px-2 py-1 rounded-full">Hero</span>'
+              : '';
+            return `
+              <button type="button" data-vendor="${v.id}" class="w-full text-left border-2 rounded-2xl px-4 py-3 transition-all ${activeVendor && activeVendor.id === v.id ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-primary/50'}">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="min-w-0">
+                    <p class="text-sm font-bold text-gray-900 truncate">${v.name}</p>
+                    <p class="text-xs text-gray-600 truncate">${v.location || 'Add location'}</p>
+                  </div>
+                  ${heroBadge}
+                </div>
+              </button>
+            `;
+          })
+          .join('');
+
+        vendorListEl.querySelectorAll('button[data-vendor]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-vendor');
+            setActiveVendor(id);
+          });
+        });
+        feather.replace();
+      }
+
+      function populateForm(vendor) {
+        document.getElementById('vendorId').value = vendor.id;
+        document.getElementById('vendorName').value = vendor.name || '';
+        document.getElementById('vendorOwner').value = vendor.owner || '';
+        document.getElementById('vendorHeadline').value = vendor.headline || '';
+        document.getElementById('vendorLocation').value = vendor.location || '';
+        document.getElementById('vendorSummary').value = vendor.summary || '';
+        document.getElementById('vendorDelivery').value = vendor.delivery || '';
+        const highlights = Array.isArray(vendor.highlights) ? vendor.highlights : sanitiseHighlights(vendor.highlights);
+        document.getElementById('vendorHighlights').value = highlights.join('\n');
+        document.getElementById('vendorWhatsapp').value = vendor.whatsapp || '';
+        document.getElementById('vendorInstagram').value = vendor.instagram || '';
+        heroSpotlight.checked = Boolean(vendor.hero);
+        logoDataUrl = vendor.logoUrl || '';
+        updateLogoPreview();
+        const previewVendor = {
+          ...vendor,
+          highlights,
+          whatsappLink: vendor.whatsappLink || buildWhatsAppLink(vendor.whatsapp),
+        };
+        updatePreviewCard(previewVendor);
+      }
+
+      function updateLogoPreview() {
+        if (logoDataUrl) {
+          logoPreview.src = logoDataUrl;
+          logoPreview.classList.remove('hidden');
+          logoPreviewFallback.classList.add('hidden');
+          logoPreviewWrapper.classList.remove('bg-gray-50');
+        } else {
+          logoPreview.src = '';
+          logoPreview.classList.add('hidden');
+          logoPreviewFallback.textContent = initials(activeVendor?.name || 'Vendor');
+          logoPreviewFallback.classList.remove('hidden');
+          logoPreviewWrapper.classList.add('bg-gray-50');
+        }
+      }
+
+      function renderPreviewHighlights(vendor) {
+        if (!vendor.highlights || !vendor.highlights.length) return '';
+        return `<ul class="space-y-2">${vendor.highlights
+          .map(item => `<li class="flex items-start gap-2 text-sm text-gray-700"><i data-feather="check" class="w-4 h-4 text-primary flex-shrink-0 mt-0.5"></i><span>${item}</span></li>`)
+          .join('')}</ul>`;
+      }
+
+      function updatePreviewCard(vendor) {
+        previewEl.innerHTML = `
+          <article class="bg-gradient-to-br from-gray-50 to-blue-50/30 border-2 border-gray-100 rounded-3xl p-8 space-y-5">
+            <div class="flex items-start gap-4">
+              ${logoDataUrl
+                ? `<img src="${logoDataUrl}" alt="${vendor.name} logo" class="w-20 h-20 rounded-2xl object-cover border-2 border-gray-200">`
+                : `<span class="w-20 h-20 rounded-2xl bg-primary/10 text-primary font-black text-xl flex items-center justify-center">${initials(vendor.name)}</span>`}
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap mb-1">
+                  <h4 class="text-xl font-black text-gray-900">${vendor.name}</h4>
+                  ${vendor.hero ? '<span class="inline-flex items-center gap-1 text-xs font-bold bg-primary text-white px-2.5 py-1 rounded-full">Hero</span>' : ''}
+                </div>
+                ${vendor.owner ? `<p class="text-sm text-gray-600 font-medium mb-1">Owned by ${vendor.owner}</p>` : ''}
+                <p class="text-sm text-gray-600 font-medium">${vendor.location || ''}</p>
+              </div>
+            </div>
+            <p class="text-base text-gray-700 leading-relaxed">${vendor.summary || 'This is where your business summary will appear.'}</p>
+            ${renderPreviewHighlights(vendor)}
+            ${vendor.delivery ? `<p class="text-sm text-gray-600">${vendor.delivery}</p>` : ''}
+            <div class="flex flex-wrap gap-3">
+              ${vendor.whatsappLink ? '<span class="inline-flex items-center gap-2 bg-green-100 text-green-700 text-sm font-bold px-3 py-2 rounded-xl"><i data-feather="check-circle" class="w-4 h-4"></i>WhatsApp ready</span>' : '<span class="inline-flex items-center gap-2 border-2 border-dashed border-gray-300 text-gray-500 text-sm px-3 py-2 rounded-xl">Add WhatsApp</span>'}
+              ${vendor.instagram ? '<span class="inline-flex items-center gap-2 bg-pink-100 text-pink-700 text-sm font-bold px-3 py-2 rounded-xl"><i data-feather="check-circle" class="w-4 h-4"></i>Instagram linked</span>' : '<span class="inline-flex items-center gap-2 border-2 border-dashed border-gray-300 text-gray-500 text-sm px-3 py-2 rounded-xl">Add Instagram</span>'}
+            </div>
+          </article>
+        `;
+        feather.replace();
+      }
+
+      function setActiveVendor(id) {
+        if (!vendors.length) return;
+        const vendor = vendors.find(v => v.id === id) || vendors[0];
+        if (!vendor) return;
+        const sanitisedVendor = {
+          ...vendor,
+          highlights: Array.isArray(vendor.highlights) ? [...vendor.highlights] : sanitiseHighlights(vendor.highlights),
+          whatsappLink: vendor.whatsappLink || buildWhatsAppLink(vendor.whatsapp),
+        };
+        activeVendor = sanitisedVendor;
+        logoDataUrl = sanitisedVendor.logoUrl || '';
+        populateForm(activeVendor);
+        renderVendorList();
+        loadAnalyticsForVendor(activeVendor.id);
+      }
+
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        if (!activeVendor || !currentMerchant) return;
+        const highlights = sanitiseHighlights(document.getElementById('vendorHighlights').value);
+        const whatsapp = sanitisePhone(document.getElementById('vendorWhatsapp').value.trim());
+        const instagram = sanitiseInstagram(document.getElementById('vendorInstagram').value.trim());
+
+        const updated = {
+          id: document.getElementById('vendorId').value,
+          name: document.getElementById('vendorName').value.trim(),
+          owner: document.getElementById('vendorOwner').value.trim(),
+          headline: document.getElementById('vendorHeadline').value.trim(),
+          location: document.getElementById('vendorLocation').value.trim(),
+          summary: document.getElementById('vendorSummary').value.trim(),
+          delivery: document.getElementById('vendorDelivery').value.trim(),
+          highlights,
+          whatsapp,
+          instagram,
+          hero: heroSpotlight.checked,
+          logoUrl: logoDataUrl,
+          ownerEmail: (currentMerchant.email || '').toLowerCase(),
+          ownerMerchantId: currentMerchant.id,
+        };
+        updated.whatsappLink = buildWhatsAppLink(updated.whatsapp);
+
+        if (updated.hero) {
+          marketplace.setHeroVendor(updated.id);
+        }
+        marketplace.upsertVendor(updated);
+        ensureMerchantVendor();
+        setActiveVendor(updated.id);
+        const toast = window.SiriusUI?.showToast;
+        if (toast) toast('Marketplace profile updated successfully.', 'success');
+        else alert('✅ Marketplace profile updated successfully!');
+      });
+
+      logoInput.addEventListener('change', event => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          logoDataUrl = typeof reader.result === 'string' ? reader.result : '';
+          updateLogoPreview();
+          if (activeVendor) {
+            const previewVendor = { ...activeVendor, logoUrl: logoDataUrl };
+            updatePreviewCard(previewVendor);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+
+      removeLogoBtn.addEventListener('click', () => {
+        logoDataUrl = '';
+        logoInput.value = '';
+        updateLogoPreview();
+        if (activeVendor) {
+          const previewVendor = { ...activeVendor, logoUrl: '' };
+          updatePreviewCard(previewVendor);
+        }
+      });
+
+      form.addEventListener('input', () => {
+        if (!activeVendor) return;
+        const previewVendor = {
+          ...activeVendor,
+          name: document.getElementById('vendorName').value.trim() || activeVendor.name,
+          owner: document.getElementById('vendorOwner').value.trim(),
+          headline: document.getElementById('vendorHeadline').value.trim(),
+          location: document.getElementById('vendorLocation').value.trim(),
+          summary: document.getElementById('vendorSummary').value.trim(),
+          delivery: document.getElementById('vendorDelivery').value.trim(),
+          highlights: sanitiseHighlights(document.getElementById('vendorHighlights').value),
+          whatsapp: sanitisePhone(document.getElementById('vendorWhatsapp').value.trim()),
+          instagram: sanitiseInstagram(document.getElementById('vendorInstagram').value.trim()),
+          hero: heroSpotlight.checked,
+          logoUrl: logoDataUrl,
+        };
+        previewVendor.whatsappLink = buildWhatsAppLink(previewVendor.whatsapp);
+        updatePreviewCard(previewVendor);
+        if (!logoDataUrl) {
+          logoPreviewFallback.textContent = initials(previewVendor.name);
+        }
+      });
+
+      resetBtn.addEventListener('click', () => {
+        if (!activeVendor || !currentMerchant) return;
+        if (confirm('Reset this vendor to default content?')) {
+          marketplace.upsertVendor(createBlankVendor(currentMerchant));
+          ensureMerchantVendor();
+          setActiveVendor(vendors[0]?.id);
+          const toast = window.SiriusUI?.showToast;
+          if (toast) toast('Reverted to default marketplace content.', 'info');
+          else alert('✨ Reverted to default marketplace content.');
+        }
+      });
+
+      activatePlanBtn?.addEventListener('click', handlePlanActivation);
+
+      async function bootstrapDashboard() {
+        try {
+          currentMerchant = await fetchCurrentMerchant();
+          selectedPlan = currentMerchant?.plan && currentMerchant.plan !== 'PENDING_SELECTION' ? currentMerchant.plan : selectedPlan;
+          renderPlanCards(currentMerchant?.plan || 'PENDING_SELECTION');
+          updatePlanStatus();
+          ensureMerchantVendor();
+          const params = new URLSearchParams(window.location.search);
+          const requestedVendor = params.get('vendor');
+          const initialId = requestedVendor && vendors.some(v => v.id === requestedVendor) ? requestedVendor : vendors[0]?.id;
+          if (initialId) {
+            setActiveVendor(initialId);
+          } else if (vendors[0]) {
+            setActiveVendor(vendors[0].id);
+          }
+          if (activeVendor) {
+            loadAnalyticsForVendor(activeVendor.id);
+          }
+          renderVendorList();
+          feather.replace();
+        } catch (error) {
+          console.error('Unable to initialise dashboard', error);
+          localStorage.removeItem(SESSION_KEY);
+          window.location.href = 'login.html#merchant-login';
+        }
+      }
+
+      bootstrapDashboard();
+      initializeMerchantJobPosting();
+    })();
+
+    // Merchant Job Posting Functionality
+    let merchantPostedJobs = [];
+    let merchantCurrentJobApplicants = [];
+    let merchantCurrentJobId = null;
+
+    async function initializeMerchantJobPosting() {
+      await loadMerchantPostedJobs();
+      document.getElementById('merchantPostJobBtn')?.addEventListener('click', () => {
+        document.getElementById('merchantJobPostModal').classList.remove('hidden');
+      });
+      document.getElementById('closeMerchantJobPostModal')?.addEventListener('click', () => {
+        document.getElementById('merchantJobPostModal').classList.add('hidden');
+      });
+      document.getElementById('merchantJobPostPayBtn')?.addEventListener('click', () => {
+        window.open('https://paystack.com/pay/siriusjobs-post', '_blank', 'noopener');
+        alert('Complete the ₦1,000 payment, then return to post your job.');
+        document.getElementById('merchantJobPostModal').classList.add('hidden');
+      });
+      document.getElementById('closeMerchantApplicantsModal')?.addEventListener('click', () => {
+        document.getElementById('merchantApplicantsModal').classList.add('hidden');
+      });
+      document.getElementById('closeMerchantProfileModal')?.addEventListener('click', () => {
+        document.getElementById('merchantProfileModal').classList.add('hidden');
+      });
+    }
+
+    async function loadMerchantPostedJobs() {
+      try {
+        const session = JSON.parse(localStorage.getItem(SESSION_KEY));
+        const res = await fetch(`/api/jobs/employer/${session?.userId}`, {
+          headers: { Authorization: `Bearer ${session?.token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          merchantPostedJobs = data.data?.jobs || [];
+          renderMerchantPostedJobs();
+        }
+      } catch (error) {
+        console.error('Failed to load posted jobs:', error);
+      }
+    }
+
+    function renderMerchantPostedJobs() {
+      const listEl = document.getElementById('merchantPostedJobsList');
+      const emptyEl = document.getElementById('merchantPostedJobsEmpty');
+      if (!listEl || !emptyEl) return;
+      if (merchantPostedJobs.length === 0) {
+        listEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+      listEl.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+      listEl.innerHTML = merchantPostedJobs.map(job => `
+        <li class="bg-gray-50 rounded-2xl p-6 border-2 border-gray-200 hover:border-primary/30 transition-all">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex-1">
+              <h4 class="font-bold text-gray-900 text-lg mb-1">${job.title}</h4>
+              <p class="text-sm text-gray-600 line-clamp-2">${job.description}</p>
+            </div>
+            <span class="text-xs px-3 py-1 rounded-full font-bold ${job.status === 'open' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-700'}">${job.status}</span>
+          </div>
+          <div class="flex items-center justify-between text-sm text-gray-600">
+            <span><i data-feather="map-pin" class="w-4 h-4 inline"></i> ${job.location}</span>
+            <span><i data-feather="users" class="w-4 h-4 inline"></i> ${job.applicationCount || 0} applicants</span>
+          </div>
+          <button onclick="openMerchantApplicantsModal('${job._id}')" class="mt-4 w-full bg-primary text-white font-bold py-2 rounded-xl hover:bg-primary/90 transition-all text-sm">View Applicants</button>
+        </li>
+      `).join('');
+      feather.replace();
+    }
+
+    async function openMerchantApplicantsModal(jobId) {
+      merchantCurrentJobId = jobId;
+      document.getElementById('merchantApplicantsModal').classList.remove('hidden');
+      await loadMerchantJobApplicants(jobId);
+    }
+
+    async function loadMerchantJobApplicants(jobId) {
+      try {
+        const session = JSON.parse(localStorage.getItem(SESSION_KEY));
+        const res = await fetch(`/api/applications/job/${jobId}`, {
+          headers: { Authorization: `Bearer ${session?.token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          merchantCurrentJobApplicants = data.data?.applications || [];
+          renderMerchantApplicants();
+        }
+      } catch (error) {
+        console.error('Failed to load applicants:', error);
+      }
+    }
+
+    function renderMerchantApplicants() {
+      const listEl = document.getElementById('merchantApplicantsList');
+      const emptyEl = document.getElementById('merchantApplicantsEmpty');
+      if (!listEl || !emptyEl) return;
+      if (merchantCurrentJobApplicants.length === 0) {
+        listEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+      listEl.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+      listEl.innerHTML = merchantCurrentJobApplicants.map(app => `
+        <li class="bg-gray-50 rounded-2xl p-6 border-2 border-gray-200">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <h4 class="font-bold text-gray-900 text-lg">${app.worker?.name || 'Unknown'}</h4>
+              <p class="text-sm text-gray-600">${app.workerProfile?.skills?.join(', ') || 'No skills listed'}</p>
+            </div>
+            <span class="text-xs px-3 py-1 rounded-full font-bold ${
+              app.status === 'accepted' ? 'bg-green-100 text-green-700' :
+              app.status === 'rejected' ? 'bg-red-100 text-red-700' :
+              'bg-yellow-100 text-yellow-700'
+            }">${app.status}</span>
+          </div>
+          ${app.coverLetter ? `<p class="text-sm text-gray-600 mb-4 italic">"${app.coverLetter}"</p>` : ''}
+          <div class="flex gap-2">
+            <button onclick="viewMerchantApplicantProfile('${app.workerId}')" class="flex-1 border-2 border-primary text-primary font-bold py-2 rounded-xl hover:bg-primary/5 transition-all text-sm">View Profile</button>
+            ${app.status === 'pending' ? `
+              <button onclick="updateMerchantApplicationStatus('${app._id}', 'accepted')" class="flex-1 bg-green-600 text-white font-bold py-2 rounded-xl hover:bg-green-700 transition-all text-sm">Accept</button>
+              <button onclick="updateMerchantApplicationStatus('${app._id}', 'rejected')" class="flex-1 bg-red-600 text-white font-bold py-2 rounded-xl hover:bg-red-700 transition-all text-sm">Reject</button>
+            ` : ''}
+          </div>
+        </li>
+      `).join('');
+      feather.replace();
+    }
+
+    async function viewMerchantApplicantProfile(workerId) {
+      try {
+        const session = JSON.parse(localStorage.getItem(SESSION_KEY));
+        const res = await fetch(`/api/dashboard/artisan/${workerId}`, {
+          headers: { Authorization: `Bearer ${session?.token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const profile = data.data;
+          const modalBody = document.getElementById('merchantProfileModalBody');
+          const modalName = document.getElementById('merchantProfileModalName');
+          if (modalName) modalName.textContent = profile.name || 'Worker Profile';
+          if (modalBody) {
+            modalBody.innerHTML = `
+              <div class="space-y-6">
+                <div><h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Skills</h4><div class="flex flex-wrap gap-2">${(profile.skills || []).map(skill => `<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">${skill}</span>`).join('')}</div></div>
+                <div><h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Experience</h4><p class="text-gray-700">${profile.experience || 'No experience provided'}</p></div>
+                <div><h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Bio</h4><p class="text-gray-700">${profile.bio || 'No bio provided'}</p></div>
+                <div><h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Location</h4><p class="text-gray-700">${profile.location || 'Not specified'}</p></div>
+              </div>
+            `;
+          }
+          document.getElementById('merchantProfileModal').classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('Failed to load profile:', error);
+        alert('Failed to load worker profile');
+      }
+    }
+
+    async function updateMerchantApplicationStatus(applicationId, decision) {
+      try {
+        const session = JSON.parse(localStorage.getItem(SESSION_KEY));
+        const res = await fetch(`/api/applications/${applicationId}/decision`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.token}` },
+          body: JSON.stringify({ decision }),
+        });
+        if (res.ok) {
+          alert(`Application ${decision}!`);
+          await loadMerchantJobApplicants(merchantCurrentJobId);
+        } else {
+          const data = await res.json();
+          alert(data.message || `Failed to ${decision} application`);
+        }
+      } catch (error) {
+        console.error('Failed to update application:', error);
+        alert(`Failed to ${decision} application`);
+      }
+    }
+
+    window.openMerchantApplicantsModal = openMerchantApplicantsModal;
+    window.viewMerchantApplicantProfile = viewMerchantApplicantProfile;
+    window.updateMerchantApplicationStatus = updateMerchantApplicationStatus;
+  </script>
+  <script src="assistant.js"></script>
+  <script src="session-timeout.js"></script>
+  <script src="assets/site-shell.js" defer></script>
+</body>
+</html>

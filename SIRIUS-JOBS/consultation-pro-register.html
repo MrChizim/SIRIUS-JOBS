@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Registration – Sirius Jobs Consultations</title>
+    <meta name="description" content="Register as a professional to offer consultations">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" sizes="32x32" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="session-utils.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0056b3',
+                        secondary: '#808080',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #0056b3;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+    <!-- Navigation -->
+    <nav data-sirius-shell="skip" class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <img src="images/logo.png" alt="SiriusJobs logo" class="h-10 sm:h-12 md:h-14 w-auto drop-shadow-2xl transition-transform group-hover:scale-105" />
+                    <span class="sr-only">SiriusJobs home</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="services.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Services</a>
+                    <a href="jobs.html" class="nav-link text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Jobs</a>
+                    <a href="consultations.html" class="nav-link text-sm font-semibold text-primary transition-colors">Consultations</a>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <a href="login.html" class="text-sm font-semibold text-gray-600 hover:text-primary transition-colors">Sign in</a>
+                    <a href="consultations.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-6 py-3 rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl">
+                        Browse Professionals
+                        <i data-feather="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="menu-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <nav class="nav-menu-mobile">
+        <a href="services.html">Services</a>
+        <a href="jobs.html">Jobs</a>
+        <a href="consultations.html" class="active">Consultations</a>
+        <a href="login.html">Sign in</a>
+        <a href="consultations.html" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-full">Browse Professionals</a>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="pt-32 pb-20">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="max-w-3xl mx-auto">
+                <!-- Header -->
+                <div class="text-center mb-12">
+                    <div class="inline-flex items-center gap-2 bg-blue-100 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                        <i data-feather="award" class="w-4 h-4"></i>
+                        <span>Professional Registration</span>
+                    </div>
+                    <h1 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
+                        Start Offering Consultations
+                    </h1>
+                    <p class="text-xl text-gray-600">
+                        Earn ₦2,500 per hour (₦1,250 per extra 30 min). Help clients while building your reputation.
+                    </p>
+                </div>
+
+                <!-- Benefits Cards -->
+                <div class="grid md:grid-cols-3 gap-6 mb-12">
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 text-center">
+                        <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <i data-feather="dollar-sign" class="w-6 h-6 text-primary"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Earn ₦2,500/hr</h3>
+                        <p class="text-sm text-gray-600">₦1,250 for each extra 30 minutes</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 text-center">
+                        <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <i data-feather="shield" class="w-6 h-6 text-primary"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Stay Anonymous</h3>
+                        <p class="text-sm text-gray-600">No photos or personal contact</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 text-center">
+                        <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mx-auto mb-3">
+                            <i data-feather="clock" class="w-6 h-6 text-primary"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Flexible</h3>
+                        <p class="text-sm text-gray-600">Work on your own schedule</p>
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <div class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                    <form id="registration-form" class="space-y-6" enctype="multipart/form-data">
+                        <!-- Account Information -->
+                        <div class="space-y-4">
+                            <div>
+                                <h3 class="text-lg font-black text-gray-900">Account Information</h3>
+                                <p class="text-sm text-gray-500">We’ll use these details to create your consultation account if you don’t already have one.</p>
+                            </div>
+                            <div class="grid gap-4 md:grid-cols-2">
+                                <div>
+                                    <label for="firstName" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        First Name <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="firstName"
+                                        name="firstName"
+                                        placeholder="e.g., Adaeze"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label for="lastName" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        Last Name <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="lastName"
+                                        name="lastName"
+                                        placeholder="e.g., Okoro"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        Email Address <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        placeholder="name@example.com"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        Phone Number
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        placeholder="0701 234 5678"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        Password <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <input
+                                            type="password"
+                                            id="password"
+                                            name="password"
+                                            placeholder="Create a secure password"
+                                            class="w-full pr-24 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                        />
+                                        <button
+                                            type="button"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold uppercase text-primary hover:text-blue-700"
+                                            data-password-toggle
+                                            data-target="password"
+                                        >
+                                            Show
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="confirmPassword" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        Confirm Password <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <input
+                                            type="password"
+                                            id="confirmPassword"
+                                            name="confirmPassword"
+                                            placeholder="Re-type your password"
+                                            class="w-full pr-24 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                        />
+                                        <button
+                                            type="button"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold uppercase text-primary hover:text-blue-700"
+                                            data-password-toggle
+                                            data-target="confirmPassword"
+                                        >
+                                            Show
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profession -->
+                        <div>
+                            <label for="profession" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Profession <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="profession"
+                                name="profession"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                            >
+                                <option value="">Select your profession</option>
+                                <option value="doctor">Doctor</option>
+                                <option value="lawyer">Lawyer</option>
+                                <option value="therapist">Therapist</option>
+                            </select>
+                            <p class="text-sm text-gray-500 mt-2">
+                                <i data-feather="info" class="w-3 h-3 inline"></i>
+                                You'll complete your professional details (license, specialization) in your dashboard after registration
+                            </p>
+                        </div>
+
+                        <!-- Terms and Conditions -->
+                        <div class="flex items-start gap-3">
+                            <input
+                                type="checkbox"
+                                id="terms"
+                                name="terms"
+                                required
+                                class="mt-1 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                            />
+                            <label for="terms" class="text-sm text-gray-600">
+                                I agree to the <a href="terms.html" class="font-semibold text-primary hover:underline" target="_blank">Terms of Service</a> and <a href="privacypolicy.html" class="font-semibold text-primary hover:underline" target="_blank">Privacy Policy</a>
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button
+                            type="submit"
+                            id="submit-btn"
+                            class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            <span id="btn-text">Create Professional Account</span>
+                            <span id="btn-loading" class="hidden">Creating account...</span>
+                        </button>
+
+                        <!-- Login Link -->
+                        <div class="text-center pt-4 border-t border-gray-200">
+                            <p class="text-sm text-gray-600">
+                                Already have an account?
+                                <a href="login.html" class="font-bold text-primary hover:underline">Sign in here</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="images/logo.png" alt="Sirius logo" class="h-12 sm:h-14 md:h-16 w-auto drop-shadow-2xl">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2026 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+
+
+    <script>
+        const API_URL = 'https://siriusjobs-backend.onrender.com/api';
+        const sessionKeys = ['siriusProAuth', 'siriusWorkerAuth', 'siriusEmployerAuth', 'siriusClientAuth'];
+
+        const getStoredToken = () => {
+            if (window.SiriusSession) {
+                for (const key of sessionKeys) {
+                    const payload = window.SiriusSession.parse(key);
+                    if (payload?.token) {
+                        return payload.token;
+                    }
+                }
+            }
+            return localStorage.getItem('token');
+        };
+
+        const persistLoginSession = (data) => {
+            if (!data) return null;
+            if (window.SiriusSession?.createPayload) {
+                const payload = window.SiriusSession.createPayload(data);
+                window.SiriusSession.persist(payload);
+                if (payload.token) {
+                    localStorage.setItem('token', payload.token);
+                }
+                return payload.token ?? null;
+            }
+            if (data.token) {
+                localStorage.setItem('token', data.token);
+                return data.token;
+            }
+            return null;
+        };
+
+        const registerProfessionalAccount = async (accountInfo, verificationInfo) => {
+            const response = await fetch('/api/auth/register-professional', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstName: accountInfo.firstName,
+                    lastName: accountInfo.lastName,
+                    email: accountInfo.email,
+                    password: accountInfo.password,
+                    profession: verificationInfo.profession,
+                    licenseNumber: verificationInfo.licenseNumber,
+                    regulatoryBody: verificationInfo.regulatoryBody,
+                    licenseDocument: verificationInfo.licenseDocument,
+                }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || data.error || 'Unable to create professional account.');
+            }
+            return data;
+        };
+
+        const loginProfessionalAccount = async (email, password) => {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || data.error || 'Unable to login after registration.');
+            }
+            return persistLoginSession(data);
+        };
+
+        const registerConsultationProfile = async (token, profileData) => {
+            const response = await fetch(`${API_URL}/consultation/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(profileData),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || data.message || 'Registration failed.');
+            }
+            return data;
+        };
+
+        const toBase64 = (file) => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                if (typeof reader.result === 'string') {
+                    resolve(reader.result);
+                } else {
+                    reject(new Error('Unable to read file. Please try again.'));
+                }
+            };
+            reader.onerror = () => reject(new Error('Unable to read file. Please try again.'));
+            reader.readAsDataURL(file);
+        });
+        const MAX_LICENSE_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+        // Hamburger menu functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu-mobile');
+
+        if (menuToggle && navMenu) {
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            });
+        }
+
+        // Show/Hide password toggles
+        document.querySelectorAll('[data-password-toggle]').forEach(button => {
+            const targetId = button.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            if (!input) return;
+
+            button.setAttribute('aria-controls', targetId);
+            button.setAttribute('aria-pressed', 'false');
+
+            button.addEventListener('click', () => {
+                const showing = input.getAttribute('type') === 'text';
+                input.setAttribute('type', showing ? 'password' : 'text');
+                button.textContent = showing ? 'Show' : 'Hide';
+                button.setAttribute('aria-pressed', (!showing).toString());
+            });
+        });
+
+        // Toggle licence verification fields
+        const verificationRadios = document.querySelectorAll('input[name="licenseVerificationType"]');
+        const linkField = document.getElementById('licenseLinkField');
+        const uploadField = document.getElementById('licenseUploadField');
+        const fileInput = document.getElementById('licenseDocumentFile');
+
+        const getSelectedVerificationMethod = () => {
+            const selectedRadio = document.querySelector('input[name="licenseVerificationType"]:checked');
+            if (selectedRadio instanceof HTMLInputElement) {
+                return selectedRadio.value || 'LINK';
+            }
+            return 'LINK';
+        };
+
+        const toggleLicenseFields = (method) => {
+            if (!linkField || !uploadField) return;
+            if (method === 'UPLOAD') {
+                linkField.classList.add('hidden');
+                uploadField.classList.remove('hidden');
+            } else {
+                uploadField.classList.add('hidden');
+                linkField.classList.remove('hidden');
+                if (fileInput) fileInput.value = '';
+            }
+        };
+
+        verificationRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                toggleLicenseFields(getSelectedVerificationMethod());
+            });
+        });
+        toggleLicenseFields(getSelectedVerificationMethod());
+
+        // Form submission
+        document.getElementById('registration-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Get form values
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const profession = document.getElementById('profession').value;
+
+            // Validation
+            if (!firstName || !lastName || !email || !password || !profession) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters.');
+                return;
+            }
+
+            if (!/[0-9]/.test(password)) {
+                alert('Password must contain at least one number.');
+                return;
+            }
+
+            if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+                alert('Password must contain at least one special character.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                return;
+            }
+
+            // Show loading state
+            const btnText = document.getElementById('btn-text');
+            const btnLoading = document.getElementById('btn-loading');
+            const submitBtn = document.getElementById('submit-btn');
+
+            btnText.classList.add('hidden');
+            btnLoading.classList.remove('hidden');
+            submitBtn.disabled = true;
+
+            try {
+                // Register professional account
+                const response = await fetch('/api/auth/register-professional', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        firstName,
+                        lastName,
+                        email,
+                        phone,
+                        password,
+                        professionalType: profession, // doctor or lawyer
+                    }),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ message: 'Registration failed' }));
+                    throw new Error(errorData.message || errorData.error || 'Registration failed');
+                }
+
+                const data = await response.json();
+
+                // Store session
+                if (window.SiriusSession && data.data) {
+                    const payload = window.SiriusSession.createPayload(data.data, {
+                        activeRole: profession === 'doctor' ? 'DOCTOR' : profession === 'lawyer' ? 'LAWYER' : 'THERAPIST',
+                        email,
+                        firstName,
+                        lastName,
+                    });
+                    window.SiriusSession.persist(payload);
+                }
+
+                // Show success message
+                alert('Registration successful! Redirecting to your dashboard...');
+
+                // Redirect to dashboard
+                setTimeout(() => {
+                    window.location.href = 'consultation-dashboard.html';
+                }, 1000);
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert(error.message || 'Registration failed. Please try again.');
+
+                // Reset button state
+                btnText.classList.remove('hidden');
+                btnLoading.classList.add('hidden');
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Initialize
+        feather.replace();
+    </script>
+    <script src="assistant.js"></script>
+  <script src="assets/site-shell.js" defer></script>
+</body>
+</html>

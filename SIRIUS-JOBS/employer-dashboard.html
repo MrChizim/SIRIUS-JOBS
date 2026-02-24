@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Employer Dashboard - Sirius Jobs</title>
+  <meta name="description" content="Manage job posts, applicants, and subscription." />
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" sizes="32x32" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { primary:'#0056b3', secondary:'#808080' } } } }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="error-handler.js"></script>
+  <script src="loading-utils.js"></script>
+  <script src="api.js"></script>
+  <script src="session-utils.js"></script>
+  <script src="ui-utils.js"></script>
+  <style>
+    
+    body { font-family:'Inter', sans-serif; }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .animated-gradient {
+      background-size: 200% 200%;
+      animation: gradient-shift 15s ease infinite;
+    }
+
+    .stat-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 86, 179, 0.15);
+    }
+  </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Modern Fixed Navigation -->
+  <nav data-sirius-shell="skip" class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center space-x-3 group">
+          <img src="images/logo.png" alt="SiriusJobs logo" class="h-10 sm:h-12 md:h-14 w-auto drop-shadow-2xl transition-transform group-hover:scale-105">
+          </a>
+
+        <div class="hidden lg:flex items-center gap-8">
+          <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Home</a>
+          <a href="services.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Services</a>
+          <a href="jobs.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Jobs</a>
+          <a href="consultations.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Consultations</a>
+          <button id="employerLogout" class="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary transition">
+            <i data-feather="log-out" class="w-4 h-4"></i>
+            Logout
+          </button>
+        </div>
+
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <nav class="nav-menu-mobile">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="consultations.html">Consultations</a>
+    <button id="employerLogoutMobile" type="button">Logout</button>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="pt-32 pb-16 bg-gradient-to-br from-black via-primary to-blue-900 text-white animated-gradient relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-4xl">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 mb-6">
+          <i data-feather="briefcase" class="w-4 h-4"></i>
+          <span class="text-sm font-semibold">Your Dashboard</span>
+        </div>
+
+        <h1 class="text-5xl md:text-6xl font-black mb-4 leading-tight">Employer Dashboard</h1>
+        <p class="text-xl text-gray-100 font-light leading-relaxed">Manage job posts, applicants, and your plan</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-16">
+    <!-- Profile Completion -->
+    <section class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 mb-8">
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <h2 class="text-2xl font-black text-gray-900 mb-4">Company Profile Completion</h2>
+          <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden mb-3">
+            <div id="employerProfileBar" class="h-4 bg-gradient-to-r from-primary to-blue-600 transition-all duration-500" style="width:0%"></div>
+          </div>
+          <p id="employerProfilePct" class="text-sm text-gray-600 font-medium">0% complete</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-gray-900 mb-3">Next Steps</h3>
+          <ul id="employerChecklist" class="text-sm text-gray-700 space-y-2"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Grid -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <div class="stat-card bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+        <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i data-feather="briefcase" class="text-primary w-7 h-7"></i>
+        </div>
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Jobs Posted</p>
+        <h3 id="jobsPosted" class="text-4xl font-black text-primary">0</h3>
+      </div>
+
+      <div class="stat-card bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+        <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i data-feather="users" class="text-blue-600 w-7 h-7"></i>
+        </div>
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Applicants</p>
+        <h3 id="appsTotal" class="text-4xl font-black text-blue-600">0</h3>
+        <p id="appsToday" class="text-xs text-gray-500 mt-2">0 new today</p>
+      </div>
+
+      <div class="stat-card bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+        <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i data-feather="user-check" class="text-green-600 w-7 h-7"></i>
+        </div>
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Hires</p>
+        <h3 id="hiresTotal" class="text-4xl font-black text-green-600">0</h3>
+        <p id="hiresThisMonth" class="text-xs text-gray-500 mt-2">0 this month</p>
+      </div>
+
+      <div class="stat-card bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+        <div class="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i data-feather="activity" class="text-amber-600 w-7 h-7"></i>
+        </div>
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Active Listings</p>
+        <h3 id="activeListings" class="text-4xl font-black text-amber-600">0</h3>
+      </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Job Posts & Applicants -->
+      <div class="lg:col-span-2 space-y-8">
+        <!-- Job Posts -->
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-black text-gray-900">Your Job Posts</h2>
+            <button id="postBtn" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+              <i data-feather="plus" class="w-4 h-4"></i>
+              Post New Job
+            </button>
+          </div>
+          <ul id="jobList" class="space-y-4"></ul>
+          <p id="jobListEmpty" class="text-sm text-gray-500 border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center hidden">No jobs yet. Click "Post New Job" to publish your first role.</p>
+        </div>
+
+        <!-- Recent Applicants -->
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+          <h2 class="text-2xl font-black text-gray-900 mb-6">Recent Applicants</h2>
+          <ul id="applicantsList" class="space-y-4"></ul>
+          <p id="applicantsListEmpty" class="text-sm text-gray-500 border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center hidden">No applicants yet. New candidates will appear here once they apply.</p>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="space-y-6">
+        <!-- Company Profile Card -->
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+          <img id="employerAvatar" src="images/logo.png" alt="Employer logo" onerror="this.src='https://via.placeholder.com/120x120?text=Logo'" class="w-28 h-28 rounded-full mx-auto mb-4 object-cover border-4 border-primary/20">
+          <h3 id="employerName" class="text-xl font-black text-gray-900">Your Company</h3>
+          <p id="employerLocation" class="text-sm text-gray-500 font-medium mt-1 mb-3">Port Harcourt, Nigeria</p>
+          <p id="employerVerifyStatus" class="text-xs font-bold text-amber-600 mb-4">ID verification pending</p>
+          <button id="verifyEmployerBtn" class="w-full border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all mb-3">Complete ID Verification</button>
+          <a href="edit-company.html" class="block w-full border-2 border-gray-300 text-gray-700 font-bold py-3 rounded-xl hover:border-primary hover:text-primary transition-all">Edit Profile</a>
+        </div>
+
+        <!-- Subscription Card -->
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-3xl shadow-xl border border-green-200 p-8">
+          <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center mb-4">
+            <i data-feather="zap" class="w-6 h-6 text-green-600"></i>
+          </div>
+          <h3 class="text-xl font-black text-gray-900 mb-2">Job Posting</h3>
+          <p class="text-sm text-gray-600 mb-3">Every job post costs ₦1,000. Simple, transparent pricing with no subscriptions.</p>
+          <div class="space-y-2 text-sm text-gray-600 mb-4">
+            <p class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-600"></i>Pay only when you post</p>
+            <p class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-600"></i>No monthly fees</p>
+            <p class="flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-600"></i>Reach qualified candidates</p>
+          </div>
+          <p id="planStatus" class="text-xs text-gray-500 mb-6">Click "Post New Job" and pay ₦1,000 to publish your listing.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Job Payment Modal -->
+  <div id="employerSubscriptionModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full relative overflow-hidden">
+      <button id="closeEmployerModalBtn" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition z-10">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="p-12">
+        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
+          <i data-feather="briefcase" class="w-8 h-8 text-white"></i>
+        </div>
+        <h2 class="text-3xl font-black text-gray-900 mb-4 text-center">Post a Job</h2>
+        <p class="text-gray-600 mb-8 leading-relaxed text-center">Pay ₦1,000 to publish your job listing and reach qualified candidates.</p>
+
+        <div class="border-2 border-primary/30 rounded-2xl p-6 mb-6">
+          <p class="text-5xl font-black text-gray-900 mb-1 text-center">₦1,000</p>
+          <p class="text-center text-gray-500 mb-6">One-time payment per job</p>
+          <ul class="space-y-3 text-sm text-gray-600">
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Reach active job seekers</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Manage all applications</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>No hidden fees</span></li>
+          </ul>
+        </div>
+
+        <button data-plan="pay-per-post" class="employerSubscribeBtn w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Pay ₦1,000 & Post Job</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Applicant Profile Modal -->
+  <div id="profileModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-8 py-6 border-b-2 border-gray-100">
+        <div>
+          <h3 id="profileModalName" class="text-2xl font-black text-gray-900">Applicant Profile</h3>
+          <p class="text-sm text-gray-500">Verify the artisan's background before deciding.</p>
+        </div>
+        <button id="closeProfileModal" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="profileModalBody" class="p-8 space-y-4">
+        <div class="flex items-center justify-center py-12 text-gray-400">
+          <i data-feather="loader" class="animate-spin mr-2"></i>
+          Loading profile...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Detail Modal -->
+  <div id="applicationModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-3xl overflow-hidden">
+      <div class="flex items-center justify-between px-8 py-6 border-b-2 border-gray-100">
+        <div>
+          <h3 id="applicationModalTitle" class="text-2xl font-black text-gray-900">Application Details</h3>
+          <p class="text-sm text-gray-500">Review this applicant's cover letter and documents.</p>
+        </div>
+        <button id="closeApplicationModal" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="applicationModalBody" class="p-8 space-y-5">
+        <div class="flex items-center justify-center py-12 text-gray-400">
+          <i data-feather="loader" class="animate-spin mr-2"></i>
+          Loading application...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decision Confirmation Modal -->
+  <div id="decisionModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden">
+      <div class="px-8 py-6 border-b-2 border-gray-100">
+        <h3 id="decisionModalTitle" class="text-2xl font-black text-gray-900">Confirm decision</h3>
+        <p class="text-sm text-gray-500 mt-1">This will notify the worker and update the hire tracker.</p>
+      </div>
+      <form id="decisionForm" class="p-8 space-y-5">
+        <input type="hidden" id="decisionApplicationId">
+        <input type="hidden" id="decisionType">
+        <p id="decisionModalMessage" class="text-sm text-gray-700"></p>
+        <div class="space-y-2" id="decisionReasonBlock">
+          <label for="decisionReason" class="text-xs font-bold text-gray-500 uppercase tracking-wide">Reason (optional)</label>
+          <textarea id="decisionReason" rows="3" class="w-full rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm p-3 font-medium" placeholder="Leave a note for the worker (visible to them)"></textarea>
+        </div>
+        <div class="flex items-center justify-end gap-3 pt-2">
+          <button type="button" id="decisionCancel" class="px-5 py-2.5 text-sm font-bold text-gray-500 hover:text-gray-700 transition">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 text-sm font-bold text-white rounded-xl" id="decisionSubmitBtn">Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="images/logo.png" alt="Sirius logo" class="h-12 sm:h-14 md:h-16 w-auto drop-shadow-2xl">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2026 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <script>
+    feather.replace();
+    // Hamburger menu functionality
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu-mobile');
+
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+      });
+
+      document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        }
+      });
+    }
+    const sessionUtils = window.SiriusSession ?? null;
+    const employerSessionPayload = sessionUtils?.parse ? sessionUtils.parse('siriusEmployerAuth') : null;
+    const withAuth = (headers = {}) =>
+      employerSessionPayload?.token
+        ? { ...headers, Authorization: `Bearer ${employerSessionPayload.token}` }
+        : headers;
+    const showToast = window.SiriusUI?.showToast ?? ((message, tone) => {
+      const logger = tone === 'error' ? console.error : console.log;
+      logger(message);
+    });
+
+    let employerProfile = null;
+    const employerWeights = { name:25, location:25, logo:20, verified:30 };
+    function computeEmployerCompletion(profile){
+      if (!profile) {
+        return { score: 0, missing: ['Add company name (+25%)', 'Add company location (+25%)', 'Upload company logo (+20%)', 'Complete company ID verification (+30%)'] };
+      }
+      let score = 0;
+      const missing = [];
+      if(profile.name) score += employerWeights.name; else missing.push('Add company name (+25%)');
+      if(profile.location) score += employerWeights.location; else missing.push('Add company location (+25%)');
+      if(profile.logoUrl) score += employerWeights.logo; else missing.push('Upload company logo (+20%)');
+      if(profile.verified) score += employerWeights.verified; else missing.push('Complete company ID verification (+30%)');
+      return { score, missing };
+    }
+
+    // Removed subscription logic - pay per post only
+
+    const metricsState = {
+      jobsPosted: 0,
+      totalApplicants: 0,
+      totalHires: 0,
+      activeListings: 0,
+      hiresThisMonth: 0,
+    };
+
+    let jobs = [];
+    let applicants = [];
+
+    const relativeTimeFormatter = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+    const nairaFormatter = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 });
+    const RELATIVE_DIVISIONS = [
+      { amount: 60, unit: 'second' },
+      { amount: 60, unit: 'minute' },
+      { amount: 24, unit: 'hour' },
+      { amount: 7, unit: 'day' },
+      { amount: 4.34524, unit: 'week' },
+      { amount: 12, unit: 'month' },
+      { amount: Number.POSITIVE_INFINITY, unit: 'year' },
+    ];
+    const HTML_ESCAPE_LOOKUP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+    const escapeHtml = (value = '') => value.replace(/[&<>"']/g, char => HTML_ESCAPE_LOOKUP[char]);
+
+    function formatRelativeTime(input){
+      if (!input) {
+        return 'Recently';
+      }
+      const time = typeof input === 'string' ? new Date(input) : input;
+      if (!(time instanceof Date) || Number.isNaN(time.getTime())) {
+        return 'Recently';
+      }
+      let duration = (time.getTime() - Date.now()) / 1000;
+      for (const division of RELATIVE_DIVISIONS) {
+        if (Math.abs(duration) < division.amount) {
+          return relativeTimeFormatter.format(Math.round(duration), division.unit);
+        }
+        duration /= division.amount;
+      }
+      return 'Recently';
+    }
+
+    // Role switching functionality removed - users now post jobs directly from their dashboard
+
+    const profileModalEl = document.getElementById('profileModal');
+    const profileModalName = document.getElementById('profileModalName');
+    const profileModalBody = document.getElementById('profileModalBody');
+    const closeProfileModalBtn = document.getElementById('closeProfileModal');
+    const applicationModalEl = document.getElementById('applicationModal');
+    const applicationModalBody = document.getElementById('applicationModalBody');
+    const applicationModalTitle = document.getElementById('applicationModalTitle');
+    const closeApplicationModalBtn = document.getElementById('closeApplicationModal');
+    const decisionModalEl = document.getElementById('decisionModal');
+    const decisionModalTitle = document.getElementById('decisionModalTitle');
+    const decisionModalMessage = document.getElementById('decisionModalMessage');
+    const decisionApplicationId = document.getElementById('decisionApplicationId');
+    const decisionType = document.getElementById('decisionType');
+    const decisionReason = document.getElementById('decisionReason');
+    const decisionReasonBlock = document.getElementById('decisionReasonBlock');
+    const decisionSubmitBtn = document.getElementById('decisionSubmitBtn');
+    const decisionCancelBtn = document.getElementById('decisionCancel');
+    const decisionForm = document.getElementById('decisionForm');
+
+    function renderEmployerProfile(){
+      const avatar = document.getElementById('employerAvatar');
+      const nameEl = document.getElementById('employerName');
+      const locationEl = document.getElementById('employerLocation');
+      const locationText = employerProfile?.location || employerProfile?.industry || null;
+      if (!employerProfile) {
+        if (avatar) {
+          avatar.src = 'https://via.placeholder.com/120x120?text=Logo';
+          avatar.alt = 'Company logo placeholder';
+        }
+        if (nameEl) nameEl.textContent = 'Your company name';
+        if (locationEl) locationEl.textContent = 'Set your business location';
+      } else {
+        if (avatar) {
+          avatar.src = employerProfile.logoUrl || 'https://via.placeholder.com/120x120?text=Logo';
+          avatar.alt = `${employerProfile.name || 'Employer'} logo`;
+        }
+        if (nameEl) nameEl.textContent = employerProfile.name || 'Your company name';
+        if (locationEl) locationEl.textContent = locationText || 'Set your business location';
+      }
+      const { score, missing } = computeEmployerCompletion(employerProfile);
+      const profileBar = document.getElementById('employerProfileBar');
+      if (profileBar) {
+        profileBar.style.width = `${score}%`;
+      }
+      const profilePct = document.getElementById('employerProfilePct');
+      if (profilePct) {
+        profilePct.textContent = `${score}% complete`;
+      }
+      const checklist = document.getElementById('employerChecklist');
+      if (checklist) checklist.innerHTML = '';
+      if(missing.length === 0){
+        const li = document.createElement('li'); li.className='text-green-600 font-medium'; li.textContent='✓ All set! Your company profile is complete.';
+        checklist?.appendChild(li);
+      } else {
+        missing.forEach(item => {
+          const li = document.createElement('li'); li.textContent = '• ' + item;
+          checklist?.appendChild(li);
+        });
+      }
+      const statusEl = document.getElementById('employerVerifyStatus');
+      if(statusEl){
+        if(employerProfile?.verified){
+          statusEl.textContent = 'ID verification complete';
+          statusEl.classList.remove('text-amber-600');
+          statusEl.classList.add('text-green-600');
+        } else {
+          statusEl.textContent = 'ID verification pending';
+          statusEl.classList.remove('text-green-600');
+          statusEl.classList.add('text-amber-600');
+        }
+      }
+      const verifyBtn = document.getElementById('verifyEmployerBtn');
+      if(verifyBtn){
+        if(employerProfile?.verified){
+          verifyBtn.textContent = 'Company ID Verified';
+          verifyBtn.disabled = true;
+          verifyBtn.className='w-full bg-green-600 text-white font-bold py-3 rounded-xl cursor-not-allowed opacity-80';
+        } else {
+          verifyBtn.textContent = 'Complete Company ID Verification';
+          verifyBtn.disabled = false;
+          verifyBtn.className='w-full border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all';
+        }
+      }
+    }
+
+    function renderMetrics(){
+      const jobsPostedEl = document.getElementById('jobsPosted');
+      const appsTotalEl = document.getElementById('appsTotal');
+      const hiresTotalEl = document.getElementById('hiresTotal');
+      const activeListingsEl = document.getElementById('activeListings');
+      if (jobsPostedEl) jobsPostedEl.textContent = metricsState.jobsPosted ?? jobs.length;
+      if (appsTotalEl) appsTotalEl.textContent = metricsState.totalApplicants ?? applicants.length;
+      if (hiresTotalEl) hiresTotalEl.textContent = metricsState.totalHires ?? 0;
+      if (activeListingsEl) {
+        const activeCount =
+          metricsState.activeListings ??
+          jobs.filter(j => (j.status || '').toString().toUpperCase() === 'OPEN').length;
+        activeListingsEl.textContent = activeCount;
+      }
+    }
+    function renderJobs(){
+      const list = document.getElementById('jobList');
+      const emptyState = document.getElementById('jobListEmpty');
+      if (!list) return;
+      list.innerHTML = '';
+      if (!jobs.length) {
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+      }
+      if (emptyState) emptyState.classList.add('hidden');
+      jobs.forEach(j => {
+        const statusRaw = (j.status ?? '').toString();
+        const statusUpper = statusRaw.toUpperCase();
+        const statusLabel =
+          j.statusLabel ??
+          (statusUpper ? `${statusUpper.charAt(0)}${statusUpper.slice(1).toLowerCase()}` : 'Pending');
+        const statusClass =
+          statusUpper === 'OPEN'
+            ? 'text-green-600 bg-green-50 border-green-200'
+            : statusUpper === 'DRAFT'
+            ? 'text-amber-600 bg-amber-50 border-amber-200'
+            : 'text-gray-500 bg-gray-50 border-gray-200';
+        const locationText = j.city || j.location || 'Location TBC';
+        const postedLabel = j.posted || j.postedAt || formatRelativeTime(j.createdAt);
+        const li = document.createElement('li');
+        li.className = 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-6 flex justify-between items-start hover:border-primary/30 hover:shadow-lg transition-all';
+        li.innerHTML = `<div>
+            <h4 class="text-base font-black text-gray-900">${j.title}</h4>
+            <p class="text-sm text-gray-500 font-medium mt-1">${locationText} • ${postedLabel || 'Recently'}</p>
+            <p class="text-xs text-gray-400 mt-2">${j.applicants ?? 0} applicant${(j.applicants ?? 0) === 1 ? '' : 's'}</p>
+          </div>
+          <span class="text-xs ${statusClass} font-bold px-3 py-1.5 rounded-full border-2 whitespace-nowrap">${statusLabel}</span>`;
+        list.appendChild(li);
+      });
+    }
+    function renderApplicants(){
+      const list = document.getElementById('applicantsList');
+      const emptyState = document.getElementById('applicantsListEmpty');
+      if (!list) return;
+      list.innerHTML='';
+      if (!applicants.length) {
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+      }
+      if (emptyState) emptyState.classList.add('hidden');
+      applicants.forEach((a)=>{
+        const skillLabel = a.skill || 'General';
+        const applicantLocation = a.location || 'Location TBC';
+        const appliedLabel = formatRelativeTime(a.appliedAt);
+        const li=document.createElement('li');
+        li.className='bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-6 text-sm space-y-4 hover:border-primary/30 hover:shadow-lg transition-all';
+        li.innerHTML = `<div class="flex justify-between items-start gap-4">
+            <div>
+              <div class="text-base font-black text-gray-900">${a.name}</div>
+              <div class="text-xs text-gray-500 font-medium mt-1">${skillLabel} • ${applicantLocation}</div>
+            </div>
+            <span class="text-xs text-gray-400 font-medium whitespace-nowrap">${appliedLabel}</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button class="viewApplicationBtn inline-flex items-center gap-1 border-2 border-primary/60 text-primary px-4 py-2 rounded-xl hover:bg-primary hover:text-white transition-all text-xs font-bold" data-application="${a.id}">
+              <i data-feather="file-text"></i> View application
+            </button>
+            <button class="viewProfileBtn inline-flex items-center gap-1 border-2 border-primary text-primary px-4 py-2 rounded-xl hover:bg-primary hover:text-white transition-all text-xs font-bold" data-user="${a.userId}">
+              <i data-feather="user"></i> View profile
+            </button>
+            <button class="acceptBtn inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-green-600/25 transition-all" data-application="${a.id}">
+              <i data-feather="check"></i> Accept
+            </button>
+            <button class="rejectBtn inline-flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-red-500/25 transition-all" data-application="${a.id}">
+              <i data-feather="x-circle"></i> Reject
+            </button>
+          </div>`;
+        list.appendChild(li);
+      });
+
+      list.querySelectorAll('.viewProfileBtn').forEach(btn => {
+        btn.addEventListener('click', (event) => {
+          const userId = event.currentTarget.getAttribute('data-user');
+          openProfileModal(userId);
+        });
+      });
+      list.querySelectorAll('.viewApplicationBtn').forEach(btn => {
+        btn.addEventListener('click', (event) => {
+          const applicationId = event.currentTarget.getAttribute('data-application');
+          openApplicationModal(applicationId);
+        });
+      });
+      list.querySelectorAll('.acceptBtn').forEach(btn => {
+        btn.addEventListener('click', (event) => {
+          const applicationId = event.currentTarget.getAttribute('data-application');
+          openDecisionModal({ applicationId, decision: 'ACCEPT' });
+        });
+      });
+      list.querySelectorAll('.rejectBtn').forEach(btn => {
+        btn.addEventListener('click', (event) => {
+          const applicationId = event.currentTarget.getAttribute('data-application');
+          openDecisionModal({ applicationId, decision: 'REJECT' });
+        });
+      });
+      feather.replace();
+    }
+
+    function applyDashboardSnapshot(snapshot){
+      if (!snapshot) {
+        renderEmployerProfile();
+        renderMetrics();
+        renderJobs();
+        renderApplicants();
+        return;
+      }
+
+      if (snapshot.profile) {
+        employerProfile = {
+          ...snapshot.profile,
+          name: snapshot.profile.name ?? employerProfile?.name ?? null,
+          location: snapshot.profile.location ?? employerProfile?.location ?? null,
+          logoUrl: snapshot.profile.logoUrl ?? employerProfile?.logoUrl ?? null,
+          verified: Boolean(snapshot.profile.verified ?? employerProfile?.verified),
+          industry: snapshot.profile.industry ?? employerProfile?.industry ?? null,
+        };
+      }
+
+      jobs = Array.isArray(snapshot.jobs) ? snapshot.jobs : [];
+      applicants = Array.isArray(snapshot.applicants) ? snapshot.applicants : [];
+
+      // Plan/subscription data removed - pay per post only
+
+      if (snapshot.stats) {
+        metricsState.jobsPosted =
+          typeof snapshot.stats.jobsPosted === 'number'
+            ? snapshot.stats.jobsPosted
+            : jobs.length;
+        metricsState.totalApplicants =
+          typeof snapshot.stats.totalApplicants === 'number'
+            ? snapshot.stats.totalApplicants
+            : metricsState.totalApplicants;
+        metricsState.totalHires =
+          typeof snapshot.stats.totalHires === 'number'
+            ? snapshot.stats.totalHires
+            : metricsState.totalHires;
+        metricsState.activeListings =
+          typeof snapshot.stats.activeListings === 'number'
+            ? snapshot.stats.activeListings
+            : jobs.filter(j => (j.status || '').toString().toUpperCase() === 'OPEN').length;
+        metricsState.hiresThisMonth =
+          typeof snapshot.stats.hiresThisMonth === 'number'
+            ? snapshot.stats.hiresThisMonth
+            : metricsState.hiresThisMonth;
+      } else {
+        metricsState.jobsPosted = jobs.length;
+        metricsState.activeListings = jobs.filter(
+          j => (j.status || '').toString().toUpperCase() === 'OPEN',
+        ).length;
+        metricsState.totalApplicants = applicants.length;
+      }
+
+      renderEmployerProfile();
+      renderMetrics();
+      renderJobs();
+      renderApplicants();
+    }
+
+    async function loadEmployerDashboard(){
+      if (!employerSessionPayload?.token) {
+        showToast('Please log in again to view your dashboard.', 'error');
+        window.location.href = 'login.html';
+        return;
+      }
+      try {
+        const res = await fetch('/api/dashboard/employer', {
+          cache: 'no-store',
+          headers: withAuth(),
+        });
+        if (res.status === 401 || res.status === 403) {
+          showToast('Your session expired. Please log in again.', 'error');
+          window.location.href = 'login.html';
+          return;
+        }
+        if (!res.ok) {
+          throw new Error('Unable to load employer dashboard data.');
+        }
+        const data = await res.json();
+        applyDashboardSnapshot(data);
+      } catch (error) {
+        console.error(error);
+        showToast('Unable to load latest dashboard data. Showing the most recent snapshot.', 'error');
+        applyDashboardSnapshot(null);
+      }
+    }
+
+    async function openProfileModal(userId){
+      profileModalEl.classList.remove('hidden');
+      profileModalBody.innerHTML = `
+        <div class="flex items-center justify-center py-12 text-gray-400">
+          <i data-feather="loader" class="animate-spin mr-2"></i>
+          Loading profile...
+        </div>
+      `;
+      try{
+        const res = await fetch(`/api/profiles/${userId}`);
+        if(!res.ok) throw new Error('Profile not found');
+        const profile = await res.json();
+        profileModalName.textContent = `${profile.firstName} ${profile.lastName}`;
+        profileModalBody.innerHTML = `
+          <section class="space-y-4">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex items-center gap-1 text-xs ${profile.verificationStatus === 'VERIFIED' ? 'text-green-600 bg-green-100' : 'text-amber-600 bg-amber-100'} px-2 py-1 rounded-full uppercase tracking-wide font-semibold">
+                <i data-feather="${profile.verificationStatus === 'VERIFIED' ? 'shield' : 'alert-triangle'}" class="w-3.5 h-3.5"></i>
+                ${profile.verificationStatus === 'VERIFIED' ? 'Verified' : 'Verification Pending'}
+              </span>
+              <span class="text-xs text-gray-400">Profile completion: ${profile.profileCompletion}%</span>
+            </div>
+            ${
+              profile.artisanProfile
+                ? `<div class="border rounded-lg p-4 bg-gray-50">
+                    <p class="text-sm text-gray-600 mb-2">${profile.artisanProfile.bio ?? 'No bio provided yet.'}</p>
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-gray-500">
+                      <li class="flex items-center gap-1"><i data-feather="briefcase" class="w-4 h-4"></i> ${profile.artisanProfile.serviceCategory.label}</li>
+                      <li class="flex items-center gap-1"><i data-feather="clock" class="w-4 h-4"></i> ${profile.artisanProfile.yearsExperience ?? 0} yrs experience</li>
+                      <li class="flex items-center gap-1"><i data-feather="award" class="w-4 h-4"></i> ${profile.artisanProfile.hireCount} hires</li>
+                      <li class="flex items-center gap-1"><i data-feather="star" class="w-4 h-4"></i> ${profile.artisanProfile.averageRating?.toFixed(1) ?? 'N/A'} rating</li>
+                    </ul>
+                  </div>`
+                : ''
+            }
+            ${
+              profile.professionalProfile
+                ? `<div class="border rounded-lg p-4">
+                    <p class="text-sm font-medium text-primary mb-1">${profile.professionalProfile.profession}</p>
+                    <ul class="grid grid-cols-2 gap-3 text-xs text-gray-500">
+                      <li>Total clients: ${profile.professionalProfile.totalClientsServed}</li>
+                      <li>Pending earnings: ₦${(profile.professionalProfile.pendingEarnings/100).toLocaleString()}</li>
+                      <li>Net earnings: ₦${(profile.professionalProfile.netEarnings/100).toLocaleString()}</li>
+                    </ul>
+                  </div>`
+                : ''
+            }
+          </section>
+        `;
+        feather.replace();
+      } catch(error){
+        console.error(error);
+        profileModalBody.innerHTML = `
+          <div class="text-center py-12">
+            <i data-feather="alert-circle" class="mx-auto mb-3 text-red-500"></i>
+            <p class="text-sm text-gray-600">We could not load this profile. Please try again later.</p>
+          </div>
+        `;
+        feather.replace();
+      }
+    }
+
+    function closeProfileModal(){
+      profileModalEl.classList.add('hidden');
+    }
+
+    closeProfileModalBtn.addEventListener('click', closeProfileModal);
+    profileModalEl.addEventListener('click', (event)=>{
+      if(event.target === profileModalEl){
+        closeProfileModal();
+      }
+    });
+
+    function openApplicationModal(applicationId){
+      if (!applicationModalEl) return;
+      const application = applicants.find(app => app.id === applicationId);
+      if (!application) {
+        showToast('Unable to find that application.', 'error');
+        return;
+      }
+      applicationModalEl.classList.remove('hidden');
+      const expectedPayLabel =
+        typeof application.expectedPay === 'number'
+          ? nairaFormatter.format(application.expectedPay)
+          : 'Not specified';
+      const attachments = Array.isArray(application.attachments) ? application.attachments : [];
+      const coverLetterHtml = application.coverLetter
+        ? escapeHtml(application.coverLetter).replace(/\n/g, '<br>')
+        : '<span class="text-gray-500">No cover letter provided.</span>';
+      const attachmentsMarkup = attachments.length
+        ? `<ul class="space-y-2">
+            ${attachments
+              .map((doc, index) => {
+                const name = escapeHtml(doc?.name || `Document ${index + 1}`);
+                const dataUrl = typeof doc?.data === 'string' ? doc.data : null;
+                const downloadButton = dataUrl
+                  ? `<a href="${dataUrl}" download="${name}" class="inline-flex items-center gap-1 text-primary font-semibold text-xs">
+                        <i data-feather="download" class="w-3.5 h-3.5"></i>
+                        Download
+                     </a>`
+                  : '<span class="text-gray-400 text-xs">Unavailable</span>';
+                return `<li class="flex items-center justify-between bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm">
+                          <span class="text-gray-700 font-medium truncate pr-4">${name}</span>
+                          ${downloadButton}
+                        </li>`;
+              })
+              .join('')}
+          </ul>`
+        : '<p class="text-sm text-gray-500">No documents attached.</p>';
+
+      applicationModalTitle.textContent = application.jobTitle
+        ? `${application.jobTitle} – Application`
+        : 'Application Details';
+
+      applicationModalBody.innerHTML = `
+        <section class="space-y-6">
+          <div class="grid md:grid-cols-2 gap-4 bg-gray-50 border border-gray-100 rounded-2xl p-5">
+            <div>
+              <p class="text-xs text-gray-500 uppercase font-bold">Applicant</p>
+              <p class="text-sm font-semibold text-gray-900">${escapeHtml(application.name ?? 'Unknown')}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 uppercase font-bold">Expected pay</p>
+              <p class="text-sm font-semibold text-gray-900">${expectedPayLabel}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 uppercase font-bold">Role</p>
+              <p class="text-sm text-gray-900">${escapeHtml(application.jobTitle ?? 'Job posting')}</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 uppercase font-bold">Location</p>
+              <p class="text-sm text-gray-900">${escapeHtml(application.location ?? 'Not shared')}</p>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-gray-900 mb-2">Cover letter</h4>
+            <div class="bg-white border border-gray-100 rounded-2xl p-5 text-sm text-gray-700 leading-relaxed">
+              ${coverLetterHtml}
+            </div>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-gray-900 mb-2">Supporting documents</h4>
+            ${attachmentsMarkup}
+          </div>
+        </section>
+      `;
+      feather.replace();
+    }
+
+    function closeApplicationModal(){
+      applicationModalEl?.classList.add('hidden');
+    }
+
+    closeApplicationModalBtn?.addEventListener('click', closeApplicationModal);
+    applicationModalEl?.addEventListener('click', (event)=>{
+      if(event.target === applicationModalEl){
+        closeApplicationModal();
+      }
+    });
+
+    function openDecisionModal({ applicationId, decision }){
+      decisionApplicationId.value = applicationId;
+      decisionType.value = decision;
+      const isAccept = decision === 'ACCEPT';
+      decisionModalTitle.textContent = isAccept ? 'Accept applicant' : 'Reject applicant';
+      decisionModalMessage.textContent = isAccept
+        ? 'Are you sure you want to accept this applicant? This will create a hire record and notify them immediately.'
+        : 'Are you sure you want to reject this applicant? They will receive a notification with your reason.';
+      decisionReasonBlock.classList.toggle('hidden', isAccept);
+      decisionSubmitBtn.textContent = isAccept ? 'Yes, accept' : 'Yes, reject';
+      decisionSubmitBtn.className = `px-5 py-2.5 text-sm font-bold text-white rounded-xl shadow-lg ${isAccept ? 'bg-green-600 hover:bg-green-700 shadow-green-600/25' : 'bg-red-500 hover:bg-red-600 shadow-red-500/25'}`;
+      decisionModalEl.classList.remove('hidden');
+    }
+
+    function closeDecisionModal(){
+      decisionModalEl.classList.add('hidden');
+      decisionReason.value = '';
+    }
+
+    decisionCancelBtn.addEventListener('click', closeDecisionModal);
+    decisionModalEl.addEventListener('click', (event)=>{
+      if(event.target === decisionModalEl){
+        closeDecisionModal();
+      }
+    });
+
+    decisionForm.addEventListener('submit', async (event)=>{
+      event.preventDefault();
+      const payload = {
+        decision: decisionType.value,
+        reason: decisionReason.value.trim() || undefined
+      };
+      try{
+        const res = await fetch(`/api/applications/${decisionApplicationId.value}/decision`, {
+          method: 'POST',
+          headers: withAuth({ 'Content-Type':'application/json' }),
+          body: JSON.stringify(payload)
+        });
+        if(!res.ok){
+          const errorBody = await res.json().catch(()=>({ message:'Unknown error' }));
+          throw new Error(errorBody.message || 'Unable to record decision');
+        }
+        showToast(payload.decision === 'ACCEPT' ? 'Applicant accepted. Hire recorded.' : 'Applicant rejected.', payload.decision === 'ACCEPT' ? 'success' : 'info');
+        closeDecisionModal();
+      } catch(error){
+        showToast(error.message, 'error');
+      }
+    });
+
+    const verifyEmployerBtn = document.getElementById('verifyEmployerBtn');
+    verifyEmployerBtn?.addEventListener('click', () => {
+      if (employerProfile?.verified) return;
+      window.location.href = 'verify.html?returnTo=employer-dashboard';
+    });
+
+    const employerModal = document.getElementById('employerSubscriptionModal');
+    const closeEmployerModalBtn = document.getElementById('closeEmployerModalBtn');
+    const employerSubscribeBtns = document.querySelectorAll('.employerSubscribeBtn');
+
+    function openEmployerModal(){
+      employerModal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeEmployerModal(){
+      employerModal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    closeEmployerModalBtn.addEventListener('click', closeEmployerModal);
+    employerModal.addEventListener('click', (event) => {
+      if(event.target === employerModal){
+        closeEmployerModal();
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if(event.key === 'Escape'){
+        if(!employerModal.classList.contains('hidden')) closeEmployerModal();
+        if(!profileModalEl.classList.contains('hidden')) closeProfileModal();
+        if(!decisionModalEl.classList.contains('hidden')) closeDecisionModal();
+        if(applicationModalEl && !applicationModalEl.classList.contains('hidden')) closeApplicationModal();
+      }
+    });
+    employerSubscribeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Open Paystack payment link for ₦1,000 job post
+        window.open('https://paystack.com/pay/siriusjobs-post', '_blank', 'noopener');
+        showToast('Complete the ₦1,000 payment, then return to post your job.', 'info');
+        closeEmployerModal();
+      });
+    });
+
+    // Hire tracking - no longer tied to subscription
+    function handleHire(applicant, triggerButton){
+      metricsState.totalHires += 1;
+      metricsState.totalApplicants = Math.max(metricsState.totalApplicants - 1, applicants.length);
+      triggerButton.textContent = 'Hired';
+      triggerButton.disabled = true;
+      triggerButton.classList.add('opacity-60', 'cursor-not-allowed');
+      showToast(`${applicant.name} hired successfully!`, 'success');
+      renderMetrics();
+    }
+
+    const postBtn = document.getElementById('postBtn');
+    postBtn?.addEventListener('click', ()=>{
+      // Open payment modal for each job post
+      openEmployerModal();
+    });
+
+    function handleLogout(){
+      sessionStorage.clear();
+      localStorage.removeItem('siriusRememberMe');
+      showToast('You have been logged out of Sirius Jobs.', 'info');
+      window.location.href = 'login.html';
+    }
+    document.getElementById('employerLogout').addEventListener('click', handleLogout);
+    document.getElementById('employerLogoutMobile').addEventListener('click', handleLogout);
+
+    renderEmployerProfile();
+    renderMetrics();
+    renderJobs();
+    renderApplicants();
+    loadEmployerDashboard();
+  </script>
+  <script src="assistant.js"></script>
+  <script src="session-timeout.js"></script>
+  <script src="assets/site-shell.js" defer></script>
+</body>
+</html>

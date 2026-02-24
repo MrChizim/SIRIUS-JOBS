@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Worker Dashboard - Sirius Jobs</title>
+  <meta name="description" content="Worker dashboard - view stats, gigs, subscription and manage your profile." />
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" sizes="32x32" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { primary:'#0056b3', secondary:'#808080' } } } }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="error-handler.js"></script>
+  <script src="loading-utils.js"></script>
+  <script src="api.js"></script>
+  <script src="session-utils.js"></script>
+  <style>
+    
+    body { font-family: 'Inter', sans-serif; }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .animated-gradient {
+      background-size: 200% 200%;
+      animation: gradient-shift 15s ease infinite;
+    }
+
+    .stat-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 86, 179, 0.15);
+    }
+  </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Modern Fixed Navigation -->
+  <nav data-sirius-shell="skip" class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center space-x-3 group">
+          <img src="images/logo.png" alt="SiriusJobs logo" class="h-10 sm:h-12 md:h-14 w-auto drop-shadow-2xl transition-transform group-hover:scale-105">
+          </a>
+
+        <div class="hidden lg:flex items-center gap-8">
+          <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Home</a>
+          <a href="services.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Services</a>
+          <a href="jobs.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Jobs</a>
+          <a href="consultations.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Consultations</a>
+          <button id="workerLogout" class="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary transition">
+            <i data-feather="log-out" class="w-4 h-4"></i>
+            Logout
+          </button>
+        </div>
+
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <nav class="nav-menu-mobile">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="consultations.html">Consultations</a>
+    <button id="workerLogoutMobile" type="button">Logout</button>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="pt-32 pb-16 bg-gradient-to-br from-black via-primary to-blue-900 text-white animated-gradient relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-4xl">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 mb-6">
+          <i data-feather="briefcase" class="w-4 h-4"></i>
+          <span class="text-sm font-semibold">Your Dashboard</span>
+        </div>
+
+        <h1 class="text-5xl md:text-6xl font-black mb-4 leading-tight">Worker Dashboard</h1>
+        <p class="text-xl text-gray-100 font-light leading-relaxed">Track your applications, gigs, subscription and profile</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-16">
+    <!-- Profile Completion -->
+    <section class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 mb-8">
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <h2 class="text-2xl font-black text-gray-900 mb-4">Profile Completion</h2>
+          <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden mb-3">
+            <div id="profileBar" class="h-4 bg-gradient-to-r from-primary to-blue-600 transition-all duration-500" style="width:0%"></div>
+          </div>
+          <p id="profilePct" class="text-sm text-gray-600 font-medium">0% complete</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-gray-900 mb-3">Checklist</h3>
+          <ul id="profileChecklist" class="text-sm text-gray-700 space-y-2"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Grid -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <div class="stat-card bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+        <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i data-feather="file-text" class="text-primary w-7 h-7"></i>
+        </div>
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Jobs Applied</p>
+        <h3 id="jobsAppliedStat" class="text-4xl font-black text-primary">0</h3>
+      </div>
+
+      <div class="stat-card bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+        <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i data-feather="check-circle" class="text-green-600 w-7 h-7"></i>
+        </div>
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Jobs Won</p>
+        <h3 id="jobsWonStat" class="text-4xl font-black text-green-600">0</h3>
+      </div>
+
+      <div class="stat-card bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+        <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <i data-feather="shield" class="text-green-600 w-7 h-7"></i>
+        </div>
+        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Verification</p>
+        <h3 id="verificationStat" class="text-lg font-black text-green-600">Checking…</h3>
+      </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Application History -->
+      <div class="lg:col-span-2 space-y-8">
+        <!-- Job Posting Section -->
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-2xl font-black text-gray-900">Hire Someone</h2>
+              <p class="text-sm text-gray-600 mt-1">Post a job for ₦1,000 and manage applicants</p>
+            </div>
+            <button id="workerPostJobBtn" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+              <i data-feather="plus" class="w-4 h-4"></i>
+              Post Job
+            </button>
+          </div>
+
+          <!-- My Posted Jobs -->
+          <div id="workerPostedJobsSection">
+            <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">My Posted Jobs</h3>
+            <ul id="workerPostedJobsList" class="space-y-4"></ul>
+            <p id="workerPostedJobsEmpty" class="text-sm text-gray-500 border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center">No jobs posted yet. Click "Post Job" to get started.</p>
+          </div>
+        </div>
+
+        <!-- Application History -->
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-black text-gray-900">Application History</h2>
+          </div>
+          <ul id="appliedList" class="space-y-4"></ul>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="space-y-6">
+        <!-- Profile Card -->
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+          <img id="workerAvatar" src="/images/users/sample_worker.jpg" alt="Worker profile photo" class="w-28 h-28 rounded-full mx-auto object-cover border-4 border-primary/20 mb-4" onerror="this.src='https://via.placeholder.com/120x120?text=You'"/>
+          <h3 class="text-xl font-black text-gray-900" id="wName">Samuel Ade</h3>
+          <p class="text-sm text-gray-500 font-medium mt-1" id="wSkillLoc">Mechanic • Abeokuta</p>
+          <div class="mt-6 space-y-3">
+            <button id="verifyWorkerBtn" class="w-full border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all">Complete ID Verification</button>
+            <a href="edit-profile.html" class="block w-full border-2 border-gray-300 text-gray-700 font-bold py-3 rounded-xl hover:border-primary hover:text-primary transition-all">Edit Profile</a>
+          </div>
+        </div>
+
+        <!-- Subscription Card -->
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-3xl shadow-xl border border-green-200 p-8">
+          <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center mb-4">
+            <i data-feather="zap" class="w-6 h-6 text-green-600"></i>
+          </div>
+          <h3 class="text-xl font-black text-gray-900 mb-2">Worker Listing</h3>
+          <p class="text-sm text-gray-600 mb-1">₦1,000 monthly to appear on worker list</p>
+          <p class="text-xs text-gray-500 mb-4">Status: <span id="subStatus" class="font-bold text-gray-600">Loading status…</span></p>
+          <p class="text-xs text-gray-500 mb-6 bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <i data-feather="info" class="w-3 h-3 inline mr-1"></i>
+            Posting jobs costs ₦1,000 per job (separate from listing fee)
+          </p>
+          <button class="w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-700 transition-all shadow-lg shadow-green-600/25" id="renewBtn">Renew Listing</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Subscription Modal -->
+  <div id="subscriptionModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full relative overflow-hidden max-h-[90vh] overflow-y-auto">
+      <button id="closeModalBtn" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition z-10">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="grid md:grid-cols-2">
+        <!-- Left Side - Info -->
+        <div class="bg-gradient-to-br from-primary/10 to-blue-900/10 p-12 flex flex-col justify-center">
+          <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6">
+            <i data-feather="star" class="w-8 h-8 text-white"></i>
+          </div>
+          <h2 class="text-3xl font-black text-gray-900 mb-4">Renew your listing</h2>
+          <p class="text-gray-600 mb-8 leading-relaxed">Keep your profile visible to employers searching for skilled workers. Note: Job posting is separate (₦1,000 per job).</p>
+          <div class="flex items-center gap-3 text-sm text-gray-600 bg-white/70 border border-primary/20 rounded-xl px-4 py-3">
+            <i data-feather="shield" class="text-primary w-5 h-5 flex-shrink-0"></i>
+            <span>Secure checkout powered by Paystack (coming soon)</span>
+          </div>
+        </div>
+
+        <!-- Right Side - Plans -->
+        <div class="p-12 space-y-6">
+          <!-- Premium Plan -->
+          <div class="border-2 border-primary/30 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-black text-primary">Premium</h3>
+              <span class="text-xs uppercase tracking-wide font-bold text-primary/70 bg-primary/10 px-3 py-1 rounded-full">Popular</span>
+            </div>
+            <p class="text-4xl font-black text-gray-900 mb-1">₦1,000<span class="text-base font-medium text-gray-500"> / month</span></p>
+            <ul class="mt-6 space-y-3 text-sm text-gray-600">
+              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Listed on the public Sirius worker marketplace</span></li>
+              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Priority placement when employers search by skill</span></li>
+              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Upload up to 5 photos of past jobs (portfolio)</span></li>
+              <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Weekly insight email on trending gigs and rates</span></li>
+            </ul>
+            <button data-plan="premium" class="subscribeBtn mt-6 w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Choose Premium</button>
+          </div>
+
+          <!-- Premium Plus Plan -->
+          <div class="border-2 border-gray-200 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-black text-gray-900">Premium Plus</h3>
+              <span class="text-xs uppercase tracking-wide font-bold text-primary bg-primary/10 px-3 py-1 rounded-full flex items-center gap-1"><i data-feather="award" class="w-3.5 h-3.5"></i>Best Value</span>
+            </div>
+            <p class="text-4xl font-black text-gray-900 mb-1">₦5,000<span class="text-base font-medium text-gray-500"> / month</span></p>
+            <ul class="mt-6 space-y-3 text-sm text-gray-600">
+              <li class="flex items-start gap-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span>Guaranteed 3 direct employer introductions every month</span></li>
+              <li class="flex items-start gap-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span>Top-of-list placement for Premium Plus recommendation requests</span></li>
+              <li class="flex items-start gap-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span>Dedicated success manager who preps you before each intro</span></li>
+              <li class="flex items-start gap-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span>Access to exclusive concierge-only gigs before the public</span></li>
+              <li class="flex items-start gap-2"><i data-feather="star" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i><span>Unlimited applications to premium roles plus priority review</span></li>
+            </ul>
+            <button data-plan="premium-plus" class="subscribeBtn mt-6 w-full border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all">Choose Premium Plus</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Job Post Payment Modal -->
+  <div id="workerJobPostModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full relative overflow-hidden">
+      <button id="closeWorkerJobPostModal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition z-10">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="p-12">
+        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
+          <i data-feather="briefcase" class="w-8 h-8 text-white"></i>
+        </div>
+        <h2 class="text-3xl font-black text-gray-900 mb-4 text-center">Post a Job</h2>
+        <p class="text-gray-600 mb-8 leading-relaxed text-center">Pay ₦1,000 to publish your job listing and receive applications.</p>
+
+        <div class="border-2 border-primary/30 rounded-2xl p-6 mb-6">
+          <p class="text-5xl font-black text-gray-900 mb-1 text-center">₦1,000</p>
+          <p class="text-center text-gray-500 mb-6">One-time payment per job</p>
+          <ul class="space-y-3 text-sm text-gray-600">
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Reach active job seekers</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Manage all applications</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>No hidden fees</span></li>
+          </ul>
+        </div>
+
+        <button id="workerJobPostPayBtn" class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Pay ₦1,000 & Post Job</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Applicants Modal -->
+  <div id="workerViewApplicantsModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full relative overflow-hidden max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between px-8 py-6 border-b-2 border-gray-100 sticky top-0 bg-white z-10">
+        <div>
+          <h3 id="workerApplicantsJobTitle" class="text-2xl font-black text-gray-900">Job Applicants</h3>
+          <p class="text-sm text-gray-500">Review and manage applications for this job</p>
+        </div>
+        <button id="closeWorkerApplicantsModal" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="workerApplicantsBody" class="p-8">
+        <ul id="workerApplicantsList" class="space-y-4"></ul>
+        <p id="workerApplicantsEmpty" class="text-sm text-gray-500 border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center">No applications yet. Candidates will appear here once they apply.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Applicant Profile Modal -->
+  <div id="workerApplicantProfileModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-8 py-6 border-b-2 border-gray-100">
+        <div>
+          <h3 id="workerApplicantProfileName" class="text-2xl font-black text-gray-900">Applicant Profile</h3>
+          <p class="text-sm text-gray-500">Review candidate details before making a decision</p>
+        </div>
+        <button id="closeWorkerApplicantProfile" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="workerApplicantProfileBody" class="p-8 space-y-4">
+        <div class="flex items-center justify-center py-12 text-gray-400">
+          <i data-feather="loader" class="animate-spin mr-2"></i>
+          Loading profile...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="images/logo.png" alt="SiriusJobs logo" class="h-10 sm:h-12 md:h-14 w-auto drop-shadow-2xl transition-transform group-hover:scale-105">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2026 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <script>
+    feather.replace();
+    // Hamburger menu functionality
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu-mobile');
+
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+      });
+
+      document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        }
+      });
+    }
+    const sessionUtils = window.SiriusSession ?? null;
+    const workerSessionPayload = sessionUtils?.parse ? sessionUtils.parse('siriusWorkerAuth') : null;
+    if (!workerSessionPayload?.token) {
+      window.location.href = 'login.html';
+      throw new Error('Worker session missing');
+    }
+    const defaultAvatar = '/images/users/sample_worker.jpg';
+    const jobsAppliedStatEl = document.getElementById('jobsAppliedStat');
+    const jobsWonStatEl = document.getElementById('jobsWonStat');
+    const verificationStatEl = document.getElementById('verificationStat');
+    const subStatusEl = document.getElementById('subStatus');
+    const appliedListEl = document.getElementById('appliedList');
+
+    const sessionName =
+      [workerSessionPayload?.firstName, workerSessionPayload?.lastName].filter(Boolean).join(' ').trim() ||
+      'Loading profile…';
+    const sessionSkill =
+      workerSessionPayload?.artisanProfile?.headline ||
+      workerSessionPayload?.artisanProfile?.serviceCategory?.label ||
+      'Add your service category';
+    const sessionLocation = workerSessionPayload?.artisanProfile?.location || '';
+    const sessionPhoto = workerSessionPayload?.artisanProfile?.showcaseMediaUrl || defaultAvatar;
+
+    let worker = {
+      name: sessionName,
+      skill: sessionSkill,
+      location: sessionLocation,
+      bio: workerSessionPayload?.artisanProfile?.bio || '',
+      photo: Boolean(workerSessionPayload?.artisanProfile?.showcaseMediaUrl),
+      photoUrl: sessionPhoto,
+      verified: Boolean(workerSessionPayload?.user?.verificationStatus === 'VERIFIED'),
+      subscriptionStatus: workerSessionPayload?.artisanProfile?.subscriptionStatus || 'NONE',
+      subscriptionEndsAt: workerSessionPayload?.artisanProfile?.subscriptionEndsAt || null,
+    };
+    let applied = [];
+    let isLoadingApplications = true;
+
+    // profile completion weights
+    const weights = { name:10, skill:10, location:10, bio:20, photo:20, verified:30 };
+    function computeCompletion(u){
+      let score = 0;
+      const missing = [];
+      if(u.name) score += weights.name; else missing.push('Add Full Name (+10%)');
+      if(u.skill) score += weights.skill; else missing.push('Add Skill/Profession (+10%)');
+      if(u.location) score += weights.location; else missing.push('Add Location (+10%)');
+      if(u.bio) score += weights.bio; else missing.push('Add Bio/Description (+20%)');
+      if(u.photo) score += weights.photo; else missing.push('Upload Profile Photo (+20%)');
+      if(u.verified) score += weights.verified; else missing.push('Complete Verification (+30%)');
+      return { score, missing };
+    }
+
+    function renderProfile(){
+      worker.photo = Boolean(worker.photoUrl && worker.photoUrl !== defaultAvatar);
+      const avatar = document.getElementById('workerAvatar');
+      avatar.src = worker.photoUrl || defaultAvatar;
+      avatar.alt = `${worker.name} profile photo`;
+      document.getElementById('wName').textContent = worker.name;
+      const skillLocation = [worker.skill, worker.location].filter(Boolean).join(' • ');
+      document.getElementById('wSkillLoc').textContent = skillLocation || 'Update your profile details';
+      const { score, missing } = computeCompletion(worker);
+      document.getElementById('profileBar').style.width = score + '%';
+      document.getElementById('profilePct').textContent = `${score}% complete`;
+      const ul = document.getElementById('profileChecklist'); ul.innerHTML='';
+      if(missing.length === 0){
+        const li = document.createElement('li'); li.className='text-green-600 font-medium'; li.textContent='✓ All set! Your profile is complete.';
+        ul.appendChild(li);
+      } else {
+        missing.forEach(m => { const li=document.createElement('li'); li.textContent='• ' + m; ul.appendChild(li); });
+      }
+      const verifyBtn = document.getElementById('verifyWorkerBtn');
+      if(verifyBtn){
+        if(worker.verified){
+          verifyBtn.textContent = 'ID Verified';
+          verifyBtn.disabled = true;
+          verifyBtn.className='w-full bg-green-600 text-white font-bold py-3 rounded-xl cursor-not-allowed opacity-80';
+        } else {
+          verifyBtn.textContent = 'Complete ID Verification';
+          verifyBtn.disabled = false;
+          verifyBtn.className='w-full border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all';
+        }
+      }
+      if (verificationStatEl) {
+        verificationStatEl.textContent = worker.verified ? 'Verified' : 'Pending verification';
+        verificationStatEl.classList.toggle('text-green-600', worker.verified);
+        verificationStatEl.classList.toggle('text-yellow-600', !worker.verified);
+      }
+    }
+
+    function updateStatsFromApplications(applications = []) {
+      const jobsApplied = applications.length;
+      const jobsWon = applications.filter(app => (app.status ?? '').toUpperCase() === 'ACCEPTED').length;
+      if (jobsAppliedStatEl) {
+        jobsAppliedStatEl.textContent = jobsApplied.toString();
+      }
+      if (jobsWonStatEl) {
+        jobsWonStatEl.textContent = jobsWon.toString();
+      }
+    }
+
+    function updateSubscriptionCard(profile = {}) {
+      if (!subStatusEl) return;
+      const status = (profile.subscriptionStatus || 'NONE').toUpperCase();
+      let text = 'Not subscribed';
+      let className = 'font-bold text-gray-600';
+      if (status === 'ACTIVE') {
+        const endsAt = profile.subscriptionEndsAt ? new Date(profile.subscriptionEndsAt) : null;
+        text = endsAt
+          ? `Active • renews ${endsAt.toLocaleDateString('en-NG', { month: 'short', day: 'numeric' })}`
+          : 'Active';
+        className = 'font-bold text-green-600';
+      } else if (status === 'TRIAL') {
+        text = 'Trial plan • upgrade soon';
+        className = 'font-bold text-primary';
+      } else if (status === 'LAPSED') {
+        text = 'Lapsed • renew now';
+        className = 'font-bold text-red-600';
+      }
+      subStatusEl.textContent = text;
+      subStatusEl.className = className;
+    }
+
+    function formatCurrency(value) {
+      if (typeof value !== 'number' || Number.isNaN(value)) {
+        return '—';
+      }
+      return `₦${new Intl.NumberFormat('en-NG').format(value)}`;
+    }
+
+    function formatTimelineDate(value) {
+      if (!value) return 'Date unavailable';
+      try {
+        const date = new Date(value);
+        return date.toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' });
+      } catch {
+        return 'Date unavailable';
+      }
+    }
+
+    function statusMeta(status) {
+      const normalized = (status || 'PENDING').toUpperCase();
+      const map = {
+        PENDING: { chip: 'bg-amber-50 border-2 border-amber-200 text-amber-700', label: 'Awaiting review', next: 'Employer reviewing your profile' },
+        ACCEPTED: { chip: 'bg-green-50 border-2 border-green-200 text-green-700', label: 'Hired', next: 'You were hired for this job' },
+        WITHDRAWN: { chip: 'bg-gray-100 border-2 border-gray-200 text-gray-600', label: 'Withdrawn', next: 'You withdrew this application' },
+        REJECTED: { chip: 'bg-red-50 border-2 border-red-200 text-red-600', label: 'Not selected', next: 'Not selected this time' },
+      };
+      return map[normalized] ?? map.PENDING;
+    }
+
+    function deriveWorkerName(user = {}) {
+      const apiName = [user.firstName, user.lastName].filter(Boolean).join(' ').trim();
+      if (apiName) return apiName;
+      const sessionName = [workerSessionPayload?.firstName, workerSessionPayload?.lastName].filter(Boolean).join(' ').trim();
+      return sessionName || 'Complete your name';
+    }
+
+    function ensureApplicationsPlaceholder(message) {
+      if (!appliedListEl) return;
+      appliedListEl.innerHTML = `<li class="text-center text-sm text-gray-500 py-8">${message}</li>`;
+    }
+
+    async function loadWorkerDashboard() {
+      if (!workerSessionPayload?.token) {
+        handleLogout(false);
+        return;
+      }
+
+      ensureApplicationsPlaceholder('Loading your applications…');
+
+      try {
+        const res = await fetch('/api/dashboard/artisan', {
+          headers: { Authorization: `Bearer ${workerSessionPayload.token}` },
+        });
+
+        if (res.status === 401) {
+          handleLogout(false);
+          return;
+        }
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.message || 'Unable to load your dashboard right now.');
+        }
+
+        const profile = data.profile ?? {};
+        const user = profile.user ?? {};
+        const isVerified = Boolean(
+          profile.verifiedBadge ||
+            profile.user?.verificationStatus === 'VERIFIED',
+        );
+        worker = {
+          name: deriveWorkerName(user),
+          skill:
+            profile.headline ??
+            profile.serviceCategory?.label ??
+            workerSessionPayload?.artisanProfile?.headline ??
+            workerSessionPayload?.artisanProfile?.serviceCategory?.label ??
+            'Add your service category',
+          location: profile.location ?? workerSessionPayload?.artisanProfile?.location ?? '',
+          bio: profile.bio ?? '',
+          photo: Boolean(profile.showcaseMediaUrl),
+          photoUrl: profile.showcaseMediaUrl || defaultAvatar,
+          verified: isVerified,
+          subscriptionStatus: profile.subscriptionStatus ?? 'NONE',
+          subscriptionEndsAt: profile.subscriptionEndsAt ?? null,
+        };
+
+        applied = Array.isArray(data.applications) ? data.applications : [];
+        isLoadingApplications = false;
+
+        if (workerSessionPayload) {
+          const updatedSession = {
+            ...workerSessionPayload,
+            firstName: user.firstName ?? workerSessionPayload.firstName,
+            lastName: user.lastName ?? workerSessionPayload.lastName,
+            user: {
+              ...(workerSessionPayload.user ?? {}),
+              firstName: user.firstName ?? workerSessionPayload.firstName,
+              lastName: user.lastName ?? workerSessionPayload.lastName,
+              verificationStatus: user.verificationStatus ?? workerSessionPayload.user?.verificationStatus,
+            },
+            artisanProfile: {
+              ...(workerSessionPayload.artisanProfile ?? {}),
+              headline: worker.skill,
+              location: worker.location,
+              bio: profile.bio ?? workerSessionPayload.artisanProfile?.bio,
+              yearsExperience: profile.yearsExperience ?? workerSessionPayload.artisanProfile?.yearsExperience,
+              serviceCategory: profile.serviceCategory ?? workerSessionPayload.artisanProfile?.serviceCategory,
+              showcaseMediaUrl: worker.photoUrl,
+            },
+          };
+          sessionStorage.setItem('siriusWorkerAuth', JSON.stringify(updatedSession));
+        }
+
+        renderProfile();
+        updateStatsFromApplications(applied);
+        updateSubscriptionCard(profile);
+        renderApplied();
+      } catch (error) {
+        console.error('Worker dashboard error:', error);
+        isLoadingApplications = false;
+        ensureApplicationsPlaceholder(error.message || 'Unable to load applications.');
+      }
+    }
+
+    // Role switching functionality removed - users now post jobs directly from their dashboard
+
+    // lists
+    function renderApplied(){
+      if (!appliedListEl) return;
+      if (isLoadingApplications) {
+        ensureApplicationsPlaceholder('Loading your applications…');
+        return;
+      }
+
+      if (!applied.length) {
+        ensureApplicationsPlaceholder('No applications yet. Browse jobs to get started.');
+        return;
+      }
+
+      appliedListEl.innerHTML='';
+
+      applied.forEach(application => {
+        const statusStyle = statusMeta(application.status);
+        const withdrawAllowed = (application.status || '').toUpperCase() === 'PENDING';
+        const jobTitle = application.job?.title ?? 'Job opportunity';
+        const jobLocation = application.job?.location ?? 'Location not specified';
+        const applicationId = application.id;
+        const appliedDate = formatTimelineDate(application.createdAt);
+        const payLabel = typeof application.expectedPay === 'number' ? formatCurrency(application.expectedPay) : '—';
+
+        const li = document.createElement('li');
+        li.className = 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-6 space-y-4 hover:border-primary/30 hover:shadow-lg transition-all';
+        const withdrawButton = withdrawAllowed
+          ? `<button class="withdrawBtn inline-flex items-center gap-1 text-xs text-red-600 hover:text-red-700 font-bold" data-application="${applicationId}"><i data-feather="slash" class="w-3.5 h-3.5"></i>Withdraw</button>`
+          : '';
+
+        li.innerHTML = `
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h4 class="text-base font-black text-gray-900">${jobTitle}</h4>
+              <p class="text-xs text-gray-500 font-medium mt-1">${jobLocation}</p>
+            </div>
+            <span class="text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap ${statusStyle.chip}">${statusStyle.label}</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-gray-600">
+            <div class="flex items-center gap-2"><i data-feather="calendar" class="w-4 h-4 text-gray-400"></i><span class="font-medium">${appliedDate}</span></div>
+            <div class="flex items-center gap-2"><span class="text-primary font-bold uppercase tracking-wide">Expected pay</span><span class="font-medium">${payLabel}</span></div>
+            <div class="flex items-center gap-2"><i data-feather="info" class="w-4 h-4 text-gray-400"></i><span class="font-medium">${statusStyle.next}</span></div>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t-2 border-gray-100 text-xs">
+            <a href="jobs.html" class="inline-flex items-center gap-1 text-primary hover:text-primary/80 font-bold transition"><i data-feather="external-link" class="w-4 h-4"></i>View job</a>
+            ${withdrawButton}
+          </div>`;
+
+        appliedListEl.appendChild(li);
+      });
+
+      appliedListEl.querySelectorAll('.withdrawBtn').forEach(btn => {
+        btn.addEventListener('click', async (event) => {
+          const applicationId = event.currentTarget.getAttribute('data-application');
+          if(!confirm('Withdraw this application?')) return;
+          try{
+            const res = await fetch(`/api/applications/${applicationId}/withdraw`, {
+              method:'POST',
+              headers: { Authorization: `Bearer ${workerSessionPayload?.token ?? ''}` },
+            });
+            if(!res.ok){
+              const body = await res.json().catch(()=>({ message:'Unable to withdraw' }));
+              throw new Error(body.message || 'Unable to withdraw');
+            }
+            const record = applied.find(item => item.id === applicationId);
+            if(record){
+              record.status = 'WITHDRAWN';
+              record.reviewedAt = new Date().toISOString();
+            }
+            renderApplied();
+            alert('Application withdrawn.');
+          } catch(error){
+            alert(error.message);
+          }
+        });
+      });
+
+      feather.replace();
+    }
+
+    // interactions
+    const verifyWorkerBtn = document.getElementById('verifyWorkerBtn');
+    verifyWorkerBtn?.addEventListener('click', () => {
+      if(worker.verified) return;
+      window.location.href = 'verify.html?returnTo=worker-dashboard';
+    });
+
+    const modal = document.getElementById('subscriptionModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const subscribeButtons = document.querySelectorAll('.subscribeBtn');
+    const planLabels = {
+      'premium': 'Premium (₦1,000/month)',
+      'premium-plus': 'Premium Plus (₦5,000/month)'
+    };
+
+    function openSubscriptionModal(){
+      modal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeSubscriptionModal(){
+      modal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    document.getElementById('renewBtn').addEventListener('click', openSubscriptionModal);
+    closeModalBtn.addEventListener('click', closeSubscriptionModal);
+    modal.addEventListener('click', (event) => {
+      if(event.target === modal){
+        closeSubscriptionModal();
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if(event.key === 'Escape' && !modal.classList.contains('hidden')){
+        closeSubscriptionModal();
+      }
+    });
+    subscribeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const plan = btn.dataset.plan;
+        alert(`🎉 Great choice! ${planLabels[plan]} checkout is coming soon.`);
+        closeSubscriptionModal();
+      });
+    });
+
+    // Job posting functionality
+    let workerPostedJobs = [];
+    let currentJobApplicants = [];
+    let currentJobId = null;
+
+    async function loadWorkerPostedJobs() {
+      try {
+        const res = await fetch(`/api/jobs/employer/${workerSessionPayload?.userId}`, {
+          headers: { Authorization: `Bearer ${workerSessionPayload?.token ?? ''}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          workerPostedJobs = data.data?.jobs || [];
+          renderWorkerPostedJobs();
+        }
+      } catch (error) {
+        console.error('Failed to load posted jobs:', error);
+      }
+    }
+
+    function renderWorkerPostedJobs() {
+      const list = document.getElementById('workerPostedJobsList');
+      const empty = document.getElementById('workerPostedJobsEmpty');
+      if (!list) return;
+
+      list.innerHTML = '';
+      if (workerPostedJobs.length === 0) {
+        if (empty) empty.classList.remove('hidden');
+        return;
+      }
+      if (empty) empty.classList.add('hidden');
+
+      workerPostedJobs.forEach(job => {
+        const li = document.createElement('li');
+        li.className = 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-6 hover:border-primary/30 hover:shadow-lg transition-all';
+        const statusClass = job.status === 'open' ? 'text-green-600 bg-green-50' : 'text-gray-600 bg-gray-50';
+        li.innerHTML = `
+          <div class="flex justify-between items-start gap-4">
+            <div>
+              <h4 class="text-base font-black text-gray-900">${job.title || 'Untitled Job'}</h4>
+              <p class="text-sm text-gray-500 font-medium mt-1">${job.location || 'Location TBC'} • ${job.applicationCount || 0} applicant(s)</p>
+            </div>
+            <span class="text-xs ${statusClass} font-bold px-3 py-1.5 rounded-full border-2">${job.status?.toUpperCase() || 'DRAFT'}</span>
+          </div>
+          <button class="viewJobApplicantsBtn mt-4 w-full inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold px-4 py-2 rounded-xl hover:bg-primary hover:text-white transition-all text-sm" data-job-id="${job._id}">
+            <i data-feather="users" class="w-4 h-4"></i>
+            View Applicants (${job.applicationCount || 0})
+          </button>
+        `;
+        list.appendChild(li);
+      });
+
+      list.querySelectorAll('.viewJobApplicantsBtn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const jobId = btn.dataset.jobId;
+          openWorkerApplicantsModal(jobId);
+        });
+      });
+
+      feather.replace();
+    }
+
+    async function openWorkerApplicantsModal(jobId) {
+      currentJobId = jobId;
+      const job = workerPostedJobs.find(j => j._id === jobId);
+      const modal = document.getElementById('workerViewApplicantsModal');
+      const title = document.getElementById('workerApplicantsJobTitle');
+      if (title && job) title.textContent = `${job.title} - Applicants`;
+
+      modal.classList.remove('hidden');
+      await loadJobApplicants(jobId);
+    }
+
+    async function loadJobApplicants(jobId) {
+      try {
+        const res = await fetch(`/api/applications/job/${jobId}`, {
+          headers: { Authorization: `Bearer ${workerSessionPayload?.token ?? ''}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          currentJobApplicants = data.data?.applications || [];
+          renderJobApplicants();
+        }
+      } catch (error) {
+        console.error('Failed to load applicants:', error);
+      }
+    }
+
+    function renderJobApplicants() {
+      const list = document.getElementById('workerApplicantsList');
+      const empty = document.getElementById('workerApplicantsEmpty');
+      if (!list) return;
+
+      list.innerHTML = '';
+      if (currentJobApplicants.length === 0) {
+        if (empty) empty.classList.remove('hidden');
+        return;
+      }
+      if (empty) empty.classList.add('hidden');
+
+      currentJobApplicants.forEach(app => {
+        const li = document.createElement('li');
+        li.className = 'bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-6 text-sm space-y-4 hover:border-primary/30 hover:shadow-lg transition-all';
+        const statusClass = app.status === 'accepted' ? 'text-green-600' : app.status === 'rejected' ? 'text-red-600' : 'text-gray-600';
+        li.innerHTML = `
+          <div class="flex justify-between items-start gap-4">
+            <div>
+              <div class="text-base font-black text-gray-900">${app.worker?.name || 'Anonymous'}</div>
+              <div class="text-xs text-gray-500 font-medium mt-1">${app.worker?.email || ''}</div>
+            </div>
+            <span class="text-xs ${statusClass} font-bold">${app.status?.toUpperCase() || 'PENDING'}</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button class="viewWorkerProfileBtn inline-flex items-center gap-1 border-2 border-primary text-primary px-4 py-2 rounded-xl hover:bg-primary hover:text-white transition-all text-xs font-bold" data-worker-id="${app.workerId}">
+              <i data-feather="user"></i> View Profile
+            </button>
+            ${app.status === 'pending' ? `
+              <button class="acceptWorkerBtn inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-green-600/25 transition-all" data-application-id="${app._id}">
+                <i data-feather="check"></i> Accept
+              </button>
+              <button class="rejectWorkerBtn inline-flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-red-500/25 transition-all" data-application-id="${app._id}">
+                <i data-feather="x-circle"></i> Reject
+              </button>
+            ` : ''}
+          </div>
+        `;
+        list.appendChild(li);
+      });
+
+      list.querySelectorAll('.viewWorkerProfileBtn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const workerId = btn.dataset.workerId;
+          openWorkerProfileModal(workerId);
+        });
+      });
+
+      list.querySelectorAll('.acceptWorkerBtn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const appId = btn.dataset.applicationId;
+          if (!confirm('Accept this applicant?')) return;
+          await updateApplicationStatus(appId, 'ACCEPT');
+        });
+      });
+
+      list.querySelectorAll('.rejectWorkerBtn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const appId = btn.dataset.applicationId;
+          if (!confirm('Reject this applicant?')) return;
+          await updateApplicationStatus(appId, 'REJECT');
+        });
+      });
+
+      feather.replace();
+    }
+
+    async function updateApplicationStatus(applicationId, decision) {
+      try {
+        const res = await fetch(`/api/applications/${applicationId}/decision`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${workerSessionPayload?.token ?? ''}`,
+          },
+          body: JSON.stringify({ decision }),
+        });
+        if (!res.ok) throw new Error('Failed to update application');
+        alert(decision === 'ACCEPT' ? 'Applicant accepted!' : 'Applicant rejected.');
+        await loadJobApplicants(currentJobId);
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    async function openWorkerProfileModal(workerId) {
+      const modal = document.getElementById('workerApplicantProfileModal');
+      const body = document.getElementById('workerApplicantProfileBody');
+      modal.classList.remove('hidden');
+
+      try {
+        const res = await fetch(`/api/profiles/${workerId}`);
+        if (!res.ok) throw new Error('Profile not found');
+        const profile = await res.json();
+
+        body.innerHTML = `
+          <section class="space-y-4">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex items-center gap-1 text-xs ${profile.data.verificationStatus === 'VERIFIED' ? 'text-green-600 bg-green-100' : 'text-amber-600 bg-amber-100'} px-2 py-1 rounded-full uppercase tracking-wide font-semibold">
+                <i data-feather="${profile.data.verificationStatus === 'VERIFIED' ? 'shield' : 'alert-triangle'}" class="w-3.5 h-3.5"></i>
+                ${profile.data.verificationStatus === 'VERIFIED' ? 'Verified' : 'Verification Pending'}
+              </span>
+            </div>
+            ${profile.data.artisanProfile ? `
+              <div class="border rounded-lg p-4 bg-gray-50">
+                <p class="text-sm text-gray-600 mb-2">${profile.data.artisanProfile.bio || 'No bio provided yet.'}</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-gray-500">
+                  <li class="flex items-center gap-1"><i data-feather="briefcase" class="w-4 h-4"></i> ${profile.data.artisanProfile.serviceCategory?.label || 'General'}</li>
+                  <li class="flex items-center gap-1"><i data-feather="clock" class="w-4 h-4"></i> ${profile.data.artisanProfile.yearsExperience || 0} yrs experience</li>
+                </ul>
+              </div>
+            ` : ''}
+          </section>
+        `;
+        feather.replace();
+      } catch (error) {
+        body.innerHTML = `
+          <div class="text-center py-12">
+            <i data-feather="alert-circle" class="mx-auto mb-3 text-red-500"></i>
+            <p class="text-sm text-gray-600">Could not load this profile.</p>
+          </div>
+        `;
+        feather.replace();
+      }
+    }
+
+    // Modal handlers
+    document.getElementById('workerPostJobBtn')?.addEventListener('click', () => {
+      document.getElementById('workerJobPostModal').classList.remove('hidden');
+    });
+
+    document.getElementById('closeWorkerJobPostModal')?.addEventListener('click', () => {
+      document.getElementById('workerJobPostModal').classList.add('hidden');
+    });
+
+    document.getElementById('workerJobPostPayBtn')?.addEventListener('click', () => {
+      window.open('https://paystack.com/pay/siriusjobs-post', '_blank', 'noopener');
+      alert('Complete the ₦1,000 payment, then return to post your job.');
+      document.getElementById('workerJobPostModal').classList.add('hidden');
+    });
+
+    document.getElementById('closeWorkerApplicantsModal')?.addEventListener('click', () => {
+      document.getElementById('workerViewApplicantsModal').classList.add('hidden');
+    });
+
+    document.getElementById('closeWorkerApplicantProfile')?.addEventListener('click', () => {
+      document.getElementById('workerApplicantProfileModal').classList.add('hidden');
+    });
+
+    // Load posted jobs on init
+    loadWorkerPostedJobs();
+
+    // init
+    function handleLogout(showAlert = true){
+      sessionStorage.clear();
+      localStorage.removeItem('siriusRememberMe');
+      if (showAlert) {
+        alert('You have been logged out.');
+      }
+      window.location.href = 'login.html';
+    }
+    document.getElementById('workerLogout').addEventListener('click', handleLogout);
+    document.getElementById('workerLogoutMobile').addEventListener('click', handleLogout);
+
+    renderProfile();
+    renderApplied();
+    loadWorkerDashboard();
+  </script>
+  <script src="assistant.js"></script>
+  <script src="session-timeout.js"></script>
+  <script src="assets/site-shell.js" defer></script>
+</body>
+</html>

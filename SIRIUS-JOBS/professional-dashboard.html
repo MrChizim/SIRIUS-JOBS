@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Professional Dashboard – Sirius Jobs</title>
+  <meta name="description" content="Monitor consultations, ratings, payouts and earnings as a Sirius Jobs professional." />
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="icon" sizes="32x32" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0056b3',
+            secondary: '#0f172a'
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <!-- DISABLED: error-handler.js was causing redirect loop on dashboard -->
+  <!-- <script src="error-handler.js"></script> -->
+  <script src="loading-utils.js"></script>
+  <script src="api.js"></script>
+  <script src="session-utils.js"></script>
+  <script src="ui-utils.js"></script>
+  <style>
+    
+    body { font-family: 'Inter', sans-serif; }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .animated-gradient {
+      background-size: 200% 200%;
+      animation: gradient-shift 15s ease infinite;
+    }
+
+    .stat-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 86, 179, 0.15);
+    }
+  </style>
+  <link rel="stylesheet" href="assets/site-shell.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Modern Fixed Navigation -->
+  <nav data-sirius-shell="skip" class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+    <div class="container mx-auto px-4 lg:px-6">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center space-x-3 group">
+          <img src="images/logo.png" alt="SiriusJobs logo" class="h-10 sm:h-12 md:h-14 w-auto drop-shadow-2xl transition-transform group-hover:scale-105">
+          </a>
+
+        <div class="hidden lg:flex items-center gap-8">
+          <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Home</a>
+          <a href="services.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Services</a>
+          <a href="jobs.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Jobs</a>
+          <a href="consultations.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Consultations</a>
+          <a href="verify.html" class="text-sm font-medium text-gray-600 hover:text-primary transition">Verify</a>
+          <button id="professionalLogout" class="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary transition">
+            <i data-feather="log-out" class="w-4 h-4"></i>
+            Logout
+          </button>
+        </div>
+
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <nav class="nav-menu-mobile">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="consultations.html">Consultations</a>
+    <a href="verify.html">Verify</a>
+    <button id="professionalLogoutMobile" type="button">Logout</button>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="pt-32 pb-16 bg-gradient-to-br from-black via-primary to-blue-900 text-white animated-gradient relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-8 items-center">
+        <div class="max-w-2xl">
+          <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 mb-6">
+            <i data-feather="award" class="w-4 h-4"></i>
+            <span class="text-sm font-semibold">Professional Dashboard</span>
+          </div>
+          <h1 class="text-5xl md:text-6xl font-black mb-4 leading-tight">Deliver outstanding care</h1>
+          <p class="text-xl text-gray-100 font-light leading-relaxed">Track consultations, earnings, and ratings in real-time</p>
+        </div>
+
+        <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 text-gray-900">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <i data-feather="dollar-sign" class="w-6 h-6 text-primary"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500 font-medium">Available to withdraw</p>
+              <p id="walletAvailable" class="text-3xl font-black text-primary">₦0</p>
+            </div>
+          </div>
+          <div class="space-y-3 mb-6">
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-gray-600">Pending earnings</span>
+              <span id="walletPending" class="font-bold text-gray-900">₦0</span>
+            </div>
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-gray-600">Total consultations</span>
+              <span id="statConsultations" class="font-bold text-gray-900">0</span>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <button id="requestPayoutBtn" class="flex-1 bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Request payout</button>
+            <button id="viewWalletBtn" class="flex-1 border-2 border-primary/20 text-primary font-bold py-3 rounded-xl hover:bg-primary/5 transition-all">Wallet history</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 -mt-8 relative z-10 pb-16 space-y-8">
+    <!-- Job Posting Section -->
+    <section class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-2xl font-black text-gray-900">Hire Someone</h2>
+          <p class="text-sm text-gray-600 mt-1">Post a job for ₦1,000 and manage applicants</p>
+        </div>
+        <button id="professionalPostJobBtn" class="inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+          <i data-feather="plus" class="w-4 h-4"></i>
+          Post Job
+        </button>
+      </div>
+
+      <div id="professionalPostedJobsSection">
+        <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">My Posted Jobs</h3>
+        <ul id="professionalPostedJobsList" class="space-y-4"></ul>
+        <p id="professionalPostedJobsEmpty" class="text-sm text-gray-500 border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center">No jobs posted yet. Click "Post Job" to get started.</p>
+      </div>
+    </section>
+
+    <!-- Cross Consultation Section -->
+    <section id="crossConsultSection" class="hidden">
+      <div class="bg-white shadow-xl border border-gray-100 rounded-3xl p-6 md:p-8">
+        <div class="grid lg:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-3 py-1">
+              <i data-feather="users" class="w-3.5 h-3.5"></i>
+              <span id="crossConsultTag" class="text-xs font-bold uppercase tracking-wide">Cross-discipline support</span>
+            </div>
+            <h2 id="crossConsultTitle" class="text-2xl font-black text-gray-900">Book a specialist consultation</h2>
+            <p id="crossConsultCopy" class="text-gray-600">Stay within Sirius Jobs and get rapid help from trusted colleagues in another field.</p>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <button id="openCrossConsultModalBtn" type="button" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all">
+                <i data-feather="calendar"></i>
+                <span id="crossConsultBtnLabel">Book a consultation now</span>
+              </button>
+              <span id="crossConsultPriceBlurb" class="text-sm text-gray-500 font-medium">₦3,000 concierge-hosted session billed instantly.</span>
+            </div>
+          </div>
+          <div class="bg-gradient-to-br from-primary/5 to-blue-900/5 rounded-2xl p-6 space-y-4">
+            <h3 class="text-sm font-bold text-primary uppercase tracking-wide">Recent cross consults</h3>
+            <ul id="crossConsultHistory" class="space-y-3"></ul>
+            <div id="crossConsultEmpty" class="text-sm text-gray-500">No cross-discipline consultations yet. Book your first one above.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profile Completion Card -->
+    <article id="profileCompletionCard" class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-3 py-1 mb-3">
+            <i data-feather="check-circle" class="w-3.5 h-3.5"></i>
+            <span class="text-xs font-bold uppercase tracking-wide">Profile checklist</span>
+          </div>
+          <h3 class="text-xl font-black text-gray-900">Boost your visibility to clients</h3>
+        </div>
+        <span id="profileCompletionPercent" class="text-lg font-black text-primary">0%</span>
+      </div>
+      <div class="h-3 w-full bg-gray-200 rounded-full overflow-hidden">
+        <div id="profileCompletionBar" class="h-3 bg-gradient-to-r from-primary to-blue-600 rounded-full transition-all duration-500" style="width: 0%;"></div>
+      </div>
+      <ul class="grid md:grid-cols-3 gap-4">
+        <li data-completion-item="photo" class="flex items-center justify-between gap-3 bg-gray-50 rounded-xl p-4">
+          <span class="flex items-center gap-2 text-sm font-medium text-gray-700"><i data-feather="image" class="w-4 h-4 text-primary"></i>Add profile photo</span>
+          <span data-status class="text-xs font-bold uppercase tracking-wide px-2.5 py-1 rounded-full bg-amber-100 text-amber-700">Pending</span>
+        </li>
+        <li data-completion-item="onboarding" class="flex items-center justify-between gap-3 bg-gray-50 rounded-xl p-4">
+          <span class="flex items-center gap-2 text-sm font-medium text-gray-700"><i data-feather="credit-card" class="w-4 h-4 text-primary"></i>Pay onboarding fee</span>
+          <span data-status class="text-xs font-bold uppercase tracking-wide px-2.5 py-1 rounded-full bg-amber-100 text-amber-700">Pending</span>
+        </li>
+        <li data-completion-item="payout" class="flex items-center justify-between gap-3 bg-gray-50 rounded-xl p-4">
+          <span class="flex items-center gap-2 text-sm font-medium text-gray-700"><i data-feather="banknote" class="w-4 h-4 text-primary"></i>Add payout account</span>
+          <span data-status class="text-xs font-bold uppercase tracking-wide px-2.5 py-1 rounded-full bg-amber-100 text-amber-700">Pending</span>
+        </li>
+      </ul>
+      <p id="profileCompletionMessage" class="text-sm text-gray-500 font-medium">Complete the tasks above so clients can trust and book you faster.</p>
+    </article>
+
+    <!-- Profile Summary -->
+    <section class="grid gap-8 lg:grid-cols-3">
+      <article class="lg:col-span-2 bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+        <div class="flex flex-col md:flex-row md:items-start gap-6">
+          <div class="relative mx-auto md:mx-0">
+            <img id="proAvatar" src="https://via.placeholder.com/160x160?text=You" alt="Professional" class="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover border-4 border-primary/20 shadow-md" />
+            <button id="editPhotoBtn" class="absolute -bottom-2 -right-2 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary/90 ring-4 ring-white transition" type="button"><i data-feather="camera" class="w-5 h-5"></i></button>
+            <input type="file" id="profileImageInput" class="hidden" accept="image/*" />
+          </div>
+          <div class="flex-1 space-y-4">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+              <div>
+                <h2 id="proName" class="text-3xl font-black text-gray-900 leading-tight">Professional Name</h2>
+                <p id="proProfession" class="text-sm text-gray-500 font-medium mt-1">Profession • Regulatory Body</p>
+              </div>
+              <span id="proStatusBadge" class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wide px-3 py-1.5 rounded-full bg-amber-100 text-amber-700">
+                <i data-feather="shield" class="w-3.5 h-3.5"></i>
+                Pending review
+              </span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="rounded-2xl border-2 border-primary/20 bg-primary/5 px-4 py-4">
+                <p class="text-xs font-bold uppercase tracking-wide text-primary/70 mb-2">Average rating</p>
+                <div class="flex items-center gap-3">
+                  <span id="statAverageRating" class="text-3xl font-black text-primary">0.0</span>
+                  <span id="statAverageRatingStars" class="flex items-center gap-1 text-amber-500"></span>
+                </div>
+                <p id="statAverageRatingCopy" class="text-xs text-primary/70 mt-2">Awaiting first review</p>
+              </div>
+              <div class="rounded-2xl border-2 border-gray-200 bg-white px-4 py-4 shadow-sm">
+                <p class="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">Reviews</p>
+                <p id="statReviewCount" class="text-xl font-black text-gray-800">0 reviews</p>
+              </div>
+              <div class="rounded-2xl border-2 border-gray-200 bg-white px-4 py-4 shadow-sm">
+                <p class="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">Clients served</p>
+                <p id="statClients" class="text-xl font-black text-gray-800">0 clients</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <aside class="bg-gradient-to-br from-primary to-blue-900 rounded-3xl text-white p-8 shadow-2xl relative overflow-hidden">
+        <div class="absolute -right-12 -top-16 w-40 h-40 bg-white/10 rounded-full"></div>
+        <div class="absolute -left-16 bottom-0 w-36 h-36 bg-white/10 rounded-full"></div>
+        <div class="relative space-y-6">
+          <div class="flex items-center gap-3">
+            <div class="bg-white/20 p-3 rounded-xl">
+              <i data-feather="credit-card" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-wide text-white/60 font-medium">Net earnings</p>
+              <p id="statNetEarnings" class="text-3xl font-black mt-1">₦0</p>
+            </div>
+          </div>
+          <p class="text-sm text-white/80 leading-relaxed">Total cleared funds ready for payout. Request withdrawals anytime after client confirmation.</p>
+          <div class="rounded-2xl bg-white/10 backdrop-blur-sm px-4 py-4">
+            <p class="text-xs uppercase tracking-wide text-white/70 font-medium">Pending earnings</p>
+            <p id="statPendingEarnings" class="text-2xl font-black mt-2">₦0</p>
+            <p class="text-xs text-white/70 mt-2">Released automatically once sessions are approved.</p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Wallet & Payout -->
+    <section class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+      <div class="xl:col-span-2 bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+        <h3 class="text-2xl font-black text-gray-900 mb-6">Wallet history</h3>
+        <div id="walletHistory" class="space-y-3"></div>
+      </div>
+
+      <aside id="onboardingPaymentCard" class="bg-gradient-to-br from-green-50 to-white border-2 border-green-200 rounded-3xl shadow-xl p-8 space-y-4">
+        <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center mb-2">
+          <i data-feather="zap" class="w-6 h-6 text-green-600"></i>
+        </div>
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-2 bg-green-600/10 text-green-700 rounded-full px-3 py-1">
+            <i data-feather="star" class="w-3.5 h-3.5"></i>
+            <span class="text-xs font-bold uppercase tracking-wide">One-time activation</span>
+          </div>
+          <h3 class="text-2xl font-black text-gray-900">Pay ₦5,000 to go public</h3>
+          <p class="text-sm text-gray-600 leading-relaxed">Settle the onboarding fee so we can verify you, feature your profile publicly, and allow clients to unlock your contact details.</p>
+        </div>
+        <ul class="space-y-2 text-xs text-gray-600">
+          <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-green-600"></i>Instant listing on the consultations page</li>
+          <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-green-600"></i>Secure payments handled by Paystack</li>
+          <li class="flex items-center gap-2"><i data-feather="check" class="w-4 h-4 text-green-600"></i>Concierge support for every consultation</li>
+        </ul>
+        <button id="openOnboardingModalBtn" type="button" class="w-full inline-flex items-center justify-center gap-2 bg-green-600 text-white font-bold px-4 py-3 rounded-xl hover:bg-green-700 transition-all shadow-lg shadow-green-600/25">
+          <i data-feather="credit-card" class="w-4 h-4"></i>
+          Pay ₦5,000 onboarding
+        </button>
+        <p id="onboardingStatusNote" class="text-xs text-gray-500 font-medium">Pay securely with Paystack. Once payment succeeds, your consultation profile goes public automatically.</p>
+      </aside>
+    </section>
+
+    <!-- Payout Account & Reviews -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+        <h3 class="text-2xl font-black text-gray-900 mb-2">Payout account</h3>
+        <p class="text-sm text-gray-500 mb-6 font-medium">Add a Nigerian bank account to receive earnings anytime.</p>
+        <form id="payoutForm" class="space-y-4">
+          <div>
+            <label for="bankName" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Bank name</label>
+            <input id="bankName" name="bankName" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="e.g. GTBank" required>
+          </div>
+          <div>
+            <label for="accountNumber" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Account number</label>
+            <input id="accountNumber" name="accountNumber" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="10-digit number" required>
+          </div>
+          <div>
+            <label for="accountHolder" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Account holder</label>
+            <input id="accountHolder" name="accountHolder" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Name on account" required>
+          </div>
+          <button type="submit" class="w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Save payout account</button>
+        </form>
+        <p id="payoutFormStatus" class="text-xs text-gray-500 font-medium mt-3"></p>
+      </div>
+
+      <section class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+          <div>
+            <h3 class="text-2xl font-black text-gray-900">Latest reviews</h3>
+            <p class="text-sm text-gray-500 font-medium mt-1">Clients can review each consultation</p>
+          </div>
+          <button id="refreshReviewsBtn" class="text-sm text-primary font-bold hover:underline">Refresh reviews</button>
+        </div>
+        <div id="reviewList" class="space-y-4"></div>
+        <p id="noReviewsState" class="text-sm text-gray-500 hidden">No reviews yet. Encourage clients to leave feedback after each consultation.</p>
+      </section>
+    </section>
+  </main>
+
+  <!-- Job Post Payment Modal -->
+  <div id="professionalJobPostModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full relative overflow-hidden">
+      <button id="closeProfessionalJobPostModal" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition z-10">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="p-12">
+        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
+          <i data-feather="briefcase" class="w-8 h-8 text-white"></i>
+        </div>
+        <h2 class="text-3xl font-black text-gray-900 mb-4 text-center">Post a Job</h2>
+        <p class="text-gray-600 mb-8 leading-relaxed text-center">Pay ₦1,000 to publish your job listing and receive applications.</p>
+
+        <div class="border-2 border-primary/30 rounded-2xl p-6 mb-6">
+          <p class="text-5xl font-black text-gray-900 mb-1 text-center">₦1,000</p>
+          <p class="text-center text-gray-500 mb-6">One-time payment per job</p>
+          <ul class="space-y-3 text-sm text-gray-600">
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Reach active job seekers</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>Manage all applications</span></li>
+            <li class="flex items-start gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"></i><span>No hidden fees</span></li>
+          </ul>
+        </div>
+
+        <button id="professionalJobPostPayBtn" class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">Pay ₦1,000 & Post Job</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Professional Applicants Modal -->
+  <div id="professionalApplicantsModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full overflow-hidden max-h-[90vh] overflow-y-auto">
+      <div class="px-8 py-6 border-b-2 border-gray-100 flex items-center justify-between">
+        <div>
+          <h3 class="text-2xl font-black text-gray-900">Job Applicants</h3>
+          <p class="text-sm text-gray-500 mt-1">Review and manage candidates</p>
+        </div>
+        <button id="closeProfessionalApplicantsModal" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div class="p-8">
+        <ul id="professionalApplicantsList" class="space-y-4"></ul>
+        <p id="professionalApplicantsEmpty" class="text-center text-gray-500 py-8">No applications yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Professional Applicant Profile Modal -->
+  <div id="professionalProfileModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 hidden z-50">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-8 py-6 border-b-2 border-gray-100">
+        <div>
+          <h3 id="professionalProfileModalName" class="text-2xl font-black text-gray-900">Applicant Profile</h3>
+          <p class="text-sm text-gray-500">Verify the worker's background before deciding.</p>
+        </div>
+        <button id="closeProfessionalProfileModal" class="text-gray-500 hover:text-primary transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="professionalProfileModalBody" class="p-8 max-h-[70vh] overflow-y-auto"></div>
+    </div>
+  </div>
+
+  <!-- Onboarding Payment Modal -->
+  <div id="onboardingModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-[110] items-center justify-center px-4 py-6">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full overflow-hidden max-h-[90vh] overflow-y-auto">
+      <div class="px-8 py-6 border-b-2 border-gray-100 flex items-center justify-between">
+        <div>
+          <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-3 py-1 mb-2">
+            <i data-feather="zap" class="w-3.5 h-3.5"></i>
+            <span class="text-xs font-bold uppercase tracking-wide">Professional onboarding</span>
+          </div>
+          <h3 class="text-2xl font-black text-gray-900">Unlock your public consultation listing</h3>
+        </div>
+        <button id="closeOnboardingModalBtn" class="text-gray-400 hover:text-gray-600 transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div class="px-8 py-8 space-y-6">
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="space-y-4">
+            <div class="bg-primary/5 border-2 border-primary/20 rounded-2xl px-6 py-4">
+              <p class="text-xs uppercase tracking-wide text-primary/70 font-bold mb-1">One-time fee</p>
+              <p class="text-3xl font-black text-primary">₦5,000</p>
+              <p class="text-xs text-gray-500 mt-2">We use this to verify credentials, boost your profile, and support every consultation.</p>
+            </div>
+            <ul class="space-y-3 text-sm text-gray-700">
+              <li class="flex items-start gap-3">
+                <i data-feather="shield" class="w-5 h-5 text-primary mt-0.5 flex-shrink-0"></i>
+                <span>Verification badge after compliance review</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i data-feather="users" class="w-5 h-5 text-primary mt-0.5 flex-shrink-0"></i>
+                <span>Appear publicly on the consultations directory</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i data-feather="headphones" class="w-5 h-5 text-primary mt-0.5 flex-shrink-0"></i>
+                <span>Concierge support throughout each session</span>
+              </li>
+            </ul>
+          </div>
+          <div class="space-y-4">
+            <h4 class="text-sm font-bold text-gray-800 uppercase tracking-wide">Pay with Paystack</h4>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Use your Paystack dashboard keys in <code class="px-2 py-1 bg-gray-100 rounded text-xs font-mono">backend/.env</code>.
+              After payment, your profile is made public automatically.
+            </p>
+            <button id="paystackCardBtn" class="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold text-sm px-6 py-3 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+              <i data-feather="credit-card" class="w-4 h-4"></i>
+              Pay ₦5,000 via Paystack
+            </button>
+            <p id="paymentStatusMessage" class="text-xs text-gray-500 font-medium"></p>
+          </div>
+        </div>
+        <div class="rounded-2xl bg-gray-50 border-2 border-gray-200 px-4 py-3 text-xs text-gray-500">
+          By proceeding you agree to Sirius Jobs' policies. Payments are processed securely by Paystack; no card data is stored on Sirius servers.
+        </div>
+      </div>
+      <div class="px-8 py-4 bg-gray-50 border-t-2 border-gray-100 text-right">
+        <button id="closeOnboardingModalFooter" class="text-sm font-bold text-gray-500 hover:text-gray-700 transition">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cross Consult Modal -->
+  <div id="crossConsultModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-[110] items-center justify-center px-4 py-6">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden">
+      <div class="px-8 py-6 border-b-2 border-gray-100 flex items-center justify-between">
+        <div>
+          <div class="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-3 py-1 mb-2">
+            <i data-feather="users" class="w-3.5 h-3.5"></i>
+            <span id="crossModalTag" class="text-xs font-bold uppercase tracking-wide">Cross consult</span>
+          </div>
+          <h3 id="crossModalTitle" class="text-2xl font-black text-gray-900">Book a specialist</h3>
+        </div>
+        <button id="closeCrossConsultModal" class="text-gray-400 hover:text-gray-600 transition">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <form id="crossConsultForm" class="px-8 py-8 space-y-5">
+        <p id="crossModalCopy" class="text-sm text-gray-600">Pay ₦3,000 and our concierge will match you with a specialist within 1 hour.</p>
+        <div>
+          <label for="crossConsultReason" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Why do you need this consultation?</label>
+          <textarea id="crossConsultReason" rows="4" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Describe the situation so we can match you with the right specialist..." required></textarea>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label for="crossConsultDate" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Preferred date & time</label>
+            <input id="crossConsultDate" type="datetime-local" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+          </div>
+          <div>
+            <label for="crossConsultMode" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Consultation mode</label>
+            <select id="crossConsultMode" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+              <option value="VIDEO">Video call</option>
+              <option value="PHONE">Phone call</option>
+              <option value="IN_PERSON">In person</option>
+            </select>
+          </div>
+        </div>
+        <p id="crossConsultStatus" class="hidden text-sm font-medium"></p>
+        <button type="submit" id="crossConsultSubmit" class="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25">
+          <i data-feather="check" class="w-5 h-5"></i>
+          <span id="crossConsultSubmitLabel">Pay ₦3,000 & confirm</span>
+        </button>
+      </form>
+    </div>
+  </div>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container mx-auto px-4 lg:px-6">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <img src="images/logo.png" alt="Sirius logo" class="h-12 sm:h-14 md:h-16 w-auto drop-shadow-2xl">
+          <p>One platform for trusted professionals, frontline artisans, and the clients who rely on them across Nigeria.</p>
+          <div class="site-footer__social">
+            <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
+            <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
+            <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
+            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul class="space-y-2">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="jobs.html">Jobs</a></li>
+            <li><a href="consultations.html">Consultations</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul class="space-y-2">
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="verify.html">Verify Credentials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="space-y-2">
+            <li><span>WhatsApp: 0704 447 0559</span></li>
+            <li><span>Email: info@siriusjobs.com.ng</span></li>
+            <li><span>Port Harcourt, Rivers State</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2026 Sirius. All rights reserved.</p>
+        <div class="flex gap-4"><span>Built for Nigerian businesses & talent.</span></div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    feather.replace();
+    // Hamburger menu functionality
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu-mobile');
+
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+      });
+
+      document.querySelectorAll('.nav-menu-mobile a, .nav-menu-mobile button').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        }
+      });
+    }
+
+    function handleLogout(showAlert = true){
+      sessionStorage.clear();
+      localStorage.removeItem('siriusRememberMe');
+      if (showAlert) {
+        alert('You have been logged out.');
+      }
+      window.location.href = 'login.html';
+    }
+    document.getElementById('professionalLogout').addEventListener('click', handleLogout);
+    document.getElementById('professionalLogoutMobile').addEventListener('click', handleLogout);
+
+    const avatarImg = document.getElementById('proAvatar');
+    const photoInput = document.getElementById('profileImageInput');
+    document.getElementById('editPhotoBtn').addEventListener('click', () => photoInput.click());
+    photoInput.addEventListener('change', event => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const photoPayload = typeof reader.result === 'string' ? reader.result : '';
+        if (!photoPayload) {
+          showToast('Unable to read selected image. Try another file.', 'error');
+          return;
+        }
+        avatarImg.src = photoPayload;
+        setProfessionalSession({ profileImageUrl: photoPayload });
+        updateProfileCompletion({ photoUrl: photoPayload });
+        try {
+          if (!professionalSession?.token) {
+            handleLogout();
+            return;
+          }
+          const res = await fetch('/api/profiles/professional/me', {
+            method: 'PUT',
+            headers: withAuth({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({ profileImageUrl: photoPayload }),
+          });
+          if (!res.ok) {
+            const errorBody = await res.json().catch(() => ({ message: 'Unable to save image' }));
+            throw new Error(errorBody.message || 'Unable to save profile image right now.');
+          }
+          showToast('Profile photo saved.', 'success');
+        } catch (error) {
+          showToast(error.message || 'Unable to save profile image right now.', 'error');
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    const formatCurrency = amount => {
+      const value = typeof amount === 'number' ? amount / 100 : 0;
+      return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(value);
+    };
+
+    const formatDateTime = value => {
+      if (!value) return 'Schedule pending';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return 'Schedule pending';
+      return date.toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' });
+    };
+
+    const makeLocalId = (prefix = 'CROSS') => `${prefix}-${Math.random().toString(36).slice(2, 8)}-${Date.now().toString(36)}`;
+
+    const CROSS_CONSULT_AMOUNT_KOBO = 3000 * 100;
+
+    const renderRatingStars = (value, { includeNumber = false } = {}) => {
+      const rating = Number(value);
+      if (!Number.isFinite(rating) || rating <= 0) {
+        return includeNumber ? '<span class="text-xs text-gray-400">No reviews yet</span>' : '';
+      }
+      const rounded = Math.round(rating);
+      const stars = Array.from({ length: 5 }, (_, index) => {
+        const filled = index < rounded;
+        return `<i data-feather="star" class="w-4 h-4 ${filled ? 'text-amber-500' : 'text-gray-300'}"></i>`;
+      }).join('');
+      const numberHtml = includeNumber ? `<span class="text-sm font-semibold text-gray-700">${rating.toFixed(1)}</span>` : '';
+      return `<span class="inline-flex items-center gap-1">${stars}${numberHtml}</span>`;
+    };
+
+    const walletHistoryEl = document.getElementById('walletHistory');
+    const reviewList = document.getElementById('reviewList');
+    const noReviewsState = document.getElementById('noReviewsState');
+    const payoutForm = document.getElementById('payoutForm');
+    const payoutFormStatus = document.getElementById('payoutFormStatus');
+    const onboardingCard = document.getElementById('onboardingPaymentCard');
+    const openOnboardingModalBtn = document.getElementById('openOnboardingModalBtn');
+    const onboardingModal = document.getElementById('onboardingModal');
+    const closeOnboardingModalBtn = document.getElementById('closeOnboardingModalBtn');
+    const closeOnboardingModalFooter = document.getElementById('closeOnboardingModalFooter');
+    const paystackCardBtn = document.getElementById('paystackCardBtn');
+    const paymentStatusMessage = document.getElementById('paymentStatusMessage');
+    const onboardingStatusNote = document.getElementById('onboardingStatusNote');
+    let localToastStack = null;
+    const ensureLocalStack = () => {
+      if (window.SiriusUI?.ensureToastStack) {
+        return window.SiriusUI.ensureToastStack();
+      }
+      if (!localToastStack) {
+        localToastStack = document.createElement('div');
+        localToastStack.className = 'fixed top-20 right-4 z-[120] space-y-3';
+        document.body.appendChild(localToastStack);
+      }
+      return localToastStack;
+    };
+    const completionCard = document.getElementById('profileCompletionCard');
+    const completionBar = document.getElementById('profileCompletionBar');
+    const completionPercent = document.getElementById('profileCompletionPercent');
+    const completionMessage = document.getElementById('profileCompletionMessage');
+    const completionItems = {
+      photo: document.querySelector('[data-completion-item="photo"]'),
+      onboarding: document.querySelector('[data-completion-item="onboarding"]'),
+      payout: document.querySelector('[data-completion-item="payout"]'),
+    };
+    const crossConsultSection = document.getElementById('crossConsultSection');
+    const crossConsultTag = document.getElementById('crossConsultTag');
+    const crossConsultTitle = document.getElementById('crossConsultTitle');
+    const crossConsultCopy = document.getElementById('crossConsultCopy');
+    const crossConsultBtnLabel = document.getElementById('crossConsultBtnLabel');
+    const crossConsultPriceBlurb = document.getElementById('crossConsultPriceBlurb');
+    const crossConsultHistoryList = document.getElementById('crossConsultHistory');
+    const crossConsultEmpty = document.getElementById('crossConsultEmpty');
+    const openCrossConsultModalBtn = document.getElementById('openCrossConsultModalBtn');
+    const crossConsultModal = document.getElementById('crossConsultModal');
+    const crossConsultForm = document.getElementById('crossConsultForm');
+    const crossConsultReason = document.getElementById('crossConsultReason');
+    const crossConsultDate = document.getElementById('crossConsultDate');
+    const crossConsultMode = document.getElementById('crossConsultMode');
+    const crossConsultStatus = document.getElementById('crossConsultStatus');
+    const crossConsultSubmit = document.getElementById('crossConsultSubmit');
+    const crossConsultSubmitLabel = document.getElementById('crossConsultSubmitLabel');
+    const crossModalTag = document.getElementById('crossModalTag');
+    const crossModalTitle = document.getElementById('crossModalTitle');
+    const crossModalCopy = document.getElementById('crossModalCopy');
+    const closeCrossConsultModalBtn = document.getElementById('closeCrossConsultModal');
+
+    function readProfessionalSession(){
+      try {
+        return JSON.parse(sessionStorage.getItem('siriusProAuth') ?? 'null');
+      } catch (error) {
+        console.warn('Unable to read professional session', error);
+        return null;
+      }
+    }
+
+    function persistProfessionalSession(session){
+      try {
+        sessionStorage.setItem('siriusProAuth', JSON.stringify(session));
+      } catch (error) {
+        console.warn('Unable to persist professional session', error);
+      }
+    }
+
+    const platformAvailable = typeof window.SiriusPlatform !== 'undefined';
+    let professionalSession = readProfessionalSession() ?? {};
+    if ((!professionalSession || !professionalSession.email) && platformAvailable) {
+      const fallbackProfessional = window.SiriusPlatform.getAnyProfessional();
+      if (fallbackProfessional) {
+        professionalSession = {
+          email: fallbackProfessional.email,
+          firstName: fallbackProfessional.firstName,
+          lastName: fallbackProfessional.lastName,
+          profession: fallbackProfessional.profession,
+          regulatoryBody: fallbackProfessional.regulatoryBody,
+        };
+        persistProfessionalSession(professionalSession);
+      }
+    }
+
+    const fallbackProfession = professionalSession?.profession
+      || professionalSession?.professionalProfile?.profession
+      || '';
+    let professionalRole = (professionalSession?.role || '').toUpperCase();
+    const professionLabel = fallbackProfession.toLowerCase();
+    if (!professionalRole) {
+      if (professionLabel.includes('doctor')) {
+        professionalRole = 'DOCTOR';
+      } else if (professionLabel.includes('lawyer')) {
+        professionalRole = 'LAWYER';
+      }
+    }
+    const isDoctor = professionalRole === 'DOCTOR';
+    const isLawyer = professionalRole === 'LAWYER';
+    if (!professionalSession.role && professionalRole) {
+      professionalSession.role = professionalRole;
+      persistProfessionalSession(professionalSession);
+    }
+    if (!professionalSession.profession && fallbackProfession) {
+      professionalSession.profession = fallbackProfession;
+      persistProfessionalSession(professionalSession);
+    }
+    const withAuth = (headers = {}) =>
+      professionalSession?.token ? { ...headers, Authorization: `Bearer ${professionalSession.token}` } : headers;
+    const targetProfession = isDoctor ? 'LAWYER' : isLawyer ? 'DOCTOR' : null;
+    const targetProfessionLabel = targetProfession === 'LAWYER' ? 'lawyer' : targetProfession === 'DOCTOR' ? 'doctor' : '';
+
+    let onboardingPaid = Boolean(professionalSession.onboardingPaid);
+    let profilePublic = Boolean(professionalSession.profilePublic);
+    let crossConsultHistory = Array.isArray(professionalSession.crossConsultHistory)
+      ? professionalSession.crossConsultHistory
+      : [];
+    let latestSnapshot = null;
+    let latestPayoutAccount = null;
+    let lastPersistedCompletion =
+      typeof professionalSession.profileCompletion === 'number' ? professionalSession.profileCompletion : null;
+    let completionSyncInFlight = false;
+
+    let paystackPublicKey = window.PAYSTACK_PUBLIC_KEY || (window.__ENV && window.__ENV.PAYSTACK_PUBLIC_KEY) || '';
+    if (paystackPublicKey) {
+      window.PAYSTACK_PUBLIC_KEY = paystackPublicKey;
+    }
+
+    const setProfessionalSession = (updates = {}) => {
+      const previousOnboardingState = onboardingPaid;
+      const previousVisibility = profilePublic;
+      professionalSession = { ...professionalSession, ...updates };
+      persistProfessionalSession(professionalSession);
+      onboardingPaid = Boolean(professionalSession.onboardingPaid);
+      profilePublic = Boolean(professionalSession.profilePublic);
+      if (updates.payoutAccount) {
+        latestPayoutAccount = updates.payoutAccount;
+      }
+      if (typeof professionalSession.profileCompletion === 'number') {
+        lastPersistedCompletion = professionalSession.profileCompletion;
+      }
+      if (Array.isArray(professionalSession.crossConsultHistory)) {
+        crossConsultHistory = professionalSession.crossConsultHistory;
+      }
+      if (platformAvailable && professionalSession.email) {
+        try {
+          if (onboardingPaid && !previousOnboardingState && typeof window.SiriusPlatform.markProfessionalPaid === 'function') {
+            window.SiriusPlatform.markProfessionalPaid(professionalSession.email);
+          }
+          if (previousVisibility !== profilePublic && typeof window.SiriusPlatform.toggleProfessionalVisibility === 'function') {
+            window.SiriusPlatform.toggleProfessionalVisibility(professionalSession.email, profilePublic);
+          }
+        } catch (error) {
+          console.warn('Unable to update platform onboarding state', error);
+        }
+      }
+      updateOnboardingUI();
+      updateProfileCompletion();
+      renderCrossConsultHistory();
+    };
+
+    updateOnboardingUI();
+
+    if (!Array.isArray(professionalSession.crossConsultHistory)) {
+      professionalSession.crossConsultHistory = [];
+      crossConsultHistory = [];
+      persistProfessionalSession(professionalSession);
+    }
+
+    const openOnboardingModal = () => {
+      if (!onboardingModal) return;
+      onboardingModal.classList.remove('hidden');
+      onboardingModal.classList.add('flex');
+      paymentStatusMessage?.classList.add('hidden');
+      paymentStatusMessage?.classList.remove('text-emerald-600', 'text-red-600', 'text-gray-600', 'text-blue-600', 'text-amber-600');
+      document.body.classList.add('overflow-hidden');
+      try { feather.replace(); } catch (error) {}
+    };
+
+    const closeOnboardingModal = () => {
+      if (!onboardingModal) return;
+      onboardingModal.classList.remove('flex');
+      onboardingModal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    };
+
+    const showPaymentStatus = (message, tone = 'info') => {
+      if (!paymentStatusMessage) return;
+      paymentStatusMessage.classList.remove(
+        'hidden',
+        'text-emerald-600',
+        'text-red-600',
+        'text-gray-600',
+        'text-blue-600',
+        'text-amber-600',
+      );
+      if (tone === 'success') {
+        paymentStatusMessage.classList.add('text-emerald-600');
+      } else if (tone === 'error') {
+        paymentStatusMessage.classList.add('text-red-600');
+      } else if (tone === 'warning') {
+        paymentStatusMessage.classList.add('text-amber-600');
+      } else if (tone === 'info') {
+        paymentStatusMessage.classList.add('text-blue-600');
+      } else {
+        paymentStatusMessage.classList.add('text-gray-600');
+      }
+      paymentStatusMessage.textContent = message;
+    };
+
+    const ensurePaystackKey = async () => {
+      if (paystackPublicKey) {
+        return paystackPublicKey;
+      }
+      try {
+        const res = await fetch('/api/consultation/config', {
+          cache: 'no-store',
+          headers: withAuth(),
+        });
+        if (!res.ok) {
+          return '';
+        }
+        const data = await res.json().catch(() => ({}));
+        if (data?.paystackPublicKey) {
+          paystackPublicKey = data.paystackPublicKey;
+          window.PAYSTACK_PUBLIC_KEY = paystackPublicKey;
+        }
+      } catch (error) {
+        console.warn('Unable to load Paystack configuration', error);
+      }
+      return paystackPublicKey;
+    };
+
+    const startPaystackPayment = async () => {
+      await ensurePaystackKey();
+      if (!paystackPublicKey) {
+        showPaymentStatus('Add PAYSTACK_PUBLIC_KEY to backend/.env and restart the server to enable Paystack payments.', 'error');
+        return;
+      }
+      if (paystackPublicKey.includes('xxxxxxxxx')) {
+        showPaymentStatus('Replace the placeholder PAYSTACK_PUBLIC_KEY with a valid key from your Paystack dashboard.', 'warning');
+        return;
+      }
+      if (typeof PaystackPop === 'undefined') {
+        showPaymentStatus('Paystack script is unavailable. Check your network connection and ensure https://js.paystack.co is reachable.', 'error');
+        return;
+      }
+      const email = professionalSession?.email || '';
+      if (!email) {
+        showPaymentStatus('We could not detect your email address. Please sign in again.', 'error');
+        return;
+      }
+      showPaymentStatus('Opening Paystack checkout…', 'info');
+      const handler = PaystackPop.setup({
+        key: paystackPublicKey,
+        email,
+        amount: 3000 * 100,
+        currency: 'NGN',
+        reference: `SJ-ONBOARD-${Date.now()}`,
+        metadata: {
+          custom_fields: [
+            { display_name: 'Professional Email', variable_name: 'professional_email', value: email },
+          ],
+        },
+        onClose: () => {
+          showPaymentStatus('Payment window closed before completion. Click the button again to retry.', 'warning');
+        },
+        callback: response => {
+          showPaymentStatus('Payment confirmed! Making your profile public…', 'success');
+          setProfessionalSession({ onboardingPaid: true, profilePublic: true, onboardingReference: response.reference });
+          setTimeout(() => {
+            closeOnboardingModal();
+            loadProfessionalData();
+          }, 600);
+        },
+      });
+      handler.openIframe();
+    };
+
+    openOnboardingModalBtn?.addEventListener('click', openOnboardingModal);
+    closeOnboardingModalBtn?.addEventListener('click', closeOnboardingModal);
+    closeOnboardingModalFooter?.addEventListener('click', closeOnboardingModal);
+    onboardingModal?.addEventListener('click', event => {
+      if (event.target === onboardingModal) {
+        closeOnboardingModal();
+      }
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        if (onboardingModal?.classList.contains('flex')) {
+          closeOnboardingModal();
+        }
+        if (crossConsultModal?.classList.contains('flex')) {
+          closeCrossConsultModal();
+        }
+      }
+    });
+    paystackCardBtn?.addEventListener('click', startPaystackPayment);
+
+    openCrossConsultModalBtn?.addEventListener('click', openCrossConsultModal);
+    closeCrossConsultModalBtn?.addEventListener('click', closeCrossConsultModal);
+    crossConsultModal?.addEventListener('click', event => {
+      if (event.target === crossConsultModal) {
+        closeCrossConsultModal();
+      }
+    });
+
+    crossConsultForm?.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!professionalSession?.email || !targetProfession) {
+        return;
+      }
+      if (!professionalSession?.token) {
+        handleLogout();
+        return;
+      }
+      const reason = crossConsultReason?.value.trim() ?? '';
+      if (reason.length < 10) {
+        if (crossConsultStatus) {
+          crossConsultStatus.classList.remove('hidden', 'text-green-600');
+          crossConsultStatus.classList.add('text-red-600');
+          crossConsultStatus.textContent = 'Tell us a bit more so we can match you with the right specialist.';
+        }
+        crossConsultReason?.focus();
+        return;
+      }
+      const preferredDate = crossConsultDate?.value || null;
+      const mode = crossConsultMode?.value || 'VIDEO';
+      crossConsultSubmit?.setAttribute('disabled', 'true');
+      crossConsultSubmit?.classList.add('opacity-70', 'cursor-wait');
+      if (crossConsultStatus) {
+        crossConsultStatus.classList.add('hidden');
+        crossConsultStatus.classList.remove('text-green-600', 'text-red-600');
+        crossConsultStatus.textContent = '';
+      }
+      let result = null;
+      let errorMessage = '';
+      try {
+        const res = await fetch('/api/consultations/cross-book', {
+          method: 'POST',
+          headers: withAuth({ 'Content-Type': 'application/json' }),
+          body: JSON.stringify({
+            professionalEmail: professionalSession.email,
+            targetProfession,
+            reason,
+            preferredDate,
+            mode,
+          }),
+        });
+        const text = await res.text();
+        const data = text ? JSON.parse(text) : null;
+        if (!res.ok) {
+          throw new Error(data?.message || 'Unable to book consultation right now.');
+        }
+        result = data;
+      } catch (error) {
+        errorMessage = error.message;
+      }
+
+      if (!result && platformAvailable && typeof window.SiriusPlatform?.bookCrossConsultation === 'function') {
+        try {
+          const fallback = window.SiriusPlatform.bookCrossConsultation({
+            clientEmail: professionalSession.email,
+            targetProfession,
+            reason,
+            preferredDate,
+            mode,
+          });
+          result = {
+            message: 'Consultation booked via offline mode. Concierge will be in touch shortly.',
+            assignedProfessional: fallback.assignedProfessional,
+            consultationId: fallback.consultation?.id,
+            scheduledFor: fallback.consultation?.scheduledFor,
+          };
+        } catch (fallbackError) {
+          errorMessage = fallbackError.message;
+        }
+      }
+
+      if (!result) {
+        if (crossConsultStatus) {
+          crossConsultStatus.classList.remove('hidden', 'text-green-600');
+          crossConsultStatus.classList.add('text-red-600');
+          crossConsultStatus.textContent = errorMessage || 'We could not start the consultation right now. Please try again later.';
+        }
+        showToast(errorMessage || 'Unable to book consultation right now. Please try again later.', 'error');
+        crossConsultSubmit?.removeAttribute('disabled');
+        crossConsultSubmit?.classList.remove('opacity-70', 'cursor-wait');
+        return;
+      }
+
+      if (crossConsultStatus) {
+        crossConsultStatus.classList.remove('hidden', 'text-red-600');
+        crossConsultStatus.classList.add('text-green-600');
+        crossConsultStatus.textContent = result.message || 'Consultation booked! We will email you the confirmed details.';
+      }
+      showToast(result.message || 'Consultation booked successfully.', 'success');
+
+      const historyEntry = {
+        id: result.consultationId || makeLocalId(),
+        targetProfession,
+        targetLabel: targetProfession === 'LAWYER' ? 'Lawyer consult' : 'Doctor consult',
+        assignedProfessional: result.assignedProfessional?.name ?? null,
+        scheduledFor: result.scheduledFor || preferredDate || null,
+        createdAt: new Date().toISOString(),
+        reason,
+        mode,
+      };
+      crossConsultHistory = [historyEntry, ...crossConsultHistory].slice(0, 10);
+      setProfessionalSession({ crossConsultHistory });
+      renderCrossConsultHistory();
+      setTimeout(() => {
+        closeCrossConsultModal();
+        crossConsultSubmit?.removeAttribute('disabled');
+        crossConsultSubmit?.classList.remove('opacity-70', 'cursor-wait');
+      }, 900);
+    });
+
+    function updateOnboardingUI(){
+      if (!onboardingCard) return;
+      onboardingCard.classList.remove('hidden');
+      if (onboardingStatusNote) {
+        onboardingStatusNote.textContent = onboardingPaid
+          ? 'Payment received. You can click the button to view your payment options again anytime.'
+          : 'Already paid? Click the button again after payment and we'll confirm instantly.';
+      }
+    }
+
+    function updateProfileCompletion(stateOverrides = {}) {
+      if (!completionCard) return;
+      const inferredPhoto = Boolean(
+        stateOverrides.photoUrl ||
+        latestSnapshot?.profile?.profileImageUrl ||
+        professionalSession?.profileImageUrl ||
+        (avatarImg?.src && !avatarImg.src.includes('placeholder.com'))
+      );
+      const hasOnboarded = stateOverrides.onboardingPaid ?? onboardingPaid;
+      const hasPayoutAccount = Boolean(
+        stateOverrides.payoutAccount ||
+        latestPayoutAccount?.bankName ||
+        professionalSession?.payoutAccount?.bankName
+      );
+      const steps = [
+        { key: 'photo', done: inferredPhoto },
+        { key: 'onboarding', done: Boolean(hasOnboarded) },
+        { key: 'payout', done: hasPayoutAccount },
+      ];
+
+      const completed = steps.filter(step => step.done).length;
+      const percent = Math.round((completed / steps.length) * 100);
+
+      if (completionPercent) {
+        completionPercent.textContent = `${percent}%`;
+      }
+      if (completionBar) {
+        completionBar.style.width = `${percent}%`;
+      }
+
+      steps.forEach(step => {
+        const item = completionItems[step.key];
+        if (!item) return;
+        const badge = item.querySelector('[data-status]');
+        if (!badge) return;
+        if (step.done) {
+          badge.textContent = 'Done';
+          badge.className = 'text-xs font-bold uppercase tracking-wide px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700';
+        } else {
+          badge.textContent = 'Pending';
+          badge.className = 'text-xs font-bold uppercase tracking-wide px-2.5 py-1 rounded-full bg-amber-100 text-amber-700';
+        }
+      });
+
+      if (completionMessage) {
+        completionMessage.textContent = percent === 100
+          ? 'All set! Clients can now discover and book you with confidence.'
+          : 'Complete the tasks above so clients can trust and book you faster.';
+      }
+      completionCard.classList.remove('border-emerald-300', 'bg-emerald-50');
+      if (percent === 100) {
+        completionCard.classList.add('border-emerald-300', 'bg-emerald-50');
+      }
+      if (Number.isFinite(percent) && !completionSyncInFlight) {
+        const roundedPercent = Math.round(percent);
+        if (lastPersistedCompletion === null || Math.abs(roundedPercent - lastPersistedCompletion) >= 1) {
+          syncProfileCompletion(roundedPercent);
+        }
+      }
+
+      updateProfessionalStatusBadge({
+        onboardingPaid: Boolean(hasOnboarded),
+        hasPayoutAccount,
+        profilePublic,
+        licenseVerified: Boolean(professionalSession.licenseVerified ?? latestSnapshot?.profile?.licenseVerified),
+      });
+    }
+
+    function updateProfessionalStatusBadge(state = {}) {
+      const badge = document.getElementById('proStatusBadge');
+      if (!badge) return;
+      const base = 'inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wide px-3 py-1.5 rounded-full';
+      let className = `${base} bg-amber-100 text-amber-700`;
+      let icon = 'shield';
+      let text = 'Profile live';
+
+      if (!state.onboardingPaid) {
+        className = `${base} bg-amber-100 text-amber-700`;
+        icon = 'credit-card';
+        text = 'Complete onboarding';
+      } else if (!state.hasPayoutAccount) {
+        className = `${base} bg-amber-100 text-amber-700`;
+        icon = 'banknote';
+        text = 'Add payout account';
+      } else if (!state.profilePublic) {
+        className = `${base} bg-amber-100 text-amber-700`;
+        icon = 'eye-off';
+        text = 'Hidden from search';
+      } else {
+        className = `${base} bg-emerald-100 text-emerald-700`;
+        icon = state.licenseVerified ? 'check-circle' : 'shield';
+        text = state.licenseVerified ? 'Verified & live' : 'Profile live';
+      }
+
+      badge.className = className;
+      badge.innerHTML = `<i data-feather="${icon}" class="w-3.5 h-3.5"></i>${text}`;
+      try { feather.replace(); } catch (error) {}
+    }
+
+    const localShowToast = (message, tone = 'info') => {
+      const stack = ensureLocalStack();
+      const tones = {
+        success: 'bg-emerald-100 text-emerald-800 border border-emerald-200',
+        error: 'bg-red-100 text-red-700 border border-red-200',
+        info: 'bg-primary/10 text-primary border border-primary/30',
+      };
+      const toneClass = tones[tone] ?? tones.info;
+      const toast = document.createElement('div');
+      toast.setAttribute('role', 'status');
+      toast.className = `toast-item px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 transition-opacity duration-300 ${toneClass}`;
+      const icon =
+        tone === 'success' ? 'check-circle' : tone === 'error' ? 'alert-triangle' : 'info';
+      toast.innerHTML = `
+        <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/70 text-primary">
+          <i data-feather="${icon}" class="w-4 h-4"></i>
+        </span>
+        <span class="text-sm font-medium">${message}</span>
+      `;
+      stack.appendChild(toast);
+      try { feather.replace(); } catch (error) {}
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+      }, 3200);
+      setTimeout(() => {
+        toast.remove();
+      }, 3600);
+    };
+
+    const showToast = (message, tone = 'info') => {
+      if (window.SiriusUI?.showToast) {
+        window.SiriusUI.showToast(message, tone);
+        return;
+      }
+      localShowToast(message, tone);
+    };
+
+    async function syncProfileCompletion(percent) {
+      completionSyncInFlight = true;
+      try {
+        const res = await fetch('/api/profiles/professional/completion', {
+          method: 'POST',
+          headers: withAuth({ 'Content-Type': 'application/json' }),
+          body: JSON.stringify({ completion: percent }),
+        });
+        if (!res.ok) {
+          const errorBody = await res.json().catch(() => ({ message: 'Unable to save progress' }));
+          throw new Error(errorBody.message || 'Unable to save profile progress.');
+        }
+        lastPersistedCompletion = percent;
+        professionalSession.profileCompletion = percent;
+        persistProfessionalSession(professionalSession);
+      } catch (error) {
+        showToast(error.message || 'Unable to save profile progress.', 'error');
+      } finally {
+        completionSyncInFlight = false;
+      }
+    }
+
+    const renderCrossConsultHistory = () => {
+      if (!crossConsultHistoryList || !crossConsultEmpty) return;
+      crossConsultHistoryList.innerHTML = '';
+      if (!crossConsultHistory.length) {
+        crossConsultEmpty.classList.remove('hidden');
+        return;
+      }
+      crossConsultEmpty.classList.add('hidden');
+      crossConsultHistory.slice(0, 5).forEach(entry => {
+        const li = document.createElement('li');
+        li.className = 'bg-white border border-primary/10 rounded-xl px-4 py-3 shadow-sm';
+        li.innerHTML = `
+          <div class="flex items-center justify-between text-sm text-gray-700">
+            <span class="font-semibold text-primary">${entry.targetLabel ?? entry.targetProfession}</span>
+            <span class="text-xs text-gray-500">${formatDateTime(entry.scheduledFor || entry.createdAt)}</span>
+          </div>
+          <p class="text-sm text-gray-600 mt-1">${entry.reason ?? 'Consultation booked via concierge.'}</p>
+          <p class="text-xs text-gray-400 mt-2">${entry.assignedProfessional ? `Assigned: ${entry.assignedProfessional}` : 'Concierge matching in progress'}</p>
+        `;
+        crossConsultHistoryList.appendChild(li);
+      });
+      try { feather.replace(); } catch (error) {}
+    };
+
+    const setCrossConsultMinimum = () => {
+      if (!crossConsultDate) return;
+      const now = new Date();
+      now.setHours(now.getHours() + 1);
+      const offsetDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+      crossConsultDate.min = offsetDate.toISOString().slice(0, 16);
+    };
+
+    const closeCrossConsultModal = () => {
+      if (!crossConsultModal) return;
+      crossConsultModal.classList.remove('flex');
+      crossConsultModal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    };
+
+    const openCrossConsultModal = () => {
+      if (!crossConsultModal) return;
+      crossConsultModal.classList.remove('hidden');
+      crossConsultModal.classList.add('flex');
+      document.body.classList.add('overflow-hidden');
+      if (crossConsultReason) {
+        crossConsultReason.value = '';
+      }
+      if (crossConsultDate) {
+        crossConsultDate.value = '';
+        setCrossConsultMinimum();
+      }
+      if (crossConsultMode) {
+        crossConsultMode.value = 'VIDEO';
+      }
+      if (crossConsultStatus) {
+        crossConsultStatus.classList.add('hidden');
+        crossConsultStatus.classList.remove('text-green-600', 'text-red-600');
+        crossConsultStatus.textContent = '';
+      }
+      setTimeout(() => crossConsultReason?.focus(), 90);
+      try { feather.replace(); } catch (error) {}
+    };
+
+    const initializeCrossConsultUI = () => {
+      if (!targetProfession || !crossConsultSection) {
+        crossConsultSection?.classList.add('hidden');
+        return;
+      }
+      const feeText = formatCurrency(CROSS_CONSULT_AMOUNT_KOBO);
+      crossConsultSection.classList.remove('hidden');
+      if (crossConsultTag) {
+        crossConsultTag.textContent = targetProfession === 'LAWYER' ? 'Legal backup' : 'Medical insight';
+      }
+      if (crossConsultTitle) {
+        crossConsultTitle.textContent = targetProfession === 'LAWYER'
+          ? 'Need legal cover for a tricky case?'
+          : 'Need a quick medical second opinion?';
+      }
+      if (crossConsultCopy) {
+        crossConsultCopy.textContent = targetProfession === 'LAWYER'
+          ? 'Book a seasoned lawyer on-demand. We handle payment and matching so you stay focused on your patient.'
+          : 'Connect with a trusted doctor instantly. Share files securely and plan next steps without leaving Sirius.';
+      }
+      if (crossConsultBtnLabel) {
+        crossConsultBtnLabel.textContent = targetProfession === 'LAWYER' ? 'Book a lawyer now' : 'Book a doctor now';
+      }
+      if (crossConsultPriceBlurb) {
+        crossConsultPriceBlurb.textContent = `${feeText} concierge-hosted session billed instantly.`;
+      }
+      if (crossModalTag) {
+        crossModalTag.textContent = targetProfession === 'LAWYER' ? 'Legal concierge' : 'Medical concierge';
+      }
+      if (crossModalTitle) {
+        crossModalTitle.textContent = targetProfession === 'LAWYER'
+          ? 'Book a vetted lawyer through Sirius'
+          : 'Book a vetted doctor through Sirius';
+      }
+      if (crossModalCopy) {
+        crossModalCopy.textContent = targetProfession === 'LAWYER'
+          ? 'Pay ₦3,000 and our concierge will match you with a practising lawyer within 1 hour.'
+          : 'Pay ₦3,000 and our concierge will connect you with a trusted doctor within 1 hour.';
+      }
+      if (crossConsultSubmitLabel) {
+        crossConsultSubmitLabel.textContent = `Pay ${feeText} & confirm`;
+      }
+      renderCrossConsultHistory();
+    };
+
+    async function loadProfessionalData(){
+      try {
+        if (!professionalSession?.token) {
+          throw new Error('AUTH_REQUIRED');
+        }
+        const res = await fetch('/api/dashboard/professional', {
+          cache: 'no-store',
+          headers: withAuth(),
+        });
+        if (res.status === 401 || res.status === 403) {
+          throw new Error('AUTH_REQUIRED');
+        }
+        if (!res.ok) throw new Error('Unable to fetch professional dashboard');
+        const data = await res.json();
+        hydrateDashboard(data);
+      } catch (error) {
+        if (error.message === 'AUTH_REQUIRED') {
+          handleLogout();
+          return;
+        }
+        console.warn('Professional dashboard API unavailable, falling back to local snapshot.', error);
+        if (platformAvailable && professionalSession?.email) {
+          try {
+            const snapshot = window.SiriusPlatform.getProfessionalSnapshot(professionalSession.email);
+            if (snapshot) {
+              hydrateDashboard(snapshot);
+              return;
+            }
+          } catch (fallbackError) {
+            console.warn('Unable to load local professional snapshot', fallbackError);
+          }
+        }
+        hydrateDashboard(getFallbackProfessional());
+      }
+    }
+
+    function hydrateDashboard(data){
+      latestSnapshot = data;
+      latestPayoutAccount = data.payoutAccount ?? null;
+      const { profile, wallet, stats, reviews } = data;
+      if (typeof data.user?.profileCompletion === 'number') {
+        lastPersistedCompletion = data.user.profileCompletion;
+        professionalSession.profileCompletion = data.user.profileCompletion;
+        persistProfessionalSession(professionalSession);
+      }
+     const name = [professionalSession?.firstName, professionalSession?.lastName]
+       .filter(Boolean)
+       .join(' ')
+       .trim() || 'Professional';
+     document.getElementById('proName').textContent = name;
+     document.getElementById('proProfession').textContent = `${profile?.profession ?? 'Specialist'}${profile?.regulatoryBody ? ' • ' + profile.regulatoryBody : ''}`;
+     if (profile?.profileImageUrl) {
+       avatarImg.src = profile.profileImageUrl;
+     }
+
+      const derivedOnboardingPaid = Boolean((profile && profile.onboardingPaid !== undefined) ? profile.onboardingPaid : professionalSession.onboardingPaid);
+      const derivedProfilePublic = (profile && typeof profile.isPublic === 'boolean') ? profile.isPublic : Boolean(professionalSession.profilePublic);
+      setProfessionalSession({
+        onboardingPaid: derivedOnboardingPaid,
+        profilePublic: derivedProfilePublic,
+        regulatoryBody: profile?.regulatoryBody ?? professionalSession.regulatoryBody,
+        payoutAccount: data.payoutAccount ?? professionalSession.payoutAccount ?? null,
+        profileImageUrl: profile?.profileImageUrl ?? professionalSession.profileImageUrl,
+        licenseVerified: Boolean(profile?.licenseVerified ?? professionalSession.licenseVerified),
+      });
+
+      updateProfessionalStatusBadge({
+        onboardingPaid: derivedOnboardingPaid,
+        hasPayoutAccount: Boolean(data.payoutAccount?.bankName ?? professionalSession.payoutAccount?.bankName),
+        profilePublic: derivedProfilePublic || Boolean(profile?.verifiedBadge),
+        licenseVerified: Boolean(profile?.licenseVerified),
+      });
+
+      const averageRatingValue = Number(stats?.averageRating ?? 0);
+      const averageRating = Number.isFinite(averageRatingValue) && averageRatingValue > 0 ? averageRatingValue.toFixed(1) : '0.0';
+      const reviewCount = stats?.reviewCount ?? 0;
+      const clientsServed = stats?.clientsServed ?? 0;
+      document.getElementById('statAverageRating').textContent = averageRating;
+      const averageStarsEl = document.getElementById('statAverageRatingStars');
+      if (averageStarsEl) {
+        averageStarsEl.innerHTML = renderRatingStars(averageRatingValue, { includeNumber: false });
+      }
+      const averageCopyEl = document.getElementById('statAverageRatingCopy');
+      if (averageCopyEl) {
+        averageCopyEl.textContent = reviewCount
+          ? `From ${reviewCount} review${reviewCount === 1 ? '' : 's'}`
+          : 'Awaiting first review';
+      }
+      document.getElementById('statReviewCount').textContent = `${reviewCount} review${reviewCount === 1 ? '' : 's'}`;
+      document.getElementById('statClients').textContent = `${clientsServed} client${clientsServed === 1 ? '' : 's'}`;
+      document.getElementById('statNetEarnings').textContent = formatCurrency(stats?.netEarnings ?? 0);
+      document.getElementById('statPendingEarnings').textContent = formatCurrency(stats?.pendingEarnings ?? 0);
+      document.getElementById('statConsultations').textContent = String(profile?.consultations?.length ?? 0);
+
+      document.getElementById('walletAvailable').textContent = formatCurrency(wallet?.available ?? 0);
+      document.getElementById('walletPending').textContent = formatCurrency(wallet?.pending ?? 0);
+
+      renderWalletHistory(wallet?.history ?? []);
+      renderReviews(reviews ?? []);
+
+      document.getElementById('bankName').value = data.payoutAccount?.bankName ?? '';
+      document.getElementById('accountNumber').value = data.payoutAccount?.accountNumber ?? '';
+      document.getElementById('accountHolder').value = data.payoutAccount?.accountHolder ?? name;
+      feather.replace();
+    }
+
+    function renderWalletHistory(entries){
+      if (!entries.length){
+        walletHistoryEl.innerHTML = '<p class="text-sm text-gray-500">Wallet history will appear here after your first consultation.</p>';
+        return;
+      }
+      walletHistoryEl.innerHTML = entries.map(entry => {
+        const statusTag =
+          entry.status === 'COMPLETED'
+            ? '<span class="inline-flex items-center gap-1 text-xs text-emerald-600"><i data-feather="check-circle" class="w-3 h-3"></i>Cleared</span>'
+            : '<span class="inline-flex items-center gap-1 text-xs text-amber-600"><i data-feather="clock" class="w-3 h-3"></i>Awaiting confirmation</span>';
+        const label = entry.clientName ? `${entry.type} – ${entry.clientName}` : entry.type;
+        const amountLabel = formatCurrency(Math.abs(entry.amount ?? 0));
+        const amountClass = entry.status === 'COMPLETED' ? 'text-emerald-600' : 'text-amber-600';
+        return `
+          <div class="border border-gray-200/70 rounded-xl px-4 py-3 flex items-center justify-between text-sm">
+            <div class="space-y-1">
+              <p class="font-medium text-gray-800">${label}</p>
+              <p class="text-xs text-gray-500">${new Date(entry.createdAt).toLocaleString()}</p>
+              ${statusTag}
+            </div>
+            <span class="${amountClass} font-semibold">${amountLabel}</span>
+          </div>
+        `;
+      }).join('');
+      feather.replace();
+    }
+
+    function renderReviews(reviews){
+      if (!reviews.length){
+        reviewList.innerHTML = '';
+        noReviewsState.classList.remove('hidden');
+        return;
+      }
+      noReviewsState.classList.add('hidden');
+      reviewList.innerHTML = reviews.map(review => `
+        <article class="border border-gray-200/70 rounded-xl p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-semibold text-gray-800">${review.client?.firstName ?? 'Client'} ${review.client?.lastName ?? ''}</p>
+              <p class="text-xs text-gray-500">${new Date(review.createdAt).toLocaleDateString()}</p>
+            </div>
+            ${renderRatingStars(review.rating, { includeNumber: true })}
+          </div>
+          <p class="text-sm text-gray-600 mt-3">${review.comment ?? 'No comment left.'}</p>
+        </article>
+      `).join('');
+      feather.replace();
+    }
+
+    document.getElementById('requestPayoutBtn').addEventListener('click', () => {
+      showToast('Payout request submitted. Funds will arrive after verification.', 'info');
+    });
+    document.getElementById('viewWalletBtn').addEventListener('click', () => {
+      walletHistoryEl.scrollIntoView({ behavior: 'smooth' });
+    });
+    document.getElementById('refreshReviewsBtn').addEventListener('click', loadProfessionalData);
+
+    payoutForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const formData = Object.fromEntries(new FormData(payoutForm).entries());
+      try {
+        if (!professionalSession?.token) {
+          throw new Error('Please sign in again to save your payout account.');
+        }
+        const res = await fetch('/api/dashboard/professional/payout-account', {
+          method: 'POST',
+          headers: withAuth({ 'Content-Type': 'application/json' }),
+          body: JSON.stringify(formData),
+        });
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({ message: 'Unable to save payout account' }));
+          throw new Error(body.message || 'Unable to save payout account');
+        }
+        latestPayoutAccount = formData;
+        setProfessionalSession({ payoutAccount: formData });
+        updateProfileCompletion({ payoutAccount: formData });
+        payoutFormStatus.textContent = 'Payout account saved successfully.';
+        payoutFormStatus.className = 'text-xs text-green-600 font-medium mt-3';
+        showToast('Payout account saved successfully.', 'success');
+      } catch (error) {
+        if (platformAvailable && professionalSession?.email) {
+          try {
+            window.SiriusPlatform.saveProfessionalPayoutAccount(professionalSession.email, formData);
+            latestPayoutAccount = formData;
+            setProfessionalSession({ payoutAccount: formData });
+            updateProfileCompletion({ payoutAccount: formData });
+            payoutFormStatus.textContent = 'Payout account saved locally.';
+            payoutFormStatus.className = 'text-xs text-amber-600 font-medium mt-3';
+            showToast('Saved payout account locally. Sync when you are back online.', 'info');
+            return;
+          } catch (fallbackError) {
+            error = fallbackError;
+          }
+        }
+        payoutFormStatus.textContent = error.message;
+        payoutFormStatus.className = 'text-xs text-red-600 font-medium mt-3';
+        showToast(error.message || 'Unable to save payout account.', 'error');
+      }
+    });
+
+    function getFallbackProfessional(){
+      return {
+        profile: {
+          user: { firstName: 'Chukwuemeka', lastName: 'Obi' },
+          profession: 'Family Doctor',
+          regulatoryBody: 'MDCN',
+          profileImageUrl: '',
+          verifiedBadge: true,
+          consultations: [
+            { id: 'C-01', scheduledFor: new Date().toISOString(), status: 'PENDING', fee: 3000, client: { firstName: 'Amaka', lastName: 'U.' } },
+            { id: 'C-02', scheduledFor: new Date(Date.now() + 3_600_000).toISOString(), status: 'CONFIRMED', fee: 3000, client: { firstName: 'Kelechi', lastName: 'D.' } },
+          ],
+          bankName: 'GTBank',
+          accountNumber: '0123456789',
+          accountHolder: 'Chukwuemeka Obi',
+        },
+        wallet: {
+          available: 18550000,
+          pending: 3750000,
+          history: [
+            { type: 'Consultation payout – Amaka U.', amount: 250000, createdAt: new Date().toISOString() },
+            { type: 'Consultation payout – Emeka A.', amount: 250000, createdAt: new Date(Date.now() - 86_400_000).toISOString() },
+            { type: 'Payout to GTBank • 1234', amount: -1500000, createdAt: new Date(Date.now() - 2 * 86_400_000).toISOString() },
+          ],
+        },
+        stats: {
+          clientsServed: 142,
+          netEarnings: 37250000,
+          pendingEarnings: 3750000,
+          consultationsScheduled: 2,
+          averageRating: 4.8,
+          reviewCount: 48,
+        },
+        payoutAccount: {
+          bankName: 'GTBank',
+          accountNumber: '0123456789',
+          accountHolder: 'Chukwuemeka Obi',
+        },
+        reviews: [
+          { rating: 5, comment: 'Amazing consultation, quick diagnosis and follow-up plan.', createdAt: new Date().toISOString(), client: { firstName: 'Amaka', lastName: 'U.' } },
+          { rating: 4, comment: 'Helpful and patient throughout the session.', createdAt: new Date(Date.now() - 172_800_000).toISOString(), client: { firstName: 'Kelechi', lastName: 'D.' } },
+        ],
+      };
+    }
+
+    initializeCrossConsultUI();
+    renderCrossConsultHistory();
+    loadProfessionalData();
+    initializeProfessionalJobPosting();
+
+    const dashboardParams = new URLSearchParams(window.location.search);
+    if (dashboardParams.has('pay')) {
+      dashboardParams.delete('pay');
+      const cleaned = dashboardParams.toString();
+      const newUrl = cleaned ? `${window.location.pathname}?${cleaned}` : window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
+    }
+
+    // Professional Job Posting Functionality
+    let professionalPostedJobs = [];
+    let professionalCurrentJobApplicants = [];
+    let professionalCurrentJobId = null;
+
+    async function initializeProfessionalJobPosting() {
+      await loadProfessionalPostedJobs();
+      document.getElementById('professionalPostJobBtn')?.addEventListener('click', () => {
+        document.getElementById('professionalJobPostModal').classList.remove('hidden');
+      });
+      document.getElementById('closeProfessionalJobPostModal')?.addEventListener('click', () => {
+        document.getElementById('professionalJobPostModal').classList.add('hidden');
+      });
+      document.getElementById('professionalJobPostPayBtn')?.addEventListener('click', () => {
+        window.open('https://paystack.com/pay/siriusjobs-post', '_blank', 'noopener');
+        alert('Complete the ₦1,000 payment, then return to post your job.');
+        document.getElementById('professionalJobPostModal').classList.add('hidden');
+      });
+      document.getElementById('closeProfessionalApplicantsModal')?.addEventListener('click', () => {
+        document.getElementById('professionalApplicantsModal').classList.add('hidden');
+      });
+      document.getElementById('closeProfessionalProfileModal')?.addEventListener('click', () => {
+        document.getElementById('professionalProfileModal').classList.add('hidden');
+      });
+    }
+
+    async function loadProfessionalPostedJobs() {
+      try {
+        const session = sessionUtils?.parse('siriusProfessionalAuth');
+        const res = await fetch(`/api/jobs/employer/${session?.userId}`, {
+          headers: { Authorization: `Bearer ${session?.token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          professionalPostedJobs = data.data?.jobs || [];
+          renderProfessionalPostedJobs();
+        }
+      } catch (error) {
+        console.error('Failed to load posted jobs:', error);
+      }
+    }
+
+    function renderProfessionalPostedJobs() {
+      const listEl = document.getElementById('professionalPostedJobsList');
+      const emptyEl = document.getElementById('professionalPostedJobsEmpty');
+      if (!listEl || !emptyEl) return;
+      if (professionalPostedJobs.length === 0) {
+        listEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+      listEl.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+      listEl.innerHTML = professionalPostedJobs.map(job => `
+        <li class="bg-gray-50 rounded-2xl p-6 border-2 border-gray-200 hover:border-primary/30 transition-all">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex-1">
+              <h4 class="font-bold text-gray-900 text-lg mb-1">${job.title}</h4>
+              <p class="text-sm text-gray-600 line-clamp-2">${job.description}</p>
+            </div>
+            <span class="text-xs px-3 py-1 rounded-full font-bold ${job.status === 'open' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-700'}">${job.status}</span>
+          </div>
+          <div class="flex items-center justify-between text-sm text-gray-600">
+            <span><i data-feather="map-pin" class="w-4 h-4 inline"></i> ${job.location}</span>
+            <span><i data-feather="users" class="w-4 h-4 inline"></i> ${job.applicationCount || 0} applicants</span>
+          </div>
+          <button onclick="openProfessionalApplicantsModal('${job._id}')" class="mt-4 w-full bg-primary text-white font-bold py-2 rounded-xl hover:bg-primary/90 transition-all text-sm">View Applicants</button>
+        </li>
+      `).join('');
+      feather.replace();
+    }
+
+    async function openProfessionalApplicantsModal(jobId) {
+      professionalCurrentJobId = jobId;
+      document.getElementById('professionalApplicantsModal').classList.remove('hidden');
+      await loadProfessionalJobApplicants(jobId);
+    }
+
+    async function loadProfessionalJobApplicants(jobId) {
+      try {
+        const session = sessionUtils?.parse('siriusProfessionalAuth');
+        const res = await fetch(`/api/applications/job/${jobId}`, {
+          headers: { Authorization: `Bearer ${session?.token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          professionalCurrentJobApplicants = data.data?.applications || [];
+          renderProfessionalApplicants();
+        }
+      } catch (error) {
+        console.error('Failed to load applicants:', error);
+      }
+    }
+
+    function renderProfessionalApplicants() {
+      const listEl = document.getElementById('professionalApplicantsList');
+      const emptyEl = document.getElementById('professionalApplicantsEmpty');
+      if (!listEl || !emptyEl) return;
+      if (professionalCurrentJobApplicants.length === 0) {
+        listEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+      listEl.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+      listEl.innerHTML = professionalCurrentJobApplicants.map(app => `
+        <li class="bg-gray-50 rounded-2xl p-6 border-2 border-gray-200">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <h4 class="font-bold text-gray-900 text-lg">${app.worker?.name || 'Unknown'}</h4>
+              <p class="text-sm text-gray-600">${app.workerProfile?.skills?.join(', ') || 'No skills listed'}</p>
+            </div>
+            <span class="text-xs px-3 py-1 rounded-full font-bold ${
+              app.status === 'accepted' ? 'bg-green-100 text-green-700' :
+              app.status === 'rejected' ? 'bg-red-100 text-red-700' :
+              'bg-yellow-100 text-yellow-700'
+            }">${app.status}</span>
+          </div>
+          ${app.coverLetter ? `<p class="text-sm text-gray-600 mb-4 italic">"${app.coverLetter}"</p>` : ''}
+          <div class="flex gap-2">
+            <button onclick="viewProfessionalApplicantProfile('${app.workerId}')" class="flex-1 border-2 border-primary text-primary font-bold py-2 rounded-xl hover:bg-primary/5 transition-all text-sm">View Profile</button>
+            ${app.status === 'pending' ? `
+              <button onclick="updateProfessionalApplicationStatus('${app._id}', 'accepted')" class="flex-1 bg-green-600 text-white font-bold py-2 rounded-xl hover:bg-green-700 transition-all text-sm">Accept</button>
+              <button onclick="updateProfessionalApplicationStatus('${app._id}', 'rejected')" class="flex-1 bg-red-600 text-white font-bold py-2 rounded-xl hover:bg-red-700 transition-all text-sm">Reject</button>
+            ` : ''}
+          </div>
+        </li>
+      `).join('');
+      feather.replace();
+    }
+
+    async function viewProfessionalApplicantProfile(workerId) {
+      try {
+        const session = sessionUtils?.parse('siriusProfessionalAuth');
+        const res = await fetch(`/api/dashboard/artisan/${workerId}`, {
+          headers: { Authorization: `Bearer ${session?.token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const profile = data.data;
+          const modalBody = document.getElementById('professionalProfileModalBody');
+          const modalName = document.getElementById('professionalProfileModalName');
+          if (modalName) modalName.textContent = profile.name || 'Worker Profile';
+          if (modalBody) {
+            modalBody.innerHTML = `
+              <div class="space-y-6">
+                <div><h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Skills</h4><div class="flex flex-wrap gap-2">${(profile.skills || []).map(skill => `<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">${skill}</span>`).join('')}</div></div>
+                <div><h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Experience</h4><p class="text-gray-700">${profile.experience || 'No experience provided'}</p></div>
+                <div><h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Bio</h4><p class="text-gray-700">${profile.bio || 'No bio provided'}</p></div>
+                <div><h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Location</h4><p class="text-gray-700">${profile.location || 'Not specified'}</p></div>
+              </div>
+            `;
+          }
+          document.getElementById('professionalProfileModal').classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('Failed to load profile:', error);
+        alert('Failed to load worker profile');
+      }
+    }
+
+    async function updateProfessionalApplicationStatus(applicationId, decision) {
+      try {
+        const session = sessionUtils?.parse('siriusProfessionalAuth');
+        const res = await fetch(`/api/applications/${applicationId}/decision`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.token}` },
+          body: JSON.stringify({ decision }),
+        });
+        if (res.ok) {
+          alert(`Application ${decision}!`);
+          await loadProfessionalJobApplicants(professionalCurrentJobId);
+        } else {
+          const data = await res.json();
+          alert(data.message || `Failed to ${decision} application`);
+        }
+      } catch (error) {
+        console.error('Failed to update application:', error);
+        alert(`Failed to ${decision} application`);
+      }
+    }
+
+    window.openProfessionalApplicantsModal = openProfessionalApplicantsModal;
+    window.viewProfessionalApplicantProfile = viewProfessionalApplicantProfile;
+    window.updateProfessionalApplicationStatus = updateProfessionalApplicationStatus;
+  </script>
+  <script src="assistant.js"></script>
+  <script src="session-timeout.js"></script>
+  <script src="assets/site-shell.js" defer></script>
+</body>
+<script src="https://js.paystack.co/v1/inline.js"></script>
+</html>
