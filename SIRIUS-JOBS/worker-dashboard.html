@@ -187,7 +187,7 @@
       <aside class="space-y-6">
         <!-- Profile Card -->
         <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
-          <img id="workerAvatar" src="/images/users/sample_worker.jpg" alt="Worker profile photo" class="w-28 h-28 rounded-full mx-auto object-cover border-4 border-primary/20 mb-4" onerror="this.src='https://via.placeholder.com/120x120?text=You'"/>
+          <img id="workerAvatar" src="/images/users/sample_worker.jpg" alt="Worker profile photo" class="w-28 h-28 rounded-full mx-auto object-cover border-4 border-primary/20 mb-4" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=0056b3&color=fff&name=Worker&size=120'"/>
           <h3 class="text-xl font-black text-gray-900" id="wName">Samuel Ade</h3>
           <p class="text-sm text-gray-500 font-medium mt-1" id="wSkillLoc">Mechanic • Abeokuta</p>
           <div class="mt-6 space-y-3">
@@ -442,14 +442,14 @@
       workerSessionPayload?.artisanProfile?.serviceCategory?.label ||
       'Add your service category';
     const sessionLocation = workerSessionPayload?.artisanProfile?.location || '';
-    const sessionPhoto = workerSessionPayload?.artisanProfile?.showcaseMediaUrl || defaultAvatar;
+    const sessionPhoto = workerSessionPayload?.artisanProfile?.profilePhoto || workerSessionPayload?.artisanProfile?.showcaseMediaUrl || defaultAvatar;
 
     let worker = {
       name: sessionName,
       skill: sessionSkill,
       location: sessionLocation,
       bio: workerSessionPayload?.artisanProfile?.bio || '',
-      photo: Boolean(workerSessionPayload?.artisanProfile?.showcaseMediaUrl),
+      photo: Boolean(workerSessionPayload?.artisanProfile?.profilePhoto || workerSessionPayload?.artisanProfile?.showcaseMediaUrl),
       photoUrl: sessionPhoto,
       verified: Boolean(workerSessionPayload?.user?.verificationStatus === 'VERIFIED'),
       subscriptionStatus: workerSessionPayload?.artisanProfile?.subscriptionStatus || 'NONE',
@@ -475,7 +475,9 @@
     function renderProfile(){
       worker.photo = Boolean(worker.photoUrl && worker.photoUrl !== defaultAvatar);
       const avatar = document.getElementById('workerAvatar');
-      avatar.src = worker.photoUrl || defaultAvatar;
+      const fallbackUrl = `https://ui-avatars.com/api/?background=0056b3&color=fff&name=${encodeURIComponent(worker.name || 'Worker')}&size=120`;
+      avatar.src = worker.photoUrl || fallbackUrl;
+      avatar.onerror = function() { this.onerror=null; this.src = fallbackUrl; };
       avatar.alt = `${worker.name} profile photo`;
       document.getElementById('wName').textContent = worker.name;
       const skillLocation = [worker.skill, worker.location].filter(Boolean).join(' • ');
@@ -621,8 +623,8 @@
             'Add your service category',
           location: profile.location ?? workerSessionPayload?.artisanProfile?.location ?? '',
           bio: profile.bio ?? '',
-          photo: Boolean(profile.showcaseMediaUrl),
-          photoUrl: profile.showcaseMediaUrl || defaultAvatar,
+          photo: Boolean(profile.profilePhoto || profile.showcaseMediaUrl),
+          photoUrl: profile.profilePhoto || profile.showcaseMediaUrl || defaultAvatar,
           verified: isVerified,
           subscriptionStatus: profile.subscriptionStatus ?? 'NONE',
           subscriptionEndsAt: profile.subscriptionEndsAt ?? null,

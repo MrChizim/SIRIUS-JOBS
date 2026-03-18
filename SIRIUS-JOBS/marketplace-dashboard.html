@@ -774,12 +774,12 @@
       }
 
       async function fetchCurrentMerchant() {
-        const response = await fetch('/api/merchants/me', {
+        const response = await fetch('/api/merchants/profile', {
           headers: { Authorization: `Bearer ${session.token}` },
         });
         if (!response.ok) throw new Error('Unable to load merchant profile');
         const data = await response.json();
-        return data.merchant;
+        return data.data?.profile ?? data.profile ?? data.merchant ?? null;
       }
 
       function refreshMerchantVendors() {

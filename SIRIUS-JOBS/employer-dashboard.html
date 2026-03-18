@@ -189,7 +189,7 @@
       <aside class="space-y-6">
         <!-- Company Profile Card -->
         <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
-          <img id="employerAvatar" src="images/logo.png" alt="Employer logo" onerror="this.src='https://via.placeholder.com/120x120?text=Logo'" class="w-28 h-28 rounded-full mx-auto mb-4 object-cover border-4 border-primary/20">
+          <img id="employerAvatar" src="images/logo.png" alt="Employer profile photo" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=0056b3&color=fff&name=Employer&size=120'" class="w-28 h-28 rounded-full mx-auto mb-4 object-cover border-4 border-primary/20">
           <h3 id="employerName" class="text-xl font-black text-gray-900">Your Company</h3>
           <p id="employerLocation" class="text-sm text-gray-500 font-medium mt-1 mb-3">Port Harcourt, Nigeria</p>
           <p id="employerVerifyStatus" class="text-xs font-bold text-amber-600 mb-4">ID verification pending</p>
@@ -485,15 +485,19 @@
       const locationText = employerProfile?.location || employerProfile?.industry || null;
       if (!employerProfile) {
         if (avatar) {
-          avatar.src = 'https://via.placeholder.com/120x120?text=Logo';
-          avatar.alt = 'Company logo placeholder';
+          const n = nameEl?.textContent || 'Employer';
+          avatar.src = `https://ui-avatars.com/api/?background=0056b3&color=fff&name=${encodeURIComponent(n)}&size=120`;
+          avatar.alt = 'Profile photo placeholder';
         }
         if (nameEl) nameEl.textContent = 'Your company name';
         if (locationEl) locationEl.textContent = 'Set your business location';
       } else {
+        const displayName = employerProfile.name || employerProfile.companyName || 'Employer';
+        const fallback = `https://ui-avatars.com/api/?background=0056b3&color=fff&name=${encodeURIComponent(displayName)}&size=120`;
         if (avatar) {
-          avatar.src = employerProfile.logoUrl || 'https://via.placeholder.com/120x120?text=Logo';
-          avatar.alt = `${employerProfile.name || 'Employer'} logo`;
+          avatar.src = employerProfile.profilePhoto || employerProfile.logoUrl || fallback;
+          avatar.onerror = function() { this.onerror=null; this.src = fallback; };
+          avatar.alt = `${displayName} profile photo`;
         }
         if (nameEl) nameEl.textContent = employerProfile.name || 'Your company name';
         if (locationEl) locationEl.textContent = locationText || 'Set your business location';

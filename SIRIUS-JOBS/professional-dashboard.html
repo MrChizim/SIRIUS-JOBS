@@ -229,7 +229,7 @@
       <article class="lg:col-span-2 bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
         <div class="flex flex-col md:flex-row md:items-start gap-6">
           <div class="relative mx-auto md:mx-0">
-            <img id="proAvatar" src="https://via.placeholder.com/160x160?text=You" alt="Professional" class="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover border-4 border-primary/20 shadow-md" />
+            <img id="proAvatar" src="https://ui-avatars.com/api/?background=0056b3&color=fff&name=Professional&size=160" alt="Professional" class="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover border-4 border-primary/20 shadow-md" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=0056b3&color=fff&name=Professional&size=160'" />
             <button id="editPhotoBtn" class="absolute -bottom-2 -right-2 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary/90 ring-4 ring-white transition" type="button"><i data-feather="camera" class="w-5 h-5"></i></button>
             <input type="file" id="profileImageInput" class="hidden" accept="image/*" />
           </div>
@@ -1120,7 +1120,7 @@
         stateOverrides.photoUrl ||
         latestSnapshot?.profile?.profileImageUrl ||
         professionalSession?.profileImageUrl ||
-        (avatarImg?.src && !avatarImg.src.includes('placeholder.com'))
+        (avatarImg?.src && !avatarImg.src.includes('ui-avatars.com') && !avatarImg.src.includes('placeholder.com'))
       );
       const hasOnboarded = stateOverrides.onboardingPaid ?? onboardingPaid;
       const hasPayoutAccount = Boolean(
@@ -1431,9 +1431,9 @@
        .trim() || 'Professional';
      document.getElementById('proName').textContent = name;
      document.getElementById('proProfession').textContent = `${profile?.profession ?? 'Specialist'}${profile?.regulatoryBody ? ' • ' + profile.regulatoryBody : ''}`;
-     if (profile?.profileImageUrl) {
-       avatarImg.src = profile.profileImageUrl;
-     }
+     const proFallback = `https://ui-avatars.com/api/?background=0056b3&color=fff&name=${encodeURIComponent(name || 'Professional')}&size=160`;
+     avatarImg.src = profile?.profileImageUrl || proFallback;
+     avatarImg.onerror = function() { this.onerror=null; this.src = proFallback; };
 
       const derivedOnboardingPaid = Boolean((profile && profile.onboardingPaid !== undefined) ? profile.onboardingPaid : professionalSession.onboardingPaid);
       const derivedProfilePublic = (profile && typeof profile.isPublic === 'boolean') ? profile.isPublic : Boolean(professionalSession.profilePublic);
