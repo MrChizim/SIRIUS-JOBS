@@ -120,6 +120,7 @@
                         <a href="#section-6" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">6. NDPR Compliance</a>
                         <a href="#section-7" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">7. Policy Updates</a>
                         <a href="#section-8" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">8. Marketplace Analytics & Cookies</a>
+                        <a href="#section-9" class="toc-link block py-2 px-3 rounded-xl text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium">9. Consultation Data & Disclaimer</a>
                     </nav>
                 </div>
             </aside>
@@ -133,10 +134,11 @@
                         <h2 class="text-3xl font-black text-gray-900">1. Information We Collect</h2>
                         <p class="text-base text-gray-700 leading-relaxed">We collect:</p>
                         <ul class="list-disc pl-6 space-y-3 text-base text-gray-700">
-                            <li>Account details such as your name, email, phone number, password, and chosen role (worker, employer, professional, merchant).</li>
-                            <li>Verification records (NIN, driver’s licence, passport, or regulator links) submitted to unlock hiring, consultation, or merchant tools.</li>
-                            <li>Employment and marketplace data including job posts, applications, consultation notes, merchant media uploads, plan selections, and reviews.</li>
-                            <li>Payment references (transaction IDs, billing contact, Paystack/Flutterwave tokens). We never store raw card numbers.</li>
+                            <li>Account details such as your name, email, phone number, password, and chosen role (worker, employer, professional, merchant, or client).</li>
+                            <li>Verification records (government-issued ID documents such as NIN slip, driver’s licence, or international passport) submitted to unlock hiring, consultation, or merchant tools.</li>
+                            <li>Employment and marketplace data including job posts, applications, consultation session metadata, merchant media uploads, plan selections, and reviews.</li>
+                            <li>Payment references (transaction IDs, billing contact, Paystack tokens). We never store raw card numbers — all card data is handled exclusively by Paystack.</li>
+                            <li>Consultation session metadata: session duration, timestamps, and payment references. We do not record or store the content of consultation messages beyond your active session.</li>
                             <li>Marketplace analytics events such as profile views, WhatsApp/Instagram clicks, browser type, and approximate location.</li>
                         </ul>
                     </div>
@@ -165,7 +167,14 @@
 
                     <div id="section-4" class="space-y-4 mb-12 scroll-mt-24">
                         <h2 class="text-3xl font-black text-gray-900">4. Third-Party Services</h2>
-                        <p class="text-base text-gray-700 leading-relaxed">We rely on vetted partners such as Paystack/Flutterwave (payments), AWS/Netlify (hosting), and Google Analytics 4 (event reporting). Each provider signs NDPR-compliant agreements and only receives the minimum data required to deliver their service.</p>
+                        <p class="text-base text-gray-700 leading-relaxed">We rely on vetted partners to deliver the platform:</p>
+                        <ul class="list-disc pl-6 space-y-3 text-base text-gray-700">
+                            <li><strong>Paystack</strong> — all payment processing. Paystack is PCI-DSS compliant. Your card details are never transmitted to or stored by Sirius Jobs.</li>
+                            <li><strong>Render / cloud hosting</strong> — backend API and database hosting.</li>
+                            <li><strong>Vercel</strong> — frontend hosting.</li>
+                            <li><strong>MongoDB Atlas</strong> — encrypted database storage.</li>
+                        </ul>
+                        <p class="text-base text-gray-700 leading-relaxed">Each provider operates under data processing agreements and only receives the minimum data required. We do not use Flutterwave or Stripe.</p>
                     </div>
 
                     <div id="section-5" class="space-y-4 mb-12 scroll-mt-24">
@@ -184,14 +193,26 @@
                         <p class="text-base text-gray-700 leading-relaxed">Sirius Jobs adheres to the Nigeria Data Protection Regulation (NDPR). We process data lawfully, keep detailed audit logs, and only transfer information outside Nigeria when equivalent protection is guaranteed.</p>
                     </div>
 
-                    <div id="section-7" class="space-y-4 scroll-mt-24">
+                    <div id="section-7" class="space-y-4 mb-12 scroll-mt-24">
                         <h2 class="text-3xl font-black text-gray-900">7. Updates to This Policy</h2>
-                        <p class="text-base text-gray-700 leading-relaxed">We may update this policy occasionally. Material changes will be announced via email or in-app notification before they take effect.</p>
+                        <p class="text-base text-gray-700 leading-relaxed">We may update this policy occasionally. Material changes will be announced via email or in-app notification before they take effect. Continued use of the platform after changes constitutes acceptance of the updated policy.</p>
                     </div>
 
-                    <div id="section-8" class="space-y-4 scroll-mt-24">
+                    <div id="section-8" class="space-y-4 mb-12 scroll-mt-24">
                         <h2 class="text-3xl font-black text-gray-900">8. Marketplace Analytics & Cookies</h2>
                         <p class="text-base text-gray-700 leading-relaxed">We use first-party cookies and local storage to keep you signed in, remember dashboard filters, and log marketplace interactions such as profile views, WhatsApp clicks, and Instagram clicks. These events are only tied to the vendor ID on your account. You can clear cookies from your browser at any time or request that we wipe historic analytics when a campaign ends.</p>
+                    </div>
+
+                    <div id="section-9" class="space-y-4 mb-12 scroll-mt-24 bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-6">
+                        <h2 class="text-2xl font-black text-gray-900">⚠️ Consultation Session Data & Disclaimer</h2>
+                        <p class="text-base text-gray-700 leading-relaxed">Consultation sessions on Sirius Jobs are conducted via text-based chat only. Session metadata (duration, timestamps, payment reference) is stored for billing, dispute resolution, and audit purposes. Message content within a session is not retained by Sirius Jobs after the session ends.</p>
+                        <p class="text-base text-gray-700 leading-relaxed"><strong>Important:</strong> Sirius Jobs does not record, transcribe, or review the content of consultation sessions. The content of any consultation is between the client and the professional only. Sirius Jobs bears no responsibility for the accuracy, completeness, or safety of advice exchanged during sessions.</p>
+                        <p class="text-base text-gray-700 leading-relaxed">Consultation services are for general information only. No doctor-patient, lawyer-client, or therapist-client relationship is formed through this platform. For emergencies: call <strong>112</strong>. Mental health crisis line: <strong>SURPIN 0800 787 746 1</strong>.</p>
+                    </div>
+
+                    <div id="section-10" class="space-y-4 scroll-mt-24">
+                        <h2 class="text-3xl font-black text-gray-900">9. Contact & Data Requests</h2>
+                        <p class="text-base text-gray-700 leading-relaxed">To access, correct, export, or delete your data, contact our privacy team at <a href="mailto:privacy@siriusjobs.com.ng" class="text-primary underline font-bold">privacy@siriusjobs.com.ng</a>. We will respond within 14 business days in accordance with NDPR requirements.</p>
                     </div>
                 </div>
 
@@ -224,14 +245,14 @@
                         </div>
                     </a>
 
-                    <a href="verify.html" class="bg-white border-2 border-gray-100 rounded-3xl p-8 hover:border-primary hover:shadow-xl transition-all group">
+                    <a href="faq.html" class="bg-white border-2 border-gray-100 rounded-3xl p-8 hover:border-primary hover:shadow-xl transition-all group">
                         <div class="flex items-start gap-4">
                             <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
-                                <i data-feather="check-circle" class="w-7 h-7 text-primary group-hover:text-white"></i>
+                                <i data-feather="help-circle" class="w-7 h-7 text-primary group-hover:text-white"></i>
                             </div>
                             <div>
-                                <h3 class="text-xl font-black text-gray-900 mb-2">Verify Credentials</h3>
-                                <p class="text-sm text-gray-600">Check professional certifications securely</p>
+                                <h3 class="text-xl font-black text-gray-900 mb-2">FAQs</h3>
+                                <p class="text-sm text-gray-600">Common questions about how Sirius Jobs works</p>
                             </div>
                         </div>
                     </a>
