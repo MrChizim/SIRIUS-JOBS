@@ -728,16 +728,23 @@
         updateAnalyticsSummary({ profileViews: 0, whatsappClicks: 0, instagramClicks: 0, totalClicks: 0 });
 
         try {
-          const response = await fetch(`/api/marketplace/analytics/${vendorId}`);
+          const authKey = Object.keys(sessionStorage).find(k => k.startsWith('sirius') && k.endsWith('Auth'));
+          const authData = authKey ? JSON.parse(sessionStorage.getItem(authKey) || '{}') : {};
+          const token = authData.token || authData.accessToken || '';
+          const response = await fetch('/api/merchants/analytics', {
+            headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+          });
           if (!response.ok) throw new Error('Request failed');
-          const data = await response.json();
-          updateAnalyticsSummary(data);
-          if (data?.lastEventAt) {
-            const lastEvent = new Date(data.lastEventAt);
-            analyticsStatus.textContent = `Last activity: ${lastEvent.toLocaleString()}`;
-          } else {
-            analyticsStatus.textContent = 'Share your profile link to start receiving activity.';
-          }
+          const result = await response.json();
+          const d = result.data ?? result;
+          // Map backend field names to what the UI expects
+          updateAnalyticsSummary({
+            profileViews: d.profileViews ?? 0,
+            whatsappClicks: d.socialLinkClicks?.whatsapp ?? 0,
+            instagramClicks: d.socialLinkClicks?.instagram ?? 0,
+            totalClicks: d.totalCustomerContacts ?? 0,
+          });
+          analyticsStatus.textContent = 'Share your profile link to start receiving activity.';
         } catch (error) {
           analyticsStatus.textContent = 'Unable to load analytics right now.';
           console.warn('Analytics fetch failed', error);
