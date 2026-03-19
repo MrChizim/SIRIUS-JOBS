@@ -192,7 +192,10 @@
           <img id="employerAvatar" src="images/logo.png" alt="Employer profile photo" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=0056b3&color=fff&name=Employer&size=120'" class="w-28 h-28 rounded-full mx-auto mb-4 object-cover border-4 border-primary/20">
           <h3 id="employerName" class="text-xl font-black text-gray-900">Your Company</h3>
           <p id="employerLocation" class="text-sm text-gray-500 font-medium mt-1 mb-3">Port Harcourt, Nigeria</p>
-          <p id="employerVerifyStatus" class="text-xs font-bold text-amber-600 mb-4">ID verification pending</p>
+          <p id="employerVerifyStatus" class="text-xs font-bold text-amber-600 mb-3">ID verification pending</p>
+          <div id="employerIdNotice" class="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-3 text-xs text-amber-800">
+            <strong>ID required to post jobs.</strong> Workers rely on verified employers for their safety. Upload a government-issued ID (NIN, driver's licence, or passport) to unlock job posting.
+          </div>
           <button id="verifyEmployerBtn" class="w-full border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all mb-3">Complete ID Verification</button>
           <a href="edit-company.html" class="block w-full border-2 border-gray-300 text-gray-700 font-bold py-3 rounded-xl hover:border-primary hover:text-primary transition-all">Edit Profile</a>
         </div>
@@ -319,7 +322,6 @@
             <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
             <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
             <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
-            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
           </div>
         </div>
         <div>
@@ -525,9 +527,11 @@
       const statusEl = document.getElementById('employerVerifyStatus');
       if(statusEl){
         if(employerProfile?.verified){
-          statusEl.textContent = 'ID verification complete';
+          statusEl.textContent = 'ID verification complete ✓';
           statusEl.classList.remove('text-amber-600');
           statusEl.classList.add('text-green-600');
+          const notice = document.getElementById('employerIdNotice');
+          if(notice) notice.remove();
         } else {
           statusEl.textContent = 'ID verification pending';
           statusEl.classList.remove('text-green-600');

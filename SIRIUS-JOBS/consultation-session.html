@@ -485,23 +485,26 @@
 
         document.getElementById('confirm-extend-btn').addEventListener('click', async () => {
             const extraMinutes = parseInt(document.querySelector('input[name="extend-duration"]:checked').value);
-            const extraAmount = (extraMinutes / 30) * 1500;
 
             try {
-                const response = await fetch(`${API_URL}/consultation/sessions/${sessionId}/extend`, {
+                const response = await fetch(`${API_URL}/consultation/payment/extend`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${sessionToken}`
                     },
-                    body: JSON.stringify({ extraMinutes, amount: extraAmount * 100 })
+                    body: JSON.stringify({
+                        sessionId,
+                        additionalMinutes: extraMinutes,
+                        email: sessionData?.clientEmail || ''
+                    })
                 });
 
                 const result = await response.json();
 
-                if (result.data && result.data.paymentUrl) {
-                    // Redirect to payment for extension
-                    window.location.href = result.data.paymentUrl;
+                if (result.data && result.data.authorizationUrl) {
+                    // Redirect to Paystack for extension payment
+                    window.location.href = result.data.authorizationUrl;
                 } else if (result.success) {
                     // Extension applied directly
                     sessionData.endsAt = result.data.newEndsAt;
@@ -649,7 +652,6 @@
             <a href="https://web.facebook.com/profile.php?id=61582342397507" target="_blank" rel="noopener"><i data-feather="facebook"></i></a>
             <a href="https://twitter.com/SiriusOddJobs" target="_blank" rel="noopener"><i data-feather="twitter"></i></a>
             <a href="https://www.instagram.com/siriusjobss" target="_blank" rel="noopener"><i data-feather="instagram"></i></a>
-            <a href="https://www.linkedin.com/company/siriusjobsng/" target="_blank" rel="noopener"><i data-feather="linkedin"></i></a>
           </div>
         </div>
         <div>

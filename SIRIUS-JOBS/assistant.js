@@ -26,7 +26,7 @@
     {
       question: 'How do the merchant plans work?',
       answer:
-        '3-month Launch (₦30k) gives five photo tiles; 6-month Spotlight (₦57k) adds one video slot plus analytics; 12-month Residency (₦108k) includes two video slots, exports, and newsletter features. All plans publish your media wall and direct WhatsApp/Instagram buttons.',
+        'All plans publish your media gallery plus direct WhatsApp and Instagram contact buttons. Plans: 3-month ₦30,000 (₦10k/month), 6-month ₦57,000 (₦9,500/month, 5% off), 12-month ₦108,000 (₦9,000/month, 10% off). Paid once upfront via Paystack.',
       tags: ['merchant', 'plan', 'marketplace', 'pricing'],
     },
     {
@@ -36,10 +36,22 @@
       tags: ['analytics', 'marketplace', 'dashboard'],
     },
     {
-      question: 'How much do doctors or lawyers earn per consultation?',
+      question: 'How much do professionals earn per consultation?',
       answer:
-        'Professionals set their own fee (minimum ₦3,000). Sirius keeps a 15% platform fee and the balance appears in your wallet once the 24-hour session is marked complete.',
-      tags: ['consultation', 'doctor', 'lawyer', 'earnings'],
+        'Consultations are priced at ₦1,500 per 30 minutes (₦3,000/hr). Sirius Jobs keeps a flat ₦500 platform fee per session; the professional earns the rest. Sessions are text-only chat — no video or phone calls.',
+      tags: ['consultation', 'doctor', 'lawyer', 'therapist', 'earnings', 'fee'],
+    },
+    {
+      question: 'How does the consultation booking work?',
+      answer:
+        'Choose a professional, select your session duration (minimum 30 minutes), and pay via Paystack. After payment you will receive an email with a private session link. Click the link to open the chat. Your session timer starts immediately. The professional is notified of the booking.',
+      tags: ['consultation', 'booking', 'session', 'email', 'link', 'how', 'work'],
+    },
+    {
+      question: 'How will the professional know about my booking?',
+      answer:
+        'The professional is notified as soon as your payment is confirmed. They can see the session in their dashboard. If you need to reach them urgently, contact support at info@siriusjobs.com.ng.',
+      tags: ['professional', 'notification', 'booking', 'know', 'notified'],
     },
     {
       question: 'Can I switch between worker and employer on one login?',
@@ -56,17 +68,29 @@
     {
       question: 'How do payouts work?',
       answer:
-        'Professionals and merchants can request payouts from their dashboard once available funds reach ₦5,000. Transfers are processed through Paystack/Flutterwave within 1–3 business days.',
+        'Professional earnings are tracked in your dashboard. Payout withdrawals are being rolled out — contact support at info@siriusjobs.com.ng to arrange a transfer.',
       tags: ['payout', 'wallet', 'withdraw'],
+    },
+    {
+      question: 'Do employers need to verify their ID?',
+      answer:
+        'Yes. Employers must submit a government-issued ID (NIN, driver\'s licence, or passport) before they can post jobs. This protects workers from fake listings. ID upload is done inside the employer dashboard.',
+      tags: ['employer', 'id', 'verify', 'verification', 'job post'],
+    },
+    {
+      question: 'Can I have multiple consultation sessions at once?',
+      answer:
+        'Each session link is unique. A professional can have multiple bookings but each session is separate. As a client, you can book different professionals — each booking gets its own session link sent to your email.',
+      tags: ['multiple', 'session', 'simultaneous', 'concurrent'],
     },
   ];
 
   const QUICK_REPLIES = [
     { label: 'Post a job', tags: ['post job'] },
+    { label: 'How consultations work', tags: ['booking'] },
     { label: 'Merchant plans', tags: ['merchant'] },
     { label: 'Verification steps', tags: ['verify'] },
-    { label: 'Consultation fees', tags: ['consultation'] },
-    { label: 'Payout timeline', tags: ['payout'] },
+    { label: 'Employer ID', tags: ['employer'] },
   ];
 
   const style = document.createElement('style');
