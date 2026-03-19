@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sirius Admin</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { theme: { extend: { colors: { primary: '#0056b3' } } } }</script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .tab-btn.active { background: #0056b3; color: #fff; }
+    .tab-btn { background: #f3f4f6; color: #374151; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800">
+
+<!-- Login Screen -->
+<div id="loginScreen" class="min-h-screen flex items-center justify-center px-4">
+  <div class="bg-white rounded-3xl shadow-2xl p-10 w-full max-w-sm">
+    <div class="text-center mb-8">
+      <div class="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <i data-feather="shield" class="w-7 h-7 text-white"></i>
+      </div>
+      <h1 class="text-2xl font-black text-gray-900">Admin Access</h1>
+      <p class="text-sm text-gray-500 mt-1">Sirius Jobs internal panel</p>
+    </div>
+    <form id="loginForm" class="space-y-4">
+      <input id="adminPassword" type="password" placeholder="Admin password" required
+        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition" />
+      <button type="submit" class="w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary/90 transition">
+        Enter
+      </button>
+    </form>
+    <p id="loginError" class="text-xs text-red-500 text-center mt-3 hidden">Wrong password.</p>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard" class="hidden">
+  <!-- Top bar -->
+  <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 bg-primary rounded-xl flex items-center justify-center">
+        <i data-feather="shield" class="w-4 h-4 text-white"></i>
+      </div>
+      <span class="font-black text-gray-900 text-lg">Sirius Admin</span>
+    </div>
+    <button id="logoutBtn" class="text-sm font-bold text-gray-500 hover:text-red-500 transition flex items-center gap-1">
+      <i data-feather="log-out" class="w-4 h-4"></i> Logout
+    </button>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
+
+    <!-- Stats cards -->
+    <div id="statsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Total Users</p>
+        <p id="stat-totalUsers" class="text-3xl font-black text-gray-900">—</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Professionals</p>
+        <p id="stat-professionals" class="text-3xl font-black text-primary">—</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Active Sessions</p>
+        <p id="stat-activeSessions" class="text-3xl font-black text-green-600">—</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Total Revenue</p>
+        <p id="stat-revenue" class="text-3xl font-black text-gray-900">—</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Workers</p>
+        <p id="stat-workers" class="text-2xl font-black text-gray-700">—</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Employers</p>
+        <p id="stat-employers" class="text-2xl font-black text-gray-700">—</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Merchants</p>
+        <p id="stat-merchants" class="text-2xl font-black text-gray-700">—</p>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Pending Sessions</p>
+        <p id="stat-pendingSessions" class="text-2xl font-black text-amber-600">—</p>
+      </div>
+    </div>
+
+    <!-- Tab navigation -->
+    <div class="flex gap-2 flex-wrap">
+      <button class="tab-btn active px-5 py-2 rounded-full text-sm font-bold transition" data-tab="users">Users</button>
+      <button class="tab-btn px-5 py-2 rounded-full text-sm font-bold transition" data-tab="sessions">Sessions</button>
+      <button class="tab-btn px-5 py-2 rounded-full text-sm font-bold transition" data-tab="verifications">Pending Verifications</button>
+    </div>
+
+    <!-- Users tab -->
+    <section id="tab-users" class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+      <div class="px-6 py-5 border-b border-gray-100 flex flex-col md:flex-row gap-3 items-start md:items-center justify-between">
+        <h2 class="text-lg font-black text-gray-900">Users</h2>
+        <div class="flex gap-2 flex-wrap">
+          <input id="userSearch" type="text" placeholder="Search name or email…"
+            class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm focus:border-primary outline-none w-52" />
+          <select id="userTypeFilter" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm focus:border-primary outline-none">
+            <option value="">All types</option>
+            <option value="worker">Workers</option>
+            <option value="employer">Employers</option>
+            <option value="professional">Professionals</option>
+            <option value="merchant">Merchants</option>
+          </select>
+          <button id="userSearchBtn" class="bg-primary text-white text-sm font-bold px-4 py-2 rounded-xl hover:bg-primary/90 transition">Search</button>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 border-b border-gray-100">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Name</th>
+              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Email</th>
+              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Type</th>
+              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Joined</th>
+              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Action</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody" class="divide-y divide-gray-50"></tbody>
+        </table>
+      </div>
+      <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+        <span id="usersPaginationInfo" class="text-xs text-gray-500"></span>
+        <div class="flex gap-2">
+          <button id="usersPrev" class="text-sm font-bold text-primary hover:underline disabled:opacity-40" disabled>← Prev</button>
+          <button id="usersNext" class="text-sm font-bold text-primary hover:underline disabled:opacity-40">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sessions tab -->
+    <section id="tab-sessions" class="hidden bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+      <div class="px-6 py-5 border-b border-gray-100 flex flex-col md:flex-row gap-3 items-start md:items-center justify-between">
+        <h2 class="text-lg font-black text-gray-900">Consultation Sessions</h2>
+        <select id="sessionStatusFilter" class="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm focus:border-primary outline-none">
+          <option value="">All statuses</option>
+          <option value="active">Active</option>
+          <option value="pending">Pending</option>
+          <option value="expired">Expired</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 border-b border-gray-100">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Client</th>
+              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Duration</th>
+              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Amount</th>
+              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Messages</th>
+              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Created</th>
+            </tr>
+          </thead>
+          <tbody id="sessionsTableBody" class="divide-y divide-gray-50"></tbody>
+        </table>
+      </div>
+      <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+        <span id="sessionsPaginationInfo" class="text-xs text-gray-500"></span>
+        <div class="flex gap-2">
+          <button id="sessionsPrev" class="text-sm font-bold text-primary hover:underline disabled:opacity-40" disabled>← Prev</button>
+          <button id="sessionsNext" class="text-sm font-bold text-primary hover:underline disabled:opacity-40">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Verifications tab -->
+    <section id="tab-verifications" class="hidden bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+      <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
+        <h2 class="text-lg font-black text-gray-900">Professionals Pending Verification</h2>
+        <button id="refreshVerificationsBtn" class="text-sm font-bold text-primary hover:underline">Refresh</button>
+      </div>
+      <div id="verificationsBody" class="divide-y divide-gray-100 p-6 space-y-4"></div>
+      <p id="verificationsEmpty" class="text-sm text-gray-500 text-center py-8 hidden">No professionals pending verification.</p>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function() {
+  const API = 'https://siriusjobsbackend.onrender.com/api';
+  let adminToken = sessionStorage.getItem('siriusAdminToken');
+  let usersPage = 1, sessionsPage = 1;
+  let userSearchVal = '', userTypeVal = '';
+
+  // ── Auth ──────────────────────────────────────────────────────────────────
+  function showDashboard() {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    feather.replace();
+    loadStats();
+    loadUsers();
+  }
+
+  if (adminToken) showDashboard();
+
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pw = document.getElementById('adminPassword').value;
+    const errEl = document.getElementById('loginError');
+    errEl.classList.add('hidden');
+    try {
+      const res = await fetch(`${API}/admin/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw }),
+      });
+      const data = await res.json();
+      if (!data.success) { errEl.classList.remove('hidden'); return; }
+      adminToken = data.data.token;
+      sessionStorage.setItem('siriusAdminToken', adminToken);
+      showDashboard();
+    } catch { errEl.classList.remove('hidden'); }
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    sessionStorage.removeItem('siriusAdminToken');
+    adminToken = null;
+    document.getElementById('dashboard').classList.add('hidden');
+    document.getElementById('loginScreen').classList.remove('hidden');
+  });
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+  function authHeaders() {
+    return { 'Content-Type': 'application/json', Authorization: `Bearer ${adminToken}` };
+  }
+
+  function fmtDate(d) {
+    if (!d) return '—';
+    return new Date(d).toLocaleDateString('en-NG', { dateStyle: 'medium' });
+  }
+
+  function fmtNaira(kobo) {
+    if (!kobo && kobo !== 0) return '—';
+    return '₦' + (kobo / 100).toLocaleString('en-NG');
+  }
+
+  const statusColors = {
+    active: 'bg-green-100 text-green-700',
+    pending: 'bg-amber-100 text-amber-700',
+    expired: 'bg-gray-100 text-gray-600',
+    completed: 'bg-blue-100 text-blue-700',
+    cancelled: 'bg-red-100 text-red-600',
+  };
+
+  // ── Stats ─────────────────────────────────────────────────────────────────
+  async function loadStats() {
+    try {
+      const res = await fetch(`${API}/admin/stats`, { headers: authHeaders() });
+      const data = await res.json();
+      if (!data.success) return;
+      const s = data.data;
+      document.getElementById('stat-totalUsers').textContent = s.users.total.toLocaleString();
+      document.getElementById('stat-professionals').textContent = s.users.professionals.toLocaleString();
+      document.getElementById('stat-activeSessions').textContent = s.sessions.active.toLocaleString();
+      document.getElementById('stat-revenue').textContent = '₦' + s.revenue.totalNaira.toLocaleString('en-NG');
+      document.getElementById('stat-workers').textContent = s.users.workers.toLocaleString();
+      document.getElementById('stat-employers').textContent = s.users.employers.toLocaleString();
+      document.getElementById('stat-merchants').textContent = s.users.merchants.toLocaleString();
+      document.getElementById('stat-pendingSessions').textContent = s.sessions.pending.toLocaleString();
+    } catch (e) { console.error('Stats error', e); }
+  }
+
+  // ── Users ─────────────────────────────────────────────────────────────────
+  async function loadUsers(page = 1) {
+    usersPage = page;
+    const params = new URLSearchParams({ page, limit: 20 });
+    if (userSearchVal) params.set('search', userSearchVal);
+    if (userTypeVal) params.set('type', userTypeVal);
+    try {
+      const res = await fetch(`${API}/admin/users?${params}`, { headers: authHeaders() });
+      const data = await res.json();
+      if (!data.success) return;
+      const { users, total, pages } = data.data;
+      const tbody = document.getElementById('usersTableBody');
+      tbody.innerHTML = users.map(u => `
+        <tr class="hover:bg-gray-50 transition">
+          <td class="px-6 py-4 font-semibold text-gray-900">${u.name || '—'}</td>
+          <td class="px-6 py-4 text-gray-600">${u.email}</td>
+          <td class="px-6 py-4"><span class="text-xs font-bold uppercase px-2 py-1 rounded-full bg-gray-100 text-gray-700">${u.accountType}</span></td>
+          <td class="px-6 py-4">
+            <span class="text-xs font-bold uppercase px-2 py-1 rounded-full ${u.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}">
+              ${u.isActive ? 'Active' : 'Suspended'}
+            </span>
+          </td>
+          <td class="px-6 py-4 text-gray-500 text-xs">${fmtDate(u.createdAt)}</td>
+          <td class="px-6 py-4">
+            <button onclick="toggleUserSuspend('${u._id}', ${u.isActive})"
+              class="text-xs font-bold px-3 py-1.5 rounded-lg transition ${u.isActive ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-green-50 text-green-700 hover:bg-green-100'}">
+              ${u.isActive ? 'Suspend' : 'Unsuspend'}
+            </button>
+          </td>
+        </tr>`).join('');
+      document.getElementById('usersPaginationInfo').textContent = `${total} users • Page ${page} of ${pages}`;
+      document.getElementById('usersPrev').disabled = page <= 1;
+      document.getElementById('usersNext').disabled = page >= pages;
+    } catch (e) { console.error('Users error', e); }
+  }
+
+  window.toggleUserSuspend = async (userId, isActive) => {
+    const action = isActive ? 'suspend' : 'unsuspend';
+    if (!confirm(`${action.charAt(0).toUpperCase() + action.slice(1)} this user?`)) return;
+    try {
+      const res = await fetch(`${API}/admin/users/${userId}/${action}`, { method: 'POST', headers: authHeaders() });
+      const data = await res.json();
+      if (data.success) loadUsers(usersPage);
+      else alert(data.error || 'Failed');
+    } catch { alert('Request failed'); }
+  };
+
+  document.getElementById('userSearchBtn').addEventListener('click', () => {
+    userSearchVal = document.getElementById('userSearch').value.trim();
+    userTypeVal = document.getElementById('userTypeFilter').value;
+    loadUsers(1);
+  });
+  document.getElementById('userSearch').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('userSearchBtn').click(); });
+  document.getElementById('usersPrev').addEventListener('click', () => { if (usersPage > 1) loadUsers(usersPage - 1); });
+  document.getElementById('usersNext').addEventListener('click', () => loadUsers(usersPage + 1));
+
+  // ── Sessions ──────────────────────────────────────────────────────────────
+  async function loadSessions(page = 1) {
+    sessionsPage = page;
+    const status = document.getElementById('sessionStatusFilter').value;
+    const params = new URLSearchParams({ page, limit: 20 });
+    if (status) params.set('status', status);
+    try {
+      const res = await fetch(`${API}/admin/sessions?${params}`, { headers: authHeaders() });
+      const data = await res.json();
+      if (!data.success) return;
+      const { sessions, total, pages } = data.data;
+      const tbody = document.getElementById('sessionsTableBody');
+      tbody.innerHTML = sessions.map(s => {
+        const sc = statusColors[s.status] || 'bg-gray-100 text-gray-600';
+        return `<tr class="hover:bg-gray-50 transition">
+          <td class="px-6 py-4 font-semibold text-gray-900">${s.clientUsername || '—'}</td>
+          <td class="px-6 py-4 text-gray-600">${s.durationHours || '?'}hr</td>
+          <td class="px-6 py-4 font-bold text-gray-900">${fmtNaira(s.paymentAmount)}</td>
+          <td class="px-6 py-4"><span class="text-xs font-bold uppercase px-2 py-1 rounded-full ${sc}">${s.status}</span></td>
+          <td class="px-6 py-4 text-gray-500">${s.messageCount || 0}</td>
+          <td class="px-6 py-4 text-gray-500 text-xs">${fmtDate(s.createdAt)}</td>
+        </tr>`;
+      }).join('');
+      document.getElementById('sessionsPaginationInfo').textContent = `${total} sessions • Page ${page} of ${pages}`;
+      document.getElementById('sessionsPrev').disabled = page <= 1;
+      document.getElementById('sessionsNext').disabled = page >= pages;
+    } catch (e) { console.error('Sessions error', e); }
+  }
+
+  document.getElementById('sessionStatusFilter').addEventListener('change', () => loadSessions(1));
+  document.getElementById('sessionsPrev').addEventListener('click', () => { if (sessionsPage > 1) loadSessions(sessionsPage - 1); });
+  document.getElementById('sessionsNext').addEventListener('click', () => loadSessions(sessionsPage + 1));
+
+  // ── Verifications ─────────────────────────────────────────────────────────
+  async function loadVerifications() {
+    const body = document.getElementById('verificationsBody');
+    const empty = document.getElementById('verificationsEmpty');
+    body.innerHTML = '<p class="text-sm text-gray-400 py-4">Loading…</p>';
+    empty.classList.add('hidden');
+    try {
+      const res = await fetch(`${API}/admin/professionals/pending`, { headers: authHeaders() });
+      const data = await res.json();
+      if (!data.success) return;
+      const profiles = data.data.profiles;
+      if (!profiles.length) { body.innerHTML = ''; empty.classList.remove('hidden'); return; }
+      body.innerHTML = profiles.map(p => `
+        <div class="flex flex-col md:flex-row md:items-center gap-4 py-4" id="prof-${p._id}">
+          <div class="flex-1 min-w-0">
+            <p class="font-bold text-gray-900">${p.user?.name || 'Unknown'}</p>
+            <p class="text-xs text-gray-500">${p.user?.email || '—'} • ${p.professionalType || 'type not set'} • ${p.specialization || '—'}</p>
+            <p class="text-xs text-gray-400 mt-0.5">Licence: ${p.licenseNumber || 'not provided'} • Joined ${fmtDate(p.user?.createdAt)}</p>
+          </div>
+          <div class="flex gap-2 shrink-0">
+            <button onclick="verifyPro('${p._id}', true)"
+              class="text-xs font-bold px-4 py-2 rounded-xl bg-green-50 text-green-700 hover:bg-green-100 transition">
+              Verify
+            </button>
+          </div>
+        </div>`).join('');
+    } catch (e) { console.error('Verifications error', e); }
+  }
+
+  window.verifyPro = async (profileId, verify) => {
+    const action = verify ? 'verify' : 'unverify';
+    try {
+      const res = await fetch(`${API}/admin/professionals/${profileId}/${action}`, { method: 'POST', headers: authHeaders() });
+      const data = await res.json();
+      if (data.success) {
+        const el = document.getElementById(`prof-${profileId}`);
+        if (el) el.remove();
+        // Show empty if none left
+        if (!document.getElementById('verificationsBody').children.length) {
+          document.getElementById('verificationsEmpty').classList.remove('hidden');
+        }
+      } else alert(data.error || 'Failed');
+    } catch { alert('Request failed'); }
+  };
+
+  document.getElementById('refreshVerificationsBtn').addEventListener('click', loadVerifications);
+
+  // ── Tab switching ─────────────────────────────────────────────────────────
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      ['users', 'sessions', 'verifications'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
+      });
+      if (tab === 'sessions') loadSessions(1);
+      if (tab === 'verifications') loadVerifications();
+    });
+  });
+
+})();
+</script>
+</body>
+</html>
