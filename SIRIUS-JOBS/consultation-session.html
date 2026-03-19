@@ -509,7 +509,8 @@
                     // Extension applied directly
                     sessionData.endsAt = result.data.newEndsAt;
                     document.getElementById('extend-modal').classList.add('hidden');
-                    appendMessage({ content: `Session extended by ${extraMinutes} minutes.`, messageType: 'system' });
+                    const extraHours = extraMinutes / 60;
+                    appendMessage({ content: `Session extended by ${extraHours} hour${extraHours !== 1 ? 's' : ''}.`, messageType: 'system' });
                 } else {
                     throw new Error(result.message || 'Failed to extend session');
                 }

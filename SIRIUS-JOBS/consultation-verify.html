@@ -154,35 +154,40 @@
                 document.getElementById('verifying-state').classList.add('hidden');
                 document.getElementById('success-state').classList.remove('hidden');
 
-                // Display session details
-                document.getElementById('anonymous-id').textContent = result.data.clientAnonymousId;
+                // Display session details — works for both initial payments and extensions
+                const isExtension = reference.startsWith('EXTEND_');
+                const anonEl = document.getElementById('anonymous-id');
+                if (anonEl) anonEl.textContent = isExtension ? 'Session extended' : (result.data.clientAnonymousId || '—');
 
-                const expiresAt = new Date(result.data.endsAt);
-                document.getElementById('expires-at').textContent = expiresAt.toLocaleString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                    hour: 'numeric',
-                    minute: '2-digit'
-                });
+                const expiryDate = result.data.expiresAt || result.data.endsAt;
+                const expiresAtEl = document.getElementById('expires-at');
+                if (expiresAtEl && expiryDate) {
+                    expiresAtEl.textContent = new Date(expiryDate).toLocaleString('en-NG', {
+                        month: 'short', day: 'numeric', year: 'numeric',
+                        hour: 'numeric', minute: '2-digit'
+                    });
+                }
 
                 feather.replace();
 
                 // Store session token in localStorage
-                localStorage.setItem('consultationSessionToken', result.data.sessionToken);
-                localStorage.setItem('consultationSessionId', result.data.sessionId);
+                if (result.data.sessionToken) localStorage.setItem('consultationSessionToken', result.data.sessionToken);
+                if (result.data.sessionId) localStorage.setItem('consultationSessionId', result.data.sessionId);
 
-                // Countdown and redirect
+                // Countdown and redirect back to session
+                const sessionIdForRedirect = result.data.sessionId ||
+                    (isExtension ? reference.split('_')[1] : null);
+
                 let countdown = 3;
                 const countdownElement = document.getElementById('countdown');
 
                 const timer = setInterval(() => {
                     countdown--;
-                    countdownElement.textContent = countdown;
+                    if (countdownElement) countdownElement.textContent = countdown;
 
                     if (countdown === 0) {
                         clearInterval(timer);
-                        window.location.href = `consultation-session.html?sessionId=${result.data.sessionId}`;
+                        window.location.href = `consultation-session.html?sessionId=${sessionIdForRedirect}`;
                     }
                 }, 1000);
 
