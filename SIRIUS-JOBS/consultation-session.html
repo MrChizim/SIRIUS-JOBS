@@ -89,7 +89,7 @@
                     </div>
                     <button id="extend-session-btn" class="hidden md:flex items-center gap-2 bg-green-50 text-green-600 hover:bg-green-100 px-4 py-2 rounded-full font-semibold text-sm transition-all">
                         <i data-feather="plus-circle" class="w-4 h-4"></i>
-                        Extend +30 min (₦1,500)
+                        Extend +1 hr (₦3,000)
                     </button>
                     <button id="end-session-btn" class="hidden md:flex items-center gap-2 bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-full font-semibold text-sm transition-all">
                         <i data-feather="x-circle" class="w-4 h-4"></i>
@@ -104,7 +104,7 @@
     <main class="pt-24 pb-6">
         <div class="container mx-auto px-4 lg:px-8 max-w-6xl">
             <div class="hidden md:flex items-center justify-end text-xs text-gray-500 mb-3">
-                Need more time? Extend mid-session in 30 minute blocks (+₦1,500 per 30 min). Pros earn ₦2,500 per hour (₦1,250 per extra 30 min).
+                Need more time? Extend mid-session in 1-hour blocks (+₦3,000 per hour).
             </div>
             <!-- Session Info Banner (Mobile) -->
             <div class="md:hidden bg-blue-50 rounded-xl p-4 mb-4">
@@ -114,13 +114,13 @@
                         <span id="time-remaining-mobile" class="font-semibold text-sm"></span>
                     </div>
                     <button id="extend-session-btn-mobile" class="text-green-600 font-semibold text-sm mr-3">
-                        +30 min
+                        +1 hr
                     </button>
                     <button id="end-session-btn-mobile" class="text-red-600 font-semibold text-sm">
                         End Session
                     </button>
                 </div>
-                <p class="text-xs text-gray-500">Extend anytime for +₦1,500 per 30 minutes.</p>
+                <p class="text-xs text-gray-500">Extend anytime for +₦3,000 per hour.</p>
             </div>
 
             <!-- Chat Container -->
@@ -176,17 +176,17 @@
 
             <div class="space-y-3 mb-6">
                 <label class="block cursor-pointer">
-                    <input type="radio" name="extend-duration" value="30" class="hidden peer" checked>
-                    <div class="border-2 border-gray-200 rounded-xl p-4 flex justify-between items-center peer-checked:border-primary peer-checked:bg-blue-50 transition-all">
-                        <span class="font-bold text-gray-900">+30 minutes</span>
-                        <span class="font-black text-primary">₦1,500</span>
-                    </div>
-                </label>
-                <label class="block cursor-pointer">
-                    <input type="radio" name="extend-duration" value="60" class="hidden peer">
+                    <input type="radio" name="extend-duration" value="60" class="hidden peer" checked>
                     <div class="border-2 border-gray-200 rounded-xl p-4 flex justify-between items-center peer-checked:border-primary peer-checked:bg-blue-50 transition-all">
                         <span class="font-bold text-gray-900">+1 hour</span>
                         <span class="font-black text-primary">₦3,000</span>
+                    </div>
+                </label>
+                <label class="block cursor-pointer">
+                    <input type="radio" name="extend-duration" value="120" class="hidden peer">
+                    <div class="border-2 border-gray-200 rounded-xl p-4 flex justify-between items-center peer-checked:border-primary peer-checked:bg-blue-50 transition-all">
+                        <span class="font-bold text-gray-900">+2 hours</span>
+                        <span class="font-black text-primary">₦6,000</span>
                     </div>
                 </label>
             </div>

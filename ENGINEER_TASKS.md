@@ -4,25 +4,51 @@
 
 ---
 
-## 🔴 CRITICAL — Fix Before Launch
+## ✅ Already Fixed (do not re-do)
 
-### 1. Fix Consultation Price per Hour
-**File:** `backend/src/controllers/consultation-payment-enhanced.controller.ts`
-
-Line 12: `const DEFAULT_PRICE_PER_HOUR = 5000;` — this is `5000 kobo = ₦50/hr`. Should be `300000` kobo (₦3,000/hr) to match frontend pricing of ₦1,500/30min.
-
-Also: the frontend sends `durationHours` as a decimal (e.g. `0.5` for 30 min). The backend validates `durationHours < MINIMUM_HOURS` where `MINIMUM_HOURS = 1` — this blocks 30-min sessions. Change `MINIMUM_HOURS = 0.5`.
+| # | Fix | Details |
+|---|-----|---------|
+| — | Session pricing set to ₦3,000/hr (300000 kobo) | `consultation-payment-enhanced.controller.ts` |
+| — | 1-hour minimum restored throughout | Model + controller |
+| — | `bookConsultation` session lookup fixed | Was querying `paymentId` (non-existent field), now uses `paymentReference` |
+| — | Email session link fixed | Was `/consultation/session/:token` (broken path), now `consultation-session.html?sessionId=` |
+| — | `RECOMMENDED_BADGE` compile error fixed | `payment.service.ts` stub |
+| — | Professional availability toggle added | `PATCH /api/professionals/availability` + `GET /api/professionals/consultations/pending` |
+| — | False advertising removed from frontend | "24/7 tracking", video calls, Flutterwave references, LinkedIn button |
+| — | Admin panel built | `sj-admin-internal.html` + `/api/admin/*` routes — see Task 6 for activation steps |
+| — | Professional session history UI added | "Consultation history" section on `professional-dashboard.html`, filter by status |
 
 ---
 
-### 2. Consultation Session: Fix `minimumDuration` in Controller
-**File:** `backend/src/controllers/consultation-payment-enhanced.controller.ts` line 143
+## 🔧 ENGINEER: One-time Render Setup Required
 
-```typescript
-minimumDuration: 1800000, // already fixed — confirm this is deployed
-```
+The following env variables must be added to the Render backend service before launch. Go to **Render Dashboard → your backend service → Environment → Add Environment Variable**.
 
-And the session model `min: 1800000` on `selectedDuration` and `currentDuration` — already fixed, confirm deployed.
+| Variable | Value | Purpose |
+|---|---|---|
+| `ADMIN_PASSWORD` | A strong password of your choice | Unlocks the hidden admin panel at `/sj-admin-internal.html` |
+
+Steps:
+1. Log into [render.com](https://render.com)
+2. Open the **SiriusJobsBackEnd** service
+3. Click **Environment** in the left sidebar
+4. Add `ADMIN_PASSWORD` with your chosen password
+5. Click **Save Changes** — Render will redeploy automatically (~2 min)
+6. Test by visiting `https://[your-frontend-domain]/sj-admin-internal.html` and entering the password
+
+**Keep `ADMIN_PASSWORD` secret — do not commit it to git.**
+
+---
+
+## 🔴 CRITICAL — Fix Before Launch
+
+### ~~1. Fix Consultation Price per Hour~~ ✅ FIXED
+`DEFAULT_PRICE_PER_HOUR = 300000` (₦3,000/hr). 1-hour minimum enforced throughout.
+
+---
+
+### ~~2. Consultation Session: Fix `minimumDuration`~~ ✅ FIXED
+All session minimums set to 3600000ms (1 hour). Deployed.
 
 ---
 
@@ -66,29 +92,23 @@ Without this, anyone can fake a payment success.
 
 ## 🟠 HIGH PRIORITY — Core Features Missing
 
-### 6. Admin Panel
-Build a separate admin dashboard (can be a protected HTML page + API endpoints).
+### ~~6. Admin Panel~~ ✅ BUILT — needs Render env var to activate
 
-**Required endpoints (all require `role: 'ADMIN'` middleware):**
+**Frontend:** `SIRIUS-JOBS/sj-admin-internal.html` — hidden page, no links to it anywhere.
+**Backend:** `backend/src/controllers/admin.controller.ts` + `backend/src/routes/admin.routes.ts`, registered at `/api/admin`.
 
-```
-GET  /api/admin/stats              — total users by type, revenue today/week/month
-GET  /api/admin/users              — paginated user list with search/filter
-GET  /api/admin/transactions       — all Paystack transactions
-GET  /api/admin/sessions           — all consultation sessions (active, expired, pending)
-GET  /api/admin/verifications      — workers/professionals awaiting ID review
-POST /api/admin/verify-id/:userId  — approve/reject ID submission
-POST /api/admin/suspend/:userId    — suspend account
-POST /api/admin/refund/:reference  — trigger Paystack refund
-```
+**What's working:**
+- Password-only login via `POST /api/admin/login` — checks `process.env.ADMIN_PASSWORD`
+- Stats: user counts by type, active/pending sessions, total revenue
+- Users: paginated list, search by name/email, filter by type, suspend/unsuspend
+- Sessions: all paid sessions, filter by status, paginated
+- Verifications: professionals with `isVerified: false`, one-click verify button
 
-**Admin user:** Add an `isAdmin: boolean` field to the User model, or add `'admin'` to `AccountType`. Seed one admin user on first deploy.
+**To activate:** Set `ADMIN_PASSWORD` env var on Render (see setup section above).
 
-**Frontend:** A single `admin.html` page with:
-- Stats cards (users, revenue, active sessions)
-- Users table with suspend/unsuspend
-- Pending ID verifications with approve/reject buttons
-- Transaction log
+**Still missing (engineer to add later):**
+- Paystack refund trigger from admin panel
+- Worker ID verification queue (currently only professional verification is shown)
 
 ---
 
