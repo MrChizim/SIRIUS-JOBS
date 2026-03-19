@@ -1,312 +1,205 @@
 # Sirius Jobs — Engineer Task List
 
-> Priority-ordered list of features to build and bugs to fix. Items marked **CRITICAL** are either broken or blocking users.
+Last updated: March 2026. Tick off tasks as you complete them.
 
 ---
 
-## ✅ Already Fixed (do not re-do)
+## BEFORE YOU TOUCH ANYTHING — Read This First
 
-| # | Fix | Details |
-|---|-----|---------|
-| — | Session pricing set to ₦3,000/hr (300000 kobo) | `consultation-payment-enhanced.controller.ts` |
-| — | 1-hour minimum restored throughout | Model + controller |
-| — | `bookConsultation` session lookup fixed | Was querying `paymentId` (non-existent field), now uses `paymentReference` |
-| — | Email session link fixed | Was `/consultation/session/:token` (broken path), now `consultation-session.html?sessionId=` |
-| — | `RECOMMENDED_BADGE` compile error fixed | `payment.service.ts` stub |
-| — | Professional availability toggle added | `PATCH /api/professionals/availability` + `GET /api/professionals/consultations/pending` |
-| — | False advertising removed from frontend | "24/7 tracking", video calls, Flutterwave references, LinkedIn button |
-| — | Admin panel built | `sj-admin-internal.html` + `/api/admin/*` routes — see Task 6 for activation steps |
-| — | Professional session history UI added | "Consultation history" section on `professional-dashboard.html`, filter by status |
+The codebase has two separate repos:
+- **Frontend** — `SIRIUS-JOBS/` — static HTML, deployed on Vercel
+- **Backend** — `SiriusJobsBackEnd/` — TypeScript/Express/MongoDB, deployed on Render
+
+All consultation payments go through Paystack. Sessions are text-only (no calls). The platform takes ₦500 flat per session; professionals earn the rest.
 
 ---
 
-## 🔧 ENGINEER: One-time Render Setup Required
+## Step 1 — Add These Environment Variables on Render RIGHT NOW
 
-The following env variables must be added to the Render backend service before launch. Go to **Render Dashboard → your backend service → Environment → Add Environment Variable**.
+Log into Render → your backend service → Environment → Add each one:
 
-| Variable | Value | Purpose |
-|---|---|---|
-| `ADMIN_PASSWORD` | A strong password of your choice | Unlocks the hidden admin panel at `/sj-admin-internal.html` |
+| Variable | What to put |
+|---|---|
+| `ADMIN_PASSWORD` | A strong password you pick — this is how you log into the admin panel |
+| `PAYSTACK_SECRET_KEY` | Your live Paystack secret key |
+| `FRONTEND_URL` | Your Vercel frontend URL (e.g. `https://siriusjobs.vercel.app`) |
 
-Steps:
-1. Log into [render.com](https://render.com)
-2. Open the **SiriusJobsBackEnd** service
-3. Click **Environment** in the left sidebar
-4. Add `ADMIN_PASSWORD` with your chosen password
-5. Click **Save Changes** — Render will redeploy automatically (~2 min)
-6. Test by visiting `https://[your-frontend-domain]/sj-admin-internal.html` and entering the password
-
-**Keep `ADMIN_PASSWORD` secret — do not commit it to git.**
+After saving, Render redeploys in ~2 minutes. These are **not in git** — set them manually.
 
 ---
 
-## 🔴 CRITICAL — Fix Before Launch
+## Step 2 — Things Already Built (Do Not Rebuild)
 
-### ~~1. Fix Consultation Price per Hour~~ ✅ FIXED
-`DEFAULT_PRICE_PER_HOUR = 300000` (₦3,000/hr). 1-hour minimum enforced throughout.
+These are done and deployed. Don't touch unless something breaks.
 
----
-
-### ~~2. Consultation Session: Fix `minimumDuration`~~ ✅ FIXED
-All session minimums set to 3600000ms (1 hour). Deployed.
-
----
-
-### 3. Worker Subscription — Remove or Keep?
-The `WORKER_SUBSCRIPTION: 1000` payment amount is in config but there is no `/subscribe` or `/activate-subscription` endpoint. Either:
-- **Build it:** POST `/api/workers/subscribe` → Paystack init → webhook → set `subscription.status = 'active'`, `subscription.expiresAt = now + 30 days`
-- **Remove it from the frontend** until you're ready
-
-Current state: workers can pay but nothing activates their subscription.
+| What | Where |
+|---|---|
+| Consultation session pricing — ₦3,000/hr, 1-hour minimum | `consultation-payment-enhanced.controller.ts` |
+| Professional availability toggle | `PATCH /api/professionals/availability` |
+| Pending sessions widget on pro dashboard | `GET /api/professionals/consultations/pending` |
+| Admin panel (hidden page) | `sj-admin-internal.html` — login with `ADMIN_PASSWORD` |
+| Professional session history | "Consultation history" section on `professional-dashboard.html` |
+| Fixed: session lookup was using wrong field | `bookConsultation` now queries `paymentReference` |
+| Fixed: email link was broken path | Now links to `consultation-session.html?sessionId=` |
+| Fixed: TypeScript compile error | `RECOMMENDED_BADGE` removed from `payment.service.ts` |
 
 ---
 
-### 4. Professional Payout — Not Implemented
-After a consultation session completes, the professional is owed `(session amount - ₦500 platform fee)`. There is NO payout/withdrawal system.
+## Step 3 — Critical Bugs (Fix Before Launch)
 
-**Need to build:**
-- `ProfessionalProfile` should track `walletBalance` (pending payout)
-- When a session is `completed`, add `(paymentAmount - 500)` to professional's walletBalance
-- Professional dashboard should show wallet balance
-- Withdrawal endpoint: POST `/api/professionals/withdraw` — validates bank account, triggers Paystack Transfer API
-- Paystack Transfer requires: recipient code (create via `/transferrecipient`), then POST `/transfer`
+### BUG A — Anyone can fake a payment success
+Paystack sends webhooks to your server when payments complete. You are not verifying that the webhook actually came from Paystack. Someone could POST a fake webhook and get a free session.
 
----
+**Fix:** Add this check at the top of your webhook handler:
 
-### 5. Paystack Webhook — Verify HMAC Signature
-**File:** Find your webhook handler (likely in routes or a dedicated webhook controller)
-
-Every incoming Paystack webhook must be verified:
 ```typescript
 import crypto from 'crypto';
-const hash = crypto.createHmac('sha512', process.env.PAYSTACK_SECRET_KEY!)
+
+const hash = crypto
+  .createHmac('sha512', process.env.PAYSTACK_SECRET_KEY!)
   .update(JSON.stringify(req.body))
   .digest('hex');
+
 if (hash !== req.headers['x-paystack-signature']) {
   return res.status(400).send('Invalid signature');
 }
 ```
-Without this, anyone can fake a payment success.
+
+**Where:** Find your Paystack webhook route (look for `/webhook` in the routes files).
 
 ---
 
-## 🟠 HIGH PRIORITY — Core Features Missing
+### BUG B — Worker subscription payment does nothing
+Workers can pay a subscription fee but nothing happens after payment — no subscription is activated.
 
-### ~~6. Admin Panel~~ ✅ BUILT — needs Render env var to activate
-
-**Frontend:** `SIRIUS-JOBS/sj-admin-internal.html` — hidden page, no links to it anywhere.
-**Backend:** `backend/src/controllers/admin.controller.ts` + `backend/src/routes/admin.routes.ts`, registered at `/api/admin`.
-
-**What's working:**
-- Password-only login via `POST /api/admin/login` — checks `process.env.ADMIN_PASSWORD`
-- Stats: user counts by type, active/pending sessions, total revenue
-- Users: paginated list, search by name/email, filter by type, suspend/unsuspend
-- Sessions: all paid sessions, filter by status, paginated
-- Verifications: professionals with `isVerified: false`, one-click verify button
-
-**To activate:** Set `ADMIN_PASSWORD` env var on Render (see setup section above).
-
-**Still missing (engineer to add later):**
-- Paystack refund trigger from admin panel
-- Worker ID verification queue (currently only professional verification is shown)
+**Fix options (pick one):**
+- Build the subscription activation: `POST /api/workers/subscribe` → init Paystack → on webhook → set `subscription.status = 'active'` and `subscription.expiresAt = now + 30 days`
+- Or remove the subscription button from `worker-dashboard.html` until you're ready to build it
 
 ---
 
-### 7. Professionals: Consultation History Endpoint
-**Currently missing from backend.** Frontend `professional-dashboard.html` likely tries to call this.
+### BUG C — Two Professional models conflict
+There are two files: `models/Professional.ts` (uses `'DOCTOR' | 'LAWYER' | 'THERAPIST'` uppercase) and `models/ProfessionalProfile.model.ts` (uses `'doctor' | 'lawyer' | 'therapist'` lowercase). Only one should exist.
 
+**Fix:** Decide which model is actually used throughout the controllers, delete the other one, update any references.
+
+---
+
+## Step 4 — Core Features Not Yet Built
+
+### FEATURE 1 — Professionals never receive email when booked
+When a client pays and books a session, the professional has no idea. They have to check their dashboard manually.
+
+The email service (`email.service.ts`) is already set up but only does `console.log` — it needs a real email provider plugged in.
+
+**How to fix:**
+1. Sign up for [Resend](https://resend.com) — free 3,000 emails/month, easiest to set up
+2. Add `RESEND_API_KEY` to Render env vars
+3. Install: `npm install resend`
+4. Replace the `sendEmail()` function body in `backend/src/services/email.service.ts`:
+```typescript
+import { Resend } from 'resend';
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export const sendEmail = async (to: string, subject: string, body: string) => {
+  await resend.emails.send({
+    from: 'Sirius Jobs <noreply@yourdomain.com>',
+    to,
+    subject,
+    html: body,
+  });
+};
 ```
-GET /api/professionals/consultations?status=completed&page=1&limit=20
-```
-
-Returns: list of sessions where `session.professionalId === req.user._id`, with client username, duration, amount earned, date.
+5. Then add a call to notify the professional in `verifyConsultationPayment()` in `consultation-payment-enhanced.controller.ts` — after `session.startSession()`, look up the professional's User record and send them an email.
 
 ---
 
-### 8. Google Sign-In / Sign-Up
-Use **Passport.js** with `passport-google-oauth20`.
+### FEATURE 2 — Professionals cannot withdraw earnings
+Session payments go through Paystack to you, but professionals have no way to request a payout. The dashboard shows "₦0 available to withdraw" but nothing happens when they click it.
 
-Steps:
+**What needs building:**
+1. Add `walletBalance: Number` field to `ProfessionalProfile.model.ts`
+2. When a session expires/completes, add `(paymentAmount - 50000)` (kobo) to the professional's `walletBalance` — do this in a webhook handler or a scheduled job
+3. Build `POST /api/professionals/withdraw`:
+   - Create Paystack transfer recipient using their saved bank details: `POST https://api.paystack.co/transferrecipient`
+   - Initiate transfer: `POST https://api.paystack.co/transfer`
+   - Deduct from `walletBalance` only after Paystack confirms
+4. Before allowing withdrawal, verify their bank account: `GET https://api.paystack.co/bank/resolve?account_number=...&bank_code=...`
+
+---
+
+### FEATURE 3 — Employer ID upload not wired up
+The frontend warns employers they need to upload an ID, but there's no backend endpoint to receive it.
+
+**What needs building:**
+- `POST /api/employers/upload-id` — same structure as the existing worker ID upload
+- On admin approval (via admin panel): set `governmentId.verifiedAt = new Date()` on employer profile
+- Email the employer: "Your ID has been verified. You can now post jobs."
+
+---
+
+### FEATURE 4 — Google Sign-In not implemented
+Login and register pages have no Google button. Users have to create accounts manually.
+
+**How to build:**
 1. `npm install passport passport-google-oauth20 @types/passport @types/passport-google-oauth20`
-2. Create Google OAuth app at console.cloud.google.com — get `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
-3. Add env vars to Render
-4. Routes:
-   - `GET /api/auth/google` — redirect to Google
-   - `GET /api/auth/google/callback` — handle callback, create/find user, return JWT
-5. On first Google login: user needs to choose their account type (worker/employer/etc.) — redirect to an onboarding page
-6. Frontend: add "Continue with Google" button on `login.html` and `register.html`
+2. Create a Google OAuth app at [console.cloud.google.com](https://console.cloud.google.com) → get `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
+3. Add both to Render env vars
+4. Add routes:
+   - `GET /api/auth/google` — redirects to Google login
+   - `GET /api/auth/google/callback` — creates or finds user, returns JWT
+5. On first Google login, if no `accountType` set yet, redirect to an onboarding page where user picks worker/employer/professional/merchant
+6. Add "Continue with Google" button to `login.html` and `register.html`
 
 ---
 
-### 9. Email Notifications
-Currently the backend may send emails for consultation sessions (session token delivery). Verify this is working. Also add:
+### FEATURE 5 — Admin panel needs Paystack refund button
+Currently if a client complains a professional never showed up, you have to log into Paystack manually to issue a refund.
 
-- **Welcome email** on registration
-- **Job application received** (to employer)
-- **You have a new consultation booking** (to professional)
-- **Session starting soon** reminder (15 min before expiry — use a cron job or delayed job queue)
-- **Payment confirmed** receipt
-
-Use **Nodemailer** with Gmail App Password or **Resend** (free 3,000 emails/month, simpler setup).
-
----
-
-### 10. Real ID Verification — Manual vs Automatic
-
-**Current state (manual review):** Workers/professionals upload ID documents. Admin reviews in the admin panel and clicks "Approve". This sets `governmentId.verifiedAt = new Date()` and emails the user.
-
-**How to make it automatic (options):**
-
-**Option A — Smile Identity (recommended for Nigeria)**
-- Nigerian KYC API: verifies NIN, BVN, driver's licence, passport against NIMC/VIO databases in real time
-- `npm install smile-id-core` or use their REST API
-- On ID upload: call Smile Identity verify endpoint with the ID number + type
-- If verified: set `governmentId.verifiedAt = new Date()` immediately, no human needed
-- Cost: ~$0.30–$0.50 per verification (pay-as-you-go)
-- Docs: smileidentity.com
-
-**Option B — Prembly (cheaper, Nigerian-focused)**
-- Similar to Smile Identity, supports NIN, BVN, CAC, driver's licence
-- REST API: `POST https://api.prembly.com/identitypass/verification/nin`
-- Cost: lower than Smile Identity
-- Docs: prembly.com/identitypass
-
-**Option C — Manual admin review (current fallback)**
-- Keep as fallback when APIs are unavailable
-- Admin panel shows a queue of pending verifications
-- Admin views the uploaded document image, clicks Approve or Reject
-
-**Recommended:** Start with Option C (already described in task 6), then add Prembly for NIN auto-verify once you have budget. Employers can be verified automatically via NIN; professionals require additional licence checks that may still need manual review.
-
-**Need:**
-- Employer ID upload endpoint: `POST /api/employers/upload-id` (same structure as worker upload)
-- On approval: set `governmentId.verifiedAt = new Date()` on employer profile
-- Email the user: "Your ID has been verified. You can now post jobs."
-- The verified flag blocks job posting until set
-
----
-
-### 11. Consultation Session: Professional Must Accept Booking
-Currently a session becomes `active` the moment the client pays. The professional doesn't know they have a booking until they check their dashboard.
-
-**Consider adding:**
-- Session status: `pending_professional` → professional accepts → `active`
-- Notify professional via email when a booking is made
-- Professional has 24h to accept; if not, auto-cancel and refund client
-- OR: simpler — just email/notify the professional and let session activate immediately, but send them a notification
-
----
-
-## 🟡 MEDIUM PRIORITY — Quality of Life
-
-### 12. Consultation: Dispute & Fraud Handling
-If a client claims a professional never showed up:
-
-1. Client emails `support@siriusjobs.com` within 48h
-2. Admin checks session record (was it `active`? did `messageCount > 0`?)
-3. If `messageCount === 0` and session shows no activity → issue refund via Paystack Refund API
-4. If professional was active → no refund; flag professional account
-
-**Paystack Refund API:**
-```
-POST https://api.paystack.co/refund
-{ "transaction": "<reference>" }
+**Add to admin panel backend (`admin.controller.ts`):**
+```typescript
+// POST /api/admin/refund
+export const issueRefund = asyncHandler(async (req: any, res: Response) => {
+  const { reference } = req.body;
+  const response = await axios.post(
+    'https://api.paystack.co/refund',
+    { transaction: reference },
+    { headers: { Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}` } }
+  );
+  return sendSuccess(res, response.data, 'Refund initiated');
+});
 ```
 
-Add this endpoint: `POST /api/admin/refund` (admin only).
+Add a "Refund" button per session row in `sj-admin-internal.html`.
 
 ---
 
-### 13. Consultation: Reduce Paystack Fees
-Paystack charges ~1.5% + ₦100 per transaction. On a ₦1,500 session: ~₦122 fee (8%). Options:
+## Step 5 — Smaller Tasks (Do When You Have Time)
 
-**Option A — Minimum session price:** Enforce ₦3,000 minimum (2 hours or 1 hour of a higher-rate professional). Fees become ~3-4%.
-
-**Option B — Monthly wallet top-up:** Clients top up a balance (e.g. ₦10,000 at once). Each session deducts from wallet. One Paystack charge for many sessions. Requires building a wallet system.
-
-**Option C — Accept the fees** — at ₦1,500/session, you keep ₦878 (₦500 platform fee − ₦122 Paystack fee + whatever the ₦500 fee covers). This is your cost of doing business.
-
-Recommended: **Option A** in the short term. Option B when you have enough repeat consultation clients.
-
----
-
-### 14. Bank Account Verification
-Before allowing withdrawal, verify professional's bank account via Paystack:
-```
-GET https://api.paystack.co/bank/resolve?account_number=...&bank_code=...
-```
-Also fetch list of banks: `GET https://api.paystack.co/bank`
-
-**Add to professional profile:**
-- `bankName`, `bankCode`, `accountNumber`, `accountName` (returned by Paystack resolve)
-- Verified flag: only allow withdrawal when bank is verified
+| Task | Detail |
+|---|---|
+| **Merchant listing expiry** | `GET /api/merchants/public` should filter out merchants where `subscriptionExpiresAt < now`. Check if this is already done — if not, add the filter. |
+| **Job application status** | Can employers accept/reject applications? Add `PATCH /api/jobs/:jobId/applications/:applicationId` with `{ status: 'accepted' \| 'rejected' }` and email the worker. |
+| **Meta tags** | Every HTML page has `og:url` set to `example.com`. Replace with the real domain. |
+| **Consultation page — availability filter** | `consultations.html` should hide professionals where `isAvailableForConsultation: false`. The field exists; just add it to the `getProfessionals()` query filter when the client requests available-only. |
+| **Session history endpoint** | `professional-dashboard.html` calls `GET /api/professionals/sessions?status=active,expired,...`. The backend `getMySessions()` only accepts a single status string. Either update the controller to accept comma-separated values, or make the frontend call once per status and merge. |
 
 ---
 
-### 15. Worker Dashboard: Fix Active Jobs Count
-The worker dashboard shows "Active Jobs" — this should count employer job posts where the worker has an accepted application. Currently unclear if this query is implemented. Verify the `/api/workers/dashboard` or `/api/workers/me` response includes this count.
+## Step 6 — Future / When Ready
+
+- **Push notifications** — notification bell in navbar for new bookings, messages, payments
+- **Google Maps / location** — filter workers and merchants by city or area
+- **Ratings on job listings** — employers rate workers after a hire; workers rate employers
+- **Marketplace reviews** — customers review merchants
+- **"Session starting soon" reminder** — email client and professional 15 min before session expires (needs a cron job — use `node-cron` or Render cron jobs)
 
 ---
 
-### 16. Job Application Flow — Status Updates
-Employers can post jobs and workers can apply, but can employers accept/reject applications? Add:
-```
-PATCH /api/jobs/:jobId/applications/:applicationId
-{ "status": "accepted" | "rejected" | "shortlisted" }
-```
-Notify worker by email when status changes.
+## Known Broken References (Low Risk, Clean Up Anytime)
 
----
-
-### 17. Merchant: Listing Expiry Check
-When a merchant's plan expires, their listing should stop appearing in the marketplace.
-
-Check: Does `GET /api/merchants/public` filter by `subscriptionExpiresAt > now`? If not, add that filter.
-
----
-
-## 🟢 LOW PRIORITY / FUTURE
-
-### 18. Reviews & Ratings
-- Workers: employers can rate after a hire
-- Professionals: clients can rate after a completed consultation
-- Merchants: customers can rate/leave reviews
-- Show average rating on listing cards
-
-### 19. Search & Filters
-- `findworker.html` — filter by skill, location, price range, ID verified only
-- `consultations.html` — filter by professional type (doctor/lawyer/therapist), availability
-- `marketplace.html` — filter by category, location
-
-### 20. Push Notifications / In-App Notifications
-When a user gets a message, booking, or payment confirmation, show a notification bell in the navbar.
-
----
-
-## 🔧 Known Bugs to Clean Up
-
-| # | File | Issue |
-|---|------|-------|
-| 1 | `backend/src/` (8 files) | `recommendedBadge` logic is dormant — remove the DB field, model enum value, and all references safely |
-| 2 | `consultation-payment-enhanced.controller.ts` | Uses raw `axios` + manual `PAYSTACK_SECRET_KEY`. Should use the shared `paystackClient` from `config/paystack.ts` for consistency |
-| 3 | `verify.html` footer | Links to "Verify Credentials" — update footer across all pages to link to `verify.html` only if you want workers to see it, otherwise remove it from public navigation |
-| 4 | All pages | `example.com` in `og:url` and `canonical` meta tags — replace with real domain |
-| 5 | `backend/src/models/Professional.ts` | Has uppercase `'DOCTOR' | 'LAWYER' | 'THERAPIST'` but `ProfessionalProfile.model.ts` uses lowercase `'doctor' | 'lawyer' | 'therapist'`. There are two different models — confirm which one is used where and consolidate |
-
----
-
-## Environment Variables Needed (Add to Render)
-
-```
-PAYSTACK_SECRET_KEY=<your_paystack_secret_key>
-GOOGLE_CLIENT_ID=...          (for Google OAuth)
-GOOGLE_CLIENT_SECRET=...      (for Google OAuth)
-EMAIL_USER=...                (for Nodemailer)
-EMAIL_PASS=...                (app password, not account password)
-ADMIN_SEED_EMAIL=...          (email for first admin user)
-ADMIN_SEED_PASSWORD=...       (password for first admin user)
-```
-
----
-
-*Document prepared: March 2026. Update this file as tasks are completed.*
+| File | Issue |
+|---|---|
+| `backend/src/controllers/consultation-payment-enhanced.controller.ts` | Uses raw `axios` with `PAYSTACK_SECRET_KEY` directly instead of the shared `paystackClient` from `config/paystack.ts`. Works fine but inconsistent. |
+| All HTML pages | `<link rel="canonical">` and `og:url` still say `example.com` |
+| `backend/src/models/Professional.ts` | Duplicate of `ProfessionalProfile.model.ts` with different casing — one should be deleted |
