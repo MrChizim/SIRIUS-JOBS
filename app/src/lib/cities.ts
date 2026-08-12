@@ -1,0 +1,17 @@
+export const NIGERIAN_CITIES = [
+  'Lagos',
+  'Port Harcourt',
+  'Abuja',
+  'Ibadan',
+  'Kano',
+  'Benin City',
+  'Enugu',
+  'Kaduna',
+  'Warri',
+  'Uyo',
+  'Owerri',
+  'Calabar',
+  'Abeokuta',
+  'Onitsha',
+  'Jos',
+] as const;
