@@ -4,6 +4,12 @@ import { PlusCircle, Search } from 'lucide-react';
 export default function ClosingCta() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-primary via-blue-600 to-blue-800 py-24 text-white lg:py-32">
+      <img
+        src="https://images.unsplash.com/photo-1784815032504-a12c6e243ad1?w=1600&q=70&auto=format&fit=crop"
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/92 via-blue-600/90 to-blue-800/92" />
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 h-96 w-96 rounded-full bg-white blur-3xl" />
         <div className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-white blur-3xl" />

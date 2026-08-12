@@ -21,6 +21,12 @@ export default function ServicesGrid() {
 
         <div className="grid auto-rows-fr grid-cols-1 gap-6 md:grid-cols-6">
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-blue-700 p-8 text-white md:col-span-4 md:row-span-2 lg:p-12">
+            <img
+              src="https://images.unsplash.com/photo-1647381518264-97ff1835026f?w=1200&q=70&auto=format&fit=crop"
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/85 to-blue-700/40" />
             <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
             <div className="relative z-10 flex h-full flex-col justify-between">
               <div className="space-y-6">
@@ -64,6 +70,12 @@ export default function ServicesGrid() {
           </div>
 
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 to-gray-800 p-8 text-white md:col-span-2">
+            <img
+              src="https://images.unsplash.com/photo-1621905252472-943afaa20e20?w=800&q=70&auto=format&fit=crop"
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-gray-900/40" />
             <div className="absolute right-0 bottom-0 h-32 w-32 rounded-full bg-primary/20 blur-2xl" />
             <div className="relative z-10 flex h-full flex-col justify-between">
               <div className="space-y-4">

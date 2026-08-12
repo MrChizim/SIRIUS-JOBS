@@ -39,19 +39,24 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="relative">
-            <div className="bento-card gradient-mesh rounded-3xl border border-gray-200/50 p-8 shadow-xl">
-              <div className="animate-float space-y-4">
-                <div className="rounded-2xl bg-white p-5 shadow-lg">
-                  <p className="text-sm font-semibold text-gray-500">New task nearby</p>
-                  <p className="mt-1 text-lg font-bold text-gray-900">Fix leaking kitchen sink</p>
-                  <p className="mt-1 text-sm text-primary">3 bids so far</p>
-                </div>
-                <div className="rounded-2xl bg-primary p-5 text-white shadow-lg">
-                  <p className="text-sm font-semibold text-blue-100">Payment held in escrow</p>
-                  <p className="mt-1 text-lg font-bold">Released when you confirm</p>
-                </div>
-              </div>
+          <div className="relative px-4 pt-8 pb-6 sm:px-6">
+            <div className="bento-card relative overflow-hidden rounded-3xl border border-gray-200/50 shadow-xl">
+              <img
+                src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=900&q=80&auto=format&fit=crop"
+                alt="A tradesperson ready to work"
+                className="h-[420px] w-full object-cover lg:h-[520px]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+            </div>
+
+            <div className="animate-float absolute -bottom-4 left-0 w-60 rounded-2xl bg-white p-5 shadow-lg sm:left-2">
+              <p className="text-sm font-semibold text-gray-500">New task nearby</p>
+              <p className="mt-1 text-lg font-bold text-gray-900">Fix leaking kitchen sink</p>
+              <p className="mt-1 text-sm text-primary">3 bids so far</p>
+            </div>
+            <div className="absolute top-0 right-0 w-56 rounded-2xl bg-primary p-5 text-white shadow-lg sm:right-2">
+              <p className="text-sm font-semibold text-blue-100">Payment held in escrow</p>
+              <p className="mt-1 text-lg font-bold">Released when you confirm</p>
             </div>
           </div>
         </div>
