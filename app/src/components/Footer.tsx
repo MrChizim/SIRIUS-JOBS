@@ -10,11 +10,9 @@ const platformLinks = [
 ];
 
 const supportLinks = [
-  { to: '/contact', label: 'Contact' },
-  { to: '/faq', label: 'FAQs' },
-  { to: '/privacy-policy', label: 'Privacy Policy' },
-  { to: '/terms', label: 'Terms of Service' },
-  { to: '/verify', label: 'Verify Credentials' },
+  { to: '/about#faq', label: 'FAQs' },
+  { to: '/about#privacy', label: 'Privacy Policy' },
+  { to: '/about#terms', label: 'Terms of Service' },
 ];
 
 export default function Footer() {

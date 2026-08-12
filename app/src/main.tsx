@@ -13,6 +13,7 @@ import PostTask from './pages/PostTask';
 import BrowseTasks from './pages/BrowseTasks';
 import TaskDetail from './pages/TaskDetail';
 import MyTasks from './pages/MyTasks';
+import About from './pages/About';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -40,12 +41,7 @@ createRoot(document.getElementById('root')!).render(
               }
             />
             <Route path="for-professionals" element={<ComingSoon title="For Professionals" />} />
-            <Route path="about" element={<ComingSoon title="About" />} />
-            <Route path="contact" element={<ComingSoon title="Contact" />} />
-            <Route path="faq" element={<ComingSoon title="FAQs" />} />
-            <Route path="privacy-policy" element={<ComingSoon title="Privacy Policy" />} />
-            <Route path="terms" element={<ComingSoon title="Terms of Service" />} />
-            <Route path="verify" element={<ComingSoon title="Verify Credentials" />} />
+            <Route path="about" element={<About />} />
             <Route path="login" element={<SignIn />} />
             <Route path="sign-up" element={<SignUp />} />
           </Route>
