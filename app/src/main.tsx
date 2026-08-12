@@ -24,14 +24,7 @@ createRoot(document.getElementById('root')!).render(
             <Route index element={<Home />} />
             <Route path="browse-tasks" element={<BrowseTasks />} />
             <Route path="tasks/:taskId" element={<TaskDetail />} />
-            <Route
-              path="post-a-task"
-              element={
-                <RequireAuth>
-                  <PostTask />
-                </RequireAuth>
-              }
-            />
+            <Route path="post-a-task" element={<PostTask />} />
             <Route
               path="my-tasks"
               element={
