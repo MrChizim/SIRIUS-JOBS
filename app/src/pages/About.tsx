@@ -23,11 +23,11 @@ const faqs = [
   },
   {
     q: 'How do I become a verified tasker or professional?',
-    a: "Verification (NIN and ID review, plus a small one-time fee) is coming soon. Once live, a Verified Badge on your profile signals to posters that your identity has been checked.",
+    a: "From your account Settings, submit your NIN and a photo of your ID along with a small one-time fee. Once our team reviews and approves it, a Verified Badge appears on your profile, signaling to posters that your identity has been checked.",
   },
   {
     q: 'What if something goes wrong with a task?',
-    a: "Reach out through the in-app chat with the other party first. We're building a formal dispute process for cases that can't be resolved directly — in the meantime, contact us via WhatsApp or email in the footer.",
+    a: "Reach out through the in-app chat with the other party first. If that doesn't resolve it, either side can raise a dispute on the task while it's still in progress, and our team will review it and decide how the payment held in escrow should be handled.",
   },
 ];
 

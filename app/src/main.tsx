@@ -5,7 +5,6 @@ import './index.css';
 import { AuthProvider } from './lib/AuthContext';
 import Layout from './components/Layout';
 import RequireAuth from './components/RequireAuth';
-import ComingSoon from './components/ComingSoon';
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
@@ -17,6 +16,7 @@ import Settings from './pages/Settings';
 import PublicProfile from './pages/PublicProfile';
 import AdminBadges from './pages/AdminBadges';
 import AdminDisputes from './pages/AdminDisputes';
+import ForProfessionals from './pages/ForProfessionals';
 import About from './pages/About';
 
 createRoot(document.getElementById('root')!).render(
@@ -45,7 +45,7 @@ createRoot(document.getElementById('root')!).render(
                 </RequireAuth>
               }
             />
-            <Route path="for-professionals" element={<ComingSoon title="For Professionals" />} />
+            <Route path="for-professionals" element={<ForProfessionals />} />
             <Route path="users/:userId" element={<PublicProfile />} />
             <Route
               path="admin/badges"
