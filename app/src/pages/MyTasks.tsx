@@ -9,6 +9,7 @@ import TaskChat from '../components/TaskChat';
 import Avatar from '../components/Avatar';
 import RaiseDisputeForm from '../components/RaiseDisputeForm';
 import DisputeStatusBanner from '../components/DisputeStatusBanner';
+import EditTaskForm from '../components/EditTaskForm';
 import type { Task } from '../lib/types';
 
 type BidRow = {
@@ -28,6 +29,13 @@ type BidRow = {
 
 function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: string }) {
   const [status, setStatus] = useState(task.status);
+  const [taskDetails, setTaskDetails] = useState({
+    title: task.title,
+    description: task.description,
+    budget_min: task.budget_min,
+    budget_max: task.budget_max,
+  });
+  const [editing, setEditing] = useState(false);
   const [bids, setBids] = useState<BidRow[] | null>(null);
   const [acceptingId, setAcceptingId] = useState<string | null>(null);
   const [completing, setCompleting] = useState(false);
@@ -140,7 +148,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>
           <Link to={`/tasks/${task.id}`} className="font-bold text-gray-900 hover:text-primary">
-            {task.title}
+            {taskDetails.title}
           </Link>
           <p className="mt-1 text-sm text-gray-500">{task.city}</p>
         </div>
@@ -148,6 +156,14 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
           <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-bold text-gray-600 capitalize">
             {status.replace('_', ' ')}
           </span>
+          {status === 'open' && bids?.length === 0 && (
+            <button
+              onClick={() => setEditing((e) => !e)}
+              className="rounded-full border border-gray-300 px-3 py-1 text-xs font-bold text-gray-500 transition-colors hover:border-primary hover:text-primary"
+            >
+              {editing ? 'Close' : 'Edit'}
+            </button>
+          )}
           {status === 'open' && (
             <button
               onClick={handleCancel}
@@ -162,6 +178,19 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
 
       {error && (
         <div className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+      )}
+
+      {editing && (
+        <div className="mb-4">
+          <EditTaskForm
+            task={{ ...task, ...taskDetails }}
+            onSaved={(updates) => {
+              setTaskDetails(updates);
+              setEditing(false);
+            }}
+            onCancel={() => setEditing(false)}
+          />
+        </div>
       )}
 
       {status === 'in_progress' && acceptedBid && (
