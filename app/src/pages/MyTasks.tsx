@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ClipboardList, User, CheckCircle2, Star, BadgeCheck } from 'lucide-react';
+import { ClipboardList, CheckCircle2, Star, BadgeCheck } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/AuthContext';
 import { startBidAcceptance, completeEscrowTask } from '../lib/escrow';
 import ReviewForm from '../components/ReviewForm';
 import TaskChat from '../components/TaskChat';
+import Avatar from '../components/Avatar';
 import type { Task } from '../lib/types';
 
 type BidRow = {
@@ -20,6 +21,7 @@ type BidRow = {
   tasker_rating_count: number;
   tasker_completion_count: number;
   tasker_verified_badge: boolean;
+  tasker_avatar_url: string | null;
 };
 
 function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: string }) {
@@ -37,7 +39,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
     const { data } = await supabase
       .from('bids')
       .select(
-        'id, tasker_id, amount, message, status, created_at, profiles(full_name, rating_avg, rating_count, completion_count, verified_badge)',
+        'id, tasker_id, amount, message, status, created_at, profiles(full_name, rating_avg, rating_count, completion_count, verified_badge, avatar_url)',
       )
       .eq('task_id', task.id)
       .order('amount', { ascending: true });
@@ -50,6 +52,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
           rating_count: number;
           completion_count: number;
           verified_badge: boolean;
+          avatar_url: string | null;
         } | null;
         return {
           ...b,
@@ -58,6 +61,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
           tasker_rating_count: profile?.rating_count ?? 0,
           tasker_completion_count: profile?.completion_count ?? 0,
           tasker_verified_badge: profile?.verified_badge ?? false,
+          tasker_avatar_url: profile?.avatar_url ?? null,
         };
       }),
     );
@@ -222,9 +226,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <User className="h-4 w-4" />
-                </span>
+                <Avatar url={bid.tasker_avatar_url} name={bid.tasker_name} size={40} />
                 <div>
                   <p className="flex items-center gap-1.5 font-semibold text-gray-900">
                     <Link to={`/users/${bid.tasker_id}`} className="hover:text-primary hover:underline">

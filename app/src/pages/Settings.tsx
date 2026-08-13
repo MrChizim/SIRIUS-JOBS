@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
-import { UserCircle2, CheckCircle2, Landmark, BadgeCheck } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { UserCircle2, CheckCircle2, Landmark, BadgeCheck, Camera } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/AuthContext';
+import { uploadAvatar } from '../lib/avatar';
 import BankAccountForm from '../components/BankAccountForm';
 import VerifiedBadgeForm from '../components/VerifiedBadgeForm';
+import Avatar from '../components/Avatar';
 import { fetchMyBadgeRequest } from '../lib/badge';
 
 type ProfileRow = {
@@ -13,6 +15,7 @@ type ProfileRow = {
   bank_account_name: string | null;
   bank_account_number: string | null;
   verified_badge: boolean;
+  avatar_url: string | null;
 };
 
 type BadgeRequestRow = {
@@ -28,13 +31,18 @@ export default function Settings() {
   const [badgeRequest, setBadgeRequest] = useState<BadgeRequestRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [editingBank, setEditingBank] = useState(false);
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [avatarError, setAvatarError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!user) return;
 
     supabase
       .from('profiles')
-      .select('full_name, phone, city, bank_account_name, bank_account_number, verified_badge')
+      .select(
+        'full_name, phone, city, bank_account_name, bank_account_number, verified_badge, avatar_url',
+      )
       .eq('id', user.id)
       .maybeSingle()
       .then(({ data }) => {
@@ -44,6 +52,24 @@ export default function Settings() {
 
     fetchMyBadgeRequest().then(setBadgeRequest);
   }, [user]);
+
+  async function handleAvatarChange(file: File | undefined) {
+    if (!file || !user) return;
+
+    setAvatarError(null);
+    setAvatarUploading(true);
+
+    try {
+      const url = await uploadAvatar(file);
+      const { error } = await supabase.from('profiles').update({ avatar_url: url }).eq('id', user.id);
+      if (error) throw new Error(error.message);
+      setProfile((p) => (p ? { ...p, avatar_url: url } : p));
+    } catch (err) {
+      setAvatarError(err instanceof Error ? err.message : 'Could not update your profile picture.');
+    } finally {
+      setAvatarUploading(false);
+    }
+  }
 
   if (loading) {
     return (
@@ -66,6 +92,34 @@ export default function Settings() {
             <UserCircle2 className="h-5 w-5 text-primary" />
             <h2 className="text-lg font-bold text-gray-900">Profile</h2>
           </div>
+
+          <div className="mb-6 flex items-center gap-4">
+            <div className="relative">
+              <Avatar url={profile?.avatar_url} name={profile?.full_name} size={72} />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={avatarUploading}
+                aria-label="Change profile picture"
+                className="absolute -right-1 -bottom-1 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-white shadow-md transition-colors hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <Camera className="h-3.5 w-3.5" />
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => handleAvatarChange(e.target.files?.[0])}
+              />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-gray-900">
+                {avatarUploading ? 'Uploading…' : 'Profile picture'}
+              </p>
+              {avatarError && <p className="text-xs text-red-600">{avatarError}</p>}
+            </div>
+          </div>
+
           <dl className="space-y-3 text-sm">
             <div className="flex justify-between gap-4">
               <dt className="text-gray-500">Name</dt>

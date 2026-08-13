@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Star, CheckCircle2, MapPin, BadgeCheck } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import Avatar from '../components/Avatar';
 import type { Profile, Review } from '../lib/types';
 
 export default function PublicProfile() {
@@ -18,7 +19,7 @@ export default function PublicProfile() {
 
     supabase
       .from('profiles')
-      .select('id, full_name, city, verified_badge, rating_avg, rating_count, completion_count')
+      .select('id, full_name, city, verified_badge, rating_avg, rating_count, completion_count, avatar_url')
       .eq('id', userId)
       .maybeSingle()
       .then(async ({ data, error }) => {
@@ -77,16 +78,21 @@ export default function PublicProfile() {
         </Link>
 
         <div className="rounded-3xl border border-gray-200/70 bg-white p-8 shadow-sm">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-black text-gray-900">
-              {profile.full_name || 'Sirius Jobs user'}
-            </h1>
-            {profile.verified_badge && (
-              <span className="flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">
-                <BadgeCheck className="h-4 w-4" />
-                Verified
-              </span>
-            )}
+          <div className="flex items-center gap-4">
+            <Avatar url={profile.avatar_url} name={profile.full_name} size={64} />
+            <div>
+              <div className="flex items-center gap-3">
+                <h1 className="text-2xl font-black text-gray-900">
+                  {profile.full_name || 'Sirius Jobs user'}
+                </h1>
+                {profile.verified_badge && (
+                  <span className="flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">
+                    <BadgeCheck className="h-4 w-4" />
+                    Verified
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
           {profile.city && (
             <p className="mt-1 flex items-center gap-1.5 text-sm text-gray-500">

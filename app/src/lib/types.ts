@@ -38,6 +38,7 @@ export type Profile = {
   rating_avg: number;
   rating_count: number;
   completion_count: number;
+  avatar_url: string | null;
 };
 
 export type Review = {

@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Menu, X, ArrowRight, Compass, ListChecks, HardHat, LogOut, ClipboardList, Settings } from 'lucide-react';
 import NotificationBell from './NotificationBell';
+import Avatar from './Avatar';
 import logo from '../assets/brand/logo.png';
 import { useAuth } from '../lib/AuthContext';
+import { supabase } from '../lib/supabase';
 
 const navLinks = [
   { to: '/', label: 'Home', icon: Compass },
@@ -17,21 +19,26 @@ function navLinkClass({ isActive }: { isActive: boolean }) {
   }`;
 }
 
-function initials(name: string) {
-  return name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join('');
-}
-
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
   const displayName = (user?.user_metadata?.full_name as string | undefined) || user?.email || '';
+
+  useEffect(() => {
+    if (!user) {
+      setAvatarUrl(null);
+      return;
+    }
+    supabase
+      .from('profiles')
+      .select('avatar_url')
+      .eq('id', user.id)
+      .maybeSingle()
+      .then(({ data }) => setAvatarUrl(data?.avatar_url ?? null));
+  }, [user]);
 
   async function handleSignOut() {
     await signOut();
@@ -65,8 +72,8 @@ export default function Header() {
                 <>
                   <NotificationBell />
                   <div className="group relative">
-                    <button className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                      {initials(displayName) || <LogOut className="h-4 w-4" />}
+                    <button className="flex h-10 w-10 items-center justify-center rounded-full">
+                      <Avatar url={avatarUrl} name={displayName} size={40} />
                     </button>
                     <div className="invisible absolute right-0 mt-2 w-48 rounded-xl border border-gray-200/70 bg-white p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100">
                       <p className="truncate px-3 py-2 text-sm font-semibold text-gray-900">
@@ -154,9 +161,7 @@ export default function Header() {
 
           {user && (
             <div className="mt-6 flex items-center gap-3 rounded-2xl bg-gray-50 p-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                {initials(displayName)}
-              </span>
+              <Avatar url={avatarUrl} name={displayName} size={44} />
               <span className="truncate font-semibold text-gray-900">{displayName}</span>
             </div>
           )}
