@@ -1,8 +1,9 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { MapPin, Wallet, ArrowLeft, Gavel, CheckCircle2, Star } from 'lucide-react';
+import { MapPin, Wallet, ArrowLeft, Gavel, CheckCircle2, Star, Lock } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/AuthContext';
+import { startLeadPayment } from '../lib/leads';
 import ReviewForm from '../components/ReviewForm';
 import TaskChat from '../components/TaskChat';
 import type { Category, Task } from '../lib/types';
@@ -14,6 +15,11 @@ type BidRow = {
   message: string | null;
   status: string;
   created_at: string;
+};
+
+type LeadRow = {
+  id: string;
+  status: string;
 };
 
 function formatBudget(min: number | null, max: number | null) {
@@ -32,6 +38,7 @@ export default function TaskDetail() {
   const [task, setTask] = useState<Task | null>(null);
   const [category, setCategory] = useState<Category | null>(null);
   const [myBid, setMyBid] = useState<BidRow | null>(null);
+  const [myLead, setMyLead] = useState<LeadRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -42,10 +49,19 @@ export default function TaskDetail() {
   const [bidSubmitted, setBidSubmitted] = useState(false);
   const [hasReviewed, setHasReviewed] = useState<boolean | null>(null);
 
+  const [leadError, setLeadError] = useState<string | null>(null);
+  const [leadStarting, setLeadStarting] = useState(false);
+
   const isOwner = task?.poster_id === user?.id;
   const isAcceptedTasker = myBid?.status === 'accepted';
+  const hasPurchasedLead = myLead?.status === 'purchased';
   const showTaskerChat =
-    !isOwner && user && task && (task.status === 'open' || isAcceptedTasker);
+    !isOwner &&
+    user &&
+    task &&
+    (task.path === 'escrow'
+      ? task.status === 'open' || isAcceptedTasker
+      : hasPurchasedLead);
 
   useEffect(() => {
     if (!taskId) return;
@@ -73,13 +89,23 @@ export default function TaskDetail() {
         setCategory(catData ?? null);
 
         if (user) {
-          const { data: bidData } = await supabase
-            .from('bids')
-            .select('id, tasker_id, amount, message, status, created_at')
-            .eq('task_id', taskId)
-            .eq('tasker_id', user.id)
-            .maybeSingle();
-          setMyBid(bidData ?? null);
+          if (data.path === 'escrow') {
+            const { data: bidData } = await supabase
+              .from('bids')
+              .select('id, tasker_id, amount, message, status, created_at')
+              .eq('task_id', taskId)
+              .eq('tasker_id', user.id)
+              .maybeSingle();
+            setMyBid(bidData ?? null);
+          } else {
+            const { data: leadData } = await supabase
+              .from('leads')
+              .select('id, status')
+              .eq('task_id', taskId)
+              .eq('professional_id', user.id)
+              .maybeSingle();
+            setMyLead(leadData ?? null);
+          }
 
           if (data.status === 'completed') {
             const { data: reviewData } = await supabase
@@ -95,6 +121,20 @@ export default function TaskDetail() {
         setLoading(false);
       });
   }, [taskId, user]);
+
+  async function handleGetLead() {
+    if (!task) return;
+    setLeadError(null);
+    setLeadStarting(true);
+
+    try {
+      const authorizationUrl = await startLeadPayment(task.id);
+      window.location.href = authorizationUrl;
+    } catch (err) {
+      setLeadStarting(false);
+      setLeadError(err instanceof Error ? err.message : 'Something went wrong.');
+    }
+  }
 
   async function handleBidSubmit(e: FormEvent) {
     e.preventDefault();
@@ -196,13 +236,11 @@ export default function TaskDetail() {
           </p>
         </div>
 
-        {!isOwner && task.status === 'open' && (
+        {!isOwner && task.status === 'open' && task.path === 'lead_fee' && (
           <div className="mt-6 rounded-3xl border border-gray-200/70 bg-white p-8 shadow-sm">
             <div className="mb-4 flex items-center gap-2">
-              <Gavel className="h-5 w-5 text-primary" />
-              <h2 className="text-xl font-bold text-gray-900">
-                {task.path === 'escrow' ? 'Place a bid' : 'Get this lead'}
-              </h2>
+              <Lock className="h-5 w-5 text-primary" />
+              <h2 className="text-xl font-bold text-gray-900">Get this lead</h2>
             </div>
 
             {!user ? (
@@ -214,13 +252,63 @@ export default function TaskDetail() {
                 >
                   Sign in
                 </Link>{' '}
-                to {task.path === 'escrow' ? 'place a bid' : 'purchase this lead'}.
+                to purchase this lead.
+              </p>
+            ) : myLead ? (
+              <div className="flex items-center gap-3 rounded-xl bg-green-50 px-4 py-3 text-green-700">
+                <CheckCircle2 className="h-5 w-5 shrink-0" />
+                <span className="text-sm font-medium">
+                  {myLead.status === 'purchased'
+                    ? "You've purchased this lead — contact details are unlocked below."
+                    : 'Payment in progress. If you already paid, refresh this page in a moment.'}
+                </span>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <p className="text-sm text-gray-600">
+                  Pay a one-time fee of <strong className="text-gray-900">₦2,000</strong> to
+                  unlock this poster's contact details and reach out directly to quote the job.
+                </p>
+                {leadError && (
+                  <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+                    {leadError}
+                  </div>
+                )}
+                <button
+                  onClick={handleGetLead}
+                  disabled={leadStarting}
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white shadow-lg transition-all hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {leadStarting ? 'Redirecting to payment…' : 'Pay ₦2,000 to Unlock Lead'}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {!isOwner && task.status === 'open' && task.path === 'escrow' && (
+          <div className="mt-6 rounded-3xl border border-gray-200/70 bg-white p-8 shadow-sm">
+            <div className="mb-4 flex items-center gap-2">
+              <Gavel className="h-5 w-5 text-primary" />
+              <h2 className="text-xl font-bold text-gray-900">Place a bid</h2>
+            </div>
+
+            {!user ? (
+              <p className="text-gray-600">
+                <Link
+                  to="/login"
+                  state={{ from: { pathname: `/tasks/${task.id}` } }}
+                  className="font-semibold text-primary hover:underline"
+                >
+                  Sign in
+                </Link>{' '}
+                to place a bid.
               </p>
             ) : myBid || bidSubmitted ? (
               <div className="flex items-center gap-3 rounded-xl bg-green-50 px-4 py-3 text-green-700">
                 <CheckCircle2 className="h-5 w-5 shrink-0" />
                 <span className="text-sm font-medium">
-                  You've already {task.path === 'escrow' ? 'bid' : 'requested'} on this task
+                  You've already bid on this task
                   {myBid ? ` — ₦${myBid.amount.toLocaleString('en-NG')}` : ''}. The poster will
                   review and respond.
                 </span>

@@ -1,0 +1,8 @@
+{
+  "buildCommand": false,
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "@vercel/node@5"
+    }
+  }
+}
