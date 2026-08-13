@@ -34,7 +34,11 @@ export default function GoogleButton() {
 
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin },
+      // Hardcoded to www rather than window.location.origin: the bare root domain
+      // (siriusjobs.com.ng) has had intermittent DNS propagation issues, while www
+      // has been consistently reachable. Revisit once the root domain is confirmed
+      // stable everywhere.
+      options: { redirectTo: 'https://www.siriusjobs.com.ng' },
     });
 
     if (oauthError) {
