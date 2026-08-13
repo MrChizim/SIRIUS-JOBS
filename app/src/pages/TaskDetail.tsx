@@ -6,6 +6,7 @@ import { useAuth } from '../lib/AuthContext';
 import { startLeadPayment } from '../lib/leads';
 import ReviewForm from '../components/ReviewForm';
 import TaskChat from '../components/TaskChat';
+import BankAccountForm from '../components/BankAccountForm';
 import type { Category, Task } from '../lib/types';
 
 type BidRow = {
@@ -52,6 +53,8 @@ export default function TaskDetail() {
   const [leadError, setLeadError] = useState<string | null>(null);
   const [leadStarting, setLeadStarting] = useState(false);
 
+  const [hasPayoutAccount, setHasPayoutAccount] = useState<boolean | null>(null);
+
   const isOwner = task?.poster_id === user?.id;
   const isAcceptedTasker = myBid?.status === 'accepted';
   const hasPurchasedLead = myLead?.status === 'purchased';
@@ -97,6 +100,13 @@ export default function TaskDetail() {
               .eq('tasker_id', user.id)
               .maybeSingle();
             setMyBid(bidData ?? null);
+
+            const { data: profileData } = await supabase
+              .from('profiles')
+              .select('paystack_recipient_code')
+              .eq('id', user.id)
+              .maybeSingle();
+            setHasPayoutAccount(!!profileData?.paystack_recipient_code);
           } else {
             const { data: leadData } = await supabase
               .from('leads')
@@ -313,6 +323,8 @@ export default function TaskDetail() {
                   review and respond.
                 </span>
               </div>
+            ) : hasPayoutAccount === false ? (
+              <BankAccountForm onSaved={() => setHasPayoutAccount(true)} />
             ) : (
               <form onSubmit={handleBidSubmit} className="space-y-4">
                 {bidError && (

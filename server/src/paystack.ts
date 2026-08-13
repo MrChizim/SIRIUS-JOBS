@@ -74,3 +74,128 @@ export async function verifyTransaction(
 
   return json.data;
 }
+
+type PaystackResolveAccountResponse = {
+  status: boolean;
+  message: string;
+  data: {
+    account_number: string;
+    account_name: string;
+    bank_id: number;
+  };
+};
+
+export async function resolveAccountNumber(params: {
+  accountNumber: string;
+  bankCode: string;
+}): Promise<PaystackResolveAccountResponse['data']> {
+  const res = await fetch(
+    `${PAYSTACK_BASE_URL}/bank/resolve?account_number=${encodeURIComponent(
+      params.accountNumber,
+    )}&bank_code=${encodeURIComponent(params.bankCode)}`,
+    { headers: { Authorization: `Bearer ${secretKey()}` } },
+  );
+
+  const json = (await res.json()) as PaystackResolveAccountResponse;
+
+  if (!res.ok || !json.status) {
+    throw new Error(json.message || 'Could not verify this bank account.');
+  }
+
+  return json.data;
+}
+
+type PaystackRecipientResponse = {
+  status: boolean;
+  message: string;
+  data: {
+    recipient_code: string;
+    active: boolean;
+  };
+};
+
+export async function createTransferRecipient(params: {
+  name: string;
+  accountNumber: string;
+  bankCode: string;
+}): Promise<PaystackRecipientResponse['data']> {
+  const res = await fetch(`${PAYSTACK_BASE_URL}/transferrecipient`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${secretKey()}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      type: 'nuban',
+      name: params.name,
+      account_number: params.accountNumber,
+      bank_code: params.bankCode,
+      currency: 'NGN',
+    }),
+  });
+
+  const json = (await res.json()) as PaystackRecipientResponse;
+
+  if (!res.ok || !json.status) {
+    throw new Error(json.message || 'Could not register this bank account for payouts.');
+  }
+
+  return json.data;
+}
+
+type PaystackTransferResponse = {
+  status: boolean;
+  message: string;
+  data: {
+    transfer_code: string;
+    status: string;
+    reference: string;
+  };
+};
+
+export async function initiateTransfer(params: {
+  amountKobo: number;
+  recipientCode: string;
+  reference: string;
+  reason: string;
+}): Promise<PaystackTransferResponse['data']> {
+  const res = await fetch(`${PAYSTACK_BASE_URL}/transfer`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${secretKey()}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      source: 'balance',
+      amount: params.amountKobo,
+      recipient: params.recipientCode,
+      reference: params.reference,
+      reason: params.reason,
+    }),
+  });
+
+  const json = (await res.json()) as PaystackTransferResponse;
+
+  if (!res.ok || !json.status) {
+    throw new Error(json.message || 'Failed to initiate payout transfer.');
+  }
+
+  return json.data;
+}
+
+type PaystackBank = { name: string; code: string; slug: string };
+type PaystackListBanksResponse = { status: boolean; message: string; data: PaystackBank[] };
+
+export async function listBanks(): Promise<PaystackBank[]> {
+  const res = await fetch(`${PAYSTACK_BASE_URL}/bank?country=nigeria&currency=NGN`, {
+    headers: { Authorization: `Bearer ${secretKey()}` },
+  });
+
+  const json = (await res.json()) as PaystackListBanksResponse;
+
+  if (!res.ok || !json.status) {
+    throw new Error(json.message || 'Failed to load bank list.');
+  }
+
+  return json.data;
+}

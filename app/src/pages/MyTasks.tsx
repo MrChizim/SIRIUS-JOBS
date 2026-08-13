@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ClipboardList, User, CheckCircle2, Star } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/AuthContext';
+import { startBidAcceptance, completeEscrowTask } from '../lib/escrow';
 import ReviewForm from '../components/ReviewForm';
 import TaskChat from '../components/TaskChat';
 import type { Task } from '../lib/types';
@@ -78,34 +79,31 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
     setError(null);
     setAcceptingId(bidId);
 
-    const { error: rpcError } = await supabase.rpc('accept_bid', { p_bid_id: bidId });
-
-    setAcceptingId(null);
-
-    if (rpcError) {
-      setError(rpcError.message);
-      return;
+    try {
+      const authorizationUrl = await startBidAcceptance(bidId);
+      window.location.href = authorizationUrl;
+      // No further state change here — the bid isn't actually accepted until payment
+      // is confirmed and the Paystack webhook flips it, which happens after the
+      // browser redirects away to complete checkout.
+    } catch (err) {
+      setAcceptingId(null);
+      setError(err instanceof Error ? err.message : 'Something went wrong.');
     }
-
-    setStatus('in_progress');
-    await loadBids();
   }
 
   async function handleMarkComplete() {
     setError(null);
     setCompleting(true);
 
-    const { error: rpcError } = await supabase.rpc('mark_task_complete', { p_task_id: task.id });
-
-    setCompleting(false);
-
-    if (rpcError) {
-      setError(rpcError.message);
-      return;
+    try {
+      await completeEscrowTask(task.id);
+      setStatus('completed');
+      setHasReviewed(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong.');
+    } finally {
+      setCompleting(false);
     }
-
-    setStatus('completed');
-    setHasReviewed(false);
   }
 
   return (
