@@ -43,6 +43,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
   const [disputing, setDisputing] = useState(false);
   const [hasReviewed, setHasReviewed] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [chattingWithBidId, setChattingWithBidId] = useState<string | null>(null);
 
   const acceptedBid = bids?.find((b) => b.status === 'accepted') ?? null;
 
@@ -261,57 +262,81 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
       ) : (
         <div className="space-y-3">
           {bids.map((bid) => (
-            <div
-              key={bid.id}
-              className={`flex items-center justify-between gap-4 rounded-2xl border p-4 ${
-                bid.status === 'accepted'
-                  ? 'border-green-200 bg-green-50'
-                  : bid.status === 'rejected'
-                    ? 'border-gray-200 bg-gray-50 opacity-60'
-                    : 'border-gray-200/70 bg-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Avatar url={bid.tasker_avatar_url} name={bid.tasker_name} size={40} />
-                <div>
-                  <p className="flex items-center gap-1.5 font-semibold text-gray-900">
-                    <Link to={`/users/${bid.tasker_id}`} className="hover:text-primary hover:underline">
-                      {bid.tasker_name || 'Tasker'}
-                    </Link>
-                    {bid.tasker_verified_badge && <BadgeCheck className="h-4 w-4 text-primary" />}
-                    <span>· ₦{bid.amount.toLocaleString('en-NG')}</span>
-                  </p>
-                  <p className="flex items-center gap-1 text-xs text-gray-500">
-                    {bid.tasker_rating_count > 0 ? (
-                      <>
-                        <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                        {bid.tasker_rating_avg.toFixed(1)} ({bid.tasker_rating_count})
-                        <span className="mx-1">·</span>
-                        {bid.tasker_completion_count} completed
-                      </>
-                    ) : (
-                      'No reviews yet'
-                    )}
-                  </p>
-                  {bid.message && <p className="mt-1 text-sm text-gray-600">{bid.message}</p>}
+            <div key={bid.id}>
+              <div
+                className={`flex items-center justify-between gap-4 rounded-2xl border p-4 ${
+                  bid.status === 'accepted'
+                    ? 'border-green-200 bg-green-50'
+                    : bid.status === 'rejected'
+                      ? 'border-gray-200 bg-gray-50 opacity-60'
+                      : 'border-gray-200/70 bg-white'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <Avatar url={bid.tasker_avatar_url} name={bid.tasker_name} size={40} />
+                  <div>
+                    <p className="flex items-center gap-1.5 font-semibold text-gray-900">
+                      <Link to={`/users/${bid.tasker_id}`} className="hover:text-primary hover:underline">
+                        {bid.tasker_name || 'Tasker'}
+                      </Link>
+                      {bid.tasker_verified_badge && <BadgeCheck className="h-4 w-4 text-primary" />}
+                      <span>· ₦{bid.amount.toLocaleString('en-NG')}</span>
+                    </p>
+                    <p className="flex items-center gap-1 text-xs text-gray-500">
+                      {bid.tasker_rating_count > 0 ? (
+                        <>
+                          <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+                          {bid.tasker_rating_avg.toFixed(1)} ({bid.tasker_rating_count})
+                          <span className="mx-1">·</span>
+                          {bid.tasker_completion_count} completed
+                        </>
+                      ) : (
+                        'No reviews yet'
+                      )}
+                    </p>
+                    {bid.message && <p className="mt-1 text-sm text-gray-600">{bid.message}</p>}
+                  </div>
+                </div>
+
+                <div className="flex shrink-0 items-center gap-2">
+                  {status === 'open' && bid.status === 'pending' && (
+                    <button
+                      onClick={() =>
+                        setChattingWithBidId((id) => (id === bid.id ? null : bid.id))
+                      }
+                      className="rounded-full border border-gray-300 px-3 py-2 text-sm font-semibold text-gray-600 transition-colors hover:border-primary hover:text-primary"
+                    >
+                      {chattingWithBidId === bid.id ? 'Close' : 'Message'}
+                    </button>
+                  )}
+                  {bid.status === 'accepted' ? (
+                    <span className="flex items-center gap-1.5 text-sm font-bold text-green-700">
+                      <CheckCircle2 className="h-4 w-4" />
+                      Accepted
+                    </span>
+                  ) : bid.status === 'pending' && status === 'open' ? (
+                    <button
+                      onClick={() => handleAccept(bid.id)}
+                      disabled={acceptingId === bid.id}
+                      className="rounded-full bg-primary px-4 py-2 text-sm font-bold text-white transition-all hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      {acceptingId === bid.id ? 'Accepting…' : 'Accept'}
+                    </button>
+                  ) : (
+                    <span className="text-sm text-gray-400 capitalize">{bid.status}</span>
+                  )}
                 </div>
               </div>
 
-              {bid.status === 'accepted' ? (
-                <span className="flex shrink-0 items-center gap-1.5 text-sm font-bold text-green-700">
-                  <CheckCircle2 className="h-4 w-4" />
-                  Accepted
-                </span>
-              ) : bid.status === 'pending' && status === 'open' ? (
-                <button
-                  onClick={() => handleAccept(bid.id)}
-                  disabled={acceptingId === bid.id}
-                  className="shrink-0 rounded-full bg-primary px-4 py-2 text-sm font-bold text-white transition-all hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  {acceptingId === bid.id ? 'Accepting…' : 'Accept'}
-                </button>
-              ) : (
-                <span className="shrink-0 text-sm text-gray-400 capitalize">{bid.status}</span>
+              {chattingWithBidId === bid.id && (
+                <div className="mt-2">
+                  <TaskChat
+                    taskId={task.id}
+                    currentUserId={currentUserId}
+                    otherUserId={bid.tasker_id}
+                    otherUserLabel={bid.tasker_name || 'this tasker'}
+                  />
+                </div>
               )}
             </div>
           ))}

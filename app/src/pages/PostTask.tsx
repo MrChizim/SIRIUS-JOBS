@@ -158,7 +158,7 @@ export default function PostTask() {
           <p className="mt-3 text-gray-600">
             {selectedCategory?.path === 'lead_fee'
               ? "Your task is live. Professionals in your category will be able to purchase this lead and reach out to you directly."
-              : 'Your task is live. Taskers nearby can now place bids — you\'ll be able to compare and pick one.'}
+              : "Your task is live. Taskers nearby can now place bids, and you'll be able to compare and pick one."}
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <button
@@ -182,7 +182,7 @@ export default function PostTask() {
             <PlusCircle className="h-6 w-6" />
           </div>
           <h1 className="text-3xl font-black text-gray-900">Post a task</h1>
-          <p className="mt-2 text-gray-600">Tell us what you need done — no account needed yet</p>
+          <p className="mt-2 text-gray-600">Tell us what you need done. No account needed yet.</p>
         </div>
 
         <div className="mb-8 flex items-center justify-center gap-2">
@@ -258,8 +258,8 @@ export default function PostTask() {
                 {selectedCategory && (
                   <p className="mt-1.5 text-xs text-gray-500">
                     {selectedCategory.path === 'escrow'
-                      ? 'Small task — taskers bid, payment is held securely until you confirm the job is done.'
-                      : 'Trade job — matched professionals will reach out directly to quote and arrange the work.'}
+                      ? "Taskers will bid on this job. Your payment stays safely on hold until you confirm the work is done, then it's released to them."
+                      : 'Professionals matching this job will contact you directly to quote and arrange the work.'}
                   </p>
                 )}
               </div>
@@ -331,7 +331,7 @@ export default function PostTask() {
                   value={draft.description}
                   onChange={(e) => update('description', e.target.value)}
                   className="w-full resize-none rounded-xl border border-gray-300 px-4 py-3 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
-                  placeholder="Give as much detail as you can — size, timing, materials needed, etc."
+                  placeholder="Give as much detail as you can: size, timing, materials needed, etc."
                 />
               </div>
               <div className="flex items-center gap-2 pt-2">
@@ -416,7 +416,7 @@ export default function PostTask() {
 
               {!user && (
                 <p className="text-sm text-gray-600">
-                  Almost there — you'll need to sign in or create a free account to publish this
+                  Almost there. You'll need to sign in or create a free account to publish this
                   task.
                 </p>
               )}

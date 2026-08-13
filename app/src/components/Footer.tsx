@@ -35,7 +35,7 @@ export default function Footer() {
             />
             <p className="mt-4 mb-5 text-sm text-slate-400">
               One platform to post tasks, get bids from trusted Nigerian professionals, and pay
-              securely — from quick errands to big trade jobs.
+              securely, from quick errands to big trade jobs.
             </p>
             <div className="flex gap-3">
               <a

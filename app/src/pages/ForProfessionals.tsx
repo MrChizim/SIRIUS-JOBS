@@ -17,7 +17,7 @@ export default function ForProfessionals() {
           </h1>
           <p className="mx-auto max-w-2xl text-xl text-gray-600">
             Whether you handle small everyday jobs or run a trade business, Sirius Jobs connects
-            you with people who need exactly what you offer — near you, in Nigeria.
+            you with people who need exactly what you offer, near you, in Nigeria.
           </p>
         </div>
 
@@ -43,7 +43,7 @@ export default function ForProfessionals() {
               </li>
               <li className="flex items-start gap-2">
                 <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                Sirius Jobs takes a 10% commission from the job price — no other fees.
+                Sirius Jobs takes a 10% commission from the job price. No other fees.
               </li>
             </ul>
           </div>
@@ -65,12 +65,12 @@ export default function ForProfessionals() {
               </li>
               <li className="flex items-start gap-2">
                 <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                Reach out directly, quote the job, and arrange payment with the client yourself —
+                Reach out directly, quote the job, and arrange payment with the client yourself,
                 just like any other referral.
               </li>
               <li className="flex items-start gap-2">
                 <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                No commission on the job itself — the lead fee is the only cost.
+                No commission on the job itself. The lead fee is the only cost.
               </li>
             </ul>
           </div>
@@ -82,9 +82,9 @@ export default function ForProfessionals() {
           </div>
           <h2 className="mb-3 text-2xl font-black text-gray-900">Stand Out With a Verified Badge</h2>
           <p className="mx-auto max-w-xl text-gray-600">
-            Submit your NIN and ID for a one-time review to get a Verified Badge on your profile —
-            a clear trust signal that helps you win more bids and leads. Manage it anytime from
-            your account Settings once you're signed in.
+            Submit your NIN and ID for a one-time review to get a Verified Badge on your profile.
+            It's a clear trust signal that helps you win more bids and leads. Manage it anytime
+            from your account Settings once you're signed in.
           </p>
         </div>
 

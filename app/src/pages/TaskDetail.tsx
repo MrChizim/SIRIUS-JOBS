@@ -222,7 +222,7 @@ export default function TaskDetail() {
                   : 'bg-amber-100 text-amber-700'
               }`}
             >
-              {task.path === 'escrow' ? 'Bid & Escrow' : 'Get Quotes'}
+              {task.path === 'escrow' ? 'Secure Payment' : 'Get Quotes'}
             </span>
             {task.status !== 'open' && (
               <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-bold text-gray-600 capitalize">
@@ -273,7 +273,7 @@ export default function TaskDetail() {
                 <CheckCircle2 className="h-5 w-5 shrink-0" />
                 <span className="text-sm font-medium">
                   {myLead.status === 'purchased'
-                    ? "You've purchased this lead — contact details are unlocked below."
+                    ? "You've purchased this lead. Contact details are unlocked below."
                     : 'Payment in progress. If you already paid, refresh this page in a moment.'}
                 </span>
               </div>
@@ -323,7 +323,7 @@ export default function TaskDetail() {
                 <CheckCircle2 className="h-5 w-5 shrink-0" />
                 <span className="text-sm font-medium">
                   You've already bid on this task
-                  {myBid ? ` — ₦${myBid.amount.toLocaleString('en-NG')}` : ''}. The poster will
+                  {myBid ? ` for ₦${myBid.amount.toLocaleString('en-NG')}` : ''}. The poster will
                   review and respond.
                 </span>
               </div>
@@ -355,7 +355,7 @@ export default function TaskDetail() {
                   />
                   <p className="mt-1.5 text-xs text-gray-500">
                     This is your labor/service price. If the job needs materials or supplies,
-                    mention that in your message — you and the poster can agree on those
+                    mention that in your message, and you and the poster can agree on those
                     separately.
                   </p>
                 </div>

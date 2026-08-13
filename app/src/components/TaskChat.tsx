@@ -93,7 +93,7 @@ export default function TaskChat({
       <div className="mb-4 max-h-80 space-y-2 overflow-y-auto rounded-2xl bg-gray-50 p-4">
         {messages.length === 0 ? (
           <p className="py-6 text-center text-sm text-gray-400">
-            No messages yet — say hello.
+            No messages yet. Say hello.
           </p>
         ) : (
           messages.map((m) => {

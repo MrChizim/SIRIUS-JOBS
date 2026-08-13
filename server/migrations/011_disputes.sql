@@ -275,3 +275,4 @@ drop trigger if exists on_dispute_updated_notify on public.disputes;
 create trigger on_dispute_updated_notify
   after update on public.disputes
   for each row execute function public.notify_on_dispute_resolved();
+

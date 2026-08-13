@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { applyCors } from '../../src/cors.js';
 import { randomUUID } from 'node:crypto';
 import { supabaseAdmin } from '../../src/supabaseAdmin.js';
 import { initializeTransaction } from '../../src/paystack.js';
@@ -8,6 +9,8 @@ import { initializeTransaction } from '../../src/paystack.js';
 const LEAD_FEE_NAIRA = 2000;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (applyCors(req, res)) return;
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }

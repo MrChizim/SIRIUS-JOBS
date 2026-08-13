@@ -15,11 +15,11 @@ const faqs = [
   },
   {
     q: "What's the difference between a task and a lead?",
-    a: 'Small, everyday jobs (cleaning, errands, small repairs) go through bidding with payment held securely until you confirm completion. Bigger trade jobs (plumbing, electrical, building work) work differently — a professional pays a small fee to get your contact details and reaches out to quote and arrange the job directly with you.',
+    a: "Small, everyday jobs (cleaning, errands, small repairs) go through bidding with payment held securely until you confirm completion. Bigger trade jobs (plumbing, electrical, building work) work differently. A professional pays a small fee to get your contact details and reaches out to quote and arrange the job directly with you.",
   },
   {
     q: 'Is my payment safe?',
-    a: "For small tasks, yes — your payment is held securely and only released to the tasker once you've confirmed the job is done. For trade jobs matched through the lead system, payment happens directly between you and the professional, the same way it would if you found them any other way.",
+    a: "For small tasks, yes. Your payment is held securely and only released to the tasker once you've confirmed the job is done. For trade jobs matched through the lead system, payment happens directly between you and the professional, the same way it would if you found them any other way.",
   },
   {
     q: 'How do I become a verified tasker or professional?',
@@ -54,7 +54,7 @@ export default function About() {
             <p>
               Sirius Jobs is a Nigerian task marketplace connecting people who need work
               done with trusted taskers and professionals nearby. Post a quick errand or a
-              major trade job, compare bids or quotes, and get it handled — with secure
+              major trade job, compare bids or quotes, and get it handled, with secure
               payment for small tasks and direct connections for bigger trade work.
             </p>
             <p className="mt-4">
@@ -91,7 +91,7 @@ export default function About() {
               only.
             </p>
             <p>
-              We use this information to operate the platform — matching tasks with
+              We use this information to operate the platform: matching tasks with
               taskers, processing payments through our payment partner (Paystack), showing
               your public profile (name, rating, completion count) to other users, and
               communicating with you about your account or tasks.
@@ -100,7 +100,7 @@ export default function About() {
               We do not sell your personal information. We share data with service
               providers only as needed to run the platform (e.g. Paystack for payments,
               Supabase for hosting our database). Payment card details are handled
-              entirely by Paystack — Sirius Jobs never stores your card information.
+              entirely by Paystack. Sirius Jobs never stores your card information.
             </p>
             <p>
               You can request a copy of your data or ask us to delete your account by
@@ -114,7 +114,7 @@ export default function About() {
           <h2 className="text-2xl font-black text-gray-900">Terms of Service</h2>
           <div className="prose prose-gray mt-4 max-w-none space-y-4 text-sm leading-relaxed text-gray-600">
             <p>
-              By using Sirius Jobs, you agree to use the platform honestly and lawfully —
+              By using Sirius Jobs, you agree to use the platform honestly and lawfully:
               accurate task descriptions, fair bids, and respectful communication with
               other users.
             </p>
@@ -127,7 +127,7 @@ export default function About() {
             <p>
               For trade jobs posted through the lead-matching path, Sirius Jobs charges
               professionals a fee to connect with your task. The work itself, its
-              pricing, and payment are agreed directly between you and the professional —
+              pricing, and payment are agreed directly between you and the professional.
               Sirius Jobs is not a party to that agreement and does not guarantee the
               outcome of off-platform arrangements.
             </p>

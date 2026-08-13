@@ -7,7 +7,7 @@ type Bank = { name: string; code: string };
 export default function BankAccountForm({
   onSaved,
   heading = 'Add your payout bank account',
-  description = "You need a verified bank account before you can bid — this is where you'll be paid when a poster accepts your bid.",
+  description = "Add a bank account before you bid. If a poster accepts your bid, we'll pay you here once the job is confirmed done.",
 }: {
   onSaved: (accountName: string) => void;
   heading?: string;
