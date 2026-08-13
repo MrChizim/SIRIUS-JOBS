@@ -74,7 +74,13 @@ export default function NotificationBell() {
               {notifications.map((n) => (
                 <Link
                   key={n.id}
-                  to={n.task_id ? `/tasks/${n.task_id}` : '/my-tasks'}
+                  to={
+                    n.kind === 'new_message'
+                      ? '/my-tasks'
+                      : n.task_id
+                        ? `/tasks/${n.task_id}`
+                        : '/my-tasks'
+                  }
                   onClick={() => setOpen(false)}
                   className="block rounded-lg px-3 py-2.5 text-sm text-gray-700 transition-colors hover:bg-gray-100"
                 >

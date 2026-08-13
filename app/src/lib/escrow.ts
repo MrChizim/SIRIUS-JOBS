@@ -45,7 +45,7 @@ export async function resolveBankAccount(params: {
   accountNumber: string;
   bankCode: string;
 }): Promise<string> {
-  const json = await authedFetch('/api/bank/resolve-account', params);
+  const json = await authedFetch('/api/bank', { action: 'resolve-account', ...params });
   return json.accountName as string;
 }
 
@@ -53,7 +53,7 @@ export async function saveBankAccount(params: {
   accountNumber: string;
   bankCode: string;
 }): Promise<string> {
-  const json = await authedFetch('/api/bank/save-account', params);
+  const json = await authedFetch('/api/bank', { action: 'save-account', ...params });
   return json.accountName as string;
 }
 
@@ -63,7 +63,7 @@ export async function fetchBanks(): Promise<{ name: string; code: string }[]> {
     throw new Error('Payments are not configured yet. Please try again later.');
   }
 
-  const res = await fetch(`${apiUrl}/api/bank/list-banks`);
+  const res = await fetch(`${apiUrl}/api/bank`);
   const json = await res.json();
 
   if (!res.ok) {

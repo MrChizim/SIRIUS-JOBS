@@ -6,6 +6,7 @@ import { useAuth } from '../lib/AuthContext';
 import { startBidAcceptance, completeEscrowTask } from '../lib/escrow';
 import ReviewForm from '../components/ReviewForm';
 import TaskChat from '../components/TaskChat';
+import TaskMessageThreads from '../components/TaskMessageThreads';
 import Avatar from '../components/Avatar';
 import RaiseDisputeForm from '../components/RaiseDisputeForm';
 import DisputeStatusBanner from '../components/DisputeStatusBanner';
@@ -43,7 +44,6 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
   const [disputing, setDisputing] = useState(false);
   const [hasReviewed, setHasReviewed] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [chattingWithBidId, setChattingWithBidId] = useState<string | null>(null);
 
   const acceptedBid = bids?.find((b) => b.status === 'accepted') ?? null;
 
@@ -299,16 +299,6 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
                 </div>
 
                 <div className="flex shrink-0 items-center gap-2">
-                  {status === 'open' && bid.status === 'pending' && (
-                    <button
-                      onClick={() =>
-                        setChattingWithBidId((id) => (id === bid.id ? null : bid.id))
-                      }
-                      className="rounded-full border border-gray-300 px-3 py-2 text-sm font-semibold text-gray-600 transition-colors hover:border-primary hover:text-primary"
-                    >
-                      {chattingWithBidId === bid.id ? 'Close' : 'Message'}
-                    </button>
-                  )}
                   {bid.status === 'accepted' ? (
                     <span className="flex items-center gap-1.5 text-sm font-bold text-green-700">
                       <CheckCircle2 className="h-4 w-4" />
@@ -327,19 +317,14 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
                   )}
                 </div>
               </div>
-
-              {chattingWithBidId === bid.id && (
-                <div className="mt-2">
-                  <TaskChat
-                    taskId={task.id}
-                    currentUserId={currentUserId}
-                    otherUserId={bid.tasker_id}
-                    otherUserLabel={bid.tasker_name || 'this tasker'}
-                  />
-                </div>
-              )}
             </div>
           ))}
+        </div>
+      )}
+
+      {status === 'open' && (
+        <div className="mt-4">
+          <TaskMessageThreads taskId={task.id} currentUserId={currentUserId} />
         </div>
       )}
     </div>
