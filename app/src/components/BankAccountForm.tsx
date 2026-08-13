@@ -4,7 +4,15 @@ import { fetchBanks, resolveBankAccount, saveBankAccount } from '../lib/escrow';
 
 type Bank = { name: string; code: string };
 
-export default function BankAccountForm({ onSaved }: { onSaved: (accountName: string) => void }) {
+export default function BankAccountForm({
+  onSaved,
+  heading = 'Add your payout bank account',
+  description = "You need a verified bank account before you can bid — this is where you'll be paid when a poster accepts your bid.",
+}: {
+  onSaved: (accountName: string) => void;
+  heading?: string;
+  description?: string;
+}) {
   const [banks, setBanks] = useState<Bank[]>([]);
   const [banksLoading, setBanksLoading] = useState(true);
   const [bankCode, setBankCode] = useState('');
@@ -54,12 +62,9 @@ export default function BankAccountForm({ onSaved }: { onSaved: (accountName: st
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <Landmark className="h-5 w-5 text-primary" />
-        <h3 className="font-bold text-gray-900">Add your payout bank account</h3>
+        <h3 className="font-bold text-gray-900">{heading}</h3>
       </div>
-      <p className="text-sm text-gray-600">
-        You need a verified bank account before you can bid — this is where you'll be paid when a
-        poster accepts your bid.
-      </p>
+      <p className="text-sm text-gray-600">{description}</p>
 
       {error && (
         <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>

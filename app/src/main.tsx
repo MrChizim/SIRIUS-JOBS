@@ -13,6 +13,7 @@ import PostTask from './pages/PostTask';
 import BrowseTasks from './pages/BrowseTasks';
 import TaskDetail from './pages/TaskDetail';
 import MyTasks from './pages/MyTasks';
+import Settings from './pages/Settings';
 import About from './pages/About';
 
 createRoot(document.getElementById('root')!).render(
@@ -30,6 +31,14 @@ createRoot(document.getElementById('root')!).render(
               element={
                 <RequireAuth>
                   <MyTasks />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="settings"
+              element={
+                <RequireAuth>
+                  <Settings />
                 </RequireAuth>
               }
             />

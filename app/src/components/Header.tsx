@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Menu, X, ArrowRight, Compass, ListChecks, HardHat, LogOut, ClipboardList } from 'lucide-react';
+import { Menu, X, ArrowRight, Compass, ListChecks, HardHat, LogOut, ClipboardList, Settings } from 'lucide-react';
+import NotificationBell from './NotificationBell';
 import logo from '../assets/brand/logo.png';
 import { useAuth } from '../lib/AuthContext';
 
@@ -62,6 +63,7 @@ export default function Header() {
             <div className="hidden items-center space-x-4 lg:flex">
               {user ? (
                 <>
+                  <NotificationBell />
                   <div className="group relative">
                     <button className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
                       {initials(displayName) || <LogOut className="h-4 w-4" />}
@@ -76,6 +78,13 @@ export default function Header() {
                       >
                         <ClipboardList className="h-4 w-4" />
                         My Tasks
+                      </Link>
+                      <Link
+                        to="/settings"
+                        className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-primary"
+                      >
+                        <Settings className="h-4 w-4" />
+                        Settings
                       </Link>
                       <button
                         onClick={handleSignOut}
@@ -188,6 +197,24 @@ export default function Header() {
                   <ClipboardList className="h-5 w-5" />
                 </span>
                 <span className="text-lg font-bold">My Tasks</span>
+              </NavLink>
+            )}
+            {user && (
+              <NavLink
+                to="/settings"
+                onClick={() => setMobileOpen(false)}
+                className={({ isActive }) =>
+                  `bento-card flex items-center gap-4 rounded-2xl border p-4 shadow-sm ${
+                    isActive
+                      ? 'border-primary/20 bg-primary/5 text-primary'
+                      : 'border-gray-200/70 bg-white text-gray-900'
+                  }`
+                }
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Settings className="h-5 w-5" />
+                </span>
+                <span className="text-lg font-bold">Settings</span>
               </NavLink>
             )}
           </nav>

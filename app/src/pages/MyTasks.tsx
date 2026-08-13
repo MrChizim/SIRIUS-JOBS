@@ -26,6 +26,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
   const [bids, setBids] = useState<BidRow[] | null>(null);
   const [acceptingId, setAcceptingId] = useState<string | null>(null);
   const [completing, setCompleting] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
   const [hasReviewed, setHasReviewed] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -106,6 +107,24 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
     }
   }
 
+  async function handleCancel() {
+    if (!confirm('Cancel this task? This cannot be undone.')) return;
+
+    setError(null);
+    setCancelling(true);
+
+    const { error: rpcError } = await supabase.rpc('cancel_task', { p_task_id: task.id });
+
+    setCancelling(false);
+
+    if (rpcError) {
+      setError(rpcError.message);
+      return;
+    }
+
+    setStatus('cancelled');
+  }
+
   return (
     <div className="rounded-3xl border border-gray-200/70 bg-white p-6 shadow-sm">
       <div className="mb-4 flex items-start justify-between gap-3">
@@ -115,9 +134,20 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
           </Link>
           <p className="mt-1 text-sm text-gray-500">{task.city}</p>
         </div>
-        <span className="shrink-0 rounded-full bg-gray-100 px-3 py-1 text-xs font-bold text-gray-600 capitalize">
-          {status.replace('_', ' ')}
-        </span>
+        <div className="flex shrink-0 items-center gap-2">
+          <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-bold text-gray-600 capitalize">
+            {status.replace('_', ' ')}
+          </span>
+          {status === 'open' && (
+            <button
+              onClick={handleCancel}
+              disabled={cancelling}
+              className="rounded-full border border-gray-300 px-3 py-1 text-xs font-bold text-gray-500 transition-colors hover:border-red-300 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {cancelling ? 'Cancelling…' : 'Cancel'}
+            </button>
+          )}
+        </div>
       </div>
 
       {error && (
