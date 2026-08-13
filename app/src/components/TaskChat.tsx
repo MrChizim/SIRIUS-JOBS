@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import { MessageCircle, Send } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
@@ -81,7 +82,12 @@ export default function TaskChat({
     <div className="rounded-3xl border border-gray-200/70 bg-white p-6 shadow-sm">
       <div className="mb-4 flex items-center gap-2">
         <MessageCircle className="h-5 w-5 text-primary" />
-        <h2 className="text-lg font-bold text-gray-900">Chat with {otherUserLabel}</h2>
+        <h2 className="text-lg font-bold text-gray-900">
+          Chat with{' '}
+          <Link to={`/users/${otherUserId}`} className="text-primary hover:underline">
+            {otherUserLabel}
+          </Link>
+        </h2>
       </div>
 
       <div className="mb-4 max-h-80 space-y-2 overflow-y-auto rounded-2xl bg-gray-50 p-4">

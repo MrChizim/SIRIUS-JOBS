@@ -14,6 +14,8 @@ import BrowseTasks from './pages/BrowseTasks';
 import TaskDetail from './pages/TaskDetail';
 import MyTasks from './pages/MyTasks';
 import Settings from './pages/Settings';
+import PublicProfile from './pages/PublicProfile';
+import AdminBadges from './pages/AdminBadges';
 import About from './pages/About';
 
 createRoot(document.getElementById('root')!).render(
@@ -43,6 +45,15 @@ createRoot(document.getElementById('root')!).render(
               }
             />
             <Route path="for-professionals" element={<ComingSoon title="For Professionals" />} />
+            <Route path="users/:userId" element={<PublicProfile />} />
+            <Route
+              path="admin/badges"
+              element={
+                <RequireAuth>
+                  <AdminBadges />
+                </RequireAuth>
+              }
+            />
             <Route path="about" element={<About />} />
             <Route path="login" element={<SignIn />} />
             <Route path="sign-up" element={<SignUp />} />

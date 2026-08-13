@@ -169,6 +169,67 @@ async function handleEscrowCharge(reference: string) {
   console.info('Escrow charge confirmed, bid accepted', { reference, bidId: txn.bid_id });
 }
 
+async function handleBadgeCharge(reference: string) {
+  const { data: request } = await supabaseAdmin
+    .from('verified_badge_requests')
+    .select('id, status, fee_amount')
+    .eq('paystack_reference', reference)
+    .maybeSingle();
+
+  if (!request) {
+    console.warn(
+      'Paystack webhook: no matching verified_badge_requests row for reference',
+      reference,
+    );
+    return;
+  }
+
+  if (request.status !== 'pending_payment') {
+    // Already processed (webhook delivered twice) or in an unexpected state.
+    return;
+  }
+
+  const verified = await verifyTransaction(reference);
+
+  if (verified.status !== 'success') {
+    console.warn('Paystack webhook: badge verify did not confirm success', {
+      reference,
+      verifiedStatus: verified.status,
+    });
+    return;
+  }
+
+  const expectedKobo = Math.round(Number(request.fee_amount) * 100);
+  if (verified.amount !== expectedKobo) {
+    console.error('Paystack webhook: badge amount mismatch, refusing to mark as paid', {
+      reference,
+      expectedKobo,
+      verifiedAmount: verified.amount,
+    });
+    return;
+  }
+
+  const { error: updateError } = await supabaseAdmin
+    .from('verified_badge_requests')
+    .update({
+      status: 'pending_review',
+      paid_at: new Date().toISOString(),
+      paystack_response: verified,
+    })
+    .eq('id', request.id)
+    .eq('status', 'pending_payment');
+
+  if (updateError) {
+    console.error('Paystack webhook: failed to update verified_badge_requests', updateError);
+    return;
+  }
+
+  console.info('Badge request payment confirmed, awaiting admin review', {
+    reference,
+    requestId: request.id,
+  });
+}
+
 async function handleTransferEvent(eventName: string, data: Record<string, unknown>) {
   const transferCode = data?.transfer_code;
   if (!transferCode || typeof transferCode !== 'string') return;
@@ -246,6 +307,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         await handleLeadCharge(reference);
       } else if (reference.startsWith('escrow_')) {
         await handleEscrowCharge(reference);
+      } else if (reference.startsWith('badge_')) {
+        await handleBadgeCharge(reference);
       } else {
         console.warn('Paystack webhook: charge.success with unrecognized reference prefix', reference);
       }

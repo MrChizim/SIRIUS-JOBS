@@ -29,3 +29,23 @@ export type Task = {
   created_at: string;
   updated_at: string;
 };
+
+export type Profile = {
+  id: string;
+  full_name: string | null;
+  city: string | null;
+  verified_badge: boolean;
+  rating_avg: number;
+  rating_count: number;
+  completion_count: number;
+};
+
+export type Review = {
+  id: string;
+  task_id: string;
+  reviewer_id: string;
+  rating: number;
+  comment: string | null;
+  created_at: string;
+  reviewer_name: string | null;
+};

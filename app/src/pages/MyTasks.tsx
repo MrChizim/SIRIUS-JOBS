@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ClipboardList, User, CheckCircle2, Star } from 'lucide-react';
+import { ClipboardList, User, CheckCircle2, Star, BadgeCheck } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/AuthContext';
 import { startBidAcceptance, completeEscrowTask } from '../lib/escrow';
@@ -19,6 +19,7 @@ type BidRow = {
   tasker_rating_avg: number;
   tasker_rating_count: number;
   tasker_completion_count: number;
+  tasker_verified_badge: boolean;
 };
 
 function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: string }) {
@@ -36,7 +37,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
     const { data } = await supabase
       .from('bids')
       .select(
-        'id, tasker_id, amount, message, status, created_at, profiles(full_name, rating_avg, rating_count, completion_count)',
+        'id, tasker_id, amount, message, status, created_at, profiles(full_name, rating_avg, rating_count, completion_count, verified_badge)',
       )
       .eq('task_id', task.id)
       .order('amount', { ascending: true });
@@ -48,6 +49,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
           rating_avg: number;
           rating_count: number;
           completion_count: number;
+          verified_badge: boolean;
         } | null;
         return {
           ...b,
@@ -55,6 +57,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
           tasker_rating_avg: profile?.rating_avg ?? 0,
           tasker_rating_count: profile?.rating_count ?? 0,
           tasker_completion_count: profile?.completion_count ?? 0,
+          tasker_verified_badge: profile?.verified_badge ?? false,
         };
       }),
     );
@@ -157,7 +160,10 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
       {status === 'in_progress' && acceptedBid && (
         <div className="mb-4 flex items-center justify-between gap-3 rounded-2xl bg-blue-50 px-4 py-3">
           <p className="text-sm text-primary">
-            {acceptedBid.tasker_name || 'Tasker'} is working on this task.
+            <Link to={`/users/${acceptedBid.tasker_id}`} className="font-semibold underline hover:no-underline">
+              {acceptedBid.tasker_name || 'Tasker'}
+            </Link>{' '}
+            is working on this task.
           </p>
           <button
             onClick={handleMarkComplete}
@@ -220,8 +226,12 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
                   <User className="h-4 w-4" />
                 </span>
                 <div>
-                  <p className="font-semibold text-gray-900">
-                    {bid.tasker_name || 'Tasker'} · ₦{bid.amount.toLocaleString('en-NG')}
+                  <p className="flex items-center gap-1.5 font-semibold text-gray-900">
+                    <Link to={`/users/${bid.tasker_id}`} className="hover:text-primary hover:underline">
+                      {bid.tasker_name || 'Tasker'}
+                    </Link>
+                    {bid.tasker_verified_badge && <BadgeCheck className="h-4 w-4 text-primary" />}
+                    <span>· ₦{bid.amount.toLocaleString('en-NG')}</span>
                   </p>
                   <p className="flex items-center gap-1 text-xs text-gray-500">
                     {bid.tasker_rating_count > 0 ? (
