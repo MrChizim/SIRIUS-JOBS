@@ -50,3 +50,16 @@ export type Review = {
   created_at: string;
   reviewer_name: string | null;
 };
+
+export type DisputeStatus = 'open' | 'resolved' | 'escalated';
+
+export type Dispute = {
+  id: string;
+  task_id: string;
+  raised_by: string;
+  reason: string;
+  status: DisputeStatus;
+  resolution_notes: string | null;
+  created_at: string;
+  resolved_at: string | null;
+};

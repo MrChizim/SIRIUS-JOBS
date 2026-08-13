@@ -7,6 +7,8 @@ import { startLeadPayment } from '../lib/leads';
 import ReviewForm from '../components/ReviewForm';
 import TaskChat from '../components/TaskChat';
 import BankAccountForm from '../components/BankAccountForm';
+import RaiseDisputeForm from '../components/RaiseDisputeForm';
+import DisputeStatusBanner from '../components/DisputeStatusBanner';
 import type { Category, Task } from '../lib/types';
 
 type BidRow = {
@@ -54,6 +56,8 @@ export default function TaskDetail() {
   const [leadStarting, setLeadStarting] = useState(false);
 
   const [hasPayoutAccount, setHasPayoutAccount] = useState<boolean | null>(null);
+  const [disputing, setDisputing] = useState(false);
+  const [disputed, setDisputed] = useState(false);
 
   const isOwner = task?.poster_id === user?.id;
   const isAcceptedTasker = myBid?.status === 'accepted';
@@ -419,6 +423,27 @@ export default function TaskDetail() {
                 You've reviewed this task.
               </p>
             )}
+          </div>
+        )}
+
+        {isAcceptedTasker && task.status === 'in_progress' && !disputed && (
+          <div className="mt-6">
+            {disputing ? (
+              <RaiseDisputeForm taskId={task.id} onRaised={() => setDisputed(true)} />
+            ) : (
+              <button
+                onClick={() => setDisputing(true)}
+                className="text-xs font-semibold text-gray-400 hover:text-red-600"
+              >
+                Something wrong with this job? Raise a dispute
+              </button>
+            )}
+          </div>
+        )}
+
+        {(task.status === 'disputed' || disputed) && (isOwner || isAcceptedTasker) && (
+          <div className="mt-6">
+            <DisputeStatusBanner taskId={task.id} />
           </div>
         )}
       </div>

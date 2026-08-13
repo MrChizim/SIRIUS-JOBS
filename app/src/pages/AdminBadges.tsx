@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ShieldCheck, ExternalLink, Check, X } from 'lucide-react';
 import { useAuth } from '../lib/AuthContext';
 import {
@@ -75,9 +76,14 @@ export default function AdminBadges() {
   return (
     <section className="px-4 py-12 lg:px-8">
       <div className="mx-auto max-w-3xl">
-        <div className="mb-8 flex items-center gap-2">
-          <ShieldCheck className="h-6 w-6 text-primary" />
-          <h1 className="text-2xl font-black text-gray-900">Verified Badge Requests</h1>
+        <div className="mb-8 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="h-6 w-6 text-primary" />
+            <h1 className="text-2xl font-black text-gray-900">Verified Badge Requests</h1>
+          </div>
+          <Link to="/admin/disputes" className="text-sm font-semibold text-primary hover:underline">
+            Disputes
+          </Link>
         </div>
 
         {error && (

@@ -199,3 +199,39 @@ export async function listBanks(): Promise<PaystackBank[]> {
 
   return json.data;
 }
+
+type PaystackRefundResponse = {
+  status: boolean;
+  message: string;
+  data: {
+    id: number;
+    status: string;
+    amount: number;
+    transaction: { reference: string };
+  };
+};
+
+export async function refundTransaction(params: {
+  reference: string;
+  amountKobo?: number; // omit to refund the full original charge
+}): Promise<PaystackRefundResponse['data']> {
+  const res = await fetch(`${PAYSTACK_BASE_URL}/refund`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${secretKey()}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      transaction: params.reference,
+      ...(params.amountKobo ? { amount: params.amountKobo } : {}),
+    }),
+  });
+
+  const json = (await res.json()) as PaystackRefundResponse;
+
+  if (!res.ok || !json.status) {
+    throw new Error(json.message || 'Failed to process Paystack refund.');
+  }
+
+  return json.data;
+}

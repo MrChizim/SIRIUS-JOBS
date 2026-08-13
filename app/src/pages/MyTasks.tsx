@@ -7,6 +7,8 @@ import { startBidAcceptance, completeEscrowTask } from '../lib/escrow';
 import ReviewForm from '../components/ReviewForm';
 import TaskChat from '../components/TaskChat';
 import Avatar from '../components/Avatar';
+import RaiseDisputeForm from '../components/RaiseDisputeForm';
+import DisputeStatusBanner from '../components/DisputeStatusBanner';
 import type { Task } from '../lib/types';
 
 type BidRow = {
@@ -30,6 +32,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
   const [acceptingId, setAcceptingId] = useState<string | null>(null);
   const [completing, setCompleting] = useState(false);
   const [cancelling, setCancelling] = useState(false);
+  const [disputing, setDisputing] = useState(false);
   const [hasReviewed, setHasReviewed] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -162,22 +165,36 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
       )}
 
       {status === 'in_progress' && acceptedBid && (
-        <div className="mb-4 flex items-center justify-between gap-3 rounded-2xl bg-blue-50 px-4 py-3">
-          <p className="text-sm text-primary">
-            <Link to={`/users/${acceptedBid.tasker_id}`} className="font-semibold underline hover:no-underline">
-              {acceptedBid.tasker_name || 'Tasker'}
-            </Link>{' '}
-            is working on this task.
-          </p>
-          <button
-            onClick={handleMarkComplete}
-            disabled={completing}
-            className="shrink-0 rounded-full bg-primary px-4 py-2 text-sm font-bold text-white transition-all hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {completing ? 'Confirming…' : 'Mark Complete'}
-          </button>
+        <div className="mb-4 space-y-3">
+          <div className="flex items-center justify-between gap-3 rounded-2xl bg-blue-50 px-4 py-3">
+            <p className="text-sm text-primary">
+              <Link to={`/users/${acceptedBid.tasker_id}`} className="font-semibold underline hover:no-underline">
+                {acceptedBid.tasker_name || 'Tasker'}
+              </Link>{' '}
+              is working on this task.
+            </p>
+            <button
+              onClick={handleMarkComplete}
+              disabled={completing}
+              className="shrink-0 rounded-full bg-primary px-4 py-2 text-sm font-bold text-white transition-all hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {completing ? 'Confirming…' : 'Mark Complete'}
+            </button>
+          </div>
+          {disputing ? (
+            <RaiseDisputeForm taskId={task.id} onRaised={() => setStatus('disputed')} />
+          ) : (
+            <button
+              onClick={() => setDisputing(true)}
+              className="text-xs font-semibold text-gray-400 hover:text-red-600"
+            >
+              Something wrong with this job? Raise a dispute
+            </button>
+          )}
         </div>
       )}
+
+      {status === 'disputed' && <div className="mb-4"><DisputeStatusBanner taskId={task.id} /></div>}
 
       {status === 'completed' && (
         <div className="mb-4 rounded-2xl bg-green-50 px-4 py-3">

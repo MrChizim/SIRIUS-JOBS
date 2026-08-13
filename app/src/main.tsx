@@ -16,6 +16,7 @@ import MyTasks from './pages/MyTasks';
 import Settings from './pages/Settings';
 import PublicProfile from './pages/PublicProfile';
 import AdminBadges from './pages/AdminBadges';
+import AdminDisputes from './pages/AdminDisputes';
 import About from './pages/About';
 
 createRoot(document.getElementById('root')!).render(
@@ -51,6 +52,14 @@ createRoot(document.getElementById('root')!).render(
               element={
                 <RequireAuth>
                   <AdminBadges />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="admin/disputes"
+              element={
+                <RequireAuth>
+                  <AdminDisputes />
                 </RequireAuth>
               }
             />
