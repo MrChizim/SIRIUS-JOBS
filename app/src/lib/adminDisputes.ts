@@ -71,7 +71,7 @@ type RawDisputeRow = {
 };
 
 export async function fetchDisputes(): Promise<AdminDispute[]> {
-  const json = await authedFetch('/api/admin/disputes/list', 'GET');
+  const json = await authedFetch('/api/admin/disputes', 'GET');
 
   return (json.disputes as RawDisputeRow[]).map((d) => {
     const acceptedBid = (d.tasks?.bids ?? []).find((b) => b.status === 'accepted');
@@ -102,5 +102,5 @@ export async function decideDispute(
   decision: 'release_to_tasker' | 'refund_to_poster',
   notes: string,
 ): Promise<void> {
-  await authedFetch('/api/admin/disputes/decide', 'POST', { disputeId, decision, notes });
+  await authedFetch('/api/admin/disputes', 'POST', { disputeId, decision, notes });
 }

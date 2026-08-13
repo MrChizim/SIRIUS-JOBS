@@ -46,12 +46,12 @@ export type BadgeRequest = {
 };
 
 export async function fetchBadgeRequests(): Promise<BadgeRequest[]> {
-  const json = await authedFetch('/api/admin/badges/list', 'GET');
+  const json = await authedFetch('/api/admin/badges', 'GET');
   return json.requests;
 }
 
 export async function getDocumentSignedUrl(path: string): Promise<string> {
-  const json = await authedFetch('/api/admin/badges/document-url', 'POST', { path });
+  const json = await authedFetch('/api/admin/badges', 'POST', { action: 'document-url', path });
   return json.url;
 }
 
@@ -60,5 +60,5 @@ export async function decideBadgeRequest(
   decision: 'approve' | 'reject',
   notes?: string,
 ): Promise<void> {
-  await authedFetch('/api/admin/badges/decide', 'POST', { requestId, decision, notes });
+  await authedFetch('/api/admin/badges', 'POST', { requestId, decision, notes });
 }

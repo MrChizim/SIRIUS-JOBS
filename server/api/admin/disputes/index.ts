@@ -4,18 +4,28 @@ import { supabaseAdmin } from '../../../src/supabaseAdmin.js';
 import { requireAdmin } from '../../../src/adminAuth.js';
 import { initiateTransfer, refundTransaction } from '../../../src/paystack.js';
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (applyCors(req, res)) return;
+async function handleList(res: VercelResponse) {
+  const { data, error } = await supabaseAdmin
+    .from('disputes')
+    .select(
+      `id, task_id, raised_by, reason, status, resolution_notes, created_at, resolved_at,
+       tasks!inner (
+         id, title, status, poster_id,
+         profiles!poster_id ( full_name ),
+         escrow_transactions ( id, amount, commission_amount, payout_amount, paystack_reference, status ),
+         bids ( tasker_id, status, profiles!tasker_id ( full_name ) )
+       )`,
+    )
+    .order('created_at', { ascending: false });
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (error) {
+    return res.status(500).json({ error: error.message });
   }
 
-  const auth = await requireAdmin(req.headers.authorization);
-  if (!auth.ok) {
-    return res.status(auth.status).json({ error: auth.error });
-  }
+  return res.status(200).json({ disputes: data });
+}
 
+async function handleDecide(req: VercelRequest, res: VercelResponse) {
   const { disputeId, decision, notes } = req.body ?? {};
   if (!disputeId || typeof disputeId !== 'string') {
     return res.status(400).json({ error: 'disputeId is required' });
@@ -119,4 +129,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       error: err instanceof Error ? err.message : 'Failed to process refund',
     });
   }
+}
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (applyCors(req, res)) return;
+
+  const auth = await requireAdmin(req.headers.authorization);
+  if (!auth.ok) {
+    return res.status(auth.status).json({ error: auth.error });
+  }
+
+  if (req.method === 'GET') {
+    return handleList(res);
+  }
+  if (req.method === 'POST') {
+    return handleDecide(req, res);
+  }
+
+  return res.status(405).json({ error: 'Method not allowed' });
 }
