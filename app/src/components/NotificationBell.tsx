@@ -10,6 +10,7 @@ type NotificationRow = {
   id: string;
   kind: string;
   task_id: string | null;
+  sender_id: string | null;
   body: string;
   read_at: string | null;
   created_at: string;
@@ -26,7 +27,7 @@ export default function NotificationBell() {
     if (!user) return;
     const { data } = await supabase
       .from('notifications')
-      .select('id, kind, task_id, body, read_at, created_at')
+      .select('id, kind, task_id, sender_id, body, read_at, created_at')
       .order('created_at', { ascending: false })
       .limit(20);
     setNotifications(data ?? []);
@@ -75,8 +76,8 @@ export default function NotificationBell() {
                 <Link
                   key={n.id}
                   to={
-                    n.kind === 'new_message'
-                      ? '/my-tasks'
+                    n.kind === 'new_message' && n.task_id && n.sender_id
+                      ? `/tasks/${n.task_id}?openChatWith=${n.sender_id}`
                       : n.task_id
                         ? `/tasks/${n.task_id}`
                         : '/my-tasks'

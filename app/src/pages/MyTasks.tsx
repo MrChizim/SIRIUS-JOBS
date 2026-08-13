@@ -11,6 +11,7 @@ import Avatar from '../components/Avatar';
 import RaiseDisputeForm from '../components/RaiseDisputeForm';
 import DisputeStatusBanner from '../components/DisputeStatusBanner';
 import EditTaskForm from '../components/EditTaskForm';
+import MyBids from './MyBids';
 import type { Task } from '../lib/types';
 
 type BidRow = {
@@ -334,6 +335,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
 export default function MyTasks() {
   const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[] | null>(null);
+  const [tab, setTab] = useState<'posted' | 'bidding'>('posted');
 
   useEffect(() => {
     if (!user) return;
@@ -360,7 +362,28 @@ export default function MyTasks() {
           </div>
         </div>
 
-        {tasks === null ? (
+        <div className="mb-6 flex gap-2">
+          <button
+            onClick={() => setTab('posted')}
+            className={`rounded-full px-4 py-2 text-sm font-bold transition-colors ${
+              tab === 'posted' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            Tasks I Posted
+          </button>
+          <button
+            onClick={() => setTab('bidding')}
+            className={`rounded-full px-4 py-2 text-sm font-bold transition-colors ${
+              tab === 'bidding' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            Tasks I'm Bidding On
+          </button>
+        </div>
+
+        {tab === 'bidding' ? (
+          <MyBids userId={user.id} />
+        ) : tasks === null ? (
           <div className="flex justify-center py-16">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
           </div>

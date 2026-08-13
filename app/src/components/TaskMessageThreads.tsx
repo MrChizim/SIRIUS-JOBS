@@ -19,12 +19,14 @@ type ThreadPartner = {
 export default function TaskMessageThreads({
   taskId,
   currentUserId,
+  initialOpenPartnerId,
 }: {
   taskId: string;
   currentUserId: string;
+  initialOpenPartnerId?: string | null;
 }) {
   const [partners, setPartners] = useState<ThreadPartner[] | null>(null);
-  const [openPartnerId, setOpenPartnerId] = useState<string | null>(null);
+  const [openPartnerId, setOpenPartnerId] = useState<string | null>(initialOpenPartnerId ?? null);
 
   useEffect(() => {
     supabase

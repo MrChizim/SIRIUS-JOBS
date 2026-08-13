@@ -1,11 +1,12 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { MapPin, Wallet, ArrowLeft, Gavel, CheckCircle2, Star, Lock } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/AuthContext';
 import { startLeadPayment } from '../lib/leads';
 import ReviewForm from '../components/ReviewForm';
 import TaskChat from '../components/TaskChat';
+import TaskMessageThreads from '../components/TaskMessageThreads';
 import BankAccountForm from '../components/BankAccountForm';
 import RaiseDisputeForm from '../components/RaiseDisputeForm';
 import DisputeStatusBanner from '../components/DisputeStatusBanner';
@@ -37,6 +38,8 @@ export default function TaskDetail() {
   const { taskId } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const openChatWith = searchParams.get('openChatWith');
 
   const [task, setTask] = useState<Task | null>(null);
   const [category, setCategory] = useState<Category | null>(null);
@@ -389,15 +392,24 @@ export default function TaskDetail() {
         )}
 
         {isOwner && (
-          <div className="mt-6 rounded-2xl bg-blue-50 px-6 py-4 text-sm text-primary">
-            This is your task.{' '}
-            <button
-              onClick={() => navigate('/my-tasks')}
-              className="font-semibold underline hover:no-underline"
-            >
-              View and manage bids
-            </button>
-          </div>
+          <>
+            <div className="mt-6 rounded-2xl bg-blue-50 px-6 py-4 text-sm text-primary">
+              This is your task.{' '}
+              <button
+                onClick={() => navigate('/my-tasks')}
+                className="font-semibold underline hover:no-underline"
+              >
+                View and manage bids
+              </button>
+            </div>
+            <div className="mt-6">
+              <TaskMessageThreads
+                taskId={task.id}
+                currentUserId={user!.id}
+                initialOpenPartnerId={openChatWith}
+              />
+            </div>
+          </>
         )}
 
         {showTaskerChat && (
