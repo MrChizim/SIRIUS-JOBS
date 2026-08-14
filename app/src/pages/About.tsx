@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
-import { Info, HelpCircle, Shield, FileText } from 'lucide-react';
+import { Info, HelpCircle, Shield, FileText, Smartphone, Share, SquarePlus } from 'lucide-react';
 
 const sections = [
   { id: 'about', label: 'About', icon: Info },
+  { id: 'install', label: 'Install the App', icon: Smartphone },
   { id: 'faq', label: 'FAQs', icon: HelpCircle },
   { id: 'privacy', label: 'Privacy Policy', icon: Shield },
   { id: 'terms', label: 'Terms of Service', icon: FileText },
@@ -70,6 +71,64 @@ export default function About() {
               Whether it's a leaking pipe that needs a quick fix or a full bathroom
               renovation, Sirius Jobs helps you find the right person for the job.
             </p>
+          </div>
+        </section>
+
+        <section id="install" className="mt-16 scroll-mt-24">
+          <h2 className="text-2xl font-black text-gray-900">Install the App</h2>
+          <p className="mt-2 text-gray-600">
+            Add Sirius Jobs to your home screen for one-tap access, just like a regular app. No
+            app store download needed.
+          </p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl border border-gray-200/70 bg-white p-6 shadow-sm">
+              <h3 className="font-bold text-gray-900">On Android (Chrome)</h3>
+              <ol className="mt-3 space-y-2 text-sm text-gray-600">
+                <li className="flex items-start gap-2">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                    1
+                  </span>
+                  Open siriusjobs.com.ng in Chrome
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                    2
+                  </span>
+                  Tap the "Install" banner that appears, or use the ⋮ menu and choose "Install
+                  app"
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                    3
+                  </span>
+                  Confirm, and Sirius Jobs appears on your home screen
+                </li>
+              </ol>
+            </div>
+            <div className="rounded-2xl border border-gray-200/70 bg-white p-6 shadow-sm">
+              <h3 className="font-bold text-gray-900">On iPhone (Safari)</h3>
+              <ol className="mt-3 space-y-2 text-sm text-gray-600">
+                <li className="flex items-start gap-2">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                    1
+                  </span>
+                  Open siriusjobs.com.ng in Safari
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                    2
+                  </span>
+                  Tap the Share button <Share className="inline h-4 w-4 text-primary" />
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                    3
+                  </span>
+                  Scroll down and tap "Add to Home Screen"{' '}
+                  <SquarePlus className="inline h-4 w-4 text-primary" />, then tap "Add"
+                </li>
+              </ol>
+            </div>
           </div>
         </section>
 
