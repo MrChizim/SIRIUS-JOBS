@@ -70,7 +70,6 @@ export default function Header() {
             <div className="hidden items-center space-x-4 lg:flex">
               {user ? (
                 <>
-                  <NotificationBell />
                   <div className="group relative">
                     <button className="flex h-10 w-10 items-center justify-center rounded-full">
                       <Avatar url={avatarUrl} name={displayName} size={40} />
@@ -129,13 +128,16 @@ export default function Header() {
               )}
             </div>
 
-            <button
-              className={`flex h-10 w-10 items-center justify-center lg:hidden ${mobileOpen ? 'invisible' : ''}`}
-              aria-label="Open menu"
-              onClick={() => setMobileOpen(true)}
-            >
-              <Menu className="h-6 w-6" />
-            </button>
+            <div className="flex items-center gap-2 lg:hidden">
+              {user && <NotificationBell />}
+              <button
+                className={`flex h-10 w-10 items-center justify-center ${mobileOpen ? 'hidden' : ''}`}
+                aria-label="Open menu"
+                onClick={() => setMobileOpen(true)}
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+            </div>
           </div>
         </div>
       </nav>

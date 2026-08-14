@@ -211,7 +211,7 @@ export default function TaskDetail() {
           Back to Browse Tasks
         </Link>
 
-        <div className="rounded-3xl border border-gray-200/70 bg-white p-8 shadow-sm">
+        <div className="rounded-3xl border border-gray-200/70 bg-white p-5 shadow-sm sm:p-8">
           <div className="mb-4 flex flex-wrap items-center gap-2">
             {category && (
               <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
@@ -254,7 +254,7 @@ export default function TaskDetail() {
         </div>
 
         {!isOwner && task.status === 'open' && task.path === 'lead_fee' && (
-          <div className="mt-6 rounded-3xl border border-gray-200/70 bg-white p-8 shadow-sm">
+          <div className="mt-6 rounded-3xl border border-gray-200/70 bg-white p-5 shadow-sm sm:p-8">
             <div className="mb-4 flex items-center gap-2">
               <Lock className="h-5 w-5 text-primary" />
               <h2 className="text-xl font-bold text-gray-900">Get this lead</h2>
@@ -304,7 +304,7 @@ export default function TaskDetail() {
         )}
 
         {!isOwner && task.status === 'open' && task.path === 'escrow' && (
-          <div className="mt-6 rounded-3xl border border-gray-200/70 bg-white p-8 shadow-sm">
+          <div className="mt-6 rounded-3xl border border-gray-200/70 bg-white p-5 shadow-sm sm:p-8">
             <div className="mb-4 flex items-center gap-2">
               <Gavel className="h-5 w-5 text-primary" />
               <h2 className="text-xl font-bold text-gray-900">Place a bid</h2>
@@ -424,7 +424,7 @@ export default function TaskDetail() {
         )}
 
         {isAcceptedTasker && task.status === 'completed' && (
-          <div className="mt-6 rounded-3xl border border-gray-200/70 bg-white p-8 shadow-sm">
+          <div className="mt-6 rounded-3xl border border-gray-200/70 bg-white p-5 shadow-sm sm:p-8">
             <h2 className="mb-4 text-xl font-bold text-gray-900">Task completed</h2>
             {hasReviewed === false && (
               <ReviewForm taskId={task.id} onSubmitted={() => setHasReviewed(true)} />

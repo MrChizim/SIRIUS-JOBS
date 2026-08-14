@@ -77,7 +77,7 @@ export default function PublicProfile() {
           Back
         </Link>
 
-        <div className="rounded-3xl border border-gray-200/70 bg-white p-8 shadow-sm">
+        <div className="rounded-3xl border border-gray-200/70 bg-white p-5 shadow-sm sm:p-8">
           <div className="flex items-center gap-4">
             <Avatar url={profile.avatar_url} name={profile.full_name} size={64} />
             <div>

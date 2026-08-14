@@ -87,7 +87,7 @@ export default function Settings() {
           <p className="mt-2 text-gray-600">Manage your account and payout details</p>
         </div>
 
-        <div className="rounded-3xl border border-gray-200/70 bg-white p-8 shadow-sm">
+        <div className="rounded-3xl border border-gray-200/70 bg-white p-5 shadow-sm sm:p-8">
           <div className="mb-4 flex items-center gap-2">
             <UserCircle2 className="h-5 w-5 text-primary" />
             <h2 className="text-lg font-bold text-gray-900">Profile</h2>
@@ -140,7 +140,7 @@ export default function Settings() {
           </dl>
         </div>
 
-        <div className="rounded-3xl border border-gray-200/70 bg-white p-8 shadow-sm">
+        <div className="rounded-3xl border border-gray-200/70 bg-white p-5 shadow-sm sm:p-8">
           {editingBank || !profile?.bank_account_number ? (
             <BankAccountForm
               heading={profile?.bank_account_number ? 'Update your payout bank account' : 'Add your payout bank account'}
@@ -172,7 +172,7 @@ export default function Settings() {
           )}
         </div>
 
-        <div className="rounded-3xl border border-gray-200/70 bg-white p-8 shadow-sm">
+        <div className="rounded-3xl border border-gray-200/70 bg-white p-5 shadow-sm sm:p-8">
           {profile?.verified_badge ? (
             <div className="flex items-center gap-3 rounded-xl bg-blue-50 px-4 py-3 text-blue-700">
               <BadgeCheck className="h-5 w-5 shrink-0" />

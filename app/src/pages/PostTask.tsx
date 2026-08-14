@@ -188,21 +188,30 @@ export default function PostTask() {
         <div className="mb-8 flex items-center justify-center gap-2">
           {STEPS.map((label, i) => (
             <div key={label} className="flex items-center gap-2">
-              <div
-                className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${
-                  i <= step ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'
-                }`}
-              >
-                {i + 1}
+              <div className="flex flex-col items-center gap-1">
+                <div
+                  className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${
+                    i <= step ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'
+                  }`}
+                >
+                  {i + 1}
+                </div>
+                <span
+                  className={`hidden text-[11px] font-semibold sm:block ${
+                    i <= step ? 'text-primary' : 'text-gray-400'
+                  }`}
+                >
+                  {label}
+                </span>
               </div>
               {i < STEPS.length - 1 && (
-                <div className={`h-0.5 w-8 ${i < step ? 'bg-primary' : 'bg-gray-200'}`} />
+                <div className={`mb-4 h-0.5 w-8 ${i < step ? 'bg-primary' : 'bg-gray-200'}`} />
               )}
             </div>
           ))}
         </div>
 
-        <div className="space-y-5 rounded-3xl border border-gray-200/70 bg-white p-8 shadow-lg">
+        <div className="space-y-5 rounded-3xl border border-gray-200/70 bg-white p-5 shadow-lg sm:p-8">
           {stepError && (
             <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{stepError}</div>
           )}
