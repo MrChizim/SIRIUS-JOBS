@@ -29,6 +29,14 @@ const faqs = [
     q: 'What if something goes wrong with a task?',
     a: "Reach out through the in-app chat with the other party first. If that doesn't resolve it, either side can raise a dispute on the task while it's still in progress, and our team will review it and decide how the payment held in escrow should be handled.",
   },
+  {
+    q: 'Can I edit or cancel a task after posting it?',
+    a: "You can edit a task's details from My Tasks as long as no one has bid on it yet. You can also cancel an open task at any point before accepting a bid, no charge either way.",
+  },
+  {
+    q: 'Can I see a tasker\'s ratings and past reviews before choosing a bid?',
+    a: "Yes. Every tasker has a public profile showing their rating, how many jobs they've completed, and reviews from previous posters. Click a bidder's name on your task to view it before accepting.",
+  },
 ];
 
 export default function About() {

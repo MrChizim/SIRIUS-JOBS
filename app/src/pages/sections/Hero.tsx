@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Search, ArrowRight, PlusCircle } from 'lucide-react';
+import { Search, ArrowRight, PlusCircle, Hammer, Wrench, Sparkles, Truck } from 'lucide-react';
 
 export default function Hero() {
   return (
@@ -17,7 +17,7 @@ export default function Hero() {
 
             <p className="text-xl leading-relaxed text-gray-600">
               From quick errands to big trade jobs, post what you need done, compare bids from
-              verified Nigerian professionals, and pay with confidence — on your terms.
+              verified Nigerian professionals, and pay with confidence, on your terms.
             </p>
 
             <div className="flex flex-col gap-4 sm:flex-row">
@@ -40,13 +40,31 @@ export default function Hero() {
           </div>
 
           <div className="relative px-4 pt-8 pb-6 sm:px-6">
-            <div className="bento-card relative overflow-hidden rounded-3xl border border-gray-200/50 shadow-xl">
-              <img
-                src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=900&q=80&auto=format&fit=crop"
-                alt="A tradesperson ready to work"
-                className="h-[420px] w-full object-cover lg:h-[520px]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+            <div className="hero-gradient bento-card relative overflow-hidden rounded-3xl border border-gray-200/50 shadow-xl">
+              <div className="absolute inset-0 opacity-20">
+                <div className="absolute -top-10 -right-10 h-56 w-56 rounded-full bg-white blur-3xl" />
+                <div className="absolute -bottom-10 -left-10 h-56 w-56 rounded-full bg-white blur-3xl" />
+              </div>
+              <div className="relative flex h-[420px] flex-col items-center justify-center gap-8 p-8 lg:h-[520px]">
+                <div className="grid grid-cols-2 gap-5">
+                  {[
+                    { Icon: Hammer, label: 'Repairs' },
+                    { Icon: Wrench, label: 'Trade Jobs' },
+                    { Icon: Sparkles, label: 'Cleaning' },
+                    { Icon: Truck, label: 'Errands' },
+                  ].map(({ Icon, label }) => (
+                    <div
+                      key={label}
+                      className="flex w-32 flex-col items-center gap-3 rounded-2xl bg-white/15 p-5 text-white backdrop-blur-sm"
+                    >
+                      <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20">
+                        <Icon className="h-6 w-6" />
+                      </span>
+                      <span className="text-sm font-bold">{label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
             <div className="animate-float absolute -bottom-4 left-0 w-60 rounded-2xl bg-white p-5 shadow-lg sm:left-2">
