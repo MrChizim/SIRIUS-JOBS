@@ -40,6 +40,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
   const [editing, setEditing] = useState(false);
   const [bids, setBids] = useState<BidRow[] | null>(null);
   const [acceptingId, setAcceptingId] = useState<string | null>(null);
+  const [rejectingId, setRejectingId] = useState<string | null>(null);
   const [completing, setCompleting] = useState(false);
   const [cancelling, setCancelling] = useState(false);
   const [disputing, setDisputing] = useState(false);
@@ -96,7 +97,11 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task.id]);
 
-  async function handleAccept(bidId: string) {
+  async function handleAccept(bidId: string, amount: number) {
+    if (!confirm(`Accept this bid for ₦${amount.toLocaleString('en-NG')}? You'll be taken to pay and hold the amount securely.`)) {
+      return;
+    }
+
     setError(null);
     setAcceptingId(bidId);
 
@@ -110,6 +115,24 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
       setAcceptingId(null);
       setError(err instanceof Error ? err.message : 'Something went wrong.');
     }
+  }
+
+  async function handleReject(bidId: string) {
+    if (!confirm('Reject this bid? This cannot be undone.')) return;
+
+    setError(null);
+    setRejectingId(bidId);
+
+    const { error: rpcError } = await supabase.rpc('reject_bid', { p_bid_id: bidId });
+
+    setRejectingId(null);
+
+    if (rpcError) {
+      setError(rpcError.message);
+      return;
+    }
+
+    await loadBids();
   }
 
   async function handleMarkComplete() {
@@ -306,13 +329,22 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
                       Accepted
                     </span>
                   ) : bid.status === 'pending' && status === 'open' ? (
-                    <button
-                      onClick={() => handleAccept(bid.id)}
-                      disabled={acceptingId === bid.id}
-                      className="rounded-full bg-primary px-4 py-2 text-sm font-bold text-white transition-all hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                      {acceptingId === bid.id ? 'Accepting…' : 'Accept'}
-                    </button>
+                    <>
+                      <button
+                        onClick={() => handleReject(bid.id)}
+                        disabled={rejectingId === bid.id || acceptingId === bid.id}
+                        className="rounded-full border border-gray-300 px-3 py-2 text-sm font-semibold text-gray-500 transition-colors hover:border-red-300 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {rejectingId === bid.id ? 'Rejecting…' : 'Reject'}
+                      </button>
+                      <button
+                        onClick={() => handleAccept(bid.id, bid.amount)}
+                        disabled={acceptingId === bid.id || rejectingId === bid.id}
+                        className="rounded-full bg-primary px-4 py-2 text-sm font-bold text-white transition-all hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {acceptingId === bid.id ? 'Accepting…' : 'Accept'}
+                      </button>
+                    </>
                   ) : (
                     <span className="text-sm text-gray-400 capitalize">{bid.status}</span>
                   )}
