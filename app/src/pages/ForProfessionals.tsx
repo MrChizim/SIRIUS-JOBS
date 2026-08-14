@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Wrench, Gavel, ShieldCheck, BadgeCheck } from 'lucide-react';
 import { useAuth } from '../lib/AuthContext';
+import heroSecondary from '../assets/photos/hero-secondary.jpg';
 
 export default function ForProfessionals() {
   const { user } = useAuth();
@@ -8,17 +9,26 @@ export default function ForProfessionals() {
   return (
     <section className="px-4 py-16 lg:px-8">
       <div className="mx-auto max-w-4xl">
-        <div className="mb-16 text-center">
-          <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-2 text-sm font-bold tracking-wider text-primary uppercase">
-            For Taskers &amp; Professionals
-          </span>
-          <h1 className="mb-6 text-4xl font-black lg:text-6xl">
-            Get Paid For <span className="text-primary">Work You Already Do</span>
-          </h1>
-          <p className="mx-auto max-w-2xl text-xl text-gray-600">
-            Whether you handle small everyday jobs or run a trade business, Sirius Jobs connects
-            you with people who need exactly what you offer, near you, in Nigeria.
-          </p>
+        <div className="mb-16 grid items-center gap-10 lg:grid-cols-2 lg:text-left">
+          <div className="text-center lg:text-left">
+            <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-2 text-sm font-bold tracking-wider text-primary uppercase">
+              For Taskers &amp; Professionals
+            </span>
+            <h1 className="mb-6 text-4xl font-black lg:text-6xl">
+              Get Paid For <span className="text-primary">Work You Already Do</span>
+            </h1>
+            <p className="mx-auto max-w-2xl text-xl text-gray-600 lg:mx-0">
+              Whether you handle small everyday jobs or run a trade business, Sirius Jobs
+              connects you with people who need exactly what you offer, near you, in Nigeria.
+            </p>
+          </div>
+          <div className="mx-auto w-full max-w-sm overflow-hidden rounded-3xl border border-gray-200/50 shadow-xl lg:max-w-none">
+            <img
+              src={heroSecondary}
+              alt="A professional checking new job requests on Sirius Jobs"
+              className="h-72 w-full object-cover sm:h-96"
+            />
+          </div>
         </div>
 
         <div className="mb-16 grid gap-8 lg:grid-cols-2">

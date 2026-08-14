@@ -1,15 +1,8 @@
 import { Link } from 'react-router-dom';
-import {
-  Search,
-  CheckCircle,
-  ArrowRight,
-  Wrench,
-  Truck,
-  ShieldCheck,
-  Hammer,
-  Sparkles,
-  Paintbrush,
-} from 'lucide-react';
+import { Search, CheckCircle, ArrowRight, Wrench, Truck, ShieldCheck } from 'lucide-react';
+import taskCleaning from '../../assets/photos/task-cleaning.jpg';
+import taskTrade from '../../assets/photos/task-trade.jpg';
+import taskErrands from '../../assets/photos/task-errands.jpg';
 
 export default function ServicesGrid() {
   return (
@@ -31,14 +24,13 @@ export default function ServicesGrid() {
 
         <div className="grid auto-rows-fr grid-cols-1 gap-6 md:grid-cols-6">
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-blue-700 p-8 text-white md:col-span-4 md:row-span-2 lg:p-12">
+            <img
+              src={taskCleaning}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/85 to-blue-700/40" />
             <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
-            <div className="absolute -bottom-8 -left-8 h-48 w-48 rounded-full bg-white/5 blur-2xl" />
-            <div className="absolute top-8 right-10 hidden rotate-6 opacity-20 sm:block">
-              <Sparkles className="h-24 w-24" />
-            </div>
-            <div className="absolute bottom-10 right-24 hidden -rotate-12 opacity-10 sm:block">
-              <Truck className="h-20 w-20" />
-            </div>
             <div className="relative z-10 flex h-full flex-col justify-between">
               <div className="space-y-6">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
@@ -81,13 +73,9 @@ export default function ServicesGrid() {
           </div>
 
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 to-gray-800 p-8 text-white md:col-span-2">
+            <img src={taskTrade} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-gray-900/40" />
             <div className="absolute right-0 bottom-0 h-32 w-32 rounded-full bg-primary/20 blur-2xl" />
-            <div className="absolute top-10 right-6 rotate-12 opacity-10">
-              <Hammer className="h-20 w-20" />
-            </div>
-            <div className="absolute bottom-16 right-14 -rotate-6 opacity-10">
-              <Paintbrush className="h-16 w-16" />
-            </div>
             <div className="relative z-10 flex h-full flex-col justify-between">
               <div className="space-y-4">
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/20">
@@ -110,7 +98,12 @@ export default function ServicesGrid() {
           </div>
 
           <div className="relative overflow-hidden rounded-3xl bg-blue-50 p-8 md:col-span-2">
-            <div className="absolute top-0 left-0 h-full w-full bg-gradient-to-br from-primary/5 to-transparent" />
+            <img
+              src={taskErrands}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover opacity-15"
+            />
+            <div className="absolute top-0 left-0 h-full w-full bg-gradient-to-br from-blue-50/80 via-blue-50/90 to-blue-50" />
             <div className="relative z-10 flex h-full flex-col justify-between">
               <div className="space-y-4">
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
