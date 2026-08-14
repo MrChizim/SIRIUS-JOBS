@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ShieldCheck, ExternalLink, Check, X, Scale } from 'lucide-react';
+import { ShieldCheck, ExternalLink, Check, X, Scale, BarChart3, Users, ListChecks, Wallet } from 'lucide-react';
 import { useAuth } from '../lib/AuthContext';
 import {
   fetchBadgeRequests,
@@ -8,8 +8,88 @@ import {
   type BadgeRequest,
 } from '../lib/adminBadges';
 import { fetchDisputes, decideDispute, type AdminDispute } from '../lib/adminDisputes';
+import { fetchPlatformStats, type PlatformStats } from '../lib/adminStats';
 
 const ADMIN_EMAILS = ['siriusoddjobs@gmail.com'];
+
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: typeof Users;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-gray-200/70 bg-white p-5 shadow-sm">
+      <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <Icon className="h-5 w-5" />
+      </div>
+      <p className="text-2xl font-black text-gray-900">{value}</p>
+      <p className="text-sm text-gray-500">{label}</p>
+    </div>
+  );
+}
+
+function StatsTab() {
+  const [stats, setStats] = useState<PlatformStats | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchPlatformStats()
+      .then(setStats)
+      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load stats.'));
+  }, []);
+
+  if (error) {
+    return <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>;
+  }
+
+  if (!stats) return <p className="text-sm text-gray-400">Loading…</p>;
+
+  const fmt = (n: number) => `₦${n.toLocaleString('en-NG')}`;
+
+  return (
+    <>
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <StatCard icon={Users} label="Total users" value={stats.userCount.toLocaleString('en-NG')} />
+        <StatCard
+          icon={ListChecks}
+          label="Tasks completed"
+          value={stats.tasksCompleted.toLocaleString('en-NG')}
+        />
+        <StatCard
+          icon={ListChecks}
+          label="Tasks in progress"
+          value={stats.tasksInProgress.toLocaleString('en-NG')}
+        />
+        <StatCard icon={ListChecks} label="Open tasks" value={stats.tasksOpen.toLocaleString('en-NG')} />
+        <StatCard icon={Wallet} label="Escrow volume paid out" value={fmt(stats.totalVolume)} />
+        <StatCard icon={Wallet} label="Commission earned" value={fmt(stats.totalCommission)} />
+      </div>
+
+      <h2 className="mb-3 text-sm font-bold tracking-wide text-gray-500 uppercase">
+        Top categories (completed tasks)
+      </h2>
+      {stats.topCategories.length === 0 ? (
+        <p className="text-sm text-gray-400">No completed tasks yet.</p>
+      ) : (
+        <div className="space-y-2">
+          {stats.topCategories.map((c) => (
+            <div
+              key={c.label}
+              className="flex items-center justify-between rounded-xl border border-gray-200/70 bg-white px-4 py-3"
+            >
+              <span className="text-sm font-semibold text-gray-900">{c.label}</span>
+              <span className="text-sm text-gray-500">{c.count}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
 
 function BadgesTab() {
   const [requests, setRequests] = useState<BadgeRequest[] | null>(null);
@@ -268,7 +348,7 @@ function DisputesTab() {
 
 export default function Admin() {
   const { user, loading: authLoading } = useAuth();
-  const [tab, setTab] = useState<'badges' | 'disputes'>('badges');
+  const [tab, setTab] = useState<'stats' | 'badges' | 'disputes'>('stats');
 
   const isAdmin = !!user?.email && ADMIN_EMAILS.includes(user.email);
 
@@ -296,6 +376,15 @@ export default function Admin() {
 
         <div className="mb-6 flex gap-2">
           <button
+            onClick={() => setTab('stats')}
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold transition-colors ${
+              tab === 'stats' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            <BarChart3 className="h-4 w-4" />
+            Stats
+          </button>
+          <button
             onClick={() => setTab('badges')}
             className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold transition-colors ${
               tab === 'badges' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -315,7 +404,7 @@ export default function Admin() {
           </button>
         </div>
 
-        {tab === 'badges' ? <BadgesTab /> : <DisputesTab />}
+        {tab === 'stats' ? <StatsTab /> : tab === 'badges' ? <BadgesTab /> : <DisputesTab />}
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Menu, X, ArrowRight, Compass, ListChecks, HardHat, LogOut, ClipboardList, Settings } from 'lucide-react';
+import { Menu, X, ArrowRight, Compass, ListChecks, HardHat, LogOut, ClipboardList, Settings, Star } from 'lucide-react';
 import NotificationBell from './NotificationBell';
 import Avatar from './Avatar';
 import logo from '../assets/brand/logo.png';
@@ -85,6 +85,15 @@ export default function Header() {
                         <ClipboardList className="h-4 w-4" />
                         My Tasks
                       </Link>
+                      {user && (
+                        <Link
+                          to={`/users/${user.id}`}
+                          className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-primary"
+                        >
+                          <Star className="h-4 w-4" />
+                          My Reviews
+                        </Link>
+                      )}
                       <Link
                         to="/settings"
                         className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-primary"
@@ -204,6 +213,24 @@ export default function Header() {
                   <ClipboardList className="h-5 w-5" />
                 </span>
                 <span className="text-lg font-bold">My Tasks</span>
+              </NavLink>
+            )}
+            {user && (
+              <NavLink
+                to={`/users/${user.id}`}
+                onClick={() => setMobileOpen(false)}
+                className={({ isActive }) =>
+                  `bento-card flex items-center gap-4 rounded-2xl border p-4 shadow-sm ${
+                    isActive
+                      ? 'border-primary/20 bg-primary/5 text-primary'
+                      : 'border-gray-200/70 bg-white text-gray-900'
+                  }`
+                }
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Star className="h-5 w-5" />
+                </span>
+                <span className="text-lg font-bold">My Reviews</span>
               </NavLink>
             )}
             {user && (

@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ClipboardList, CheckCircle2, Star, BadgeCheck, ChevronDown } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
+import {
+  ClipboardList,
+  CheckCircle2,
+  Star,
+  BadgeCheck,
+  ChevronDown,
+  Wallet,
+  ListChecks,
+} from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/AuthContext';
 import { startBidAcceptance, completeEscrowTask } from '../lib/escrow';
@@ -276,7 +284,11 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
                 </button>
               </div>
               {disputing ? (
-                <RaiseDisputeForm taskId={task.id} onRaised={() => setStatus('disputed')} />
+                <RaiseDisputeForm
+                  taskId={task.id}
+                  onRaised={() => setStatus('disputed')}
+                  onCancel={() => setDisputing(false)}
+                />
               ) : (
                 <button
                   onClick={() => setDisputing(true)}
@@ -419,10 +431,80 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
   );
 }
 
+type PosterStats = {
+  totalSpent: number;
+  tasksPosted: number;
+  tasksCompleted: number;
+};
+
+function PosterStatsSummary({ userId }: { userId: string }) {
+  const [stats, setStats] = useState<PosterStats | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    supabase
+      .from('tasks')
+      .select('status, escrow_transactions(status, amount)')
+      .eq('poster_id', userId)
+      .then(({ data }) => {
+        if (cancelled || !data) return;
+
+        let totalSpent = 0;
+        let tasksCompleted = 0;
+
+        for (const row of data as unknown as {
+          status: string;
+          escrow_transactions: { status: string; amount: number }[];
+        }[]) {
+          if (row.status === 'completed') tasksCompleted += 1;
+          const released = row.escrow_transactions?.find((t) => t.status === 'released');
+          if (released) totalSpent += Number(released.amount);
+        }
+
+        setStats({ totalSpent, tasksPosted: data.length, tasksCompleted });
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [userId]);
+
+  if (!stats) return null;
+
+  return (
+    <div className="mb-6 grid grid-cols-3 gap-3">
+      <div className="rounded-2xl border border-gray-200/70 bg-white p-4 shadow-sm">
+        <div className="mb-1.5 flex h-8 w-8 items-center justify-center rounded-lg bg-green-50 text-green-600">
+          <Wallet className="h-4 w-4" />
+        </div>
+        <p className="text-xl font-black text-gray-900">₦{stats.totalSpent.toLocaleString('en-NG')}</p>
+        <p className="text-xs text-gray-500">Total spent</p>
+      </div>
+      <div className="rounded-2xl border border-gray-200/70 bg-white p-4 shadow-sm">
+        <div className="mb-1.5 flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <ListChecks className="h-4 w-4" />
+        </div>
+        <p className="text-xl font-black text-gray-900">{stats.tasksPosted}</p>
+        <p className="text-xs text-gray-500">Tasks posted</p>
+      </div>
+      <div className="rounded-2xl border border-gray-200/70 bg-white p-4 shadow-sm">
+        <div className="mb-1.5 flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+          <CheckCircle2 className="h-4 w-4" />
+        </div>
+        <p className="text-xl font-black text-gray-900">{stats.tasksCompleted}</p>
+        <p className="text-xs text-gray-500">Completed</p>
+      </div>
+    </div>
+  );
+}
+
 export default function MyTasks() {
   const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[] | null>(null);
   const [tab, setTab] = useState<'posted' | 'bidding'>('posted');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const paymentJustCompleted = searchParams.get('escrow_payment') === 'complete';
 
   useEffect(() => {
     if (!user) return;
@@ -432,13 +514,26 @@ export default function MyTasks() {
       .eq('poster_id', user.id)
       .order('created_at', { ascending: false })
       .then(({ data }) => setTasks(data ?? []));
-  }, [user]);
+  }, [user, paymentJustCompleted]);
+
+  useEffect(() => {
+    if (!paymentJustCompleted) return;
+    const next = new URLSearchParams(searchParams);
+    next.delete('escrow_payment');
+    setSearchParams(next, { replace: true });
+  }, [paymentJustCompleted]);
 
   if (!user) return null;
 
   return (
     <section className="px-4 py-12 lg:px-8">
       <div className="mx-auto max-w-3xl">
+        {paymentJustCompleted && (
+          <div className="mb-6 flex items-center gap-2 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-semibold text-green-700">
+            <CheckCircle2 className="h-5 w-5 shrink-0" />
+            Payment successful. The tasker has been notified and can start work.
+          </div>
+        )}
         <div className="mb-8 flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
             <ClipboardList className="h-6 w-6" />
@@ -475,17 +570,21 @@ export default function MyTasks() {
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
           </div>
         ) : tasks.length === 0 ? (
-          <div className="rounded-3xl border border-gray-200/70 bg-white p-10 text-center">
-            <p className="text-gray-600">You haven't posted any tasks yet.</p>
-            <Link
-              to="/post-a-task"
-              className="mt-4 inline-block font-semibold text-primary hover:underline"
-            >
-              Post your first task
-            </Link>
-          </div>
+          <>
+            <PosterStatsSummary userId={user.id} />
+            <div className="rounded-3xl border border-gray-200/70 bg-white p-10 text-center">
+              <p className="text-gray-600">You haven't posted any tasks yet.</p>
+              <Link
+                to="/post-a-task"
+                className="mt-4 inline-block font-semibold text-primary hover:underline"
+              >
+                Post your first task
+              </Link>
+            </div>
+          </>
         ) : (
           <div className="space-y-3">
+            <PosterStatsSummary userId={user.id} />
             {tasks.map((task) => (
               <TaskWithBids key={task.id} task={task} currentUserId={user.id} />
             ))}
