@@ -29,12 +29,17 @@ function TaskerStatsSummary({ userId }: { userId: string }) {
     supabase
       .from('bids')
       .select(
-        'status, task:tasks(status, category_slug, category:categories(label)), escrow_transactions(status, payout_amount)',
+        'status, task:tasks(status, category_slug, category:categories(label)), escrow_transactions!bid_id(status, payout_amount)',
       )
       .eq('tasker_id', userId)
       .eq('status', 'accepted')
-      .then(({ data }) => {
-        if (cancelled || !data) return;
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        if (error) {
+          console.error('TaskerStatsSummary query failed', error);
+          return;
+        }
+        if (!data) return;
 
         let totalEarnings = 0;
         let tasksCompleted = 0;
