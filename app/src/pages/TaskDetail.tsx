@@ -34,6 +34,21 @@ function formatBudget(min: number | null, max: number | null) {
   return 'Budget not specified';
 }
 
+// Must match calculateLeadFee in server/api/leads/initialize.ts — this is only
+// for display before payment; the backend is the source of truth for the charge.
+const LEAD_FEE_RATE = 0.05;
+const LEAD_FEE_FLOOR_NAIRA = 500;
+const LEAD_FEE_CAP_NAIRA = 10000;
+
+function calculateLeadFee(budgetMax: number | null, budgetMin: number | null): number {
+  const budget = budgetMax ?? budgetMin;
+  if (!budget || budget <= 0) return LEAD_FEE_FLOOR_NAIRA;
+
+  const raw = budget * LEAD_FEE_RATE;
+  const clamped = Math.min(Math.max(raw, LEAD_FEE_FLOOR_NAIRA), LEAD_FEE_CAP_NAIRA);
+  return Math.round(clamped / 100) * 100;
+}
+
 export default function TaskDetail() {
   const { taskId } = useParams();
   const { user } = useAuth();
@@ -297,8 +312,11 @@ export default function TaskDetail() {
             ) : (
               <div className="space-y-4">
                 <p className="text-sm text-gray-600">
-                  Pay a one-time fee of <strong className="text-gray-900">₦2,000</strong> to
-                  unlock this poster's contact details and reach out directly to quote the job.
+                  Pay a one-time fee of{' '}
+                  <strong className="text-gray-900">
+                    ₦{calculateLeadFee(task.budget_max, task.budget_min).toLocaleString('en-NG')}
+                  </strong>{' '}
+                  to unlock this poster's contact details and reach out directly to quote the job.
                 </p>
                 {leadError && (
                   <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -310,7 +328,9 @@ export default function TaskDetail() {
                   disabled={leadStarting}
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white shadow-lg transition-all hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {leadStarting ? 'Redirecting to payment…' : 'Pay ₦2,000 to Unlock Lead'}
+                  {leadStarting
+                    ? 'Redirecting to payment…'
+                    : `Pay ₦${calculateLeadFee(task.budget_max, task.budget_min).toLocaleString('en-NG')} to Unlock Lead`}
                 </button>
               </div>
             )}
