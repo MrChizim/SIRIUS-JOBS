@@ -14,8 +14,7 @@ import TaskDetail from './pages/TaskDetail';
 import MyTasks from './pages/MyTasks';
 import Settings from './pages/Settings';
 import PublicProfile from './pages/PublicProfile';
-import AdminBadges from './pages/AdminBadges';
-import AdminDisputes from './pages/AdminDisputes';
+import Admin from './pages/Admin';
 import ForProfessionals from './pages/ForProfessionals';
 import About from './pages/About';
 
@@ -48,18 +47,10 @@ createRoot(document.getElementById('root')!).render(
             <Route path="for-professionals" element={<ForProfessionals />} />
             <Route path="users/:userId" element={<PublicProfile />} />
             <Route
-              path="admin/badges"
+              path="admin"
               element={
                 <RequireAuth>
-                  <AdminBadges />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="admin/disputes"
-              element={
-                <RequireAuth>
-                  <AdminDisputes />
+                  <Admin />
                 </RequireAuth>
               }
             />
