@@ -234,11 +234,40 @@ async function handleTransferEvent(eventName: string, data: Record<string, unkno
   const transferCode = data?.transfer_code;
   if (!transferCode || typeof transferCode !== 'string') return;
 
-  const { data: txn } = await supabaseAdmin
+  let txn: { id: string; status: string } | null = null;
+
+  ({ data: txn } = await supabaseAdmin
     .from('escrow_transactions')
     .select('id, status')
     .eq('paystack_transfer_code', transferCode)
-    .maybeSingle();
+    .maybeSingle());
+
+  if (!txn) {
+    // A transfer retried from the Paystack dashboard (e.g. after an abandoned/OTP
+    // transfer) gets a brand-new transfer_code, so the lookup above misses even
+    // though it's the same payout. Our transfer `reference` is always
+    // `payout_<escrow_transactions.id>_<timestamp>` and Paystack preserves it across
+    // a retry, so fall back to pulling the id out of that.
+    const reference = data?.reference;
+    const match = typeof reference === 'string' ? reference.match(/^payout_([0-9a-f-]{36})_/) : null;
+
+    if (match) {
+      ({ data: txn } = await supabaseAdmin
+        .from('escrow_transactions')
+        .select('id, status')
+        .eq('id', match[1])
+        .maybeSingle());
+
+      if (txn) {
+        // Keep the row's transfer_code in sync with whichever transfer actually
+        // completed, so future events for this retry match directly.
+        await supabaseAdmin
+          .from('escrow_transactions')
+          .update({ paystack_transfer_code: transferCode })
+          .eq('id', txn.id);
+      }
+    }
+  }
 
   if (!txn) {
     console.warn('Paystack webhook: no matching escrow_transactions row for transfer', transferCode);

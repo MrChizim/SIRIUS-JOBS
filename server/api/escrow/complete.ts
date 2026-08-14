@@ -76,6 +76,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       reason: `Sirius Jobs payout for task ${taskId}`,
     });
 
+    if (transfer.status === 'otp') {
+      // Paystack is holding this transfer for OTP confirmation instead of executing it.
+      // We don't have an OTP-entry flow, so this transfer will never complete on its own —
+      // surface it loudly instead of silently parking as indistinguishable from a normal
+      // in-flight payout. Fix: disable "Approve Transfers with OTP" in the Paystack dashboard.
+      console.error(
+        `Paystack transfer ${transfer.transfer_code} for task ${taskId} requires OTP and will not complete automatically.`
+      );
+      await supabaseAdmin
+        .from('escrow_transactions')
+        .update({
+          status: 'disputed',
+          paystack_transfer_code: transfer.transfer_code,
+        })
+        .eq('id', escrowTxn.id)
+        .eq('status', 'held');
+
+      return res.status(502).json({
+        error:
+          'Payout could not be completed automatically (Paystack requires OTP verification). Contact support.',
+      });
+    }
+
     await supabaseAdmin
       .from('escrow_transactions')
       .update({
