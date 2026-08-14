@@ -5,9 +5,11 @@ import { supabase } from '../lib/supabase';
 export default function RaiseDisputeForm({
   taskId,
   onRaised,
+  onCancel,
 }: {
   taskId: string;
   onRaised: () => void;
+  onCancel: () => void;
 }) {
   const [reason, setReason] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -52,13 +54,23 @@ export default function RaiseDisputeForm({
         className="w-full resize-none rounded-xl border border-red-200 bg-white px-4 py-3 text-sm focus:border-red-400 focus:ring-2 focus:ring-red-200 focus:outline-none"
         placeholder="Explain what went wrong. Our team will review and decide how to resolve it."
       />
-      <button
-        type="submit"
-        disabled={submitting}
-        className="inline-flex items-center justify-center gap-2 rounded-full bg-red-600 px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {submitting ? 'Submitting…' : 'Submit Dispute'}
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          type="submit"
+          disabled={submitting}
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-red-600 px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {submitting ? 'Submitting…' : 'Submit Dispute'}
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          disabled={submitting}
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-red-200 bg-white px-5 py-2.5 text-sm font-bold text-red-700 transition-all hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          Cancel
+        </button>
+      </div>
     </form>
   );
 }

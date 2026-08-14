@@ -26,7 +26,7 @@ export default function ForProfessionals() {
             <img
               src={heroSecondary}
               alt="A professional checking new job requests on Sirius Jobs"
-              className="h-72 w-full object-cover sm:h-96"
+              className="h-72 w-full object-cover object-top sm:h-96"
             />
           </div>
         </div>

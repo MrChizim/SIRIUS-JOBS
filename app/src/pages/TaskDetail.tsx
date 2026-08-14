@@ -107,6 +107,10 @@ export default function TaskDetail() {
               .eq('tasker_id', user.id)
               .maybeSingle();
             setMyBid(bidData ?? null);
+            if (bidData?.status === 'rejected') {
+              setBidAmount(String(bidData.amount));
+              setBidMessage(bidData.message ?? '');
+            }
 
             const { data: profileData } = await supabase
               .from('profiles')
@@ -161,12 +165,19 @@ export default function TaskDetail() {
 
     setBidSubmitting(true);
 
-    const { error } = await supabase.from('bids').insert({
-      task_id: task.id,
-      tasker_id: user.id,
-      amount: Number(bidAmount),
-      message: bidMessage || null,
-    });
+    const { error } =
+      myBid?.status === 'rejected'
+        ? await supabase.rpc('resubmit_bid', {
+            p_task_id: task.id,
+            p_amount: Number(bidAmount),
+            p_message: bidMessage || null,
+          })
+        : await supabase.from('bids').insert({
+            task_id: task.id,
+            tasker_id: user.id,
+            amount: Number(bidAmount),
+            message: bidMessage || null,
+          });
 
     setBidSubmitting(false);
 
@@ -177,6 +188,9 @@ export default function TaskDetail() {
       return;
     }
 
+    setMyBid((prev) =>
+      prev ? { ...prev, amount: Number(bidAmount), message: bidMessage || null, status: 'pending' } : prev,
+    );
     setBidSubmitted(true);
   }
 
@@ -321,7 +335,7 @@ export default function TaskDetail() {
                 </Link>{' '}
                 to place a bid.
               </p>
-            ) : myBid || bidSubmitted ? (
+            ) : (myBid && myBid.status !== 'rejected') || bidSubmitted ? (
               <div className="flex items-center gap-3 rounded-xl bg-green-50 px-4 py-3 text-green-700">
                 <CheckCircle2 className="h-5 w-5 shrink-0" />
                 <span className="text-sm font-medium">
@@ -334,6 +348,11 @@ export default function TaskDetail() {
               <BankAccountForm onSaved={() => setHasPayoutAccount(true)} />
             ) : (
               <form onSubmit={handleBidSubmit} className="space-y-4">
+                {myBid?.status === 'rejected' && (
+                  <div className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                    Your previous bid was declined. You can adjust it and resubmit below.
+                  </div>
+                )}
                 {bidError && (
                   <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
                     {bidError}
@@ -441,7 +460,11 @@ export default function TaskDetail() {
         {isAcceptedTasker && task.status === 'in_progress' && !disputed && (
           <div className="mt-6">
             {disputing ? (
-              <RaiseDisputeForm taskId={task.id} onRaised={() => setDisputed(true)} />
+              <RaiseDisputeForm
+                taskId={task.id}
+                onRaised={() => setDisputed(true)}
+                onCancel={() => setDisputing(false)}
+              />
             ) : (
               <button
                 onClick={() => setDisputing(true)}
