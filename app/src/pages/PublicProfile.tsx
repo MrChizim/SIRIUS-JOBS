@@ -1,16 +1,21 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Star, CheckCircle2, MapPin, BadgeCheck } from 'lucide-react';
+import { ArrowLeft, Star, CheckCircle2, MapPin, BadgeCheck, Flag } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { useAuth } from '../lib/AuthContext';
 import Avatar from '../components/Avatar';
+import ReportForm from '../components/ReportForm';
 import type { Profile, Review } from '../lib/types';
 
 export default function PublicProfile() {
   const { userId } = useParams();
+  const { user } = useAuth();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [reviews, setReviews] = useState<Review[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [reporting, setReporting] = useState(false);
+  const [reported, setReported] = useState(false);
 
   useEffect(() => {
     if (!userId) return;
@@ -112,6 +117,33 @@ export default function PublicProfile() {
               {profile.completion_count} jobs completed
             </span>
           </div>
+
+          {user && user.id !== profile.id && !reporting && !reported && (
+            <button
+              onClick={() => setReporting(true)}
+              className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-600"
+            >
+              <Flag className="h-3.5 w-3.5" />
+              Report this user
+            </button>
+          )}
+          {reported && (
+            <p className="mt-4 text-xs font-semibold text-green-700">
+              Thanks — our team will review this.
+            </p>
+          )}
+          {reporting && (
+            <div className="mt-4">
+              <ReportForm
+                target={{ type: 'user', userId: profile.id }}
+                onReported={() => {
+                  setReporting(false);
+                  setReported(true);
+                }}
+                onCancel={() => setReporting(false)}
+              />
+            </div>
+          )}
         </div>
 
         <div className="mt-6 space-y-4">

@@ -1,5 +1,17 @@
 import { useEffect, useState } from 'react';
-import { ShieldCheck, ExternalLink, Check, X, Scale, BarChart3, Users, ListChecks, Wallet } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import {
+  ShieldCheck,
+  ExternalLink,
+  Check,
+  X,
+  Scale,
+  BarChart3,
+  Users,
+  ListChecks,
+  Wallet,
+  Flag,
+} from 'lucide-react';
 import { useAuth } from '../lib/AuthContext';
 import {
   fetchBadgeRequests,
@@ -8,6 +20,7 @@ import {
   type BadgeRequest,
 } from '../lib/adminBadges';
 import { fetchDisputes, decideDispute, type AdminDispute } from '../lib/adminDisputes';
+import { fetchReports, decideReport, type AdminReport } from '../lib/adminReports';
 import { fetchPlatformStats, type PlatformStats } from '../lib/adminStats';
 
 const ADMIN_EMAILS = ['siriusoddjobs@gmail.com'];
@@ -346,9 +359,150 @@ function DisputesTab() {
   );
 }
 
+function ReportsTab() {
+  const [reports, setReports] = useState<AdminReport[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [decidingId, setDecidingId] = useState<string | null>(null);
+  const [notesById, setNotesById] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    fetchReports()
+      .then(setReports)
+      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load reports.'));
+  }, []);
+
+  async function handleDecide(r: AdminReport, decision: 'reviewed' | 'dismissed') {
+    setError(null);
+    setDecidingId(r.id);
+    try {
+      const notes = (notesById[r.id] ?? '').trim() || undefined;
+      await decideReport(r.id, decision, notes);
+      setReports(
+        (prev) =>
+          prev?.map((x) => (x.id === r.id ? { ...x, status: decision, admin_notes: notes ?? null } : x)) ??
+          null,
+      );
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong.');
+    } finally {
+      setDecidingId(null);
+    }
+  }
+
+  if (reports === null) return <p className="text-sm text-gray-400">Loading…</p>;
+
+  const open = reports.filter((r) => r.status === 'open');
+  const resolved = reports.filter((r) => r.status !== 'open');
+
+  return (
+    <>
+      {error && (
+        <div className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+      )}
+
+      <h2 className="mb-3 text-sm font-bold tracking-wide text-gray-500 uppercase">
+        Open ({open.length})
+      </h2>
+      <div className="mb-8 space-y-4">
+        {open.length === 0 && <p className="text-sm text-gray-400">Nothing open.</p>}
+        {open.map((r) => (
+          <div key={r.id} className="rounded-2xl border border-gray-200/70 bg-white p-5 shadow-sm">
+            <div className="mb-2 flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <p className="font-bold text-gray-900">
+                  {r.target_type === 'task' ? (
+                    <>
+                      Task:{' '}
+                      {r.task_id ? (
+                        <Link to={`/tasks/${r.task_id}`} className="text-primary hover:underline">
+                          {r.task_title || 'Untitled task'}
+                        </Link>
+                      ) : (
+                        r.task_title || 'Untitled task'
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      User:{' '}
+                      {r.reported_user_id ? (
+                        <Link
+                          to={`/users/${r.reported_user_id}`}
+                          className="text-primary hover:underline"
+                        >
+                          {r.reported_user_name || 'Unnamed user'}
+                        </Link>
+                      ) : (
+                        r.reported_user_name || 'Unnamed user'
+                      )}
+                    </>
+                  )}
+                </p>
+                <p className="text-xs text-gray-400">
+                  Reported by {r.reporter_name || 'a user'} on{' '}
+                  {new Date(r.created_at).toLocaleDateString('en-NG')}
+                </p>
+              </div>
+            </div>
+
+            <p className="mb-3 rounded-xl bg-gray-50 p-3 text-sm text-gray-700">{r.reason}</p>
+
+            <textarea
+              rows={2}
+              value={notesById[r.id] ?? ''}
+              onChange={(e) => setNotesById((prev) => ({ ...prev, [r.id]: e.target.value }))}
+              placeholder="Admin notes (optional)"
+              className="mb-3 w-full resize-none rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+            />
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => handleDecide(r, 'reviewed')}
+                disabled={decidingId === r.id}
+                className="inline-flex items-center gap-1.5 rounded-full bg-green-600 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <Check className="h-4 w-4" />
+                Mark Reviewed
+              </button>
+              <button
+                onClick={() => handleDecide(r, 'dismissed')}
+                disabled={decidingId === r.id}
+                className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-4 py-2 text-sm font-bold text-gray-600 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <X className="h-4 w-4" />
+                Dismiss
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <h2 className="mb-3 text-sm font-bold tracking-wide text-gray-500 uppercase">History</h2>
+      <div className="space-y-2">
+        {resolved.map((r) => (
+          <div key={r.id} className="rounded-xl border border-gray-200/70 bg-white px-4 py-3 text-sm">
+            <div className="flex items-center justify-between">
+              <span className="font-medium text-gray-900">
+                {r.target_type === 'task' ? r.task_title || 'Untitled task' : r.reported_user_name || 'Unnamed user'}
+              </span>
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-bold capitalize ${
+                  r.status === 'reviewed' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+                }`}
+              >
+                {r.status}
+              </span>
+            </div>
+            {r.admin_notes && <p className="mt-1 text-xs text-gray-500">{r.admin_notes}</p>}
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
 export default function Admin() {
   const { user, loading: authLoading } = useAuth();
-  const [tab, setTab] = useState<'stats' | 'badges' | 'disputes'>('stats');
+  const [tab, setTab] = useState<'stats' | 'badges' | 'disputes' | 'reports'>('stats');
 
   const isAdmin = !!user?.email && ADMIN_EMAILS.includes(user.email);
 
@@ -402,9 +556,26 @@ export default function Admin() {
             <Scale className="h-4 w-4" />
             Disputes
           </button>
+          <button
+            onClick={() => setTab('reports')}
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold transition-colors ${
+              tab === 'reports' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            <Flag className="h-4 w-4" />
+            Reports
+          </button>
         </div>
 
-        {tab === 'stats' ? <StatsTab /> : tab === 'badges' ? <BadgesTab /> : <DisputesTab />}
+        {tab === 'stats' ? (
+          <StatsTab />
+        ) : tab === 'badges' ? (
+          <BadgesTab />
+        ) : tab === 'disputes' ? (
+          <DisputesTab />
+        ) : (
+          <ReportsTab />
+        )}
       </div>
     </section>
   );

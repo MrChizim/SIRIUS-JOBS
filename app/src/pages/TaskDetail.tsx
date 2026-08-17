@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { MapPin, Wallet, ArrowLeft, Gavel, CheckCircle2, Star, Lock } from 'lucide-react';
+import { MapPin, Wallet, ArrowLeft, Gavel, CheckCircle2, Star, Lock, Flag } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/AuthContext';
 import { startLeadPayment } from '../lib/leads';
@@ -10,6 +10,7 @@ import TaskMessageThreads from '../components/TaskMessageThreads';
 import BankAccountForm from '../components/BankAccountForm';
 import RaiseDisputeForm from '../components/RaiseDisputeForm';
 import DisputeStatusBanner from '../components/DisputeStatusBanner';
+import ReportForm from '../components/ReportForm';
 import type { Category, Task } from '../lib/types';
 
 type BidRow = {
@@ -76,6 +77,8 @@ export default function TaskDetail() {
   const [hasPayoutAccount, setHasPayoutAccount] = useState<boolean | null>(null);
   const [disputing, setDisputing] = useState(false);
   const [disputed, setDisputed] = useState(false);
+  const [reporting, setReporting] = useState(false);
+  const [reported, setReported] = useState(false);
 
   const isOwner = task?.poster_id === user?.id;
   const isAcceptedTasker = myBid?.status === 'accepted';
@@ -280,6 +283,33 @@ export default function TaskDetail() {
           <p className="mt-6 leading-relaxed whitespace-pre-line text-gray-700">
             {task.description}
           </p>
+
+          {user && !isOwner && !reporting && !reported && (
+            <button
+              onClick={() => setReporting(true)}
+              className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-600"
+            >
+              <Flag className="h-3.5 w-3.5" />
+              Report this task
+            </button>
+          )}
+          {reported && (
+            <p className="mt-4 text-xs font-semibold text-green-700">
+              Thanks — our team will review this.
+            </p>
+          )}
+          {reporting && (
+            <div className="mt-4">
+              <ReportForm
+                target={{ type: 'task', taskId: task.id }}
+                onReported={() => {
+                  setReporting(false);
+                  setReported(true);
+                }}
+                onCancel={() => setReporting(false)}
+              />
+            </div>
+          )}
         </div>
 
         {!isOwner && task.status === 'open' && task.path === 'lead_fee' && (
