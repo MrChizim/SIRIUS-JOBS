@@ -129,7 +129,7 @@ export default function PublicProfile() {
           )}
           {reported && (
             <p className="mt-4 text-xs font-semibold text-green-700">
-              Thanks — our team will review this.
+              Thanks, our team will review this.
             </p>
           )}
           {reporting && (

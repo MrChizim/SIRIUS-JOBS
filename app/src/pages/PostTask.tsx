@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   PlusCircle,
   ArrowRight,
@@ -8,6 +8,8 @@ import {
   MapPin,
   FileText,
   Wallet,
+  Lightbulb,
+  BookOpen,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/AuthContext';
@@ -183,6 +185,13 @@ export default function PostTask() {
           </div>
           <h1 className="text-3xl font-black text-gray-900">Post a task</h1>
           <p className="mt-2 text-gray-600">Tell us what you need done. No account needed yet.</p>
+          <Link
+            to="/how-it-works"
+            className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-primary"
+          >
+            <BookOpen className="h-3.5 w-3.5" />
+            New here? See how it works
+          </Link>
         </div>
 
         <div className="mb-8 flex items-center justify-center gap-2">
@@ -240,6 +249,10 @@ export default function PostTask() {
                   className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
                   placeholder="e.g. Fix leaking kitchen sink"
                 />
+                <p className="mt-1.5 flex items-start gap-1.5 text-xs text-gray-500">
+                  <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500" />
+                  A specific title gets faster, more accurate bids than a vague one.
+                </p>
               </div>
               <div>
                 <label
@@ -385,6 +398,12 @@ export default function PostTask() {
                   />
                 </div>
               </div>
+              <p className="flex items-start gap-1.5 text-xs text-gray-500">
+                <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500" />
+                Tasks with a clear budget tend to get more bids. If the tasker might need to buy
+                anything for the job, build that into your budget too. You'll sort out the exact
+                amount with them directly once they're on-site.
+              </p>
             </>
           )}
 

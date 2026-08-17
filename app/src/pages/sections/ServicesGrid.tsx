@@ -41,8 +41,8 @@ export default function ServicesGrid() {
                     Small &amp; Everyday Tasks
                   </h3>
                   <p className="mb-6 text-lg leading-relaxed text-white/80">
-                    Errands, cleaning, moving, quick repairs. Post it, compare bids, pay through
-                    escrow — released only when the job is done.
+                    Errands, cleaning, moving, quick repairs. Post it, compare bids, and pay
+                    through escrow, released only when the job is done.
                   </p>
                   <ul className="space-y-3">
                     <li className="flex items-center gap-3">
@@ -138,8 +138,8 @@ export default function ServicesGrid() {
                 </div>
                 <h3 className="text-3xl font-black text-gray-900">Verified Badge</h3>
                 <p className="text-lg leading-relaxed text-gray-600">
-                  Taskers and professionals can earn a Verified Badge — ID-checked, credential
-                  reviewed — so you know exactly who's showing up.
+                  Taskers and professionals can earn a Verified Badge once their ID and
+                  credentials are checked, so you know exactly who's showing up.
                 </p>
               </div>
               <Link

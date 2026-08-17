@@ -298,7 +298,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
             )}
             {status === 'open' && hasLeadActivity && (
               <span className="rounded-full bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-500">
-                Locked — a tasker has paid for a lead
+                Locked, a tasker has already paid for a lead
               </span>
             )}
           </div>

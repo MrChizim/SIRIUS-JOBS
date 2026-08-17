@@ -11,6 +11,7 @@ import BankAccountForm from '../components/BankAccountForm';
 import RaiseDisputeForm from '../components/RaiseDisputeForm';
 import DisputeStatusBanner from '../components/DisputeStatusBanner';
 import ReportForm from '../components/ReportForm';
+import Term from '../components/Term';
 import type { Category, Task } from '../lib/types';
 
 type BidRow = {
@@ -257,7 +258,11 @@ export default function TaskDetail() {
                   : 'bg-amber-100 text-amber-700'
               }`}
             >
-              {task.path === 'escrow' ? 'Secure Payment' : 'Get Quotes'}
+              {task.path === 'escrow' ? (
+                <Term word="escrow">Secure Payment</Term>
+              ) : (
+                <Term word="lead fee">Get Quotes</Term>
+              )}
             </span>
             {task.status !== 'open' && (
               <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-bold text-gray-600 capitalize">
@@ -295,7 +300,7 @@ export default function TaskDetail() {
           )}
           {reported && (
             <p className="mt-4 text-xs font-semibold text-green-700">
-              Thanks — our team will review this.
+              Thanks, our team will review this.
             </p>
           )}
           {reporting && (

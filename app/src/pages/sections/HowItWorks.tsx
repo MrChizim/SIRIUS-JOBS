@@ -6,7 +6,7 @@ const steps = [
     icon: Search,
     title: 'Post Your Task',
     description:
-      'Tell us what you need done — a quick errand or a big trade job. Add your budget and location, and go live in minutes.',
+      'Tell us what you need done, whether that\'s a quick errand or a big trade job. Add your budget and location, and go live in minutes.',
     marginClass: '',
   },
   {
@@ -22,7 +22,7 @@ const steps = [
     icon: ShieldCheck,
     title: 'Pay With Confidence',
     description:
-      'Your payment is held in escrow and released only when you confirm the job is done — or pay a small lead fee for bigger trade work.',
+      'Your payment is held in escrow and released only when you confirm the job is done. For bigger trade work, you pay a small lead fee instead.',
     marginClass: 'lg:mt-24',
   },
 ];

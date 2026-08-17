@@ -104,7 +104,7 @@ export default function InstallPrompt() {
               <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
                 3
               </span>
-              Tap "Add" — Sirius Jobs now opens like a regular app
+              Tap "Add" and Sirius Jobs now opens like a regular app
             </li>
           </ol>
         </div>

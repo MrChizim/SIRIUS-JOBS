@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Wallet, ArrowRight, Search } from 'lucide-react';
+import { MapPin, Wallet, ArrowRight, Search, BookOpen } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/AuthContext';
 import { NIGERIAN_CITIES } from '../lib/cities';
@@ -78,6 +78,13 @@ export default function BrowseTasks() {
           <p className="mt-2 text-lg text-gray-600">
             {cityFilter ? `Open tasks in ${cityFilter}` : 'Open tasks across Nigeria'}
           </p>
+          <Link
+            to="/how-it-works"
+            className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-primary"
+          >
+            <BookOpen className="h-3.5 w-3.5" />
+            New here? See how it works
+          </Link>
         </div>
 
         <div className="mx-auto mb-10 flex max-w-3xl flex-col gap-3 sm:flex-row">
