@@ -1,6 +1,7 @@
 import Hero from './sections/Hero';
 import ServicesGrid from './sections/ServicesGrid';
 import HowItWorks from './sections/HowItWorks';
+import ForProfessionalsSection from './sections/ForProfessionalsSection';
 import ClosingCta from './sections/ClosingCta';
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
       <Hero />
       <ServicesGrid />
       <HowItWorks />
+      <ForProfessionalsSection />
       <ClosingCta />
     </>
   );

@@ -15,8 +15,8 @@ import MyTasks from './pages/MyTasks';
 import Settings from './pages/Settings';
 import PublicProfile from './pages/PublicProfile';
 import Admin from './pages/Admin';
-import ForProfessionals from './pages/ForProfessionals';
 import About from './pages/About';
+import Guide from './pages/Guide';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -44,8 +44,8 @@ createRoot(document.getElementById('root')!).render(
                 </RequireAuth>
               }
             />
-            <Route path="for-professionals" element={<ForProfessionals />} />
             <Route path="users/:userId" element={<PublicProfile />} />
+            <Route path="how-it-works" element={<Guide />} />
             <Route
               path="admin"
               element={

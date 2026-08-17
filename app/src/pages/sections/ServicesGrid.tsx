@@ -143,7 +143,7 @@ export default function ServicesGrid() {
                 </p>
               </div>
               <Link
-                to="/for-professionals"
+                to="/#for-professionals"
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-bold whitespace-nowrap text-white shadow-lg transition-all hover:bg-primary-700"
               >
                 Get Verified

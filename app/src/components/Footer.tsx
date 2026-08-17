@@ -4,9 +4,8 @@ import logo from '../assets/brand/logo.png';
 
 const platformLinks = [
   { to: '/about', label: 'About' },
-  { to: '/#how-it-works', label: 'How It Works' },
   { to: '/browse-tasks', label: 'Browse Tasks' },
-  { to: '/for-professionals', label: 'For Professionals' },
+  { to: '/how-it-works', label: 'Guide: How It Works' },
 ];
 
 const supportLinks = [

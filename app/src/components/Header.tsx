@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Menu, X, ArrowRight, Compass, ListChecks, HardHat, LogOut, ClipboardList, Settings, Star } from 'lucide-react';
+import { Menu, X, ArrowRight, Compass, ListChecks, BookOpen, LogOut, ClipboardList, Settings, Star } from 'lucide-react';
 import NotificationBell from './NotificationBell';
 import Avatar from './Avatar';
 import logo from '../assets/brand/logo.png';
@@ -10,7 +10,7 @@ import { supabase } from '../lib/supabase';
 const navLinks = [
   { to: '/', label: 'Home', icon: Compass },
   { to: '/browse-tasks', label: 'Browse Tasks', icon: ListChecks },
-  { to: '/for-professionals', label: 'For Professionals', icon: HardHat },
+  { to: '/how-it-works', label: 'How It Works', icon: BookOpen },
 ];
 
 function navLinkClass({ isActive }: { isActive: boolean }) {
