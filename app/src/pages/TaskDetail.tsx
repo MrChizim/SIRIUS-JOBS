@@ -305,7 +305,7 @@ export default function TaskDetail() {
                 <CheckCircle2 className="h-5 w-5 shrink-0" />
                 <span className="text-sm font-medium">
                   {myLead.status === 'purchased'
-                    ? "You've purchased this lead. Contact details are unlocked below."
+                    ? "You've purchased this lead. You can now chat with the poster below."
                     : 'Payment in progress. If you already paid, refresh this page in a moment.'}
                 </span>
               </div>
@@ -316,7 +316,7 @@ export default function TaskDetail() {
                   <strong className="text-gray-900">
                     ₦{calculateLeadFee(task.budget_max, task.budget_min).toLocaleString('en-NG')}
                   </strong>{' '}
-                  to unlock this poster's contact details and reach out directly to quote the job.
+                  to unlock in-app chat with this poster and quote the job directly.
                 </p>
                 {leadError && (
                   <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">

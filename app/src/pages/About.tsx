@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     q: "What's the difference between a task and a lead?",
-    a: "Small, everyday jobs (cleaning, errands, small repairs) go through bidding with payment held securely until you confirm completion. Bigger trade jobs (plumbing, electrical, building work) work differently. A professional pays a small fee to get your contact details and reaches out to quote and arrange the job directly with you.",
+    a: "Small, everyday jobs (cleaning, errands, small repairs) go through bidding with payment held securely until you confirm completion. Bigger trade jobs (plumbing, electrical, building work) work differently. A professional pays a small fee to unlock in-app chat with you, then quotes and arranges the job directly with you from there.",
   },
   {
     q: 'Is my payment safe?',

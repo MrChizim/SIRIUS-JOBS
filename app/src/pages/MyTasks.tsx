@@ -37,6 +37,18 @@ type BidRow = {
   tasker_avatar_url: string | null;
 };
 
+type LeadRow = {
+  id: string;
+  professional_id: string;
+  lead_fee_charged: number;
+  status: string;
+  created_at: string;
+  professional_name: string | null;
+  professional_rating_avg: number;
+  professional_rating_count: number;
+  professional_avatar_url: string | null;
+};
+
 function statusStyle(status: string) {
   switch (status) {
     case 'open':
@@ -63,6 +75,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
   const [expanded, setExpanded] = useState(false);
   const [editing, setEditing] = useState(false);
   const [bids, setBids] = useState<BidRow[] | null>(null);
+  const [leads, setLeads] = useState<LeadRow[] | null>(null);
   const [acceptingId, setAcceptingId] = useState<string | null>(null);
   const [rejectingId, setRejectingId] = useState<string | null>(null);
   const [completing, setCompleting] = useState(false);
@@ -73,6 +86,8 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
 
   const acceptedBid = bids?.find((b) => b.status === 'accepted') ?? null;
   const pendingCount = bids?.filter((b) => b.status === 'pending').length ?? 0;
+  const purchasedLeads = leads?.filter((l) => l.status === 'purchased') ?? [];
+  const hasLeadActivity = purchasedLeads.length > 0;
 
   async function loadBids() {
     const { data } = await supabase
@@ -106,6 +121,34 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
     );
   }
 
+  async function loadLeads() {
+    const { data } = await supabase
+      .from('leads')
+      .select(
+        'id, professional_id, lead_fee_charged, status, created_at, profiles(full_name, rating_avg, rating_count, avatar_url)',
+      )
+      .eq('task_id', task.id)
+      .order('created_at', { ascending: true });
+
+    setLeads(
+      (data ?? []).map((l) => {
+        const profile = l.profiles as unknown as {
+          full_name: string | null;
+          rating_avg: number;
+          rating_count: number;
+          avatar_url: string | null;
+        } | null;
+        return {
+          ...l,
+          professional_name: profile?.full_name ?? null,
+          professional_rating_avg: profile?.rating_avg ?? 0,
+          professional_rating_count: profile?.rating_count ?? 0,
+          professional_avatar_url: profile?.avatar_url ?? null,
+        };
+      }),
+    );
+  }
+
   async function checkReviewed() {
     const { data } = await supabase
       .from('reviews')
@@ -117,7 +160,11 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
   }
 
   useEffect(() => {
-    loadBids();
+    if (task.path === 'lead_fee') {
+      loadLeads();
+    } else {
+      loadBids();
+    }
     if (task.status === 'completed') checkReviewed();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task.id]);
@@ -212,9 +259,14 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
             >
               {status.replace('_', ' ')}
             </span>
-            {status === 'open' && pendingCount > 0 && (
+            {status === 'open' && task.path !== 'lead_fee' && pendingCount > 0 && (
               <span className="font-semibold text-primary">
                 {pendingCount} bid{pendingCount === 1 ? '' : 's'}
+              </span>
+            )}
+            {status === 'open' && task.path === 'lead_fee' && purchasedLeads.length > 0 && (
+              <span className="font-semibold text-primary">
+                {purchasedLeads.length} lead{purchasedLeads.length === 1 ? '' : 's'} purchased
               </span>
             )}
           </div>
@@ -227,7 +279,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
       {expanded && (
         <div className="border-t border-gray-100 p-4 sm:p-5">
           <div className="mb-4 flex flex-wrap gap-2">
-            {status === 'open' && bids?.length === 0 && (
+            {status === 'open' && !hasLeadActivity && (bids?.length ?? 0) === 0 && (
               <button
                 onClick={() => setEditing((e) => !e)}
                 className="rounded-full border border-gray-300 px-3 py-1.5 text-xs font-bold text-gray-500 transition-colors hover:border-primary hover:text-primary"
@@ -235,7 +287,7 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
                 {editing ? 'Close Edit' : 'Edit Task'}
               </button>
             )}
-            {status === 'open' && (
+            {status === 'open' && !hasLeadActivity && (
               <button
                 onClick={handleCancel}
                 disabled={cancelling}
@@ -243,6 +295,11 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
               >
                 {cancelling ? 'Cancelling…' : 'Cancel Task'}
               </button>
+            )}
+            {status === 'open' && hasLeadActivity && (
+              <span className="rounded-full bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-500">
+                Locked — a tasker has paid for a lead
+              </span>
             )}
           </div>
 
@@ -335,7 +392,50 @@ function TaskWithBids({ task, currentUserId }: { task: Task; currentUserId: stri
             </div>
           )}
 
-          {bids === null ? (
+          {task.path === 'lead_fee' ? (
+            leads === null ? (
+              <div className="py-4 text-sm text-gray-400">Loading leads…</div>
+            ) : purchasedLeads.length === 0 ? (
+              <div className="py-4 text-sm text-gray-400">No leads purchased yet.</div>
+            ) : (
+              <div className="space-y-3">
+                {purchasedLeads.map((lead) => (
+                  <div key={lead.id} className="rounded-2xl border border-gray-200/70 bg-white p-4">
+                    <div className="flex items-start gap-3">
+                      <Avatar
+                        url={lead.professional_avatar_url}
+                        name={lead.professional_name}
+                        size={40}
+                      />
+                      <div className="min-w-0 flex-1">
+                        <p className="flex flex-wrap items-center gap-1.5 font-semibold text-gray-900">
+                          <Link
+                            to={`/users/${lead.professional_id}`}
+                            className="truncate hover:text-primary hover:underline"
+                          >
+                            {lead.professional_name || 'Tasker'}
+                          </Link>
+                          <span className="shrink-0">
+                            · paid ₦{lead.lead_fee_charged.toLocaleString('en-NG')} for this lead
+                          </span>
+                        </p>
+                        <p className="flex items-center gap-1 text-xs text-gray-500">
+                          {lead.professional_rating_count > 0 ? (
+                            <>
+                              <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+                              {lead.professional_rating_avg.toFixed(1)} ({lead.professional_rating_count})
+                            </>
+                          ) : (
+                            'No reviews yet'
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )
+          ) : bids === null ? (
             <div className="py-4 text-sm text-gray-400">Loading bids…</div>
           ) : bids.length === 0 ? (
             <div className="py-4 text-sm text-gray-400">No bids yet.</div>

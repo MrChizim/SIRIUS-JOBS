@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Menu, X, ArrowRight, Compass, ListChecks, HardHat, LogOut, ClipboardList, Settings, Star } from 'lucide-react';
 import NotificationBell from './NotificationBell';
@@ -22,10 +22,23 @@ function navLinkClass({ isActive }: { isActive: boolean }) {
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const profileMenuRef = useRef<HTMLDivElement>(null);
 
   const displayName = (user?.user_metadata?.full_name as string | undefined) || user?.email || '';
+
+  useEffect(() => {
+    if (!profileMenuOpen) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(e.target as Node)) {
+        setProfileMenuOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [profileMenuOpen]);
 
   useEffect(() => {
     if (!user) {
@@ -43,6 +56,7 @@ export default function Header() {
   async function handleSignOut() {
     await signOut();
     setMobileOpen(false);
+    setProfileMenuOpen(false);
     navigate('/');
   }
 
@@ -70,16 +84,27 @@ export default function Header() {
             <div className="hidden items-center space-x-4 lg:flex">
               {user ? (
                 <>
-                  <div className="group relative">
-                    <button className="flex h-10 w-10 items-center justify-center rounded-full">
+                  <div className="relative" ref={profileMenuRef}>
+                    <button
+                      className="flex h-10 w-10 items-center justify-center rounded-full"
+                      onClick={() => setProfileMenuOpen((open) => !open)}
+                      aria-haspopup="true"
+                      aria-expanded={profileMenuOpen}
+                      aria-label="Open profile menu"
+                    >
                       <Avatar url={avatarUrl} name={displayName} size={40} />
                     </button>
-                    <div className="invisible absolute right-0 mt-2 w-48 rounded-xl border border-gray-200/70 bg-white p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100">
+                    <div
+                      className={`absolute right-0 mt-2 w-48 rounded-xl border border-gray-200/70 bg-white p-2 shadow-lg transition-all ${
+                        profileMenuOpen ? 'visible opacity-100' : 'invisible opacity-0'
+                      }`}
+                    >
                       <p className="truncate px-3 py-2 text-sm font-semibold text-gray-900">
                         {displayName}
                       </p>
                       <Link
                         to="/my-tasks"
+                        onClick={() => setProfileMenuOpen(false)}
                         className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-primary"
                       >
                         <ClipboardList className="h-4 w-4" />
@@ -88,6 +113,7 @@ export default function Header() {
                       {user && (
                         <Link
                           to={`/users/${user.id}`}
+                          onClick={() => setProfileMenuOpen(false)}
                           className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-primary"
                         >
                           <Star className="h-4 w-4" />
@@ -96,6 +122,7 @@ export default function Header() {
                       )}
                       <Link
                         to="/settings"
+                        onClick={() => setProfileMenuOpen(false)}
                         className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-primary"
                       >
                         <Settings className="h-4 w-4" />
